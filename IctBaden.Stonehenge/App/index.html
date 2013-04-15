@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>loading...</title>
+
+        <link rel="apple-touch-startup-image" href="content/images/ios-startup-image-landscape.png" media="(orientation:landscape)" />
+        <link rel="apple-touch-startup-image" href="content/images/ios-startup-image-portrait.png" media="(orientation:portrait)" />
+      <link rel="apple-touch-icon" href="content/images/icon.png"/>
+      
+      <link href="css/bootstrap.css" rel="stylesheet">
+      <!--link-stylesheet-->
+        
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="format-detection" content="telephone=no"/>
+    
+        <meta name="viewport" content="width=device-width" />
+    </head>
+    <body>
+        <div id="applicationHost"></div>
+        
+        <script type="text/javascript" src="scripts/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="scripts/knockout-2.2.1.js"></script>
+        
+        <!--Durandal does not require SammyJS. The router plugin uses it.-->
+        <script type="text/javascript" src="scripts/sammy-0.7.4.js"></script>
+        <script type="text/javascript" src="scripts/bootstrap.js"></script>
+
+        <script type="text/javascript" src="App/durandal/amd/require.js" data-main="App/main"></script>
+    </body>
+</html>
