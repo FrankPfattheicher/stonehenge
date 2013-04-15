@@ -50,3 +50,4 @@ define(function (require) {
     CanSayHello: CanSayHello
   };
 });
+

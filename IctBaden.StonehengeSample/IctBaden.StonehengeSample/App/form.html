@@ -1,14 +1,11 @@
 ﻿<!--ViewModel:IctBaden.StonehengeSample.FormVm-->
-<form class="form-inline">
+<form class="form-inline" >
 <fieldset>
   <legend data-bind="text: Id">fieldset</legend>
-  <label class="time" data-bind="text: Clock">
-    ???</label>
+  <label class="time" data-bind="text: Clock">???</label>
   <br />
-  <label data-bind="text: Prompt">
-    Name:</label>
+  <label data-bind="text: Prompt">Name:</label>
   <input type="text" data-bind="value: Name, valueUpdate: 'afterkeydown'" />
-  <button type="submit" class="btn" data-bind="click: SayHello, enable: CanSayHello">
-    Click Me</button>
+  <button type="submit" class="btn" data-bind="click: SayHello, enable: CanSayHello">Click Me</button>
 </fieldset>
 </form>

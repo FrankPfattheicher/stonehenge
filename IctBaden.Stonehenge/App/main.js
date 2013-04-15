@@ -1,7 +1,7 @@
 ﻿require.config({
-    paths: {
-        'text': 'durandal/amd/text'
-    }
+  paths: {
+    'text': 'durandal/amd/text'
+  }
 });
 
 define(function (require) {

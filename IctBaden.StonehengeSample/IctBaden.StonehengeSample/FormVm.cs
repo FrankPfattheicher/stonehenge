@@ -9,6 +9,7 @@ namespace IctBaden.StonehengeSample
     private string name;
     public string Id { get; set; }
     public string Clock { get { return DateTime.Now.ToLongTimeString(); } }
+    public string Prompt { get { return "What is your Name?"; } }
     public string Name
     {
       get { return name; }

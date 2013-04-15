@@ -35,6 +35,21 @@ namespace IctBaden.Stonehenge
       if (File.Exists(fullPath))
       {
         text = File.ReadAllText(fullPath);
+
+        if (text.StartsWith("//ViewModel:"))
+        {
+          var end = text.IndexOf("\n");
+          var name = text.Substring(12, end - 12).Trim();
+          var asm = Assembly.GetEntryAssembly();
+          var vmtype = asm.GetType(name);
+
+          var vm = Session.Get<object>("~vm");
+          if ((vm == null) || (vm.GetType().FullName != name))
+          {
+            vm = Activator.CreateInstance(vmtype);
+            Session.Set("~vm", vm);
+          }
+        }
       }
       else
       {
@@ -59,26 +74,10 @@ namespace IctBaden.Stonehenge
             vm = Activator.CreateInstance(vmtype);
             Session.Set("~vm", vm);
           }
-          text = ModuleCreator.CreateFromViewModel(vm);
+          text = ModuleCreator.CreateFromViewModel(text, vm);
         }
       }
 
-      
-
-      if (text.StartsWith("//ViewModel:"))
-      {
-        var end = text.IndexOf("\n");
-        var name = text.Substring(12, end - 12).Trim();
-        var asm = Assembly.GetEntryAssembly();
-        var vmtype = asm.GetType(name);
-
-        var vm = Session.Get<object>("~vm");
-        if ((vm == null) || (vm.GetType().FullName != name))
-        {
-          vm = Activator.CreateInstance(vmtype);
-          Session.Set("~vm", vm);
-        }
-      }
       if (path == @"App\index.html")
       {
         text = UserStyleSheets.InsertUserCssLinks(RootPath, text);
