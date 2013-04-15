@@ -8,6 +8,18 @@ namespace IctBaden.Stonehenge
   {
     public string Title { get; set; }
     private readonly int port;
+    private AppHost host;
+
+    public string UserRole
+    {
+      get { return (host != null) ? host.UserRole : null; }
+      set { if (host != null) host.UserRole = value; }
+    }
+    public void Redirect(string page)
+    {
+      if (host != null) 
+        host.Redirect = page;
+    }
 
     public AppEngine()
       : this(42000)
@@ -22,11 +34,11 @@ namespace IctBaden.Stonehenge
     public void Run(bool newWindow)
     {
       var listeningOn = string.Format("http://*:{0}/", port);
-      var appHost = new AppHost(Title);
-      appHost.Init();
+      host = new AppHost(Title);
+      host.Init();
       try
       {
-        appHost.Start(listeningOn);
+        host.Start(listeningOn);
       }
       catch (HttpListenerException ex)
       {
@@ -36,8 +48,6 @@ namespace IctBaden.Stonehenge
         }
         throw;
       }
-
-      
 
       if (!newWindow)
         return;

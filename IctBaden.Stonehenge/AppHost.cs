@@ -11,6 +11,8 @@ namespace IctBaden.Stonehenge
   public class AppHost : AppHostHttpListenerBase
   {
     public string Title { get; private set; }
+    public string UserRole { get; set; }
+    public string Redirect { get; set; }
 
     public AppHost(string title)
       : base(title, typeof(AppHost).Assembly)
@@ -25,8 +27,8 @@ namespace IctBaden.Stonehenge
             .Add<AppFile>("/App/{Path1}/{Path2}/{FileName}")
             .Add<AppFile>("/App/{Path1}/{Path2}/{Path3}/{FileName}");
 
-      Routes.Add<AppViewModel>("/ViewModel/{Property}")
-            .Add<AppViewModel>("/ViewModel/{Property}/{Value}");
+      Routes.Add<AppViewModel>("/ViewModel/{ViewModel}")
+            .Add<AppViewModel>("/ViewModel/{ViewModel}/{Source}");
 
       Plugins.Add(new SessionFeature());
       container.Register<ICacheClient>(new MemoryCacheClient());

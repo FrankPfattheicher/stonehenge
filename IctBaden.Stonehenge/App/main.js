@@ -15,6 +15,7 @@ define(function (require) {
 
     router.useConvention();
     router.mapNav('form');
+    router.mapNav('login');
     router.mapNav('about');
 
     app.title = '%TITLE%';

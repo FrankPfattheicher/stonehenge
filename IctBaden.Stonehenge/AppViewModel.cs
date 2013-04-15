@@ -2,7 +2,7 @@
 {
   public class AppViewModel
   {
-    public string Property { get; set; }
-    public string Value { get; set; }
+    public string ViewModel { get; set; }
+    public string Source { get; set; }
   }
 }

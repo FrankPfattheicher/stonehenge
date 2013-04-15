@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net;
 using System.Reflection;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -10,13 +11,13 @@ namespace IctBaden.Stonehenge
   {
     public object Get(AppViewModel request)
     {
-      Debug.WriteLine("AppViewModelService:" + request.Property);
+      Debug.WriteLine("AppViewModelService:" + request.ViewModel);
 
       var vm = Session.Get<object>("~vm");
-      if ((vm == null) || (vm.GetType().FullName != request.Property))
+      if ((vm == null) || (vm.GetType().FullName != request.ViewModel))
       {
         var asm = Assembly.GetEntryAssembly();
-        var vmtype = asm.GetType(request.Property);
+        var vmtype = asm.GetType(request.ViewModel);
         vm = Activator.CreateInstance(vmtype);
         Session.Set("~vm", vm);
       }
@@ -24,11 +25,11 @@ namespace IctBaden.Stonehenge
       var ty = vm.GetType();
       Debug.WriteLine("AppViewModelService: ~vm=" + ty.Name);
 
-      var pi = ty.GetProperty(request.Property);
+      var pi = ty.GetProperty(request.ViewModel);
       if(pi != null)
       {
-        if (request.Value != null)
-          pi.SetValue(vm, request.Value, null);
+        if (request.Source != null)
+          pi.SetValue(vm, request.Source, null);
       }
 
       return new HttpResult(ServiceStack.Text.JsonSerializer.SerializeToString(vm), "application/json");
@@ -37,19 +38,39 @@ namespace IctBaden.Stonehenge
     public object Post(AppViewModel request)
     {
       var vm = Session.Get<object>("~vm");
-      if (vm != null && request.Property == vm.GetType().FullName)
+      if (vm != null && request.ViewModel == vm.GetType().FullName)
       {
         var ty = vm.GetType();
 
         foreach (var query in Request.FormData.AllKeys)
         {
           var pi = ty.GetProperty(query);
-          if (pi != null)
-          {
+          if (pi == null) 
+            continue;
+          if(pi.CanWrite)
             pi.SetValue(vm, Request.FormData[query], null);
-          }
         }
       }
+
+      var mi = vm.GetType().GetMethod(request.Source);
+      if (mi != null)
+      {
+        mi.Invoke(vm, new object[0]);
+      }
+
+      var host = GetResolver() as AppHost;
+      if (host != null)
+      {
+        if (host.Redirect != null)
+        {
+          var redirect = new HttpResult();
+          redirect.StatusCode = HttpStatusCode.Redirect;
+          redirect.Headers.Add("Location", Request.Headers["Referer"] + "#/" + host.Redirect);
+          host.Redirect = null;
+          return redirect;
+        }
+      }
+
       return Get(request);
     }
   }

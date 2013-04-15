@@ -6,10 +6,12 @@ namespace IctBaden.StonehengeSample
 {
   static class Program
   {
+    public static AppEngine App;
+
     static void Main()
     {
-      var host = new AppEngine {Title = "Stonehenge Sample"};
-      host.Run(false);
+      App = new AppEngine {Title = "Stonehenge Sample"};
+      App.Run(false);
       Thread.Sleep(TimeSpan.FromDays(1));
     }
   }

@@ -43,7 +43,12 @@ namespace IctBaden.Stonehenge
           {
             var onClick = click.Split(new[] {':'})[1].Trim();
             lines.AppendLine(onClick + ": function () {");
-            lines.AppendLine(" $.post('/viewmodel/" + vmType.FullName + "', '" + onClick + "=click', function (data) {");
+            lines.AppendLine("var params = '';");
+            foreach (var propName in propNames)
+            {
+              lines.AppendLine("params = params + '" + propName + "=' + " + propName + "() + '&';");
+            }
+            lines.AppendLine(" $.post('/viewmodel/" + vmType.FullName + "/" + onClick + "', params, function (data) {");
             foreach (var propName in propNames)
             {
               lines.AppendLine(string.Format("{0}(data.{0});", propName));
