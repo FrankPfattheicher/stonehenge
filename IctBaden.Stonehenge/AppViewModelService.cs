@@ -4,6 +4,7 @@ using System.Net;
 using System.Reflection;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using ServiceStack.Text;
 
 namespace IctBaden.Stonehenge
 {
@@ -31,7 +32,6 @@ namespace IctBaden.Stonehenge
         if (request.Source != null)
           pi.SetValue(vm, request.Source, null);
       }
-
       return new HttpResult(ServiceStack.Text.JsonSerializer.SerializeToString(vm), "application/json");
     }
 
@@ -55,7 +55,15 @@ namespace IctBaden.Stonehenge
       var mi = vm.GetType().GetMethod(request.Source);
       if (mi != null)
       {
-        mi.Invoke(vm, new object[0]);
+        if (mi.GetParameters().Length == 0)
+        {
+          mi.Invoke(vm, new object[0]);
+        }
+        else
+        {
+          var session = Session.Get<object>("~session") as AppSession;
+          mi.Invoke(vm, new object[]{ session });
+        }
       }
 
       var host = GetResolver() as AppHost;

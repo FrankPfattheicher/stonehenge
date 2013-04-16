@@ -46,7 +46,7 @@ namespace IctBaden.Stonehenge
             lines.AppendLine("var params = '';");
             foreach (var propName in propNames)
             {
-              lines.AppendLine("params = params + '" + propName + "=' + " + propName + "() + '&';");
+              lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent({0}())+'&';", propName));
             }
             lines.AppendLine(" $.post('/viewmodel/" + vmType.FullName + "/" + onClick + "', params, function (data) {");
             foreach (var propName in propNames)

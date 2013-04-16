@@ -25,6 +25,13 @@ namespace IctBaden.Stonehenge
 
     public object Get(AppFile request)
     {
+      var session = Session.Get<object>("~session") as AppSession;
+      if (session == null)
+      {
+        session = new AppSession();
+        Session.Set("~session", session);
+      }
+
       var path = request.FullPath("");
       Debug.WriteLine("AppFileService:" + path);
 

@@ -1,14 +1,16 @@
-﻿namespace IctBaden.StonehengeSample
+﻿using IctBaden.Stonehenge;
+
+namespace IctBaden.StonehengeSample
 {
   public class LoginVm
   {
     public string User { get; set; }
     public string Password { get; set; }
 
-    public void Login()
+    public void Login(AppSession session)
     {
-      Program.App.UserRole = "admin";
-      Program.App.Redirect("form");
+      session.Remove("Role");
+      session.Add("Role", "admin");
     }
   }
 }

@@ -78,6 +78,7 @@
     <Compile Include="AppEventService.cs" />
     <Compile Include="AppFileService.cs" />
     <Compile Include="AppHost.cs" />
+    <Compile Include="AppSession.cs" />
     <Compile Include="AppViewModel.cs" />
     <Compile Include="AppViewModelService.cs" />
     <Compile Include="ModuleCreator.cs" />
