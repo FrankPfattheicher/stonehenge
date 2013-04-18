@@ -82,6 +82,12 @@ namespace IctBaden.Stonehenge
             Session.Set("~vm", vm);
           }
           text = ModuleCreator.CreateFromViewModel(text, vm);
+
+          var userJsPath = fullPath.Replace(".js", "_user.js");
+          if (File.Exists(userJsPath))
+          {
+            text += File.ReadAllText(userJsPath);
+          }
         }
       }
 
@@ -94,6 +100,7 @@ namespace IctBaden.Stonehenge
         var host = GetResolver() as AppHost;
         if (host != null)
           text = text.Replace("%TITLE%", host.Title);
+        text = UserPages.InsertUserPages(RootPath, text);
       }
 
       var type = "text/html";

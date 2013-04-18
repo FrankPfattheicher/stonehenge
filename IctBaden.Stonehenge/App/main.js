@@ -14,9 +14,7 @@ define(function (require) {
   app.start().then(function () {
 
     router.useConvention();
-    router.mapNav('form');
-    router.mapNav('login');
-    router.mapNav('about');
+    //%PAGES%
 
     app.title = '%TITLE%';
     app.adaptToDevice();

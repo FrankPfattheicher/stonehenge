@@ -1,0 +1,12 @@
+﻿<!--ViewModel:IctBaden.StonehengeSample.GraphVm-->
+<div>
+  
+  <h1>Graph</h1>
+  
+  <div class="plot graph" id="Graph" style="width:500px; height:300px;" ></div>
+  
+  <button onclick="$.plot($('#Graph'), [getRandomData()], options); ">plot</button>
+  
+  <span data-bind="text: GraphData"></span>
+    
+</div>

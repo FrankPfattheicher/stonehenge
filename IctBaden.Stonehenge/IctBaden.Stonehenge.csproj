@@ -84,6 +84,7 @@
     <Compile Include="ModuleCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppFile.cs" />
+    <Compile Include="UserPages.cs" />
     <Compile Include="UserStyleSheets.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +187,115 @@
     <Content Include="scripts\bootstrap.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="scripts\flot\excanvas.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\excanvas.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.colorhelpers.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.colorhelpers.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.canvas.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.canvas.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.categories.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.categories.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.crosshair.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.crosshair.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.errorbars.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.errorbars.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.fillbetween.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.fillbetween.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.image.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.image.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.navigate.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.navigate.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.pie.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.pie.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.resize.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.resize.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.selection.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.selection.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.stack.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.stack.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.symbol.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.symbol.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.threshold.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.threshold.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.time.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.flot.time.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\jquery.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scripts\flot\LICENSE.txt" />
     <Content Include="scripts\jquery-1.9.1-vsdoc.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -210,6 +320,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="scripts\flot\API.md" />
+    <None Include="scripts\flot\CONTRIBUTING.md" />
+    <None Include="scripts\flot\FAQ.md" />
+    <None Include="scripts\flot\Makefile" />
+    <None Include="scripts\flot\NEWS.md" />
+    <None Include="scripts\flot\PLUGINS.md" />
+    <None Include="scripts\flot\README.md" />
     <None Include="scripts\jquery-1.9.1.min.map">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

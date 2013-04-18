@@ -7,3 +7,9 @@ body {
   color: #F90;
   font-size: 16px;  
 }
+
+.graph {
+  border-style: solid; 
+  border-width: 1px; 
+  border-color: lightgray;
+}

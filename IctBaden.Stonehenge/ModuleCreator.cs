@@ -66,7 +66,31 @@ namespace IctBaden.Stonehenge
         lines.AppendLine(string.Format("{0}(data.{0});", propName));
       }
 
-      lines.AppendLine("}); } }; });");
+      lines.AppendLine("}); },");
+
+      lines.AppendLine("viewAttached: function(view) {");
+      lines.AppendLine("alert($('GraphData').data('value'));");
+
+      xmlNodeList = page.SelectNodes("//div[@class]");
+      if (xmlNodeList != null)
+      {
+        foreach (XmlNode inputNode in xmlNodeList)
+        {
+          var divClass = inputNode.Attributes["class"].Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+          var plot = divClass.FirstOrDefault(d => d == "plot");
+          if ((plot != null) && (inputNode.Attributes["id"] != null))
+          {
+            var propName = inputNode.Attributes["id"].Value;
+            lines.AppendLine(string.Format("$.plot($('#{0}'), [{0}Data()], options);", propName));
+          }
+        }
+      }
+
+      lines.AppendLine("}");
+
+      lines.AppendLine("};");
+
+      lines.AppendLine("});");
       return lines.ToString();
     }
   }
