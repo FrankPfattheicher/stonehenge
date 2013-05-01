@@ -69,7 +69,6 @@ namespace IctBaden.Stonehenge
       lines.AppendLine("}); },");
 
       lines.AppendLine("viewAttached: function(view) {");
-      lines.AppendLine("alert($('GraphData').data('value'));");
 
       xmlNodeList = page.SelectNodes("//div[@class]");
       if (xmlNodeList != null)
