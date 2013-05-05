@@ -2,6 +2,6 @@
 {
   public class AppEvent
   {
-    public string Name { get; set; }
-  }
+		public string ViewModel { get; set; }
+	}
 }

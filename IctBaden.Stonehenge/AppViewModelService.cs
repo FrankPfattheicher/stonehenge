@@ -4,24 +4,16 @@ using System.Net;
 using System.Reflection;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using ServiceStack.Text;
 
 namespace IctBaden.Stonehenge
 {
-  public class AppViewModelService : Service
+  public class AppViewModelService : AppService
   {
     public object Get(AppViewModel request)
     {
       Debug.WriteLine("AppViewModelService:" + request.ViewModel);
 
-      var vm = Session.Get<object>("~vm");
-      if ((vm == null) || (vm.GetType().FullName != request.ViewModel))
-      {
-        var asm = Assembly.GetEntryAssembly();
-        var vmtype = asm.GetType(request.ViewModel);
-        vm = Activator.CreateInstance(vmtype);
-        Session.Set("~vm", vm);
-      }
+			var vm = SetViewModelType(request.ViewModel);
 
       var ty = vm.GetType();
       Debug.WriteLine("AppViewModelService: ~vm=" + ty.Name);
@@ -37,7 +29,7 @@ namespace IctBaden.Stonehenge
 
     public object Post(AppViewModel request)
     {
-      var vm = Session.Get<object>("~vm");
+      var vm = ViewModel;
       if (vm != null && request.ViewModel == vm.GetType().FullName)
       {
         var ty = vm.GetType();

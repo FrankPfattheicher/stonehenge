@@ -30,6 +30,8 @@ namespace IctBaden.Stonehenge
       Routes.Add<AppViewModel>("/ViewModel/{ViewModel}")
             .Add<AppViewModel>("/ViewModel/{ViewModel}/{Source}");
 
+			Routes.Add<AppEvent>("/Events/{ViewModel}");
+
       Plugins.Add(new SessionFeature());
       container.Register<ICacheClient>(new MemoryCacheClient());
       

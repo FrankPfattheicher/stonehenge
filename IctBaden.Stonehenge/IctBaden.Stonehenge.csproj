@@ -67,17 +67,21 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivePresenter.cs" />
     <Compile Include="AppEngine.cs" />
     <Compile Include="AppEvent.cs" />
     <Compile Include="AppEventService.cs" />
     <Compile Include="AppFileService.cs" />
     <Compile Include="AppHost.cs" />
+    <Compile Include="AppService.cs" />
     <Compile Include="AppSession.cs" />
     <Compile Include="AppViewModel.cs" />
     <Compile Include="AppViewModelService.cs" />

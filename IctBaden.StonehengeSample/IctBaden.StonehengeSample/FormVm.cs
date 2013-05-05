@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
+using IctBaden.Stonehenge;
 
 namespace IctBaden.StonehengeSample
 {
-  public class FormVm
+  public class FormVm : ActivePresenter
   {
     private static int nid = 1;
     private string name;
+	  private Timer timer;
+		
     public string Id { get; set; }
-    public string Clock { get { return DateTime.Now.ToLongTimeString(); } }
+    public string Clock { get; private set; }
     public string Prompt { get { return "What is your Name?"; } }
     public string Name
     {
@@ -27,6 +31,13 @@ namespace IctBaden.StonehengeSample
       nid++;
       Id = "ViewModel #" + nid;
       Name = "Frank";
+			ClockTick(this);
+			timer = new Timer(ClockTick, this, 1000, 1000);
     }
+
+	  private void ClockTick(object state)
+	  {
+			this["Clock"] = DateTime.Now.ToLongTimeString();
+	  }
   }
 }

@@ -9,7 +9,7 @@ using ServiceStack.ServiceInterface;
 
 namespace IctBaden.Stonehenge
 {
-  public class AppFileService : Service
+  public class AppFileService : AppService
   {
     private static readonly string RootPath = Path.GetDirectoryName(typeof(AppFileService).Assembly.Location);
     private static readonly Dictionary<string, string> ContentType = new Dictionary<string, string>
@@ -47,15 +47,8 @@ namespace IctBaden.Stonehenge
         {
           var end = text.IndexOf("\n");
           var name = text.Substring(12, end - 12).Trim();
-          var asm = Assembly.GetEntryAssembly();
-          var vmtype = asm.GetType(name);
-
-          var vm = Session.Get<object>("~vm");
-          if ((vm == null) || (vm.GetType().FullName != name))
-          {
-            vm = Activator.CreateInstance(vmtype);
-            Session.Set("~vm", vm);
-          }
+          
+					SetViewModelType(name);
         }
       }
       else
@@ -72,15 +65,8 @@ namespace IctBaden.Stonehenge
         {
           var end = text.IndexOf("-->");
           var name = text.Substring(14, end - 14).Trim();
-          var asm = Assembly.GetEntryAssembly();
-          var vmtype = asm.GetType(name);
+					var vm = SetViewModelType(name);
 
-          var vm = Session.Get<object>("~vm");
-          if ((vm == null) || (vm.GetType().FullName != name))
-          {
-            vm = Activator.CreateInstance(vmtype);
-            Session.Set("~vm", vm);
-          }
           text = ModuleCreator.CreateFromViewModel(text, vm);
 
           var userJsPath = fullPath.Replace(".js", "_user.js");
