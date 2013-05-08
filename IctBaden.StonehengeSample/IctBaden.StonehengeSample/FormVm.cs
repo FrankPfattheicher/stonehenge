@@ -26,7 +26,8 @@ namespace IctBaden.StonehengeSample
     public bool CanSayHello
     { get { return !string.IsNullOrEmpty(Name); } }
 
-    public FormVm()
+    public FormVm(AppSession session)
+      : base(session)
     {
       nid++;
       Id = "ViewModel #" + nid;

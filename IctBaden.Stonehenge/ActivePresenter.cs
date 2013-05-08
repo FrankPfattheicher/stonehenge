@@ -33,6 +33,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Markup;
 using System.Windows.Threading;
+using ServiceStack.CacheAccess;
 
 namespace IctBaden.Stonehenge
 {
@@ -183,17 +184,16 @@ namespace IctBaden.Stonehenge
     internal int Count { get { return GetProperties().Count; } }
     [Browsable(false)]
     internal IEnumerable<string> Models { get { return from model in models select model.GetType().Name; } }
+    [Browsable(false)]
+    public AppSession Session;
+
     internal bool ModelTypeExists(string prefix, object model) { return models.FirstOrDefault(m => (m.TypeName == model.GetType().Name) && (m.Prefix == prefix)) != null; }
 
     #endregion
 
-    public ActivePresenter()
+    public ActivePresenter(AppSession session)
     {
-    }
-    public ActivePresenter(object model)
-      : this()
-    {
-      AddModel(model);
+      Session = session;
     }
 
     protected void SetParent(ActivePresenter parent)
@@ -201,6 +201,7 @@ namespace IctBaden.Stonehenge
       PropertyChanged += (sender, args) => parent.NotifyPropertyChanged(args.PropertyName);
     }
 
+    [Browsable(false)]
     public object this[string name]
     {
       get
@@ -482,7 +483,7 @@ namespace IctBaden.Stonehenge
 
       foreach (var dependendName in dependencies[name])
       {
-				if (handler != null)
+        if (handler != null)
         {
           ExecuteHandler(handler, dependendName);
         }

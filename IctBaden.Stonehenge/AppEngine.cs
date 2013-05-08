@@ -7,6 +7,7 @@ namespace IctBaden.Stonehenge
   public class AppEngine
   {
     public string Title { get; set; }
+    public string StartPage { get; set; }
     private readonly int port;
     private AppHost host;
 
@@ -21,20 +22,21 @@ namespace IctBaden.Stonehenge
         host.Redirect = page;
     }
 
-    public AppEngine()
-      : this(42000)
+    public AppEngine(string title, string startPage)
+      : this(42000, title, startPage)
     {
-
     }
-    public AppEngine(int hostPort)
+    public AppEngine(int hostPort, string title, string startPage)
     {
       port = hostPort;
+      Title = title;
+      StartPage = startPage;
     }
 
     public void Run(bool newWindow)
     {
       var listeningOn = string.Format("http://*:{0}/", port);
-      host = new AppHost(Title);
+      host = new AppHost(Title, StartPage);
       host.Init();
       try
       {

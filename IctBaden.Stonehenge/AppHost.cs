@@ -11,13 +11,15 @@ namespace IctBaden.Stonehenge
   public class AppHost : AppHostHttpListenerBase
   {
     public string Title { get; private set; }
+    public string StartPage { get; private set; }
     public string UserRole { get; set; }
     public string Redirect { get; set; }
 
-    public AppHost(string title)
+    public AppHost(string title, string startPage)
       : base(title, typeof(AppHost).Assembly)
     {
       Title = title;
+      StartPage = startPage;
     }
 
     public override void Configure(Container container)

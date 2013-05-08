@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.StonehengeSample", "IctBaden.StonehengeSample\IctBaden.StonehengeSample.csproj", "{572CE674-DB53-42AE-B740-6C20C72703F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.StonehengeSample", "IctBaden.StonehengeSample\IctBaden.StonehengeSample\IctBaden.StonehengeSample.csproj", "{572CE674-DB53-42AE-B740-6C20C72703F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge", "..\IctBaden.Stonehenge\IctBaden.Stonehenge.csproj", "{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge", "IctBaden.Stonehenge\IctBaden.Stonehenge.csproj", "{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

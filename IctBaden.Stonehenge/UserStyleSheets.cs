@@ -14,9 +14,13 @@ namespace IctBaden.Stonehenge
     {
       if (userStyleSheets == null)
       {
-        var links = Directory.GetFiles(Path.Combine(rootPath, @"App\styles"), "*.css", SearchOption.AllDirectories)
-          .Select(dir => string.Format(LinkTemplate, dir.Substring(dir.IndexOf(@"\App\") + 1).Replace('\\', '/')));
-        userStyleSheets = string.Join(Environment.NewLine, links);
+        var path = Path.Combine(rootPath, @"App\styles");
+        if (Directory.Exists(path))
+        { 
+          var links = Directory.GetFiles(path, "*.css", SearchOption.AllDirectories)
+            .Select(dir => string.Format(LinkTemplate, dir.Substring(dir.IndexOf(@"\App\") + 1).Replace('\\', '/')));
+          userStyleSheets = string.Join(Environment.NewLine, links);
+        }
       }
       return text.Replace(InsertPoint, userStyleSheets);
     }

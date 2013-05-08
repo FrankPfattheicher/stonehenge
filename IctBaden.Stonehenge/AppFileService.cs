@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Reflection;
 using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
 namespace IctBaden.Stonehenge
 {
@@ -15,7 +12,12 @@ namespace IctBaden.Stonehenge
     private static readonly Dictionary<string, string> ContentType = new Dictionary<string, string>
                 {
                     { ".css", "text/css" },
-                    { ".js", "text/javascript" }
+                    { ".js", "text/javascript" },
+                    { ".png", "image/png" },
+                    { ".gif", "image/gif" },
+                    { ".jpg", "image/jpeg" },
+                    { ".jpeg", "image/jpeg" },
+                    
                 };
 
     public object Any(AppFile request)
@@ -28,7 +30,7 @@ namespace IctBaden.Stonehenge
       var session = Session.Get<object>("~session") as AppSession;
       if (session == null)
       {
-        session = new AppSession();
+        session = new AppSession(Session);
         Session.Set("~session", session);
       }
 
@@ -37,8 +39,20 @@ namespace IctBaden.Stonehenge
 
       var fullPath = request.FullPath(RootPath);
       var ext = Path.GetExtension(fullPath);
-      string text;
 
+      var type = "text/html";
+      if (ContentType.ContainsKey(ext))
+      {
+        type = ContentType[ext];
+      }
+
+      if (type.StartsWith("image") && File.Exists(fullPath))
+      {
+        var data = File.ReadAllBytes(fullPath);
+        return new HttpResult(data, type);
+      }
+
+      string text;
       if (File.Exists(fullPath))
       {
         text = File.ReadAllText(fullPath);
@@ -63,7 +77,7 @@ namespace IctBaden.Stonehenge
         text = File.ReadAllText(vmPath);
         if (text.StartsWith("<!--ViewModel:"))
         {
-          var end = text.IndexOf("-->");
+          var end = text.IndexOf(@"-->");
           var name = text.Substring(14, end - 14).Trim();
 					var vm = SetViewModelType(name);
 
@@ -77,23 +91,28 @@ namespace IctBaden.Stonehenge
         }
       }
 
-      if (path == @"App\index.html")
+      switch (path)
       {
-        text = UserStyleSheets.InsertUserCssLinks(RootPath, text);
-      }
-      else if (path == @"App\main.js")
-      {
-        var host = GetResolver() as AppHost;
-        if (host != null)
-          text = text.Replace("%TITLE%", host.Title);
-        text = UserPages.InsertUserPages(RootPath, text);
+        case @"App\index.html":
+          text = UserStyleSheets.InsertUserCssLinks(RootPath, text);
+          break;
+        case @"App\shell.js":
+          {
+            var host = GetResolver() as AppHost;
+            if (host != null)
+              text = text.Replace("%STARTPAGE%", host.StartPage);
+          }
+          break;
+        case @"App\main.js":
+          {
+            var host = GetResolver() as AppHost;
+            if (host != null)
+              text = text.Replace("%TITLE%", host.Title);
+            text = UserPages.InsertUserPages(RootPath, text);
+          }
+          break;
       }
 
-      var type = "text/html";
-      if (ContentType.ContainsKey(ext))
-      {
-        type = ContentType[ext];
-      }
       return new HttpResult(text, type);
     }
 

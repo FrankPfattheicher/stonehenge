@@ -5,7 +5,7 @@ define(function (require) {
   return {
     router: router,
     activate: function () {
-      return router.activate('about');
+      return router.activate('%STARTPAGE%');
     }
   };
 });

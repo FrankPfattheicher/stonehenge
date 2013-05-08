@@ -9,8 +9,6 @@ namespace IctBaden.StonehengeSample
 
     public void Login(AppSession session)
     {
-      session.Remove("Role");
-      session.Add("Role", "admin");
     }
   }
 }

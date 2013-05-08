@@ -11,7 +11,7 @@ namespace IctBaden.StonehengeSample
 		private Timer timer;
 		private int start;
 
-		public GraphVm()
+		public GraphVm(AppSession session) : base(session)
 		{
 			GraphData = new long[Count][];
 			for (var ix = 0; ix < Count; ix++)

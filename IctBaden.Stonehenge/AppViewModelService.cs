@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
-using System.Reflection;
 using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
 namespace IctBaden.Stonehenge
 {
@@ -13,7 +11,7 @@ namespace IctBaden.Stonehenge
     {
       Debug.WriteLine("AppViewModelService:" + request.ViewModel);
 
-			var vm = SetViewModelType(request.ViewModel);
+      var vm = SetViewModelType(request.ViewModel);
 
       var ty = vm.GetType();
       Debug.WriteLine("AppViewModelService: ~vm=" + ty.Name);
@@ -30,7 +28,10 @@ namespace IctBaden.Stonehenge
     public object Post(AppViewModel request)
     {
       var vm = ViewModel;
-      if (vm != null && request.ViewModel == vm.GetType().FullName)
+      if (vm == null)
+        return Get(request);
+
+      if (request.ViewModel == vm.GetType().FullName)
       {
         var ty = vm.GetType();
 
@@ -39,8 +40,12 @@ namespace IctBaden.Stonehenge
           var pi = ty.GetProperty(query);
           if (pi == null) 
             continue;
-          if(pi.CanWrite)
-            pi.SetValue(vm, Request.FormData[query], null);
+          if (pi.CanWrite)
+          {
+            var val = Convert.ChangeType(Request.FormData[query], pi.PropertyType);
+            pi.SetValue(vm, val, null);
+          }
+            
         }
       }
 
@@ -63,8 +68,7 @@ namespace IctBaden.Stonehenge
       {
         if (host.Redirect != null)
         {
-          var redirect = new HttpResult();
-          redirect.StatusCode = HttpStatusCode.Redirect;
+          var redirect = new HttpResult {StatusCode = HttpStatusCode.Redirect};
           redirect.Headers.Add("Location", Request.Headers["Referer"] + "#/" + host.Redirect);
           host.Redirect = null;
           return redirect;
