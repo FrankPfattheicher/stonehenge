@@ -37,7 +37,7 @@ using ServiceStack.CacheAccess;
 
 namespace IctBaden.Stonehenge
 {
-  public class ActivePresenter : DynamicObject, ICustomTypeDescriptor, INotifyPropertyChanged
+  public class ActiveViewModel : DynamicObject, ICustomTypeDescriptor, INotifyPropertyChanged
   {
     #region helper classes
 
@@ -191,12 +191,12 @@ namespace IctBaden.Stonehenge
 
     #endregion
 
-    public ActivePresenter(AppSession session)
+    public ActiveViewModel(AppSession session)
     {
-      Session = session;
+      Session = session ?? new AppSession(null, null);
     }
 
-    protected void SetParent(ActivePresenter parent)
+    protected void SetParent(ActiveViewModel parent)
     {
       PropertyChanged += (sender, args) => parent.NotifyPropertyChanged(args.PropertyName);
     }

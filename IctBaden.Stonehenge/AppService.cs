@@ -63,7 +63,7 @@ namespace IctBaden.Stonehenge
         return null;
       }
 
-      if (typeof (ActivePresenter).IsAssignableFrom(vmtype))
+      if (typeof (ActiveViewModel).IsAssignableFrom(vmtype))
       {
         var appSession = Session.Get<AppSession>("~session");
         vm = Activator.CreateInstance(vmtype, new object[] { appSession });

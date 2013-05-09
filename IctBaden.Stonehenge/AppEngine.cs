@@ -11,6 +11,8 @@ namespace IctBaden.Stonehenge
     private readonly int port;
     private AppHost host;
 
+    public event Action<AppSession> NewSession;
+
     public string UserRole
     {
       get { return (host != null) ? host.UserRole : null; }
@@ -51,6 +53,8 @@ namespace IctBaden.Stonehenge
         throw;
       }
 
+      host.NewSession += OnNewSession;
+
       if (!newWindow)
         return;
 
@@ -64,6 +68,14 @@ namespace IctBaden.Stonehenge
       }
       Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
       ui.WaitForExit();
+    }
+
+    private void OnNewSession(AppSession session)
+    {
+      var handler = NewSession;
+      if (handler == null)
+        return;
+      handler(session);
     }
   }
 }

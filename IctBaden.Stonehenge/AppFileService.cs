@@ -30,8 +30,14 @@ namespace IctBaden.Stonehenge
       var session = Session.Get<object>("~session") as AppSession;
       if (session == null)
       {
-        session = new AppSession(Session);
+        session = new AppSession(Request.AbsoluteUri, Session);
         Session.Set("~session", session);
+
+        var host = GetResolver() as AppHost;
+        if (host != null)
+        {
+          host.OnNewSession(session);
+        }
       }
 
       var path = request.FullPath("");

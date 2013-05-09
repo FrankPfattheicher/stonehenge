@@ -1,4 +1,5 @@
-﻿using Funq;
+﻿using System;
+using Funq;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using ServiceStack.Common;
@@ -15,11 +16,21 @@ namespace IctBaden.Stonehenge
     public string UserRole { get; set; }
     public string Redirect { get; set; }
 
+    public event Action<AppSession> NewSession;
+
     public AppHost(string title, string startPage)
       : base(title, typeof(AppHost).Assembly)
     {
       Title = title;
       StartPage = startPage;
+    }
+
+    internal void OnNewSession(AppSession session)
+    {
+      var handler = NewSession;
+      if (handler == null)
+        return;
+      handler(session);
     }
 
     public override void Configure(Container container)

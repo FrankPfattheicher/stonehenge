@@ -20,7 +20,7 @@ namespace IctBaden.Stonehenge
 			}
 
 			var values = new Dictionary<string, object>();
-			var vm = ViewModel as ActivePresenter;
+			var vm = ViewModel as ActiveViewModel;
 			lock (Events)
 			{
 				if (vm != null)

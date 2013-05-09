@@ -53,7 +53,7 @@ namespace IctBaden.Stonehenge
         }
       }
 
-      lines.AppendLine("pollEvents(self);");
+      lines.AppendLine("setTimeout(pollEvents(self), 100);");
 
       lines.AppendLine("});");
 

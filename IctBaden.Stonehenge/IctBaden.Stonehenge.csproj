@@ -75,7 +75,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivePresenter.cs" />
+    <Compile Include="ActiveViewModel.cs" />
     <Compile Include="AppEngine.cs" />
     <Compile Include="AppEvent.cs" />
     <Compile Include="AppEventService.cs" />
