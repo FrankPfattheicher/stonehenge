@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Xml;
 
@@ -14,7 +13,7 @@ namespace IctBaden.Stonehenge
       page.LoadXml(html);
 
       var vmType = viewModel.GetType();
-      var propNames = vmType.GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance).Select(pi => pi.Name).ToArray();
+      var propNames = vmType.GetProperties().Select(pi => pi.Name).ToArray();
 
       var assigns1 = new StringBuilder();
       var assigns2 = new StringBuilder();
@@ -81,8 +80,9 @@ namespace IctBaden.Stonehenge
       {
         foreach (XmlNode inputNode in xmlNodeList)
         {
-          var dataBind = inputNode.Attributes["data-bind"].Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-          var click = dataBind.FirstOrDefault(d => d.StartsWith("click"));
+          var click = inputNode.Attributes["data-bind"].Value
+            .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(bind => bind.Trim())
+            .FirstOrDefault(d => d.StartsWith("click"));
           if (click != null)
           {
             var onClick = click.Split(new[] { ':' })[1].Trim();
@@ -102,6 +102,40 @@ namespace IctBaden.Stonehenge
         }
       }
 
+      // selection changes
+      xmlNodeList = page.SelectNodes("//select[@data-bind]");
+      if (xmlNodeList != null)
+      {
+        foreach (XmlNode selectNode in xmlNodeList)
+        {
+          var dataBind = selectNode.Attributes["data-bind"].Value
+            .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(bind => bind.Trim())
+            .FirstOrDefault(d => d.StartsWith("event"));
+          if (dataBind != null)
+          {
+            var eventBind = dataBind.Replace("event:", "").Replace("{", "").Replace("}", "").Trim()
+              .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(bind => bind.Trim())
+              .FirstOrDefault(d => d.StartsWith("change")); ;
+            if (eventBind != null)
+            {
+              var onchange = eventBind.Split(new[] { ':' })[1].Trim();
+
+              lines.AppendLine(onchange + ": function () {");
+              lines.AppendLine("var params = '';");
+              foreach (var propName in propNames)
+              {
+                lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent({0}())+'&';", propName));
+              }
+              lines.AppendLine(" $.post('/viewmodel/" + vmType.FullName + "/" + onchange + "', params, function (data) {");
+              foreach (var propName in propNames)
+              {
+                lines.AppendLine(string.Format("{0}(data.{0});", propName));
+              }
+              lines.AppendLine("}); },");
+            }
+          }
+        }
+      }
 
 
       lines.AppendLine("activate: function() {");

@@ -201,19 +201,23 @@ namespace IctBaden.Stonehenge
       PropertyChanged += (sender, args) => parent.NotifyPropertyChanged(args.PropertyName);
     }
 
-    [Browsable(false)]
-    public object this[string name]
+    public object TryGetMember(string name)
     {
-      get
-      {
-        object result;
-        TryGetMember(new GetMemberBinderEx(name), out result);
-        return result;
-      }
-      set
-      {
-        TrySetMember(new SetMemberBinderEx(name), value);
-      }
+      object result;
+      TryGetMember(new GetMemberBinderEx(name), out result);
+      return result;
+    }
+
+    public void TrySetMember(string name, object value)
+    {
+      TrySetMember(new SetMemberBinderEx(name), value); 
+    }
+
+    [Browsable(false)]
+    protected object this[string name]
+    {
+      get { return TryGetMember(name); }
+      set { TrySetMember(name, value); }
     }
 
     public void AddModel(object model)

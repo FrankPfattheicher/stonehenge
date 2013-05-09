@@ -1,7 +1,8 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Net;
+using System.Reflection;
 using ServiceStack.Common.Web;
+using ServiceStack.Text;
 
 namespace IctBaden.Stonehenge
 {
@@ -22,7 +23,7 @@ namespace IctBaden.Stonehenge
         if (request.Source != null)
           pi.SetValue(vm, request.Source, null);
       }
-      return new HttpResult(ServiceStack.Text.JsonSerializer.SerializeToString(vm), "application/json");
+      return new HttpResult(JsonSerializer.SerializeToString(vm), "application/json");
     }
 
     public object Post(AppViewModel request)
@@ -38,14 +39,12 @@ namespace IctBaden.Stonehenge
         foreach (var query in Request.FormData.AllKeys)
         {
           var pi = ty.GetProperty(query);
-          if (pi == null) 
+          if ((pi == null) || !pi.CanWrite)
             continue;
-          if (pi.CanWrite)
-          {
-            var val = Convert.ChangeType(Request.FormData[query], pi.PropertyType);
-            pi.SetValue(vm, val, null);
-          }
-            
+
+          var newval = Request.FormData[query];
+
+          SetPropertyValue(vm, pi, newval);
         }
       }
 
@@ -76,6 +75,18 @@ namespace IctBaden.Stonehenge
       }
 
       return Get(request);
+    }
+
+    private static void SetPropertyValue(object vm, PropertyInfo pi, string newval)
+    {
+      try
+      {
+        var val = TypeSerializer.DeserializeFromString(newval, pi.PropertyType);
+        pi.SetValue(vm, val, null);
+      }
+      catch
+      {
+      }
     }
   }
 }

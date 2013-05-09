@@ -27,24 +27,13 @@ namespace IctBaden.Stonehenge
 
     public object Get(AppFile request)
     {
-      var session = Session.Get<object>("~session") as AppSession;
-      if (session == null)
-      {
-        session = new AppSession(Request.AbsoluteUri, Session);
-        Session.Set("~session", session);
-
-        var host = GetResolver() as AppHost;
-        if (host != null)
-        {
-          host.OnNewSession(session);
-        }
-      }
+      GetSession();
 
       var path = request.FullPath("");
       Debug.WriteLine("AppFileService:" + path);
 
       var fullPath = request.FullPath(RootPath);
-      var ext = Path.GetExtension(fullPath);
+      var ext = Path.GetExtension(fullPath) ?? string.Empty;
 
       var type = "text/html";
       if (ContentType.ContainsKey(ext))
@@ -65,10 +54,10 @@ namespace IctBaden.Stonehenge
 
         if (text.StartsWith("//ViewModel:"))
         {
-          var end = text.IndexOf("\n");
+          var end = text.IndexOf(@"\n");
           var name = text.Substring(12, end - 12).Trim();
           
-					SetViewModelType(name);
+          SetViewModelType(name);
         }
       }
       else
@@ -81,11 +70,11 @@ namespace IctBaden.Stonehenge
         }
 
         text = File.ReadAllText(vmPath);
-        if (text.StartsWith("<!--ViewModel:"))
+        if (text.StartsWith(@"<!--ViewModel:"))
         {
           var end = text.IndexOf(@"-->");
-          var name = text.Substring(14, end - 14).Trim();
-					var vm = SetViewModelType(name);
+          var vmName = text.Substring(14, end - 14).Trim();
+          var vm = SetViewModelType(vmName);
 
           text = ModuleCreator.CreateFromViewModel(text, vm);
 

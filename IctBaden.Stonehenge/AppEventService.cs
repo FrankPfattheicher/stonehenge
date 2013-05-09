@@ -29,7 +29,7 @@ namespace IctBaden.Stonehenge
 					{
 						if (values.ContainsKey(name))
 							continue;
-						values.Add(name, vm[name]);
+						values.Add(name, vm.TryGetMember(name));
 					}
 				}
 				Events.Clear();
