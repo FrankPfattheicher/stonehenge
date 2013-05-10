@@ -47,7 +47,7 @@ namespace IctBaden.Stonehenge
 
       Plugins.Add(new SessionFeature());
       container.Register<ICacheClient>(new MemoryCacheClient());
-      
+    
       SetConfig(new EndpointHostConfig
       {
         EnableFeatures = Feature.All.Remove(Feature.Metadata),

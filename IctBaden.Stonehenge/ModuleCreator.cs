@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -9,16 +11,18 @@ namespace IctBaden.Stonehenge
   {
     public static string CreateFromViewModel(string html, object viewModel)
     {
+      var xhtml = html.Replace("&nbsp;", " ");
       var page = new XmlDocument();
-      page.LoadXml(html);
+      page.LoadXml(xhtml);
 
       var vmType = viewModel.GetType();
-      var propNames = vmType.GetProperties().Select(pi => pi.Name).ToArray();
 
       var assigns1 = new StringBuilder();
       var assigns2 = new StringBuilder();
 
-      foreach (var propName in propNames)
+      var assignPropNames = vmType.GetProperties().Select(pi => pi.Name).ToArray();
+
+      foreach (var propName in assignPropNames)
       {
         assigns1.AppendLine(string.Format("if(data.{0})", propName));
         assigns2.AppendLine(string.Format("if(data.{0})", propName));
@@ -26,6 +30,15 @@ namespace IctBaden.Stonehenge
         assigns2.AppendLine(string.Format("self.{0}(data.{0});", propName));
       }
 
+      // do not send ReadOnly or OneWay bound properties back
+      var postbackPropNames = new List<string>();
+      foreach (var prop in vmType.GetProperties().Where(pi => pi.CanWrite))
+      {
+        var bindable = prop.GetCustomAttributes(typeof (BindableAttribute), true);
+        if ((bindable.Length > 0) && ((BindableAttribute) bindable[0]).Direction == BindingDirection.OneWay)
+          continue;
+        postbackPropNames.Add(prop.Name);
+      }
 
       var lines = new StringBuilder();
       lines.AppendLine("//ViewModel:" + vmType.FullName);
@@ -62,14 +75,14 @@ namespace IctBaden.Stonehenge
 
       lines.AppendLine("define(function (require) {");
 
-      foreach (var propName in propNames)
+      foreach (var propName in assignPropNames)
       {
         lines.AppendLine(string.Format("var {0} = ko.observable();", propName));
       }
 
       lines.AppendLine("return {");
 
-      foreach (var propName in propNames)
+      foreach (var propName in assignPropNames)
       {
         lines.AppendLine(string.Format("{0}: {0},", propName));
       }
@@ -88,12 +101,12 @@ namespace IctBaden.Stonehenge
             var onClick = click.Split(new[] { ':' })[1].Trim();
             lines.AppendLine(onClick + ": function () {");
             lines.AppendLine("var params = '';");
-            foreach (var propName in propNames)
+            foreach (var propName in postbackPropNames)
             {
               lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent({0}())+'&';", propName));
             }
             lines.AppendLine(" $.post('/viewmodel/" + vmType.FullName + "/" + onClick + "', params, function (data) {");
-            foreach (var propName in propNames)
+            foreach (var propName in assignPropNames)
             {
               lines.AppendLine(string.Format("{0}(data.{0});", propName));
             }
@@ -122,12 +135,12 @@ namespace IctBaden.Stonehenge
 
               lines.AppendLine(onchange + ": function () {");
               lines.AppendLine("var params = '';");
-              foreach (var propName in propNames)
+              foreach (var propName in postbackPropNames)
               {
                 lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent({0}())+'&';", propName));
               }
               lines.AppendLine(" $.post('/viewmodel/" + vmType.FullName + "/" + onchange + "', params, function (data) {");
-              foreach (var propName in propNames)
+              foreach (var propName in assignPropNames)
               {
                 lines.AppendLine(string.Format("{0}(data.{0});", propName));
               }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -8,21 +9,29 @@ namespace IctBaden.Stonehenge
   {
     private const string InsertPoint = "<!--link-stylesheet-->";
     private const string LinkTemplate = "<link href='{0}' rel='stylesheet'>";
-    private static string userStyleSheets;
+    private static Dictionary<string, string> userStyleSheets = new Dictionary<string, string>();
 
-    public static string InsertUserCssLinks(string rootPath, string text)
+    public static string InsertUserCssLinks(string rootPath, string text, string theme)
     {
-      if (userStyleSheets == null)
+      if (!userStyleSheets.ContainsKey(theme))
       {
+        var styleSheets = string.Empty;
         var path = Path.Combine(rootPath, @"App\styles");
         if (Directory.Exists(path))
         { 
           var links = Directory.GetFiles(path, "*.css", SearchOption.AllDirectories)
             .Select(dir => string.Format(LinkTemplate, dir.Substring(dir.IndexOf(@"\App\") + 1).Replace('\\', '/')));
-          userStyleSheets = string.Join(Environment.NewLine, links);
+          styleSheets = string.Join(Environment.NewLine, links);
         }
+        path = Path.Combine(rootPath, @"App\themes", theme + ".css");
+        if (File.Exists(path))
+        {
+          var css = path.Substring(path.IndexOf(@"\App\") + 1).Replace('\\', '/');
+          styleSheets += Environment.NewLine + string.Format(LinkTemplate, css);
+        }
+        userStyleSheets.Add(theme, styleSheets);
       }
-      return text.Replace(InsertPoint, userStyleSheets);
+      return text.Replace(InsertPoint, userStyleSheets[theme]);
     }
   }
 }

@@ -89,7 +89,7 @@ namespace IctBaden.Stonehenge
       switch (path)
       {
         case @"App\index.html":
-          text = UserStyleSheets.InsertUserCssLinks(RootPath, text);
+          text = UserStyleSheets.InsertUserCssLinks(RootPath, text, GetSession().SubDomain);
           break;
         case @"App\shell.js":
           {
