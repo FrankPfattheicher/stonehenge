@@ -187,7 +187,7 @@ namespace IctBaden.Stonehenge
     [Browsable(false)]
     public AppSession Session;
 
-    internal bool ModelTypeExists(string prefix, object model) { return models.FirstOrDefault(m => (m.TypeName == model.GetType().Name) && (m.Prefix == prefix)) != null; }
+    protected bool ModelTypeExists(string prefix, object model) { return models.FirstOrDefault(m => (m.TypeName == model.GetType().Name) && (m.Prefix == prefix)) != null; }
 
     #endregion
 
