@@ -20,17 +20,44 @@ namespace IctBaden.Stonehenge.Creators
 
       var eventFunction = string.Format("poll{0}Events", vmType.Name);
 
-      var assigns1 = new StringBuilder();
-      var assigns2 = new StringBuilder();
+      XmlNodeList xmlNodeList;
+
+      // properties
+      var assignThis = new StringBuilder();
+      var assignSelf = new StringBuilder();
+      var plotThis = new StringBuilder();
+      var plotSelf = new StringBuilder();
 
       var assignPropNames = vmType.GetProperties().Select(pi => pi.Name).ToArray();
 
       foreach (var propName in assignPropNames)
       {
-        assigns1.AppendLine(string.Format("if(data.{0})", propName));
-        assigns2.AppendLine(string.Format("if(data.{0})", propName));
-        assigns1.AppendLine(string.Format("{0}(data.{0});", propName));
-        assigns2.AppendLine(string.Format("self.{0}(data.{0});", propName));
+        assignThis.AppendLine(string.Format("if(data.{0})", propName));
+        assignThis.AppendLine(string.Format("{0}(data.{0});", propName));
+
+        assignSelf.AppendLine(string.Format("if(data.{0})", propName));
+        assignSelf.AppendLine(string.Format("self.{0}(data.{0});", propName));
+      }
+
+      // plots
+      xmlNodeList = page.SelectNodes("//div[@class]");
+      if (xmlNodeList != null)
+      {
+        foreach (XmlNode inputNode in xmlNodeList)
+        {
+          var divClass = inputNode.Attributes["class"].Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+          var plot = divClass.FirstOrDefault(d => d == "plot");
+          if ((plot != null) && (inputNode.Attributes["id"] != null))
+          {
+            var propName = inputNode.Attributes["id"].Value;
+
+            plotThis.AppendLine(string.Format("if(data.{0}Data)", propName));
+            plotThis.AppendLine(string.Format("$.plot($('#{0}'), [{0}Data()], options);", propName));
+
+            plotSelf.AppendLine(string.Format("if(data.{0}Data)", propName));
+            plotSelf.AppendLine(string.Format("$.plot($('#{0}'), [self.{0}Data()], options);", propName));
+          }
+        }
       }
 
       // do not send ReadOnly or OneWay bound properties back
@@ -44,7 +71,6 @@ namespace IctBaden.Stonehenge.Creators
       }
 
       var lines = new StringBuilder();
-      XmlNodeList xmlNodeList;
 
       lines.AppendLine("//ViewModel:" + vmType.FullName);
 
@@ -55,23 +81,8 @@ namespace IctBaden.Stonehenge.Creators
         lines.AppendLine("var ts = new Date().getTime();");
         lines.AppendLine("$.getJSON('/events/" + vmType.FullName + "?ts='+ts, function(data) {");
 
-        lines.Append(assigns2);
-
-        // plots
-        xmlNodeList = page.SelectNodes("//div[@class]");
-        if (xmlNodeList != null)
-        {
-          foreach (XmlNode inputNode in xmlNodeList)
-          {
-            var divClass = inputNode.Attributes["class"].Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            var plot = divClass.FirstOrDefault(d => d == "plot");
-            if ((plot != null) && (inputNode.Attributes["id"] != null))
-            {
-              var propName = inputNode.Attributes["id"].Value;
-              lines.AppendLine(string.Format("$.plot($('#{0}'), [self.{0}Data()], options);", propName));
-            }
-          }
-        }
+        lines.Append(assignSelf);
+        lines.Append(plotSelf);
 
         lines.AppendLine("setTimeout(function(){" + eventFunction + "(self)}, 100);");
 
@@ -115,10 +126,10 @@ namespace IctBaden.Stonehenge.Creators
             }
 
             lines.AppendLine(" $.post('/viewmodel/" + vmType.FullName + "/" + onClick + "', params, function (data) {");
-            foreach (var propName in assignPropNames)
-            {
-              lines.AppendLine(string.Format("{0}(data.{0});", propName));
-            }
+
+            lines.Append(assignThis);
+            lines.Append(plotThis);
+
             lines.AppendLine("}); },");
           }
         }
@@ -149,10 +160,10 @@ namespace IctBaden.Stonehenge.Creators
                 lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent({0}())+'&';", propName));
               }
               lines.AppendLine(" $.post('/viewmodel/" + vmType.FullName + "/" + onchange + "', params, function (data) {");
-              foreach (var propName in assignPropNames)
-              {
-                lines.AppendLine(string.Format("{0}(data.{0});", propName));
-              }
+
+              lines.Append(assignThis);
+              lines.Append(plotThis);
+
               lines.AppendLine("}); },");
             }
           }
@@ -166,30 +177,14 @@ namespace IctBaden.Stonehenge.Creators
       lines.AppendLine("viewAttached: function(view) {");
 
       lines.AppendLine("var self = this;");
-      
+
 //lines.AppendLine("debugger;");
 
       lines.AppendLine("var ts = new Date().getTime();");
       lines.AppendLine("$.getJSON('/viewmodel/" + vmType.FullName + "?ts='+ts, function(data) {");
 
-      lines.AppendLine("var self = this;");
-      lines.Append(assigns1);
-
-      // plots
-      xmlNodeList = page.SelectNodes("//div[@class]");
-      if (xmlNodeList != null)
-      {
-        foreach (XmlNode inputNode in xmlNodeList)
-        {
-          var divClass = inputNode.Attributes["class"].Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-          var plot = divClass.FirstOrDefault(d => d == "plot");
-          if ((plot != null) && (inputNode.Attributes["id"] != null))
-          {
-            var propName = inputNode.Attributes["id"].Value;
-            lines.AppendLine(string.Format("$.plot($('#{0}'), [self.{0}Data()], options);", propName));
-          }
-        }
-      }
+      lines.Append(assignThis);
+      lines.Append(plotThis);
 
       lines.AppendLine("});");
 
