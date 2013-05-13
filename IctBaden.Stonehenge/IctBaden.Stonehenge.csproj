@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="ActiveViewModel.cs" />
     <Compile Include="AppEngine.cs" />
+    <Compile Include="GraphSeries.cs" />
     <Compile Include="Services\AppEvent.cs" />
     <Compile Include="Services\AppEventService.cs" />
     <Compile Include="Services\AppFileService.cs" />

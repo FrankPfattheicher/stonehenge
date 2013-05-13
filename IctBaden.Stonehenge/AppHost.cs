@@ -51,7 +51,7 @@ namespace IctBaden.Stonehenge
       SetConfig(new EndpointHostConfig
       {
         EnableFeatures = Feature.All.Remove(Feature.Metadata),
-        DefaultRedirectPath = "/App/index.html"
+        DefaultRedirectPath = "App/index.html"
       }); 
     }
 

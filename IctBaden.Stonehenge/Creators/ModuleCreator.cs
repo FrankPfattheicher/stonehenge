@@ -52,10 +52,10 @@ namespace IctBaden.Stonehenge.Creators
             var propName = inputNode.Attributes["id"].Value;
 
             plotThis.AppendLine(string.Format("if(data.{0}Data)", propName));
-            plotThis.AppendLine(string.Format("$.plot($('#{0}'), [{0}Data()], options);", propName));
+            plotThis.AppendLine(string.Format("$.plot($('#{0}'), {0}Data(), options{0});", propName));
 
             plotSelf.AppendLine(string.Format("if(data.{0}Data)", propName));
-            plotSelf.AppendLine(string.Format("$.plot($('#{0}'), [self.{0}Data()], options);", propName));
+            plotSelf.AppendLine(string.Format("$.plot($('#{0}'), self.{0}Data(), options{0});", propName));
           }
         }
       }
