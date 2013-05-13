@@ -1,11 +1,18 @@
 ﻿<!--ViewModel:IctBaden.StonehengeSample.LoginVm-->
 <form class="form-inline" >
-  <br />
-  <label>User:</label>
-  <input type="text" data-bind="value: User" />
-  <br />
-  <label>Password:</label>
-  <input type="text" data-bind="value: Password" />
-  <br />
-  <button type="submit" class="btn" data-bind="click: Login">Login</button>
+  <table>
+    <tr>
+      <td>User:</td>
+      <td><input type="text" data-bind="value: User" /></td>
+    </tr>
+    <tr>
+      <td>Password:</td>
+      <td><input type="text" data-bind="value: Password" /></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <button type="submit" class="btn" data-bind="click: Login">Login</button>      
+      </td>
+    </tr>
+  </table>
 </form>

@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Reflection;
 using ServiceStack.ServiceInterface;
 
-namespace IctBaden.Stonehenge
+namespace IctBaden.Stonehenge.Services
 {
   public class AppService : Service
   {

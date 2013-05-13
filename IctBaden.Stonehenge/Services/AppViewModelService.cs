@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Net;
 using System.Reflection;
+using IctBaden.Stonehenge.Services;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
 
@@ -10,7 +11,7 @@ namespace IctBaden.Stonehenge
   {
     public object Get(AppViewModel request)
     {
-      Debug.WriteLine("AppViewModelService:" + request.ViewModel);
+      Debug.WriteLine("ViewModelService:" + request.ViewModel);
 
       var vm = SetViewModelType(request.ViewModel);
 
@@ -23,7 +24,9 @@ namespace IctBaden.Stonehenge
         if (request.Source != null)
           pi.SetValue(vm, request.Source, null);
       }
-      return new HttpResult(JsonSerializer.SerializeToString(vm), "application/json");
+      var result = new HttpResult(JsonSerializer.SerializeToString(vm), "application/json");
+      result.Headers.Add("Cache-Control", "no-cache");
+      return result;
     }
 
     public object Post(AppViewModel request)

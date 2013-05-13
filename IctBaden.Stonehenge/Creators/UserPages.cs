@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace IctBaden.Stonehenge
+namespace IctBaden.Stonehenge.Creators
 {
   public static class UserPages
   {

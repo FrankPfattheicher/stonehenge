@@ -4,7 +4,7 @@ using IctBaden.Stonehenge;
 
 namespace IctBaden.StonehengeSample
 {
-	public class GraphVm : ActivePresenter
+	public class GraphVm : ActiveViewModel
 	{
 		public const int Count = 180;
 		public long[][] GraphData { get; private set; }
@@ -31,7 +31,7 @@ namespace IctBaden.StonehengeSample
 
 		private void GenerateData()
 		{
-			var time = (long)(DateTime.Parse("1.1.2000") - DateTime.Parse("1.1.1970")).TotalMilliseconds;
+      var time = (long)(DateTime.Parse("1.1.1970") - DateTime.Parse("1.1.1970")).TotalMilliseconds;
 			for (var ix = 0; ix < Count; ix++)
 			{
 				GraphData[ix][0] = time;

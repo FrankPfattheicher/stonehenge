@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace IctBaden.Stonehenge
+namespace IctBaden.Stonehenge.Creators
 {
   public static class UserStyleSheets
   {
     private const string InsertPoint = "<!--link-stylesheet-->";
     private const string LinkTemplate = "<link href='{0}' rel='stylesheet'>";
-    private static Dictionary<string, string> userStyleSheets = new Dictionary<string, string>();
+    private static readonly Dictionary<string, string> StyleSheets = new Dictionary<string, string>();
 
     public static string InsertUserCssLinks(string rootPath, string text, string theme)
     {
-      if (!userStyleSheets.ContainsKey(theme))
+      if (!StyleSheets.ContainsKey(theme))
       {
         var styleSheets = string.Empty;
         var path = Path.Combine(rootPath, @"App\styles");
@@ -29,9 +29,9 @@ namespace IctBaden.Stonehenge
           var css = path.Substring(path.IndexOf(@"\App\") + 1).Replace('\\', '/');
           styleSheets += Environment.NewLine + string.Format(LinkTemplate, css);
         }
-        userStyleSheets.Add(theme, styleSheets);
+        UserStyleSheets.StyleSheets.Add(theme, styleSheets);
       }
-      return text.Replace(InsertPoint, userStyleSheets[theme]);
+      return text.Replace(InsertPoint, StyleSheets[theme]);
     }
   }
 }

@@ -5,12 +5,12 @@ using IctBaden.Stonehenge;
 
 namespace IctBaden.StonehengeSample
 {
-  public class FormVm : ActivePresenter
+  public class FormVm : ActiveViewModel
   {
     private static int nid = 1;
     private string name;
-	  private Timer timer;
-		
+    private Timer timer;
+    
     public string Id { get; set; }
     public string Clock { get; private set; }
     public string Prompt { get { return "What is your Name?"; } }
@@ -32,13 +32,13 @@ namespace IctBaden.StonehengeSample
       nid++;
       Id = "ViewModel #" + nid;
       Name = "Frank";
-			ClockTick(this);
-			timer = new Timer(ClockTick, this, 1000, 1000);
+      ClockTick(this);
+      timer = new Timer(ClockTick, this, 1000, 1000);
     }
 
-	  private void ClockTick(object state)
-	  {
-			this["Clock"] = DateTime.Now.ToLongTimeString();
-	  }
+    private void ClockTick(object state)
+    {
+      this["Clock"] = DateTime.Now.ToLongTimeString();
+    }
   }
 }

@@ -2,7 +2,10 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using IctBaden.Stonehenge.Creators;
+using IctBaden.Stonehenge.Services;
 using ServiceStack.Common.Web;
+using ServiceStack.ServiceInterface;
 
 namespace IctBaden.Stonehenge
 {
@@ -30,7 +33,7 @@ namespace IctBaden.Stonehenge
       GetSession();
 
       var path = request.FullPath("");
-      Debug.WriteLine("AppFileService:" + path);
+      Debug.WriteLine("FileService:" + path);
 
       var fullPath = request.FullPath(RootPath);
       var ext = Path.GetExtension(fullPath) ?? string.Empty;

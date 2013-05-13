@@ -19,7 +19,7 @@
 
         var res = [];
         for (var i = 0; i < data.length; ++i)
-          res.push([(new Date("2000/01/01")).getTime() + (i * 360000), data[i]]);
+          res.push([(new Date("1970/01/01")).getTime() + (i * 360000), data[i]]);
         return res;
       }
       
@@ -29,8 +29,8 @@
         xaxis: {
           mode: "time",
           timeformat: "%H:%M",
-          min: (new Date("2000/01/01 00:00")).getTime(),
-          max: (new Date("2000/01/01 23:59")).getTime()
+          min: (new Date("1970/01/01 00:00")).getTime(),
+          max: (new Date("1970/01/01 23:59")).getTime()
         },
         colors: ["#F90", "#222", "#666", "#BBB"],
         series: {
