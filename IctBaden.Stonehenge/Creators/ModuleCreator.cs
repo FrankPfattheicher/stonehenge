@@ -11,6 +11,11 @@ namespace IctBaden.Stonehenge.Creators
   {
     public static string CreateFromViewModel(string html, object viewModel)
     {
+      if (viewModel == null)
+      {
+        return html.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+      }
+
       var xhtml = html.Replace("&nbsp;", " ");
       var page = new XmlDocument();
       page.LoadXml(xhtml);
@@ -32,10 +37,10 @@ namespace IctBaden.Stonehenge.Creators
 
       foreach (var propName in assignPropNames)
       {
-        assignThis.AppendLine(string.Format("if(data.{0})", propName));
+        assignThis.AppendLine(string.Format("if(data.{0} != null)", propName));
         assignThis.AppendLine(string.Format("{0}(data.{0});", propName));
 
-        assignSelf.AppendLine(string.Format("if(data.{0})", propName));
+        assignSelf.AppendLine(string.Format("if(data.{0} != null)", propName));
         assignSelf.AppendLine(string.Format("self.{0}(data.{0});", propName));
       }
 
@@ -125,7 +130,10 @@ namespace IctBaden.Stonehenge.Creators
               lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent({0}())+'&';", propName));
             }
 
-            lines.AppendLine(" $.post('/viewmodel/" + vmType.FullName + "/" + onClick + "', params, function (data) {");
+            lines.AppendLine("var ts = new Date().getTime();");
+            lines.AppendLine("$.post('/viewmodel/" + vmType.FullName + "/" + onClick + "?ts='+ts, params, function (data) {");
+
+//lines.AppendLine("debugger;");
 
             lines.Append(assignThis);
             lines.Append(plotThis);

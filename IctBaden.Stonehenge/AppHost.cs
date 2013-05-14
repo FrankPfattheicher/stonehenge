@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Web;
 using Funq;
+using IctBaden.Stonehenge.Services;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using ServiceStack.Common;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.WebHost.Endpoints;
+using ServiceStack.WebHost.Endpoints.Support;
 
 namespace IctBaden.Stonehenge
 {
@@ -47,11 +50,12 @@ namespace IctBaden.Stonehenge
 
       Plugins.Add(new SessionFeature());
       container.Register<ICacheClient>(new MemoryCacheClient());
-    
+
+      CatchAllHandlers.Add((httpMethod, pathInfo, filePath) => new RedirectHttpHandler(){RelativeUrl = "/App/index.html"});
+
       SetConfig(new EndpointHostConfig
       {
-        EnableFeatures = Feature.All.Remove(Feature.Metadata),
-        DefaultRedirectPath = "App/index.html"
+        EnableFeatures = Feature.All.Remove(Feature.Metadata)
       }); 
     }
 
