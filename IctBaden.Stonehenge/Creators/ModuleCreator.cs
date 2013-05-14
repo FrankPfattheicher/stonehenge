@@ -13,7 +13,7 @@ namespace IctBaden.Stonehenge.Creators
     {
       if (viewModel == null)
       {
-        return html.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+        return html.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
       }
 
       var xhtml = html.Replace("&nbsp;", " ");
@@ -25,15 +25,42 @@ namespace IctBaden.Stonehenge.Creators
 
       var eventFunction = string.Format("poll{0}Events", vmType.Name);
 
-      XmlNodeList xmlNodeList;
-
       // properties
       var assignThis = new StringBuilder();
       var assignSelf = new StringBuilder();
       var plotThis = new StringBuilder();
       var plotSelf = new StringBuilder();
 
-      var assignPropNames = vmType.GetProperties().Select(pi => pi.Name).ToArray();
+      var vmProps = new List<PropertyDescriptor>();
+      var activeVm = viewModel as ActiveViewModel;
+      if (activeVm != null)
+      {
+        vmProps.AddRange(from PropertyDescriptor prop in activeVm.GetProperties() select prop);
+      }
+      else
+      {
+        vmProps.AddRange(TypeDescriptor.GetProperties(viewModel, true).Cast<PropertyDescriptor>());
+      }
+
+      var assignPropNames = new List<string>();
+      // ReSharper disable LoopCanBeConvertedToQuery
+      foreach (var prop in vmProps)
+      {
+        BindableAttribute bindable = null;
+        foreach (var attrib in prop.Attributes)
+        {
+          bindable = attrib as BindableAttribute;
+          if (attrib != null)
+          {
+            break;
+          }
+        }
+        if ((bindable != null) && !bindable.Bindable)
+          continue;
+        assignPropNames.Add(prop.Name);
+      }
+      // ReSharper restore LoopCanBeConvertedToQuery
+
 
       foreach (var propName in assignPropNames)
       {
@@ -45,11 +72,13 @@ namespace IctBaden.Stonehenge.Creators
       }
 
       // plots
-      xmlNodeList = page.SelectNodes("//div[@class]");
+      XmlNodeList xmlNodeList = page.SelectNodes("//div[@class]");
       if (xmlNodeList != null)
       {
         foreach (XmlNode inputNode in xmlNodeList)
         {
+          if(inputNode.Attributes == null)
+            continue;
           var divClass = inputNode.Attributes["class"].Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
           var plot = divClass.FirstOrDefault(d => d == "plot");
           if ((plot != null) && (inputNode.Attributes["id"] != null))
@@ -67,6 +96,7 @@ namespace IctBaden.Stonehenge.Creators
 
       // do not send ReadOnly or OneWay bound properties back
       var postbackPropNames = new List<string>();
+      // ReSharper disable LoopCanBeConvertedToQuery
       foreach (var prop in vmType.GetProperties().Where(pi => pi.CanWrite))
       {
         var bindable = prop.GetCustomAttributes(typeof (BindableAttribute), true);
@@ -74,6 +104,7 @@ namespace IctBaden.Stonehenge.Creators
           continue;
         postbackPropNames.Add(prop.Name);
       }
+      // ReSharper restore LoopCanBeConvertedToQuery
 
       var lines = new StringBuilder();
 
@@ -117,6 +148,8 @@ namespace IctBaden.Stonehenge.Creators
       {
         foreach (XmlNode inputNode in xmlNodeList)
         {
+          if (inputNode.Attributes == null)
+            continue;
           var click = inputNode.Attributes["data-bind"].Value
             .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(bind => bind.Trim())
             .FirstOrDefault(d => d.StartsWith("click"));
@@ -149,6 +182,8 @@ namespace IctBaden.Stonehenge.Creators
       {
         foreach (XmlNode selectNode in xmlNodeList)
         {
+          if (selectNode.Attributes == null)
+            continue;
           var dataBind = selectNode.Attributes["data-bind"].Value
             .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(bind => bind.Trim())
             .FirstOrDefault(d => d.StartsWith("event"));
@@ -156,7 +191,7 @@ namespace IctBaden.Stonehenge.Creators
           {
             var eventBind = dataBind.Replace("event:", "").Replace("{", "").Replace("}", "").Trim()
               .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(bind => bind.Trim())
-              .FirstOrDefault(d => d.StartsWith("change")); ;
+              .FirstOrDefault(d => d.StartsWith("change"));
             if (eventBind != null)
             {
               var onchange = eventBind.Split(new[] { ':' })[1].Trim();

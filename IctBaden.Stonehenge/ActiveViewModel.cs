@@ -159,35 +159,22 @@ namespace IctBaden.Stonehenge
       }
     }
 
-    class DynamicModel
-    {
-      public readonly string Prefix;
-      public readonly string TypeName;
-      public object Model;
-
-      public DynamicModel(string prefix, object model)
-      {
-        Prefix = prefix;
-        Model = model;
-        TypeName = model.GetType().Name;
-      }
-    }
-
     #endregion
 
     #region properties
 
     readonly Dictionary<string, List<string>> dependencies = new Dictionary<string, List<string>>();
     readonly Dictionary<string, object> dictionary = new Dictionary<string, object>();
-    readonly List<DynamicModel> models = new List<DynamicModel>();
+    
+    internal List<ActiveModel> ActiveModels = new List<ActiveModel>();
     [Browsable(false)]
     internal int Count { get { return GetProperties().Count; } }
     [Browsable(false)]
-    internal IEnumerable<string> Models { get { return from model in models select model.GetType().Name; } }
+    internal IEnumerable<string> Models { get { return from model in ActiveModels select model.GetType().Name; } }
     [Browsable(false)]
     public AppSession Session;
 
-    protected bool ModelTypeExists(string prefix, object model) { return models.FirstOrDefault(m => (m.TypeName == model.GetType().Name) && (m.Prefix == prefix)) != null; }
+    protected bool ModelTypeExists(string prefix, object model) { return ActiveModels.FirstOrDefault(m => (m.TypeName == model.GetType().Name) && (m.Prefix == prefix)) != null; }
 
     #endregion
 
@@ -222,13 +209,21 @@ namespace IctBaden.Stonehenge
 
     public void AddModel(object model)
     {
+      if (model == null)
+        return;
       AddModel(null, model);
     }
     public void AddModel(string prefix, object model)
     {
+      if (model == null)
+        return;
       if (ModelTypeExists(prefix, model))
-        throw new ArgumentException(string.Format("A model of type '{0}' is already added", model.GetType().Name));
-      models.Add(new DynamicModel(prefix, model));
+      {
+        UpdateModel(prefix, model);
+        return;
+      }
+
+      ActiveModels.Add(new ActiveModel(prefix, model));
 
       properties = null;
       propertiesAttrib = null;
@@ -244,8 +239,8 @@ namespace IctBaden.Stonehenge
       if (!ModelTypeExists(prefix, model))
         throw new ArgumentException(string.Format("No model of type '{0}' is added", model.GetType().Name));
 
-      var index = (from m in models where (m.TypeName == model.GetType().Name) && (m.Prefix == prefix) select models.IndexOf(m)).First();
-      models[index].Model = model;
+      var index = (from m in ActiveModels where (m.TypeName == model.GetType().Name) && (m.Prefix == prefix) select ActiveModels.IndexOf(m)).First();
+      ActiveModels[index].Model = model;
       foreach (var prop in model.GetType().GetProperties())
       {
         if (string.IsNullOrEmpty(prefix))
@@ -264,7 +259,7 @@ namespace IctBaden.Stonehenge
     public override IEnumerable<string> GetDynamicMemberNames()
     {
       var names = new List<string>();
-      foreach (var model in models)
+      foreach (var model in ActiveModels)
         names.AddRange(from prop in model.GetType().GetProperties() select prop.Name);
       names.AddRange(from elem in dictionary select elem.Key);
       return names;
@@ -277,7 +272,7 @@ namespace IctBaden.Stonehenge
       {
         return new PropertyInfoEx(pi, this);
       }
-      foreach (var model in models)
+      foreach (var model in ActiveModels)
       {
         if (!string.IsNullOrEmpty(model.Prefix))
         {
@@ -382,7 +377,7 @@ namespace IctBaden.Stonehenge
         var desc = new PropertyDescriptorEx(prop.Name, pi);
         properties.Add(desc);
       }
-      foreach (var model in models)
+      foreach (var model in ActiveModels)
       {
         foreach (PropertyDescriptor prop in TypeDescriptor.GetProperties(model.Model, true))
         {
@@ -439,7 +434,7 @@ namespace IctBaden.Stonehenge
       propertiesAttrib = new PropertyDescriptorCollection(new PropertyDescriptor[0]);
       foreach (PropertyDescriptor prop in TypeDescriptor.GetProperties(this, true))
         propertiesAttrib.Add(prop);
-      foreach (var model in models)
+      foreach (var model in ActiveModels)
       {
         foreach (PropertyDescriptor prop in TypeDescriptor.GetProperties(model, attributes, true))
           propertiesAttrib.Add(prop);

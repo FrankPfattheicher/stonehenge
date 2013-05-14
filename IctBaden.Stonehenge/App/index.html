@@ -18,6 +18,10 @@
       
       <!--link-stylesheet-->
         
+      <!--[if lt IE 9]>
+      <script src="scripts/html5shiv.js"></script>
+      <![endif]-->
+
       <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta name="format-detection" content="telephone=no"/>
@@ -38,6 +42,10 @@
         <script type="text/javascript" src="scripts/flot/jquery.flot.pie.js"></script>
         <script type="text/javascript" src="scripts/flot/jquery.flot.resize.js"></script>
         <script type="text/javascript" src="scripts/flot/jquery.flot.time.js"></script>
+        
+        <!--[if IE]>
+        <script language="javascript" type="text/javascript" src="scripts/flot/excanvas.js"></script>
+        <![endif]-->  
 
       <script type="text/javascript" src="App/durandal/amd/require.js" data-main="App/main"></script>
     </body>

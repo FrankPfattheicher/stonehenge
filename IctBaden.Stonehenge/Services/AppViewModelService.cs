@@ -1,6 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Net;
 using System.Reflection;
+using System.Text;
 using IctBaden.Stonehenge.Services;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
@@ -24,7 +27,36 @@ namespace IctBaden.Stonehenge
         if (request.Source != null)
           pi.SetValue(vm, request.Source, null);
       }
-      var result = new HttpResult(JsonSerializer.SerializeToString(vm), "application/json");
+
+      var data = new List<string>();
+      var activeVm = vm as ActiveViewModel;
+      string values;
+      if (activeVm != null)
+      {
+        foreach (var model in activeVm.ActiveModels)
+        {
+          values = JsonSerializer.SerializeToString(model.Model);
+          data.Add(values.Substring(1, values.Length - 2));
+        }
+      }
+
+      foreach (var prop in vm.GetType().GetProperties())
+      {
+        var bindable = prop.GetCustomAttributes(typeof (BindableAttribute), true);
+        if ((bindable.Length > 0) && !((BindableAttribute) bindable[0]).Bindable)
+          continue;
+
+        var value = prop.GetValue(vm, null);
+        if(value == null)
+          continue;
+        
+        values = "\"" + prop.Name + "\":" + JsonSerializer.SerializeToString(value);
+        data.Add(values);
+      }
+      //values = JsonSerializer.SerializeToString(vm);
+      //data.Add(values.Substring(1, values.Length - 2));
+
+      var result = new HttpResult("{" + string.Join(",", data) + "}", "application/json");
       result.Headers.Add("Cache-Control", "no-cache");
       return result;
     }
