@@ -3,11 +3,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using IctBaden.Stonehenge.Creators;
-using IctBaden.Stonehenge.Services;
 using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
 
-namespace IctBaden.Stonehenge
+namespace IctBaden.Stonehenge.Services
 {
   public class AppFileService : AppService
   {
