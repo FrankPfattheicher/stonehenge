@@ -1,15 +1,11 @@
 ﻿<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner" >
-    <div style="padding-left: 24px;">
-      <!--<a class="brand" href="index.html" >Stonehenge</a>-->
-      <div class="nav-collapse collapse">
-        <ul class="nav" data-bind="foreach: router.visibleRoutes">
-          <li data-bind="css: { active: isActive }">
-            <a data-bind="attr: { href: hash }, html: name"></a>
-          </li>
-        </ul>
-      </div><!--/.nav-collapse -->
-    </div>
+  <div class="navbar-inner" style="padding: 0;" >
+    <div class="brand" style="margin-left: 0;" >Stonehenge</div>
+      <ul class="nav" data-bind="foreach: router.visibleRoutes">
+        <li data-bind="css: { active: isActive }">
+          <a data-bind="attr: { href: hash }, html: name"></a>
+        </li>
+      </ul>
   </div>
 </div>
 

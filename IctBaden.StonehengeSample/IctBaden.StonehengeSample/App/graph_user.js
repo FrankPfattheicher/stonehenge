@@ -24,26 +24,27 @@
       }
       
       // setup plot
-      var options = {
-        yaxis: { min: 0, max: 100 },
-        xaxis: {
-          mode: "time",
-          timeformat: "%H:%M",
-          min: (new Date("1970/01/01 00:00")).getTime(),
-          max: (new Date("1970/01/01 23:59")).getTime()
-        },
-        colors: ["#F90", "#222", "#666", "#BBB"],
-        series: {
-          lines: {
-            lineWidth: 2,
-            fill: true,
-            fillColor: { colors: [{ opacity: 0.6 }, { opacity: 0.2}] },
-            steps: false
 
+      function optionsGraph() {
+        return {
+          yaxis: { min: 0, max: 100 },
+          xaxis: {
+            mode: "time",
+            timeformat: "%H:%M",
+            min: (new Date("1970/01/01 00:00")).getTime(),
+            max: (new Date("1970/01/01 23:59")).getTime()
+          },
+          colors: ["#F90", "#222", "#666", "#BBB"],
+          series: {
+            lines: {
+              lineWidth: 2,
+              fill: true,
+              fillColor: { colors: [{ opacity: 0.6 }, { opacity: 0.2 }] },
+              steps: false
+            }
           }
-        }
-      };
-
+        };
+      }
       //var plot = $.plot($("#graph"), [getRandomData()], options);
     //});
     
