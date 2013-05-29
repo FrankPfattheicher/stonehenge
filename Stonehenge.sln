@@ -15,16 +15,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{572CE674-DB53-42AE-B740-6C20C72703F6}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{572CE674-DB53-42AE-B740-6C20C72703F6}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{572CE674-DB53-42AE-B740-6C20C72703F6}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{572CE674-DB53-42AE-B740-6C20C72703F6}.Debug|x86.ActiveCfg = Debug|x86
-		{572CE674-DB53-42AE-B740-6C20C72703F6}.Debug|x86.Build.0 = Debug|x86
-		{572CE674-DB53-42AE-B740-6C20C72703F6}.Release|Any CPU.ActiveCfg = Release|x86
-		{572CE674-DB53-42AE-B740-6C20C72703F6}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{572CE674-DB53-42AE-B740-6C20C72703F6}.Release|Mixed Platforms.Build.0 = Release|x86
-		{572CE674-DB53-42AE-B740-6C20C72703F6}.Release|x86.ActiveCfg = Release|x86
-		{572CE674-DB53-42AE-B740-6C20C72703F6}.Release|x86.Build.0 = Release|x86
 		{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -35,6 +25,19 @@ Global
 		{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}.Release|x86.ActiveCfg = Release|Any CPU
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Debug|x86.ActiveCfg = Debug|x86
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Debug|x86.Build.0 = Debug|x86
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Release|Any CPU.ActiveCfg = Release|x86
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Release|Mixed Platforms.Build.0 = Release|x86
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Release|x86.ActiveCfg = Release|x86
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = IctBaden.StonehengeSample\IctBaden.StonehengeSample\IctBaden.StonehengeSample.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
