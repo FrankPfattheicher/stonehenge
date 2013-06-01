@@ -34,7 +34,16 @@ namespace IctBaden.Stonehenge.Services
       {
         foreach (var name in Events.Where(name => !values.ContainsKey(name)))
         {
-          values.Add(name, vm.TryGetMember(name));
+          if (name == "MessageBox")
+          {
+            var title = vm.MessageBoxTitle;
+            var text = vm.MessageBoxText;
+            values.Add("eval", string.Format("app.showMessage('{0}','{1}');", text, title));
+          }
+          else
+          {
+            values.Add(name, vm.TryGetMember(name));
+          }
         }
         Events.Clear();
       }

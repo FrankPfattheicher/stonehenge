@@ -72,7 +72,7 @@ namespace IctBaden.Stonehenge.Creators
       }
 
       // plots
-      XmlNodeList xmlNodeList = page.SelectNodes("//div[@class]");
+      var xmlNodeList = page.SelectNodes("//div[@class]");
       if (xmlNodeList != null)
       {
         foreach (XmlNode inputNode in xmlNodeList)
@@ -114,11 +114,14 @@ namespace IctBaden.Stonehenge.Creators
       { 
         lines.AppendLine("function " + eventFunction + "(self) {");
 
+        lines.AppendLine("var app = require('durandal/app');");
         lines.AppendLine("var ts = new Date().getTime();");
         lines.AppendLine("$.getJSON('/events/" + vmType.FullName + "?ts='+ts, function(data) {");
 
         lines.Append(assignSelf);
         lines.Append(plotSelf);
+
+        lines.AppendLine("if(data.eval != null) eval(data.eval);");
 
         lines.AppendLine("setTimeout(function(){" + eventFunction + "(self)}, 100);");
 

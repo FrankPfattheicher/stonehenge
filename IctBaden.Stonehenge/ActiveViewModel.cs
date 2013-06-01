@@ -33,7 +33,6 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Markup;
 using System.Windows.Threading;
-using ServiceStack.CacheAccess;
 
 namespace IctBaden.Stonehenge
 {
@@ -498,6 +497,21 @@ namespace IctBaden.Stonehenge
     }
 
     #endregion
+
+    #region MessageBox
+
+    public string MessageBoxTitle;
+    public string MessageBoxText;
+
+    public void MessageBox(string title, string text)
+    {
+      MessageBoxTitle = title;
+      MessageBoxText = text;
+      NotifyPropertyChanged("MessageBox");
+    }
+
+    #endregion
+
   }
 
 }

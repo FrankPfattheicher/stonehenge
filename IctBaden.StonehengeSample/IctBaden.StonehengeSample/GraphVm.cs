@@ -4,11 +4,11 @@ using IctBaden.Stonehenge;
 
 namespace IctBaden.StonehengeSample
 {
-	public class GraphVm : ActiveViewModel
+	public class GraphVm : ActiveViewModel, IDisposable
 	{
 		public const int Count = 180;
 		public GraphSeries[] GraphData { get; private set; }
-		private Timer timer;
+		private readonly Timer timer;
 		private int start;
 
 		public GraphVm(AppSession session) : base(session)
@@ -46,5 +46,12 @@ namespace IctBaden.StonehengeSample
 		    };
     }
 
+	  public void Dispose()
+	  {
+      if (timer != null)
+      {
+        timer.Dispose();
+      }
+	  }
 	}
 }

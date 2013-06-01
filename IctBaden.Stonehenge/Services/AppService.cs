@@ -53,24 +53,32 @@ namespace IctBaden.Stonehenge.Services
         var npc = value as INotifyPropertyChanged;
         if (npc != null)
         {
-          npc.PropertyChanged += OnPropertyChanged;
+          npc.PropertyChanged += (_, args) =>
+            {
+              lock (Events)
+              {
+                Events.Add(args.PropertyName);
+              }
+            };
         }
-      }
-    }
-
-    private void OnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-    {
-      lock (Events)
-      {
-        Events.Add(propertyChangedEventArgs.PropertyName);
       }
     }
 
     public object SetViewModelType(string typeName)
     {
       var vm = ViewModel;
-      if ((ViewModel != null) && (ViewModel.GetType().FullName == typeName)) 
-        return vm;
+      if (ViewModel != null)
+      {
+        if((ViewModel.GetType().FullName == typeName))
+          return vm;
+
+        var disposable = vm as IDisposable;
+        if (disposable != null)
+        {
+          disposable.Dispose();
+        }
+      } 
+        
 
       var asm = Assembly.GetEntryAssembly();
       var vmtype = asm.GetType(typeName);
