@@ -3,12 +3,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
-using System.Text;
-using IctBaden.Stonehenge.Services;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
 
-namespace IctBaden.Stonehenge
+namespace IctBaden.Stonehenge.Services
 {
   public class AppViewModelService : AppService
   {
@@ -22,7 +20,7 @@ namespace IctBaden.Stonehenge
       Debug.WriteLine("AppViewModelService: ~vm=" + ty.Name);
 
       var pi = ty.GetProperty(request.ViewModel);
-      if(pi != null)
+      if (pi != null)
       {
         if (request.Source != null)
           pi.SetValue(vm, request.Source, null);
@@ -42,23 +40,20 @@ namespace IctBaden.Stonehenge
 
       foreach (var prop in vm.GetType().GetProperties())
       {
-        var bindable = prop.GetCustomAttributes(typeof (BindableAttribute), true);
-        if ((bindable.Length > 0) && !((BindableAttribute) bindable[0]).Bindable)
+        var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
+        if ((bindable.Length > 0) && !((BindableAttribute)bindable[0]).Bindable)
           continue;
 
         var value = prop.GetValue(vm, null);
-        if(value == null)
+        if (value == null)
           continue;
-        
+
         values = "\"" + prop.Name + "\":" + JsonSerializer.SerializeToString(value);
         data.Add(values);
       }
-      //values = JsonSerializer.SerializeToString(vm);
-      //data.Add(values.Substring(1, values.Length - 2));
 
-      var result = new HttpResult("{" + string.Join(",", data) + "}", "application/json");
-      result.Headers.Add("Cache-Control", "no-cache");
-      return result;
+      var result = "{" + string.Join(",", data) + "}";
+      return new HttpResult(result, "application/json");
     }
 
     public object Post(AppViewModel request)
@@ -93,7 +88,7 @@ namespace IctBaden.Stonehenge
         else
         {
           var session = Session.Get<object>("~session") as AppSession;
-          mi.Invoke(vm, new object[]{ session });
+          mi.Invoke(vm, new object[] { session });
         }
       }
 
@@ -102,7 +97,7 @@ namespace IctBaden.Stonehenge
       {
         if (host.Redirect != null)
         {
-          var redirect = new HttpResult {StatusCode = HttpStatusCode.Redirect};
+          var redirect = new HttpResult { StatusCode = HttpStatusCode.Redirect };
           redirect.Headers.Add("Location", Request.Headers["Referer"] + "#/" + host.Redirect);
           host.Redirect = null;
           return redirect;
@@ -119,9 +114,11 @@ namespace IctBaden.Stonehenge
         var val = TypeSerializer.DeserializeFromString(newval, pi.PropertyType);
         pi.SetValue(vm, val, null);
       }
+      // ReSharper disable EmptyGeneralCatchClause
       catch
       {
       }
+      // ReSharper restore EmptyGeneralCatchClause
     }
   }
 }

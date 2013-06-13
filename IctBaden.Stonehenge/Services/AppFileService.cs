@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using IctBaden.Stonehenge.Creators;
 using ServiceStack.Common.Web;
+using ServiceStack.ServiceHost;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -55,7 +56,7 @@ namespace IctBaden.Stonehenge.Services
 
         if (text.StartsWith("//ViewModel:"))
         {
-          var end = text.IndexOf(@"\n");
+          var end = text.IndexOf(@"\n", System.StringComparison.InvariantCulture);
           var name = text.Substring(12, end - 12).Trim();
           
           SetViewModelType(name);
@@ -73,7 +74,7 @@ namespace IctBaden.Stonehenge.Services
         text = File.ReadAllText(vmPath);
         if (text.StartsWith(@"<!--ViewModel:"))
         {
-          var end = text.IndexOf(@"-->");
+          var end = text.IndexOf(@"-->", System.StringComparison.InvariantCulture);
           var vmName = text.Substring(14, end - 14).Trim();
           var vm = SetViewModelType(vmName);
 
@@ -109,6 +110,13 @@ namespace IctBaden.Stonehenge.Services
           break;
       }
 
+      var compressed = RequestContext.ToOptimizedResult(text);
+      var compressedResult = compressed as CompressedResult;
+      if (compressedResult != null)
+      {
+        compressedResult.ContentType = type;
+        return compressedResult;
+      }
       return new HttpResult(text, type);
     }
 

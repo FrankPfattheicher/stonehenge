@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using IctBaden.Stonehenge;
@@ -23,8 +24,12 @@ namespace IctBaden.StonehengeSample
         Debug.WriteLine("[{0}] Name={1}", Id, name);
       }
     }
+
     public bool CanSayHello
     { get { return !string.IsNullOrEmpty(Name); } }
+
+
+    public List<string> OptionValues { get; set; }
 
     public FormVm(AppSession session)
       : base(session)
@@ -32,8 +37,10 @@ namespace IctBaden.StonehengeSample
       nid++;
       Id = "ViewModel #" + nid;
       Name = "Frank";
+      OptionValues = new List<string>{"One", "Two", "Tree", "Four"};
+
       ClockTick(this);
-      timer = new Timer(ClockTick, this, 1000, 1000);
+      timer = new Timer(ClockTick, this, 5000, 5000);
     }
 
     private void ClockTick(object state)
