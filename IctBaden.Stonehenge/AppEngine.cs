@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 
 namespace IctBaden.Stonehenge
@@ -60,8 +61,10 @@ namespace IctBaden.Stonehenge
 
       
   		var cmd = Environment.OSVersion.Platform == PlatformID.Unix ? "chromium-browser" : "chrome.exe";
-      var path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
-  		var parameter = string.Format("--app=http://localhost:{0}/App/index.html?title={1} --app-window-size=800,600 --user-data-dir={2}", port, Title, path);
+      var path = Path.GetTempFileName();
+			File.Delete(path);
+	    var dir = Directory.CreateDirectory(path);
+			var parameter = string.Format("--app=http://localhost:{0}/App/index.html?title={1} --app-window-size=800,600 --user-data-dir=\"{2}\"", port, Title, path);
       var ui = Process.Start(cmd, parameter);
       if (ui == null)
       {
@@ -70,6 +73,7 @@ namespace IctBaden.Stonehenge
       }
       Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
       ui.WaitForExit();
+			dir.Delete(true);
     }
 
     private void OnNewSession(AppSession session)

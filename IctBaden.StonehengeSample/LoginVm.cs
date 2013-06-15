@@ -9,11 +9,24 @@ namespace IctBaden.StonehengeSample
     }
 
     public string User { get; set; }
-    public string Password { get; set; }
+		public string Password { get; set; }
+		public string Message { get; set; }
 
     public void Login(AppSession session)
     {
-      MessageBox("Login", "Willkommen " + User);
-    }
+			if (string.IsNullOrEmpty(User))
+			{
+				Message = "A user name is required.";
+				return;
+			}
+			if(Password != "stonehenge")
+			{
+				Message = "Login failed";
+				return;
+			}
+
+	    Message = string.Empty;
+			MessageBox("Login", "Willkommen " + User);
+		}
   }
 }
