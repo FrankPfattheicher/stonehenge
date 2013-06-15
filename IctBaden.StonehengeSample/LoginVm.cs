@@ -29,5 +29,12 @@ namespace IctBaden.StonehengeSample
 	    Message = string.Empty;
 			MessageBox("Login", "Willkommen " + User);
 		}
-  }
+
+		public void Logout(AppSession session)
+		{
+			User = string.Empty;
+			Password = string.Empty;
+			Message = string.Empty;
+		}
+	}
 }

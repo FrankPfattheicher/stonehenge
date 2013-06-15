@@ -25,11 +25,16 @@ namespace IctBaden.StonehengeSample
       }
     }
 
+		public void SayHello(AppSession session)
+		{
+			MessageBox("Demo", "Hello " + Name);	
+		}
     public bool CanSayHello
     { get { return !string.IsNullOrEmpty(Name); } }
 
 
     public List<string> OptionValues { get; set; }
+		public List<string> SelectedOptions { get; set; }
 
     public FormVm(AppSession session)
       : base(session)
@@ -38,6 +43,7 @@ namespace IctBaden.StonehengeSample
       Id = "ViewModel #" + nid;
       Name = "Frank";
       OptionValues = new List<string>{"One", "Two", "Tree", "Four"};
+			SelectedOptions = new List<string>{"Tree"};
 
       ClockTick(this);
       timer = new Timer(ClockTick, this, 1000, 1000);

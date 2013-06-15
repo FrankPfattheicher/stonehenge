@@ -5,10 +5,12 @@
   <label class="time" data-bind="text: Clock">???</label>
   <br />
   <label>Selection:</label>
-  <select size="1" data-bind="options: OptionValues, valueUpdate: 'selectionchanged'"></select>
+	<select size="1" data-bind="options: OptionValues, selectedOptions:SelectedOptions, event:{change: OnOptionChanged}" >
+</select>
+
   <br />
   <label data-bind="text: Prompt">Name:</label>
-  <input type="text" data-bind="value: Name, valueUpdate: 'afterkeydown'" />
-  <button type="submit" class="btn" data-bind="click: SayHello, enable: CanSayHello">Click Me</button>
+	<input type="text" data-bind="value: Name, valueUpdate: 'afterkeydown', event:{keyup: OnNameChanged}" />
+	<button type="submit" class="btn" data-bind="click: SayHello, enable: CanSayHello">Click Me</button>
 </fieldset>
 </form>

@@ -181,7 +181,7 @@ namespace IctBaden.Stonehenge.Creators
 
       // selection changes
       xmlNodeList = page.SelectNodes("//select[@data-bind]");
-      if (xmlNodeList != null)
+			//if (xmlNodeList != null)
       {
         foreach (XmlNode selectNode in xmlNodeList)
         {
@@ -215,6 +215,43 @@ namespace IctBaden.Stonehenge.Creators
           }
         }
       }
+
+			// input changes
+			xmlNodeList = page.SelectNodes("//input[@data-bind]");
+			//if (xmlNodeList != null)
+			{
+				foreach (XmlNode selectNode in xmlNodeList)
+				{
+					if (selectNode.Attributes == null)
+						continue;
+					var dataBind = selectNode.Attributes["data-bind"].Value
+						.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(bind => bind.Trim())
+						.FirstOrDefault(d => d.StartsWith("event"));
+					if (dataBind != null)
+					{
+						var eventBind = dataBind.Replace("event:", "").Replace("{", "").Replace("}", "").Trim()
+							.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(bind => bind.Trim())
+							.FirstOrDefault(d => d.StartsWith("keyup"));
+						if (eventBind != null)
+						{
+							var onchange = eventBind.Split(new[] { ':' })[1].Trim();
+
+							lines.AppendLine(onchange + ": function () {");
+							lines.AppendLine("var params = '';");
+							foreach (var propName in postbackPropNames)
+							{
+								lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent({0}())+'&';", propName));
+							}
+							lines.AppendLine(" $.post('/viewmodel/" + vmType.FullName + "/" + onchange + "', params, function (data) {");
+
+							lines.Append(assignThis);
+							lines.Append(plotThis);
+
+							lines.AppendLine("}); },");
+						}
+					}
+				}
+			}
 
 
       //lines.AppendLine("activate: function() {");
