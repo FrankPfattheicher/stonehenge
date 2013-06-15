@@ -2,13 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="IctBaden.Stonehenge\AppEngine.cs">
     <Files>
-      <File FileName="IctBaden.Stonehenge\AppEngine.cs" Line="66" Column="14" />
+      <File FileName="IctBaden.Stonehenge\AppEngine.cs" Line="79" Column="50" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="C:\Users\Frank\Documents\ICT Baden\git\stonehenge\IctBaden.Stonehenge\AppEngine.cs" line="67" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

@@ -61,8 +61,8 @@ namespace IctBaden.Stonehenge
 
       
   		var cmd = Environment.OSVersion.Platform == PlatformID.Unix ? "chromium-browser" : "chrome.exe";
-      var path = Path.GetTempFileName();
-			File.Delete(path);
+			var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+
 	    var dir = Directory.CreateDirectory(path);
 			var parameter = string.Format("--app=http://localhost:{0}/App/index.html?title={1} --app-window-size=800,600 --disable-translate --user-data-dir=\"{2}\"", port, Title, path);
       var ui = Process.Start(cmd, parameter);

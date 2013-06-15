@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using IctBaden.Stonehenge.Creators;
 using ServiceStack.Common.Web;
@@ -72,20 +73,40 @@ namespace IctBaden.Stonehenge.Services
         }
 
         text = File.ReadAllText(vmPath);
-        if (text.StartsWith(@"<!--ViewModel:"))
-        {
-          var end = text.IndexOf(@"-->", System.StringComparison.InvariantCulture);
-          var vmName = text.Substring(14, end - 14).Trim();
-          var vm = SetViewModelType(vmName);
 
-          text = ModuleCreator.CreateFromViewModel(text, vm);
+	      string vmName = null;
+	      if (text.StartsWith(@"<!--ViewModel:"))
+	      {
+		      var end = text.IndexOf(@"-->", System.StringComparison.InvariantCulture);
+		      vmName = text.Substring(14, end - 14).Trim();
+	      }
+	      else
+	      {
+					vmName = Path.GetFileName(Path.ChangeExtension(fullPath, string.Empty));
+					if (vmName != null)
+					{
+						vmName = vmName.Substring(0, 1).ToUpper() + vmName.Substring(1, vmName.Length - 2) + "Vm";
+						var assembly = System.Reflection.Assembly.GetEntryAssembly();
+						var vmType = assembly.GetTypes().FirstOrDefault(t => t.Name == vmName);
+						if (vmType != null)
+						{
+							vmName = vmType.FullName;
+						}
+					}
+				}
 
-          var userJsPath = fullPath.Replace(".js", "_user.js");
-          if (File.Exists(userJsPath))
-          {
-            text += File.ReadAllText(userJsPath);
-          }
-        }
+	      if (!string.IsNullOrEmpty(vmName))
+	      {
+		      var vm = SetViewModelType(vmName);
+
+		      text = ModuleCreator.CreateFromViewModel(text, vm);
+
+		      var userJsPath = fullPath.Replace(".js", "_user.js");
+		      if (File.Exists(userJsPath))
+		      {
+			      text += File.ReadAllText(userJsPath);
+		      }
+	      }
       }
 
       switch (path)
