@@ -11,8 +11,8 @@ namespace IctBaden.StonehengeSample
     static void Main()
     {
       App = new AppEngine("Stonehenge Sample", "about");
-      App.Run(false);
-      Thread.Sleep(TimeSpan.FromDays(1));
+      App.Run(true);
+      //Thread.Sleep(TimeSpan.FromDays(1));
     }
   }
 }

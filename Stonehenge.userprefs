@@ -1,16 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="IctBaden.Stonehenge\Services\AppEventService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="IctBaden.StonehengeSample\IctBaden.StonehengeSample\Program.cs">
     <Files>
       <File FileName="IctBaden.Stonehenge\AppHost.cs" Line="1" Column="1" />
-      <File FileName="IctBaden.StonehengeSample\IctBaden.StonehengeSample\Program.cs" Line="11" Column="18" />
-      <File FileName="IctBaden.StonehengeSample\IctBaden.StonehengeSample\App\login.html" Line="20" Column="1" />
-      <File FileName="IctBaden.Stonehenge\ActiveViewModel.cs" Line="248" Column="13" />
-      <File FileName="IctBaden.Stonehenge\Services\AppEventService.cs" Line="39" Column="15" />
+      <File FileName="IctBaden.StonehengeSample\IctBaden.StonehengeSample\Program.cs" Line="17" Column="4" />
+      <File FileName="IctBaden.StonehengeSample\IctBaden.StonehengeSample\App\login.html" Line="1" Column="1" />
+      <File FileName="IctBaden.Stonehenge\ActiveViewModel.cs" Line="1" Column="1" />
+      <File FileName="IctBaden.Stonehenge\Services\AppEventService.cs" Line="1" Column="1" />
+      <File FileName="IctBaden.Stonehenge\AppEngine.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="C:\Users\Frank\Documents\ICT Baden\git\stonehenge\IctBaden.Stonehenge\AppEngine.cs" line="65" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
