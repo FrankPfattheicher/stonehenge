@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using ServiceStack.Common.Web;
+using ServiceStack.Text;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -48,7 +50,17 @@ namespace IctBaden.Stonehenge.Services
         Events.Clear();
       }
 
-      return new HttpResult(values, "application/json");
+			if (!string.IsNullOrEmpty(RequestContext.CompressionType))
+			{
+				var compressed = new CompressedResult(Encoding.UTF8.GetBytes(JsonSerializer.SerializeToString(values)), RequestContext.CompressionType)
+				{
+					ContentType = "application/json"
+				};
+				var httpResult = new HttpResult(compressed.Contents, "application/json");
+				httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
+				return httpResult;
+			}
+			return new HttpResult(values, "application/json");
     }
   }
 }

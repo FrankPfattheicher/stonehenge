@@ -6,6 +6,7 @@ namespace IctBaden.StonehengeSample
   {
     public LoginVm(AppSession session) : base(session)
     {
+	    User = "Demo";
     }
 
     public string User { get; set; }
