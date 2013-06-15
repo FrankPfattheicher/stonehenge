@@ -40,7 +40,7 @@ namespace IctBaden.StonehengeSample
       OptionValues = new List<string>{"One", "Two", "Tree", "Four"};
 
       ClockTick(this);
-      timer = new Timer(ClockTick, this, 5000, 5000);
+      timer = new Timer(ClockTick, this, 1000, 1000);
     }
 
     private void ClockTick(object state)
