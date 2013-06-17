@@ -101,6 +101,7 @@ namespace IctBaden.Stonehenge
     public string colors { get; set; }
 
     public GraphSeriesOptions series { get; set; }
+    public GraphLegendOptions legend { get; set; }
 
     private static string ToJson(object option)
     {
@@ -118,7 +119,7 @@ namespace IctBaden.Stonehenge
         }
         else
         {
-          properties.Add(string.Format("{0}: {1}", '"' + property.Name + '"', value.ToString().Replace('\'', '"')));
+          properties.Add(string.Format("{0}: {1}", '"' + property.Name + '"', value.ToString()));
         }
       }
 
