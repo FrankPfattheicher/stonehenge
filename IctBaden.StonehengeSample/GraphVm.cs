@@ -1,42 +1,79 @@
 ﻿using System;
 using System.Threading;
 using IctBaden.Stonehenge;
+using ServiceStack.Text;
 
 namespace IctBaden.StonehengeSample
 {
-	public class GraphVm : ActiveViewModel, IDisposable
-	{
-		public const int Count = 180;
-		public GraphSeries[] GraphData { get; private set; }
-		private readonly Timer timer;
-		private int start;
+  public class GraphVm : ActiveViewModel, IDisposable
+  {
+    public const int Count = 180;
 
-		public GraphVm(AppSession session) : base(session)
-		{
-			timer = new Timer(UpdateGraph, this, 200, 200);
-			GenerateData();
-		}
+    public GraphSeries[] GraphData { get; private set; }
+    public GraphOptions GraphOptions { get; private set; }
 
-		private void UpdateGraph(object state)
-		{
-			GenerateData();
-			NotifyPropertyChanged("GraphData");
-		}
+    private readonly Timer timer;
+    private int start;
 
-		private void GenerateData()
-		{
-		  var points = new long[Count][];
+    private long GetEpoch(DateTime timeStamp)
+    {
+      return (long)(timeStamp - new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds * 1000;
+    }
+
+    public GraphVm(AppSession session)
+      : base(session)
+    {
+      timer = new Timer(UpdateGraph, this, 200, 200);
+      GenerateData();
+
+      GraphOptions = new GraphOptions
+        {
+          yaxis = new GraphAxisOptions
+            {
+              position = "'left'",
+              min = "0", 
+              max = "100"
+            },
+          xaxis = new GraphAxisOptions
+            {
+              mode = "'time'",
+              timeformat = "'%H:%M'",
+              min = GetEpoch(new DateTime(1970,1,1)).ToString(),
+              max = GetEpoch(new DateTime(1970, 1, 1, 23, 59, 0)).ToString()
+            },
+          colors = "['#F90', '#222', '#666', '#BBB']",
+          series = new GraphSeriesOptions
+          {
+            lines = new GraphLinesOptions
+            {
+              lineWidth = "2",
+              fill = "true",
+              fillColor = "{ 'colors': [{ 'opacity': 0.6 }, { 'opacity': 0.2 }] }"
+            }
+          },
+        };
+    }
+
+    private void UpdateGraph(object state)
+    {
+      GenerateData();
+      NotifyPropertyChanged("GraphData");
+    }
+
+    private void GenerateData()
+    {
+      var points = new long[Count][];
       var time = (long)(DateTime.Parse("1.1.1970") - DateTime.Parse("1.1.1970")).TotalMilliseconds;
-			for (var ix = 0; ix < Count; ix++)
-			{
+      for (var ix = 0; ix < Count; ix++)
+      {
         points[ix] = new long[2];
-				points[ix][0] = time;
-				points[ix][1] = (long)(Math.Sin((ix + start) * Math.PI / 36) * 40) + 50;
-				time += 360000;
-			}
-			start += 1;
+        points[ix][0] = time;
+        points[ix][1] = (long)(Math.Sin((ix + start) * Math.PI / 36) * 40) + 50;
+        time += 360000;
+      }
+      start += 1;
 
-		  GraphData = new GraphSeries[1]
+      GraphData = new GraphSeries[]
 		    {
 		      new GraphSeries
 		        {
@@ -46,12 +83,12 @@ namespace IctBaden.StonehengeSample
 		    };
     }
 
-	  public void Dispose()
-	  {
+    public void Dispose()
+    {
       if (timer != null)
       {
         timer.Dispose();
       }
-	  }
-	}
+    }
+  }
 }

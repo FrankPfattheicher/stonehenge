@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using IctBaden.Stonehenge;
+﻿using IctBaden.Stonehenge;
 
 namespace IctBaden.StonehengeSample
 {

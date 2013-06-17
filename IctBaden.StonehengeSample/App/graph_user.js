@@ -25,7 +25,7 @@
       
       // setup plot
 
-      function optionsGraph() {
+      function OldGraphOptions() {
         return {
           yaxis: { min: 0, max: 100 },
           xaxis: {

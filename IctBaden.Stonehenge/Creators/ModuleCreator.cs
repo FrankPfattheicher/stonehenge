@@ -86,10 +86,10 @@ namespace IctBaden.Stonehenge.Creators
             var propName = inputNode.Attributes["id"].Value;
 
             plotThis.AppendLine(string.Format("if(data.{0}Data)", propName));
-            plotThis.AppendLine(string.Format("$.plot($('#{0}'), {0}Data(), options{0}());", propName));
+            plotThis.AppendLine(string.Format("$.plot($('#{0}'), {0}Data(), {0}Options());", propName));
 
             plotSelf.AppendLine(string.Format("if(data.{0}Data)", propName));
-            plotSelf.AppendLine(string.Format("$.plot($('#{0}'), self.{0}Data(), options{0}());", propName));
+            plotSelf.AppendLine(string.Format("$.plot($('#{0}'), self.{0}Data(), self.{0}Options());", propName));
           }
         }
       }
@@ -181,7 +181,7 @@ namespace IctBaden.Stonehenge.Creators
 
       // selection changes
       xmlNodeList = page.SelectNodes("//select[@data-bind]");
-			//if (xmlNodeList != null)
+			if (xmlNodeList != null)
       {
         foreach (XmlNode selectNode in xmlNodeList)
         {
@@ -218,7 +218,7 @@ namespace IctBaden.Stonehenge.Creators
 
 			// input changes
 			xmlNodeList = page.SelectNodes("//input[@data-bind]");
-			//if (xmlNodeList != null)
+			if (xmlNodeList != null)
 			{
 				foreach (XmlNode selectNode in xmlNodeList)
 				{

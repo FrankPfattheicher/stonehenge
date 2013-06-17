@@ -49,7 +49,14 @@ namespace IctBaden.Stonehenge.Services
         if (value == null)
           continue;
 
-        values = "\"" + prop.Name + "\":" + JsonSerializer.SerializeToString(value);
+        if (prop.PropertyType.Name == "GraphOptions")
+        {
+          values = "\"" + prop.Name + "\":" + value;
+        }
+        else
+        {
+          values = "\"" + prop.Name + "\":" + JsonSerializer.SerializeToString(value);
+        }
         data.Add(values);
       }
 
