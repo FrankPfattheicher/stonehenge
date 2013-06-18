@@ -95,14 +95,22 @@ namespace IctBaden.Stonehenge.Services
         return null;
       }
 
-      if (typeof (ActiveViewModel).IsAssignableFrom(vmtype))
+      try
       {
-        var appSession = GetSession();
-        vm = Activator.CreateInstance(vmtype, new object[] { appSession });
+        if (typeof(ActiveViewModel).IsAssignableFrom(vmtype))
+        {
+          var appSession = GetSession();
+          vm = Activator.CreateInstance(vmtype, new object[] { appSession });
+        }
+        else
+        {
+          vm = Activator.CreateInstance(vmtype);
+        }
       }
-      else
+      catch (Exception ex)
       {
-        vm = Activator.CreateInstance(vmtype);
+        Debug.WriteLine(ex.Message);
+        vm = null;
       }
 
       ViewModel = vm;
