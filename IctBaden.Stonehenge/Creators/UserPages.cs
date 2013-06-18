@@ -35,7 +35,7 @@ namespace IctBaden.Stonehenge.Creators
 
           var pageText = File.ReadAllText(pageFile);
           var titleIndex = pageText.IndexOf("<!--Title:");
-          if (titleIndex > 0)
+          if (titleIndex >= 0)
           {
             titleIndex += 10;
             var endIndex = pageText.IndexOf("-->", titleIndex);

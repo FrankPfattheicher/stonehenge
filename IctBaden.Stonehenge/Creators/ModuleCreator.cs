@@ -13,7 +13,12 @@ namespace IctBaden.Stonehenge.Creators
     {
       if (viewModel == null)
       {
-        return html.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+        var dummy = new StringBuilder();
+        dummy.AppendLine("define(function (require) {");
+        dummy.AppendLine("return {");
+        dummy.AppendLine("};");
+        dummy.AppendLine("});");
+        return dummy.ToString();
       }
 
       var xhtml = html.Replace("&nbsp;", " ");
@@ -22,7 +27,6 @@ namespace IctBaden.Stonehenge.Creators
 
       var vmType = viewModel.GetType();
       var supportsEvents = typeof (ActiveViewModel).IsAssignableFrom(vmType);
-
       var eventFunction = string.Format("poll{0}Events", vmType.Name);
 
       // properties

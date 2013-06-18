@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -98,8 +99,7 @@ namespace IctBaden.Stonehenge.Services
 	      if (!string.IsNullOrEmpty(vmName))
 	      {
 		      var vm = SetViewModelType(vmName);
-
-		      text = ModuleCreator.CreateFromViewModel(text, vm);
+          text = ModuleCreator.CreateFromViewModel(text, vm);
 
 		      var userJsPath = fullPath.Replace(".js", "_user.js");
 		      if (File.Exists(userJsPath))

@@ -45,10 +45,16 @@ namespace IctBaden.Stonehenge.Services
       get { return Session.Get<object>("~vm"); }
       set
       {
-        if (value == null) 
-          return;
+        try
+        {
+          Session.Set("~vm", value);
+        }
+        // ReSharper disable EmptyGeneralCatchClause
+        catch (Exception)
+        {
+        }
+        // ReSharper restore EmptyGeneralCatchClause
 
-        Session.Set("~vm", value);
 
         var npc = value as INotifyPropertyChanged;
         if (npc != null)
@@ -84,6 +90,7 @@ namespace IctBaden.Stonehenge.Services
       var vmtype = asm.GetType(typeName);
       if (vmtype == null)
       {
+        ViewModel = null;
         Debug.WriteLine("Could not create ViewModel:" + typeName);
         return null;
       }
