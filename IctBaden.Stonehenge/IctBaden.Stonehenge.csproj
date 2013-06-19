@@ -70,6 +70,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionMethodAttribute.cs" />
     <Compile Include="ActiveModel.cs" />
     <Compile Include="ActiveViewModel.cs" />
     <Compile Include="AppEngine.cs" />
