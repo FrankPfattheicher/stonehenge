@@ -130,7 +130,8 @@ namespace IctBaden.Stonehenge.Services
     {
       try
       {
-        var val = TypeSerializer.DeserializeFromString(newval, pi.PropertyType);
+        //var val = TypeSerializer.DeserializeFromString(newval, pi.PropertyType);
+        var val = JsonSerializer.DeserializeFromString(newval, pi.PropertyType);
         pi.SetValue(vm, val, null);
       }
       // ReSharper disable EmptyGeneralCatchClause

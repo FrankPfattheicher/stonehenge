@@ -2,15 +2,54 @@
 <form class="form-inline" >
 <fieldset>
   <legend data-bind="text: Id">fieldset</legend>
-  <label class="time" data-bind="text: Clock">???</label>
-  <br />
-  <label>Selection:</label>
-	<select size="1" data-bind="options: OptionValues, selectedOptions:SelectedOptions, event:{change: OnOptionChanged}" >
-</select>
-
-  <br />
-  <label data-bind="text: Prompt">Name:</label>
-	<input type="text" data-bind="value: Name, valueUpdate: 'afterkeydown', event:{keyup: OnNameChanged}" />
-	<button type="submit" class="btn" data-bind="click: SayHello, enable: CanSayHello">Click Me</button>
+  
+  <table>
+    <tr>
+      <td>Clock:</td>
+      <td><span class="time" data-bind="text: Clock">00:00</span></td>
+    </tr>
+    <tr>
+      <td>Auto-Update:</td>
+      <td><input type="checkbox" data-bind="checked: AutoUpdate" />&nbsp;<button data-bind="click: OnAutoUpdateChanged">SET</button></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Selection:</td>
+      <td>
+        <select size="1" data-bind="options: OptionValues, selectedOptions:SelectedOptions, event:{change: OnOptionChanged}" />
+      </td>
+    </tr>
+    <tr>
+      <td>Byte:</td>
+      <td><span data-bind="text: ByteValue"></span></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <div class="uneditable-input" style="width: 200px; height: 100px; overflow-y: scroll; cursor: default; " >
+          <ul data-bind="foreach: BitValues" style="list-style-type: none; margin: 0; padding: 0; overflow-x: hidden;">
+            <li >
+              <label><input type="checkbox" data-bind="checked: Checked, valueUpdate: 'click', event: {click: $root.OnBitsChanged}" />&nbsp;<span data-bind="text: Title"></span></label>
+            </li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td><label data-bind="text: Prompt">Name:</label></td>
+      <td><input type="text" data-bind="value: Name, valueUpdate: 'afterkeydown', event:{keyup: OnNameChanged}" /></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><button type="submit" class="btn" data-bind="click: SayHello, enable: CanSayHello">Click Me</button></td>
+    </tr>
+  </table>
+  
+  
+	
+	
 </fieldset>
 </form>

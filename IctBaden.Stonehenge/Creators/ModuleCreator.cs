@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -139,7 +140,15 @@ namespace IctBaden.Stonehenge.Creators
 
       foreach (var propName in assignPropNames)
       {
-        lines.AppendLine(string.Format("var {0} = ko.observable();", propName));
+        //var property = vmProps.Find(p => p.Name == propName);
+        //if (property.PropertyType.IsGenericType && property.GetValue(viewModel) is IEnumerable)
+        //{
+        //  lines.AppendLine(string.Format("var {0} = ko.observableArray();", propName));
+        //}
+        //else
+        {
+          lines.AppendLine(string.Format("var {0} = ko.observable();", propName));
+        }
       }
 
       lines.AppendLine("return {");
@@ -167,7 +176,7 @@ namespace IctBaden.Stonehenge.Creators
             lines.AppendLine("var params = '';");
             foreach (var propName in postbackPropNames)
             {
-              lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent({0}())+'&';", propName));
+              lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent(JSON.stringify({0}()))+'&';", propName));
             }
 
             lines.AppendLine("var ts = new Date().getTime();");
@@ -207,7 +216,7 @@ namespace IctBaden.Stonehenge.Creators
               lines.AppendLine("var params = '';");
               foreach (var propName in postbackPropNames)
               {
-                lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent({0}())+'&';", propName));
+                lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent(JSON.stringify({0}()))+'&';", propName));
               }
               lines.AppendLine(" $.post('/viewmodel/" + vmType.FullName + "/" + onchange + "', params, function (data) {");
 
@@ -220,7 +229,7 @@ namespace IctBaden.Stonehenge.Creators
         }
       }
 
-			// input changes
+      // input changes
 			xmlNodeList = page.SelectNodes("//input[@data-bind]");
 			if (xmlNodeList != null)
 			{
@@ -230,21 +239,23 @@ namespace IctBaden.Stonehenge.Creators
 						continue;
 					var dataBind = selectNode.Attributes["data-bind"].Value
 						.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(bind => bind.Trim())
-						.FirstOrDefault(d => d.StartsWith("event"));
+						.FirstOrDefault(d => d.StartsWith("event:"));
 					if (dataBind != null)
 					{
 						var eventBind = dataBind.Replace("event:", "").Replace("{", "").Replace("}", "").Trim()
 							.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(bind => bind.Trim())
-							.FirstOrDefault(d => d.StartsWith("keyup"));
+              .FirstOrDefault(d => d.StartsWith("keyup:") || d.StartsWith("click:"));
 						if (eventBind != null)
 						{
-							var onchange = eventBind.Split(new[] { ':' })[1].Trim();
+							var onchange = eventBind.Split(new[] { ':' })[1].Trim().Replace("$root.", "");
+						  if (onchange.Contains("("))
+						    continue;
 
 							lines.AppendLine(onchange + ": function () {");
 							lines.AppendLine("var params = '';");
 							foreach (var propName in postbackPropNames)
 							{
-								lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent({0}())+'&';", propName));
+                lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent(JSON.stringify({0}()))+'&';", propName));
 							}
 							lines.AppendLine(" $.post('/viewmodel/" + vmType.FullName + "/" + onchange + "', params, function (data) {");
 
