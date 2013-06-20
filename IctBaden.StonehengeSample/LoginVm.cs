@@ -13,6 +13,7 @@ namespace IctBaden.StonehengeSample
 		public string Password { get; set; }
 		public string Message { get; set; }
 
+    [ActionMethod]
     public void Login(AppSession session)
     {
 			if (string.IsNullOrEmpty(User))
@@ -30,7 +31,8 @@ namespace IctBaden.StonehengeSample
 			MessageBox("Login", "Willkommen " + User);
 		}
 
-		public void Logout(AppSession session)
+    [ActionMethod]
+    public void Logout(AppSession session)
 		{
 			User = string.Empty;
 			Password = string.Empty;

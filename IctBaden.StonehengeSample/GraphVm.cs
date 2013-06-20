@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using IctBaden.Stonehenge;
-using ServiceStack.Text;
 
 namespace IctBaden.StonehengeSample
 {
@@ -15,7 +14,7 @@ namespace IctBaden.StonehengeSample
     private readonly Timer timer;
     private int start;
 
-    private long GetEpoch(DateTime timeStamp)
+    private static long GetEpoch(DateTime timeStamp)
     {
       return (long)(timeStamp - new DateTime(1970, 1, 1, 0, 0, 0)).TotalSeconds * 1000;
     }
@@ -30,25 +29,25 @@ namespace IctBaden.StonehengeSample
         {
           yaxis = new GraphAxisOptions
             {
-              position = "'left'",
+              position = "\"left\"",
               min = "0", 
               max = "100"
             },
           xaxis = new GraphAxisOptions
             {
-              mode = "'time'",
-              timeformat = "'%H:%M'",
+              mode = "\"time\"",
+              timeformat = "\"%H:%M\"",
               min = GetEpoch(new DateTime(1970,1,1)).ToString(),
               max = GetEpoch(new DateTime(1970, 1, 1, 23, 59, 0)).ToString()
             },
-          colors = "['#F90', '#222', '#666', '#BBB']",
+          colors = "[\"#F90\", \"#222\", \"#666\", \"#BBB\"]",
           series = new GraphSeriesOptions
           {
             lines = new GraphLinesOptions
             {
               lineWidth = "2",
               fill = "true",
-              fillColor = "{ 'colors': [{ 'opacity': 0.6 }, { 'opacity': 0.2 }] }"
+              fillColor = "{ \"colors\": [{ \"opacity\": 0.6 }, { \"opacity\": 0.2 }] }"
             }
           },
         };
@@ -73,7 +72,7 @@ namespace IctBaden.StonehengeSample
       }
       start += 1;
 
-      GraphData = new GraphSeries[]
+      GraphData = new[]
 		    {
 		      new GraphSeries
 		        {

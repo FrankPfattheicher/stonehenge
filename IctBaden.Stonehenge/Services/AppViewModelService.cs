@@ -138,13 +138,16 @@ namespace IctBaden.Stonehenge.Services
         if (activeVm != null)
         {
           var pi = activeVm.GetPropertyInfo(propName);
+          if ((pi == null) || !pi.CanWrite)
+            return;
+
           var val = JsonSerializer.DeserializeFromString(newval, pi.PropertyType);
           activeVm.TrySetMember(propName, val);
         }
         else
         {
           var pi = vm.GetType().GetProperty(propName);
-          if ((pi == null) && !pi.CanWrite)
+          if ((pi == null) || !pi.CanWrite)
             return;
 
           var val = JsonSerializer.DeserializeFromString(newval, pi.PropertyType);

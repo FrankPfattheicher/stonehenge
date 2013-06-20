@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -27,8 +26,6 @@ namespace IctBaden.Stonehenge.Creators
       page.LoadXml(xhtml);
 
       var vmType = viewModel.GetType();
-      var supportsEvents = typeof (ActiveViewModel).IsAssignableFrom(vmType);
-      var eventFunction = string.Format("poll{0}Events", vmType.Name);
 
       // properties
       var assignThis = new StringBuilder();
@@ -110,12 +107,14 @@ namespace IctBaden.Stonehenge.Creators
         postbackPropNames.Add(prop.Name);
       }
 
-      var lines = new StringBuilder();
 
+      var lines = new StringBuilder();
       lines.AppendLine("//ViewModel:" + vmType.FullName);
 
+      var supportsEvents = typeof(ActiveViewModel).IsAssignableFrom(vmType);
+      var eventFunction = string.Format("poll{0}Events", vmType.Name);
       if (supportsEvents)
-      { 
+      {
         lines.AppendLine("function " + eventFunction + "(self) {");
 
         lines.AppendLine("var app = require('durandal/app');");
@@ -139,15 +138,7 @@ namespace IctBaden.Stonehenge.Creators
 
       foreach (var propName in assignPropNames)
       {
-        //var property = vmProps.Find(p => p.Name == propName);
-        //if (property.PropertyType.IsGenericType && property.GetValue(viewModel) is IEnumerable)
-        //{
-        //  lines.AppendLine(string.Format("var {0} = ko.observableArray();", propName));
-        //}
-        //else
-        {
-          lines.AppendLine(string.Format("var {0} = ko.observable();", propName));
-        }
+        lines.AppendLine(string.Format("var {0} = ko.observable();", propName));
       }
 
       lines.AppendLine("return {");
@@ -157,6 +148,31 @@ namespace IctBaden.Stonehenge.Creators
         lines.AppendLine(string.Format("{0}: {0},", propName));
       }
 
+      // supply functions for action methods
+      foreach (var methodInfo in vmType.GetMethods())
+      {
+        if(!methodInfo.GetCustomAttributes(false).OfType<ActionMethodAttribute>().Any())
+          continue;
+
+        lines.AppendLine(methodInfo.Name + ": function () {");
+        lines.AppendLine("var params = '';");
+        foreach (var propName in postbackPropNames)
+        {
+          lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent(JSON.stringify({0}()))+'&';", propName));
+        }
+
+        lines.AppendLine("var ts = new Date().getTime();");
+        lines.AppendLine("$.post('/viewmodel/" + vmType.FullName + "/" + methodInfo.Name + "?ts='+ts, params, function (data) {");
+
+        //lines.AppendLine("debugger;");
+
+        lines.Append(assignThis);
+        lines.Append(plotThis);
+
+        lines.AppendLine("}); },");
+      }
+
+#if FALSE
       // button clicks
       xmlNodeList = page.SelectNodes("//button[@data-bind]");
       if (xmlNodeList != null)
@@ -266,7 +282,7 @@ namespace IctBaden.Stonehenge.Creators
 					}
 				}
 			}
-
+#endif
 
       //lines.AppendLine("activate: function() {");
       //lines.AppendLine("},");

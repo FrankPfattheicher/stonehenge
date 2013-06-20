@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -44,6 +45,10 @@ namespace IctBaden.Stonehenge.Services
           }
           else
           {
+            var pi = vm.GetPropertyInfo(name);
+            var bindable = pi.GetCustomAttributes(false).OfType<BindableAttribute>().ToArray();
+            if ((bindable.Length > 0) && !((BindableAttribute)bindable[0]).Bindable)
+              continue;
             values.Add(name, vm.TryGetMember(name));
           }
         }

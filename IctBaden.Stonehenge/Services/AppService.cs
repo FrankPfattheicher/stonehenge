@@ -45,6 +45,8 @@ namespace IctBaden.Stonehenge.Services
       get { return Session.Get<object>("~vm"); }
       set
       {
+        if (Request == null)
+          return;
         try
         {
           Session.Set("~vm", value);

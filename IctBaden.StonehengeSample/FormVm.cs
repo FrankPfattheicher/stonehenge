@@ -33,6 +33,7 @@ namespace IctBaden.StonehengeSample
       }
     }
 
+    [ActionMethod]
 		public void SayHello(AppSession session)
 		{
 			MessageBox("Demo", "Hello " + Name);	
@@ -94,6 +95,22 @@ namespace IctBaden.StonehengeSample
       this["Clock"] = DateTime.Now.ToLongTimeString();
     }
 
+    [ActionMethod]
+    public void OnOptionChanged()
+    {
+    }
+
+    [ActionMethod]
+    public void OnBitsChanged()
+    {
+    }
+
+    [ActionMethod]
+    public void OnNameChanged()
+    {
+    }
+
+    [ActionMethod]
     public void OnAutoUpdateChanged()
     {
       if (AutoUpdate && (timer == null))
