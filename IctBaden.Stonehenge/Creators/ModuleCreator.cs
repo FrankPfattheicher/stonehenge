@@ -51,16 +51,8 @@ namespace IctBaden.Stonehenge.Creators
       // ReSharper disable LoopCanBeConvertedToQuery
       foreach (var prop in vmProps)
       {
-        BindableAttribute bindable = null;
-        foreach (var attrib in prop.Attributes)
-        {
-          bindable = attrib as BindableAttribute;
-          if (attrib != null)
-          {
-            break;
-          }
-        }
-        if ((bindable != null) && !bindable.Bindable)
+        var bindable = prop.Attributes.OfType<BindableAttribute>().ToArray();
+        if ((bindable.Length > 0) && !((BindableAttribute)bindable[0]).Bindable)
           continue;
         assignPropNames.Add(prop.Name);
       }
@@ -101,15 +93,22 @@ namespace IctBaden.Stonehenge.Creators
 
       // do not send ReadOnly or OneWay bound properties back
       var postbackPropNames = new List<string>();
-      // ReSharper disable LoopCanBeConvertedToQuery
-      foreach (var prop in vmType.GetProperties().Where(pi => pi.CanWrite))
+      foreach (var propName in assignPropNames)
       {
+        var prop = vmType.GetProperty(propName);
+        if (prop == null)
+        {
+          if (activeVm == null)
+            continue;
+          prop = activeVm.GetPropertyInfo(propName);
+        }
+        if (!prop.CanWrite)
+          continue;
         var bindable = prop.GetCustomAttributes(typeof (BindableAttribute), true);
         if ((bindable.Length > 0) && ((BindableAttribute) bindable[0]).Direction == BindingDirection.OneWay)
           continue;
         postbackPropNames.Add(prop.Name);
       }
-      // ReSharper restore LoopCanBeConvertedToQuery
 
       var lines = new StringBuilder();
 

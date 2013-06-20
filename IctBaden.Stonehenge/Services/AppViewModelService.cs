@@ -29,36 +29,15 @@ namespace IctBaden.Stonehenge.Services
 
       var data = new List<string>();
       var activeVm = vm as ActiveViewModel;
-      string values;
       if (activeVm != null)
       {
         foreach (var model in activeVm.ActiveModels)
         {
-          values = JsonSerializer.SerializeToString(model.Model);
-          data.Add(values.Substring(1, values.Length - 2));
+          data.AddRange(SerializeObject(model.Model));
         }
       }
 
-      foreach (var prop in vm.GetType().GetProperties())
-      {
-        var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
-        if ((bindable.Length > 0) && !((BindableAttribute)bindable[0]).Bindable)
-          continue;
-
-        var value = prop.GetValue(vm, null);
-        if (value == null)
-          continue;
-
-        if (prop.PropertyType.Name == "GraphOptions")
-        {
-          values = "\"" + prop.Name + "\":" + value;
-        }
-        else
-        {
-          values = "\"" + prop.Name + "\":" + JsonSerializer.SerializeToString(value);
-        }
-        data.Add(values);
-      }
+      data.AddRange(SerializeObject(vm));
 
       var result = "{" + string.Join(",", data) + "}";
 
@@ -87,13 +66,8 @@ namespace IctBaden.Stonehenge.Services
 
         foreach (var query in Request.FormData.AllKeys)
         {
-          var pi = ty.GetProperty(query);
-          if ((pi == null) || !pi.CanWrite)
-            continue;
-
           var newval = Request.FormData[query];
-
-          SetPropertyValue(vm, pi, newval);
+          SetPropertyValue(vm, query, newval);
         }
       }
 
@@ -126,13 +100,56 @@ namespace IctBaden.Stonehenge.Services
       return Get(request);
     }
 
-    private static void SetPropertyValue(object vm, PropertyInfo pi, string newval)
+    private static List<string> SerializeObject(object obj)
+    {
+      var data = new List<string>();
+
+      foreach (var prop in obj.GetType().GetProperties())
+      {
+        var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
+        if ((bindable.Length > 0) && !((BindableAttribute)bindable[0]).Bindable)
+          continue;
+
+        var value = prop.GetValue(obj, null);
+        if (value == null)
+          continue;
+
+        string json;
+        if (prop.PropertyType.Name == "GraphOptions")
+        {
+          json = "\"" + prop.Name + "\":" + value;
+        }
+        else
+        {
+          json = "\"" + prop.Name + "\":" + JsonSerializer.SerializeToString(value);
+        }
+        data.Add(json);
+      }
+
+      return data;
+    }
+
+    private static void SetPropertyValue(object vm, string propName, string newval)
     {
       try
       {
-        //var val = TypeSerializer.DeserializeFromString(newval, pi.PropertyType);
-        var val = JsonSerializer.DeserializeFromString(newval, pi.PropertyType);
-        pi.SetValue(vm, val, null);
+
+        var activeVm = vm as ActiveViewModel;
+        if (activeVm != null)
+        {
+          var pi = activeVm.GetPropertyInfo(propName);
+          var val = JsonSerializer.DeserializeFromString(newval, pi.PropertyType);
+          activeVm.TrySetMember(propName, val);
+        }
+        else
+        {
+          var pi = vm.GetType().GetProperty(propName);
+          if ((pi == null) && !pi.CanWrite)
+            return;
+
+          var val = JsonSerializer.DeserializeFromString(newval, pi.PropertyType);
+          pi.SetValue(vm, val, null);
+        }
       }
       // ReSharper disable EmptyGeneralCatchClause
       catch

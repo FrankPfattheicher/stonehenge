@@ -264,7 +264,7 @@ namespace IctBaden.Stonehenge
       return names;
     }
 
-    private PropertyInfoEx GetPropertyInfo(string name)
+    private PropertyInfoEx GetPropertyInfoEx(string name)
     {
       var pi = GetType().GetProperty(name);
       if (pi != null)
@@ -287,10 +287,15 @@ namespace IctBaden.Stonehenge
       }
       return null;
     }
+    public PropertyInfo GetPropertyInfo(string name)
+    {
+      var infoEx = GetPropertyInfoEx(name);
+      return (infoEx == null) ? null : infoEx.Info;
+    }
 
     public override bool TryGetMember(GetMemberBinder binder, out object result)
     {
-      var pi = GetPropertyInfo(binder.Name);
+      var pi = GetPropertyInfoEx(binder.Name);
       if (pi != null)
       {
         var val = pi.Info.GetValue(pi.Obj, null);
@@ -302,7 +307,7 @@ namespace IctBaden.Stonehenge
 
     public override bool TrySetMember(SetMemberBinder binder, object value)
     {
-      var pi = GetPropertyInfo(binder.Name);
+      var pi = GetPropertyInfoEx(binder.Name);
       if (pi != null)
       {
         pi.Info.SetValue(pi.Obj, value, null);
