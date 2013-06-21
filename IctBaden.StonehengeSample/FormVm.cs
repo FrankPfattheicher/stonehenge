@@ -44,7 +44,8 @@ namespace IctBaden.StonehengeSample
 
     [Bindable(true, BindingDirection.OneWay)]
     public List<string> OptionValues { get; set; }
-		public List<string> SelectedOptions { get; set; }
+    public List<string> SelectedOptions { get; set; }
+    public string SelectedOption { get; set; }
 
     public class CheckedItem
     {
@@ -73,6 +74,7 @@ namespace IctBaden.StonehengeSample
       
       OptionValues = new List<string>{"One", "Two", "Tree", "Four"};
 			SelectedOptions = new List<string>{"Tree"};
+      SelectedOption = "Two";
 
       BitValues = new List<CheckedItem>
         {

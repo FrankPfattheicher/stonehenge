@@ -17,9 +17,25 @@
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>Selection:</td>
+      <td>Combo Selection:</td>
       <td>
         <select size="1" data-bind="options: OptionValues, selectedOptions: SelectedOptions, event:{change: OnOptionChanged}" />
+      </td>
+    </tr>
+    <tr>
+      <td>List Selection:</td>
+      <td>
+        <div class="uneditable-input" style="width: 200px; height: 50px; overflow-y: scroll; cursor: default; " >
+          <ul data-bind="foreach: OptionValues" style="list-style-type: none; margin: 0; padding: 0; overflow-x: hidden;">
+            <li >
+              <label data-selected="true" class="listbox-item" data-bind="text: $data">
+                <!--<input class="listbox-item" type="radio" name="sample" data-bind="value: $data, checked: $root.SelectedOption, valueUpdate: 'click', event: {click: $root.OnBitsChanged}" />-->
+                <!--<input type="radio" name="sample" data-bind="value: $data, checked: $root.SelectedOption" />-->
+                  <!--&nbsp;<span data-bind="text: $data"></span>-->
+              </label>
+            </li>
+          </ul>
+        </div>
       </td>
     </tr>
     <tr>
@@ -32,7 +48,10 @@
         <div class="uneditable-input" style="width: 200px; height: 100px; overflow-y: scroll; cursor: default; " >
           <ul data-bind="foreach: BitValues" style="list-style-type: none; margin: 0; padding: 0; overflow-x: hidden;">
             <li >
-              <label><input type="checkbox" data-bind="checked: Checked, valueUpdate: 'click', event: {click: $root.OnBitsChanged}" />&nbsp;<span data-bind="text: Title"></span></label>
+              <label>
+                <input type="checkbox" data-bind="checked: Checked, valueUpdate: 'click', event: {click: $root.OnBitsChanged}" />
+                &nbsp;<span data-bind="text: Title"></span>
+              </label>
             </li>
           </ul>
         </div>

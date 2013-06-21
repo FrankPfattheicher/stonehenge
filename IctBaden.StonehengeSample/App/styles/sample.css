@@ -9,3 +9,11 @@
   border-width: 1px; 
   border-color: lightgray;
 }
+
+.listbox-item {
+  color: black; 
+}
+
+.listbox-item:selected {
+  color: white; 
+}
