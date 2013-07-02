@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -75,7 +74,7 @@ namespace IctBaden.Stonehenge.Services
 
         text = File.ReadAllText(vmPath);
 
-	      string vmName = null;
+	      string vmName;
 	      if (text.StartsWith(@"<!--ViewModel:"))
 	      {
 		      var end = text.IndexOf(@"-->", System.StringComparison.InvariantCulture);

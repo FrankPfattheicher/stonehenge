@@ -7,6 +7,7 @@ namespace IctBaden.Stonehenge
   {
     internal ISession Session { get; set; }
     public string HostUrl { get; set; }
+    public string UserAgent { get; set; }
     public DateTime ConnectedSince { get; set; }
 
     public string SubDomain
@@ -17,14 +18,17 @@ namespace IctBaden.Stonehenge
           return string.Empty;
 
         var parts = HostUrl.Split(new[] { '.' });
-        return parts[0];
+        int val;
+        var isNumeric = int.TryParse(parts[0], out val);
+        return isNumeric ? HostUrl : parts[0];
       }
     }
 
-    internal AppSession(string hostUrl, ISession session)
+    internal AppSession(string hostUrl, string userAgent, ISession session)
     {
       var uri = new UriBuilder(hostUrl);
       HostUrl = uri.Host;
+      UserAgent = userAgent;
       Session = session;
       ConnectedSince = DateTime.Now;
     }
