@@ -1,14 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using System.Xml;
 
 namespace IctBaden.Stonehenge.Creators
 {
   public class ModuleCreator
   {
+    private static string clientViewModelTemplate;
+    private static string ClientViewModelTemplate
+    {
+      get
+      {
+        if (clientViewModelTemplate != null)
+          return clientViewModelTemplate;
+
+        const string resourceName = "IctBaden.Stonehenge.Creators.ClientViewModel.js";
+        var assembly = Assembly.GetExecutingAssembly();
+
+        using (var stream = assembly.GetManifestResourceStream(resourceName))
+        {
+          if (stream != null)
+          {
+            using (var reader = new StreamReader(stream))
+            {
+              clientViewModelTemplate = reader.ReadToEnd();
+            }
+          }
+        }
+
+        return clientViewModelTemplate;
+      }
+    }
+
+    private static readonly Dictionary<Type, string> ViewModels = new Dictionary<Type, string>();
+
     public static string CreateFromViewModel(object viewModel)
     {
       if (viewModel == null)
@@ -23,10 +52,12 @@ namespace IctBaden.Stonehenge.Creators
 
       var vmType = viewModel.GetType();
 
-      // properties
-      var assignSelf = new StringBuilder();
-      var plotSelf = new StringBuilder();
+      if (ViewModels.ContainsKey(vmType))
+      {
+        return ViewModels[vmType];
+      }
 
+      // properties
       var vmProps = new List<PropertyDescriptor>();
       var activeVm = viewModel as ActiveViewModel;
       if (activeVm != null)
@@ -38,29 +69,20 @@ namespace IctBaden.Stonehenge.Creators
         vmProps.AddRange(TypeDescriptor.GetProperties(viewModel, true).Cast<PropertyDescriptor>());
       }
 
-      var assignPropNames = new List<string>();
-      // ReSharper disable LoopCanBeConvertedToQuery
-      foreach (var prop in vmProps)
-      {
-        var bindable = prop.Attributes.OfType<BindableAttribute>().ToArray();
-        if ((bindable.Length > 0) && !((BindableAttribute)bindable[0]).Bindable)
-          continue;
-        assignPropNames.Add(prop.Name);
-      }
-      // ReSharper restore LoopCanBeConvertedToQuery
+      var assignPropNames = (from prop in vmProps let bindable = prop.Attributes.OfType<BindableAttribute>().ToArray() 
+                             where (bindable.Length <= 0) || bindable[0].Bindable select prop.Name).ToList();
 
-
+      var setData = new StringBuilder();
       foreach (var propName in assignPropNames)
       {
-        assignSelf.AppendLine(string.Format("if(data.{0} != null)", propName));
-        assignSelf.AppendLine(string.Format("self.{0}(data.{0});", propName));
+        setData.AppendLine(string.Format("if(data.{0} != null) self.{0}(data.{0});", propName));
       }
 
       // plots
-      foreach (var prop in vmProps.Where(p => (p.PropertyType == typeof (GraphSeries[]) && p.Name.EndsWith("Data"))))
+      foreach (var prop in vmProps.Where(p => (p.PropertyType == typeof(GraphSeries[]) && p.Name.EndsWith("Data"))))
       {
         var propName = prop.Name.Substring(0, prop.Name.Length - 4);  // remove "Data"
-        plotSelf.AppendLine(string.Format("if(data.{0}Data) $.plot($('#{0}'), self.{0}Data(), self.{0}Options());", propName));
+        setData.AppendLine(string.Format("if(data.{0}Data) $.plot($('#{0}'), self.{0}Data(), self.{0}Options());", propName));
       }
 
       // do not send ReadOnly or OneWay bound properties back
@@ -76,107 +98,48 @@ namespace IctBaden.Stonehenge.Creators
         }
         if (!prop.CanWrite)
           continue;
-        var bindable = prop.GetCustomAttributes(typeof (BindableAttribute), true);
-        if ((bindable.Length > 0) && ((BindableAttribute) bindable[0]).Direction == BindingDirection.OneWay)
+        var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
+        if ((bindable.Length > 0) && ((BindableAttribute)bindable[0]).Direction == BindingDirection.OneWay)
           continue;
         postbackPropNames.Add(prop.Name);
       }
 
-
-      var lines = new StringBuilder();
-      lines.AppendLine("//ViewModel:" + vmType.FullName);
-
-      var supportsEvents = typeof(ActiveViewModel).IsAssignableFrom(vmType);
-      var eventFunction = string.Format("poll{0}Events", vmType.Name);
-      if (supportsEvents)
+      var getData = new StringBuilder();
+      foreach (var propName in postbackPropNames)
       {
-        lines.AppendLine("function " + eventFunction + "(self) {");
-
-        lines.AppendLine("var app = require('durandal/app');");
-        lines.AppendLine("var ts = new Date().getTime();");
-        lines.AppendLine("$.getJSON('/events/" + vmType.FullName + "?ts='+ts, function(data) {");
-
-        lines.Append(assignSelf);
-        lines.Append(plotSelf);
-
-        lines.AppendLine("if(data.eval != null) eval(data.eval);");
-
-        lines.AppendLine("setTimeout(function(){" + eventFunction + "(self)}, 100);");
-
-        lines.AppendLine("});");
-
-        lines.AppendLine("}");
+        getData.AppendLine(string.Format("if(self.{0}() != null) params += '{0}=' + encodeURIComponent(JSON.stringify(self.{0}()))+'&';", propName));
       }
 
-
-      lines.AppendLine("define(function (require) {");
-
+      var declareData = new StringBuilder();
       foreach (var propName in assignPropNames)
       {
-        lines.AppendLine(string.Format("var {0} = ko.observable();", propName));
+        declareData.AppendLine(string.Format("var {0} = ko.observable();", propName));
       }
-
-      lines.AppendLine("return {");
-
+      var returnData = new StringBuilder();
       foreach (var propName in assignPropNames)
       {
-        lines.AppendLine(string.Format("{0}: {0},", propName));
+        returnData.AppendLine(string.Format("{0}: {0},", propName));
       }
 
       // supply functions for action methods
-      foreach (var methodInfo in vmType.GetMethods())
+      var actionMethods = new StringBuilder();
+      foreach (var methodInfo in vmType.GetMethods().Where(methodInfo => methodInfo.GetCustomAttributes(false).OfType<ActionMethodAttribute>().Any()))
       {
-        if(!methodInfo.GetCustomAttributes(false).OfType<ActionMethodAttribute>().Any())
-          continue;
-
-        lines.AppendLine(methodInfo.Name + ": function () {");
-        lines.AppendLine("var params = '';");
-        foreach (var propName in postbackPropNames)
-        {
-          lines.AppendLine(string.Format("if({0}() != null) params += '{0}=' + encodeURIComponent(JSON.stringify({0}()))+'&';", propName));
-        }
-
-        lines.AppendLine("var ts = new Date().getTime();");
-        lines.AppendLine("$.post('/viewmodel/" + vmType.FullName + "/" + methodInfo.Name + "?ts='+ts, params, function (data) {");
-
-        //lines.AppendLine("debugger;");
-
-        lines.Append(assignSelf);
-        lines.Append(plotSelf);
-
-        lines.AppendLine("}); },");
+        var method = "%method%: function () { post%ViewModelName%Data(self, '%method%'); },".Replace("%method%", methodInfo.Name);
+        actionMethods.AppendLine(method.Replace("%ViewModelName%", vmType.Name));
       }
 
-      //lines.AppendLine("activate: function() {");
-      //lines.AppendLine("},");
+      // create
+      var text = ClientViewModelTemplate.Replace("%ViewModelType%", vmType.FullName).Replace("%ViewModelName%", vmType.Name);
 
-      lines.AppendLine("viewAttached: function(view) {");
+      text = text.Replace("%SetData%", string.Join(Environment.NewLine, setData));
+      text = text.Replace("%GetData%", string.Join(Environment.NewLine, getData));
+      text = text.Replace("%DeclareData%", string.Join(Environment.NewLine, declareData));
+      text = text.Replace("%ReturnData%", string.Join(Environment.NewLine, returnData));
+      text = text.Replace("%ActionMethods%", string.Join(Environment.NewLine, actionMethods));
 
-      lines.AppendLine("self = this;");
-
-//lines.AppendLine("debugger;");
-
-      lines.AppendLine("var ts = new Date().getTime();");
-      lines.AppendLine("$.getJSON('/viewmodel/" + vmType.FullName + "?ts='+ts, function(data) {");
-
-      lines.Append(assignSelf);
-      lines.Append(plotSelf);
-
-      lines.AppendLine("});");
-
-
-      if (supportsEvents)
-      {
-        lines.AppendLine("setTimeout(function(){" + eventFunction + "(self)}, 100);");
-      }
-      lines.AppendLine("}");
-
-      lines.AppendLine("};");
-
-
-
-      lines.AppendLine("});");
-      return lines.ToString();
+      ViewModels.Add(vmType, text);
+      return text;
     }
-  }
+ }
 }

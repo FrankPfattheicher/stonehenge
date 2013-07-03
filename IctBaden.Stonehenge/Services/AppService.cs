@@ -83,7 +83,7 @@ namespace IctBaden.Stonehenge.Services
         var avm = vm as ActiveViewModel;
         if (avm != null)
         {
-          Events.Add(string.Empty);
+          //Events.Add(string.Empty);
         }
         var disposable = vm as IDisposable;
         if (disposable != null)
