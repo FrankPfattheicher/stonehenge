@@ -163,6 +163,7 @@
     <Content Include="Content\durandal.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Creators\ClientViewModel.js" />
     <Content Include="css\bootstrap-responsive.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

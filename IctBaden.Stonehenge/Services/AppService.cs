@@ -80,14 +80,19 @@ namespace IctBaden.Stonehenge.Services
         if((ViewModel.GetType().FullName == typeName))
           return vm;
 
+        var avm = vm as ActiveViewModel;
+        if (avm != null)
+        {
+          Events.Add(string.Empty);
+        }
         var disposable = vm as IDisposable;
         if (disposable != null)
         {
           disposable.Dispose();
         }
-      } 
-        
+      }
 
+      
       var asm = Assembly.GetEntryAssembly();
       var vmtype = asm.GetType(typeName);
       if (vmtype == null)
