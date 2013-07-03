@@ -16,11 +16,15 @@ namespace IctBaden.Stonehenge
     public string Path3 { get; set; }
     public string FileName { get; set; }
 
-    public string FullPath(string root)
+    public string BasePath(string root)
     {
       if (Path2 == "viewmodels")
         Path2 = string.Empty;
-      return Path.Combine(root, Path1, Path2, Path3, FileName);
+      return Path.Combine(root, Path1, Path2, Path3);
+    }
+    public string FullPath(string root)
+    {
+      return Path.Combine(BasePath(root), FileName);
     }
   }
 }

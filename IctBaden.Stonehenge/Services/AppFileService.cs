@@ -44,17 +44,15 @@ namespace IctBaden.Stonehenge.Services
         type = ContentType[ext];
       }
 
-      if (type.StartsWith("image") && File.Exists(fullPath))
+      if (type.StartsWith("image"))
       {
-        var data = File.ReadAllBytes(fullPath);
+        var data = ResourceLoader.LoadBinary(request.BasePath(RootPath), request.BasePath(""), request.FileName);
         return new HttpResult(data, type);
       }
 
-      string text;
-      if (File.Exists(fullPath))
+      var text = ResourceLoader.LoadText(request.BasePath(RootPath), request.BasePath(""), request.FileName);
+      if (!string.IsNullOrEmpty(text))
       {
-        text = File.ReadAllText(fullPath);
-
         if (text.StartsWith("//ViewModel:"))
         {
           var end = text.IndexOf(@"\n", System.StringComparison.InvariantCulture);
@@ -74,38 +72,38 @@ namespace IctBaden.Stonehenge.Services
 
         text = File.ReadAllText(vmPath);
 
-	      string vmName;
-	      if (text.StartsWith(@"<!--ViewModel:"))
-	      {
-		      var end = text.IndexOf(@"-->", System.StringComparison.InvariantCulture);
-		      vmName = text.Substring(14, end - 14).Trim();
-	      }
-	      else
-	      {
-					vmName = Path.GetFileName(Path.ChangeExtension(fullPath, string.Empty));
-					if (vmName != null)
-					{
-						vmName = vmName.Substring(0, 1).ToUpper() + vmName.Substring(1, vmName.Length - 2) + "Vm";
-						var assembly = System.Reflection.Assembly.GetEntryAssembly();
-						var vmType = assembly.GetTypes().FirstOrDefault(t => t.Name == vmName);
-						if (vmType != null)
-						{
-							vmName = vmType.FullName;
-						}
-					}
-				}
+        string vmName;
+        if (text.StartsWith(@"<!--ViewModel:"))
+        {
+          var end = text.IndexOf(@"-->", System.StringComparison.InvariantCulture);
+          vmName = text.Substring(14, end - 14).Trim();
+        }
+        else
+        {
+          vmName = Path.GetFileName(Path.ChangeExtension(fullPath, string.Empty));
+          if (vmName != null)
+          {
+            vmName = vmName.Substring(0, 1).ToUpper() + vmName.Substring(1, vmName.Length - 2) + "Vm";
+            var assembly = System.Reflection.Assembly.GetEntryAssembly();
+            var vmType = assembly.GetTypes().FirstOrDefault(t => t.Name == vmName);
+            if (vmType != null)
+            {
+              vmName = vmType.FullName;
+            }
+          }
+        }
 
-	      if (!string.IsNullOrEmpty(vmName))
-	      {
-		      var vm = SetViewModelType(vmName);
+        if (!string.IsNullOrEmpty(vmName))
+        {
+          var vm = SetViewModelType(vmName);
           text = ModuleCreator.CreateFromViewModel(vm);
 
-		      var userJsPath = fullPath.Replace(".js", "_user.js");
-		      if (File.Exists(userJsPath))
-		      {
-			      text += File.ReadAllText(userJsPath);
-		      }
-	      }
+          var userJsPath = fullPath.Replace(".js", "_user.js");
+          if (File.Exists(userJsPath))
+          {
+            text += File.ReadAllText(userJsPath);
+          }
+        }
       }
 
       switch (path)

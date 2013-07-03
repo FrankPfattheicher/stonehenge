@@ -89,244 +89,89 @@
     <Compile Include="Services\AppFile.cs" />
     <Compile Include="Creators\UserPages.cs" />
     <Compile Include="Creators\UserStyleSheets.cs" />
+    <Compile Include="Services\ResourceLoader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\durandal\amd\almond-custom.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\amd\optimizer.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\amd\r.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\amd\require.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\amd\text.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\app.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\composition.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\events.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\http.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\messageBox.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\messageBox.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\modalDialog.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\plugins\router.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\system.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\transitions\entrance.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\viewEngine.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\viewLocator.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\viewModel.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\viewModelBinder.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\durandal\widget.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\main.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\index.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App\shell.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\durandal.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="App\durandal\amd\almond-custom.js" />
+    <None Include="App\durandal\amd\optimizer.exe" />
+    <EmbeddedResource Include="App\durandal\amd\r.js" />
+    <EmbeddedResource Include="App\durandal\amd\require.js" />
+    <EmbeddedResource Include="App\durandal\amd\text.js" />
+    <EmbeddedResource Include="App\durandal\app.js" />
+    <EmbeddedResource Include="App\durandal\composition.js" />
+    <EmbeddedResource Include="App\durandal\events.js" />
+    <EmbeddedResource Include="App\durandal\http.js" />
+    <EmbeddedResource Include="App\durandal\messageBox.html" />
+    <EmbeddedResource Include="App\durandal\messageBox.js" />
+    <EmbeddedResource Include="App\durandal\modalDialog.js" />
+    <EmbeddedResource Include="App\durandal\plugins\router.js" />
+    <EmbeddedResource Include="App\durandal\system.js" />
+    <EmbeddedResource Include="App\durandal\transitions\entrance.js" />
+    <EmbeddedResource Include="App\durandal\viewEngine.js" />
+    <EmbeddedResource Include="App\durandal\viewLocator.js" />
+    <EmbeddedResource Include="App\durandal\viewModel.js" />
+    <EmbeddedResource Include="App\durandal\viewModelBinder.js" />
+    <EmbeddedResource Include="App\durandal\widget.js" />
+    <EmbeddedResource Include="App\main.js" />
+    <EmbeddedResource Include="App\index.html" />
+    <EmbeddedResource Include="App\shell.js" />
+    <EmbeddedResource Include="Content\durandal.css" />
     <EmbeddedResource Include="Creators\ClientViewModel.js" />
-    <Content Include="css\bootstrap-responsive.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="css\bootstrap-responsive.min.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="css\bootstrap.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="css\bootstrap.min.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="css\durandal.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="img\glyphicons-halflings-white.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="img\glyphicons-halflings.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\bootstrap.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\bootstrap.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\excanvas.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\excanvas.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.colorhelpers.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.colorhelpers.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.canvas.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.canvas.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.categories.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.categories.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.crosshair.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.crosshair.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.errorbars.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.errorbars.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.fillbetween.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.fillbetween.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.image.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.image.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.navigate.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.navigate.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.pie.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.pie.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.resize.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.resize.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.selection.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.selection.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.stack.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.stack.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.symbol.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.symbol.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.threshold.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.threshold.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.time.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.flot.time.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\flot\jquery.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="css\bootstrap-responsive.css" />
+    <EmbeddedResource Include="css\bootstrap-responsive.min.css" />
+    <EmbeddedResource Include="css\bootstrap.css" />
+    <EmbeddedResource Include="css\bootstrap.min.css" />
+    <EmbeddedResource Include="css\durandal.css" />
+    <EmbeddedResource Include="img\glyphicons-halflings-white.png" />
+    <EmbeddedResource Include="img\glyphicons-halflings.png" />
+    <EmbeddedResource Include="scripts\bootstrap.js" />
+    <EmbeddedResource Include="scripts\bootstrap.min.js" />
+    <EmbeddedResource Include="scripts\flot\excanvas.js" />
+    <EmbeddedResource Include="scripts\flot\excanvas.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.colorhelpers.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.colorhelpers.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.canvas.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.canvas.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.categories.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.categories.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.crosshair.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.crosshair.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.errorbars.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.errorbars.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.fillbetween.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.fillbetween.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.image.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.image.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.navigate.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.navigate.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.pie.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.pie.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.resize.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.resize.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.selection.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.selection.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.stack.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.stack.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.symbol.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.symbol.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.threshold.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.threshold.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.time.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.flot.time.min.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.js" />
+    <EmbeddedResource Include="scripts\flot\jquery.min.js" />
     <Content Include="scripts\flot\LICENSE.txt" />
-    <Content Include="scripts\html5shiv-printshiv.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\html5shiv.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\jquery-1.9.1-vsdoc.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\jquery-1.9.1.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\jquery-1.9.1.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\knockout-2.2.1.debug.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\knockout-2.2.1.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\sammy-0.7.4.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="scripts\sammy-0.7.4.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="scripts\html5shiv-printshiv.js" />
+    <EmbeddedResource Include="scripts\html5shiv.js" />
+    <EmbeddedResource Include="scripts\jquery-1.9.1-vsdoc.js" />
+    <EmbeddedResource Include="scripts\jquery-1.9.1.js" />
+    <EmbeddedResource Include="scripts\jquery-1.9.1.min.js" />
+    <EmbeddedResource Include="scripts\knockout-2.2.1.debug.js" />
+    <EmbeddedResource Include="scripts\knockout-2.2.1.js" />
+    <EmbeddedResource Include="scripts\sammy-0.7.4.min.js" />
+    <EmbeddedResource Include="scripts\sammy-0.7.4.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -337,9 +182,7 @@
     <None Include="scripts\flot\NEWS.md" />
     <None Include="scripts\flot\PLUGINS.md" />
     <None Include="scripts\flot\README.md" />
-    <None Include="scripts\jquery-1.9.1.min.map">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="scripts\jquery-1.9.1.min.map" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
