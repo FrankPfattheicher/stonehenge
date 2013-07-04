@@ -14,7 +14,7 @@ namespace IctBaden.Stonehenge.Services
     {
       var resourceName = BaseName + resourcePath.Replace('\\', '.') + "." + name;
 
-      if (Binaries.ContainsKey(resourceName))
+      if (Texts.ContainsKey(resourceName))
       {
         return Texts[resourceName];
       }
