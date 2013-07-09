@@ -162,6 +162,7 @@
     <EmbeddedResource Include="scripts\flot\jquery.flot.time.min.js" />
     <EmbeddedResource Include="scripts\flot\jquery.js" />
     <EmbeddedResource Include="scripts\flot\jquery.min.js" />
+    <EmbeddedResource Include="App\icon.png" />
     <Content Include="scripts\flot\LICENSE.txt" />
     <EmbeddedResource Include="scripts\html5shiv-printshiv.js" />
     <EmbeddedResource Include="scripts\html5shiv.js" />

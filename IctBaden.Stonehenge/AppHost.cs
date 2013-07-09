@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Web;
+using System.Diagnostics;
 using Funq;
-using IctBaden.Stonehenge.Services;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using ServiceStack.Common;
@@ -51,7 +50,13 @@ namespace IctBaden.Stonehenge
       Plugins.Add(new SessionFeature());
       container.Register<ICacheClient>(new MemoryCacheClient());
 
-      CatchAllHandlers.Add((httpMethod, pathInfo, filePath) => new RedirectHttpHandler(){RelativeUrl = "/App/index.html"});
+      CatchAllHandlers.Add((httpMethod, pathInfo, filePath) =>
+        {
+          Debug.WriteLine("CatchAllHandler({0}, {1}, {2})", httpMethod, pathInfo, filePath);
+          if (pathInfo != "/")
+            return new NotFoundHttpHandler();
+          return new RedirectHttpHandler {RelativeUrl = "/App/index.html#/" + StartPage};
+        });
 
       SetConfig(new EndpointHostConfig
       {

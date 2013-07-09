@@ -1,4 +1,6 @@
-﻿using IctBaden.Stonehenge;
+﻿using System;
+using System.Windows.Forms;
+using IctBaden.Stonehenge;
 
 namespace IctBaden.StonehengeSample
 {
@@ -9,7 +11,14 @@ namespace IctBaden.StonehengeSample
     static void Main()
     {
       App = new AppEngine("Stonehenge Sample", "about");
-      App.Run(true);
+
+      var asApp = Environment.CommandLine.ToUpper().Contains("/APP");
+      App.Run(asApp);
+
+      if (!asApp)
+      {
+        MessageBox.Show("Stonehenge Sample running...");
+      }
     }
   }
 }
