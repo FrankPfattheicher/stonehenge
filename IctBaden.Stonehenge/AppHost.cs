@@ -37,6 +37,8 @@ namespace IctBaden.Stonehenge
 
     public override void Configure(Container container)
     {
+      Config.AllowRouteContentTypeExtensions = false; // otherwise extensions are stripped out
+
       Routes.Add<AppFile>("/App/{FileName}")
             .Add<AppFile>("/App/{Path1}/{FileName}")
             .Add<AppFile>("/App/{Path1}/{Path2}/{FileName}")
@@ -45,7 +47,7 @@ namespace IctBaden.Stonehenge
       Routes.Add<AppViewModel>("/ViewModel/{ViewModel}")
             .Add<AppViewModel>("/ViewModel/{ViewModel}/{Source}");
 
-			Routes.Add<AppEvent>("/Events/{ViewModel}");
+      Routes.Add<AppEvent>("/Events/{ViewModel}");
 
       Plugins.Add(new SessionFeature());
       container.Register<ICacheClient>(new MemoryCacheClient());
@@ -55,13 +57,13 @@ namespace IctBaden.Stonehenge
           Debug.WriteLine("CatchAllHandler({0}, {1}, {2})", httpMethod, pathInfo, filePath);
           if (pathInfo != "/")
             return new NotFoundHttpHandler();
-          return new RedirectHttpHandler {RelativeUrl = "/App/index.html#/" + StartPage};
+          return new RedirectHttpHandler { RelativeUrl = "/App/index.html#/" + StartPage };
         });
 
       SetConfig(new EndpointHostConfig
       {
         EnableFeatures = Feature.All.Remove(Feature.Metadata)
-      }); 
+      });
     }
 
   }
