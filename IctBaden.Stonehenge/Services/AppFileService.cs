@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Net;
 using IctBaden.Stonehenge.Creators;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -31,6 +33,7 @@ namespace IctBaden.Stonehenge.Services
     public object Get(AppFile request)
     {
       GetSession();
+      Events.Add(string.Empty);
 
       var path = request.FullPath("");
       Debug.WriteLine("FileService:" + path);
@@ -127,6 +130,9 @@ namespace IctBaden.Stonehenge.Services
           }
           break;
       }
+
+      var userSession = Request.GetSession();
+      Request.SaveSession(userSession, TimeSpan.FromMinutes(10));
 
       var compressed = RequestContext.ToOptimizedResult(text);
       var compressedResult = compressed as CompressedResult;

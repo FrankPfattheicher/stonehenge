@@ -35,7 +35,7 @@ namespace IctBaden.Stonehenge.Services
       }
       lock (Events)
       {
-        foreach (var name in Events.Where(name => !values.ContainsKey(name)))
+        foreach (var name in Events.Where(name => !string.IsNullOrEmpty(name) && !values.ContainsKey(name)))
         {
           if (name == "MessageBox")
           {

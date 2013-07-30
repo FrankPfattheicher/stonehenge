@@ -6,6 +6,7 @@ using ServiceStack.CacheAccess.Providers;
 using ServiceStack.Common;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.WebHost.Endpoints;
 using ServiceStack.WebHost.Endpoints.Support;
 
@@ -51,6 +52,8 @@ namespace IctBaden.Stonehenge
 
       Plugins.Add(new SessionFeature());
       container.Register<ICacheClient>(new MemoryCacheClient());
+      var authRepository = new InMemoryAuthRepository();
+      container.Register<IUserAuthRepository>(authRepository);
 
       CatchAllHandlers.Add((httpMethod, pathInfo, filePath) =>
         {
