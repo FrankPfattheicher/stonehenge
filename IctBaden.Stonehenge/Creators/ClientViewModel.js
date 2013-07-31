@@ -13,8 +13,9 @@ function set%ViewModelName%Data(self, data) {
   self.InitialLoading(false);
   self.IsLoading(false);
 }
-function post%ViewModelName%Data(self, method) {
-  var params = '';
+function post%ViewModelName%Data(self, sender, method) {
+  //debugger;
+  var params = 'Sender=' + encodeURIComponent(sender.innerText) + "&";
   %GetData%
   var ts = new Date().getTime();
   self.IsLoading(true);

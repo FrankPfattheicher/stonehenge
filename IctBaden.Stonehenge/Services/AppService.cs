@@ -30,7 +30,15 @@ namespace IctBaden.Stonehenge.Services
     {
       get
       {
-        var events = Session.Get<object>("~ev") as List<string>;
+        List<string> events = null;
+        try
+        {
+          events = Session.Get<object>("~ev") as List<string>;
+        }
+        catch (Exception)
+        {
+          throw;
+        }
         if (events == null)
         {
           events = new List<string>();

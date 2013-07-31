@@ -125,7 +125,7 @@ namespace IctBaden.Stonehenge.Creators
       var actionMethods = new StringBuilder();
       foreach (var methodInfo in vmType.GetMethods().Where(methodInfo => methodInfo.GetCustomAttributes(false).OfType<ActionMethodAttribute>().Any()))
       {
-        var method = "%method%: function () { post%ViewModelName%Data(self, '%method%'); },".Replace("%method%", methodInfo.Name);
+        var method = "%method%: function (data, event) { post%ViewModelName%Data(self, event.currentTarget, '%method%'); },".Replace("%method%", methodInfo.Name);
         actionMethods.AppendLine(method.Replace("%ViewModelName%", vmType.Name));
       }
 
