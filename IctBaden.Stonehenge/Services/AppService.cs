@@ -11,10 +11,18 @@ namespace IctBaden.Stonehenge.Services
   {
     public AppSession GetSession()
     {
-      var session = Session.Get<object>("~session") as AppSession;
+      AppSession session = null;
+      try
+      {
+        session = Session.Get<object>("~session") as AppSession;
+      }
+      catch (Exception)
+      {
+        throw;
+      }
       if (session == null)
       {
-        session = new AppSession(Request.AbsoluteUri, Request.UserAgent, Session);
+        session = new AppSession(Request.QueryString.Get("hostdomain"), Request.AbsoluteUri, Request.UserAgent, Session);
         Session.Set("~session", session);
 
         var host = GetResolver() as AppHost;

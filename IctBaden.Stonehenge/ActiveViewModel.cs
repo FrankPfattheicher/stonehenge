@@ -179,7 +179,7 @@ namespace IctBaden.Stonehenge
 
     public ActiveViewModel(AppSession session)
     {
-      Session = session ?? new AppSession(null, null, null);
+      Session = session ?? new AppSession(null, null, null, null);
     }
 
     protected void SetParent(ActiveViewModel parent)

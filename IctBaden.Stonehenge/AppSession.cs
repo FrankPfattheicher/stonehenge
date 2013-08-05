@@ -6,7 +6,7 @@ namespace IctBaden.Stonehenge
   public class AppSession
   {
     internal ISession Session { get; set; }
-    public string HostUrl { get; set; }
+    public string HostDomain { get; set; }
     public string UserAgent { get; set; }
     public DateTime ConnectedSince { get; set; }
 
@@ -14,20 +14,20 @@ namespace IctBaden.Stonehenge
     {
       get
       {
-        if (string.IsNullOrEmpty(HostUrl))
+        if (string.IsNullOrEmpty(HostDomain))
           return string.Empty;
 
-        var parts = HostUrl.Split(new[] { '.' });
+        var parts = HostDomain.Split(new[] { '.' });
         int val;
         var isNumeric = int.TryParse(parts[0], out val);
-        return isNumeric ? HostUrl : parts[0];
+        return isNumeric ? HostDomain : parts[0];
       }
     }
 
-    internal AppSession(string hostUrl, string userAgent, ISession session)
+    internal AppSession(string hostDomain, string hostUrl, string userAgent, ISession session)
     {
       var uri = new UriBuilder(hostUrl);
-      HostUrl = uri.Host;
+      HostDomain = string.IsNullOrEmpty(hostDomain) ? uri.Host : hostDomain;
       UserAgent = userAgent;
       Session = session;
       ConnectedSince = DateTime.Now;

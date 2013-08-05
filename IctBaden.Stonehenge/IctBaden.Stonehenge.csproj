@@ -89,6 +89,7 @@
     <Compile Include="Creators\UserPages.cs" />
     <Compile Include="Creators\UserStyleSheets.cs" />
     <Compile Include="Services\ResourceLoader.cs" />
+    <Compile Include="Services\RootRedirectHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App\durandal\amd\almond-custom.js" />
@@ -166,10 +167,9 @@
     <EmbeddedResource Include="scripts\html5shiv-printshiv.js" />
     <EmbeddedResource Include="scripts\html5shiv.js" />
     <EmbeddedResource Include="scripts\jquery-1.9.1-vsdoc.js" />
-    <EmbeddedResource Include="scripts\jquery-1.9.1.js" />
-    <EmbeddedResource Include="scripts\jquery-1.9.1.min.js" />
-    <EmbeddedResource Include="scripts\knockout-2.2.1.debug.js" />
-    <EmbeddedResource Include="scripts\knockout-2.2.1.js" />
+    <EmbeddedResource Include="scripts\jquery-1.10.2.js" />
+    <EmbeddedResource Include="scripts\jquery-1.10.2.min.js" />
+    <EmbeddedResource Include="scripts\knockout-2.3.0.js" />
     <EmbeddedResource Include="scripts\sammy-0.7.4.min.js" />
     <EmbeddedResource Include="scripts\sammy-0.7.4.js" />
   </ItemGroup>
@@ -182,7 +182,7 @@
     <None Include="scripts\flot\NEWS.md" />
     <None Include="scripts\flot\PLUGINS.md" />
     <None Include="scripts\flot\README.md" />
-    <None Include="scripts\jquery-1.9.1.min.map" />
+    <None Include="scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

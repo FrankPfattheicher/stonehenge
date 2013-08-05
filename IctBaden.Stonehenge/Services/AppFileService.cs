@@ -58,7 +58,7 @@ namespace IctBaden.Stonehenge.Services
       {
         if (text.StartsWith("//ViewModel:"))
         {
-          var end = text.IndexOf(@"\n", System.StringComparison.InvariantCulture);
+          var end = text.IndexOf(@"\n", StringComparison.InvariantCulture);
           var name = text.Substring(12, end - 12).Trim();
           
           SetViewModelType(name);
@@ -78,7 +78,7 @@ namespace IctBaden.Stonehenge.Services
         string vmName;
         if (text.StartsWith(@"<!--ViewModel:"))
         {
-          var end = text.IndexOf(@"-->", System.StringComparison.InvariantCulture);
+          var end = text.IndexOf(@"-->", StringComparison.InvariantCulture);
           vmName = text.Substring(14, end - 14).Trim();
         }
         else

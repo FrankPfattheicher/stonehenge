@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Funq;
+using IctBaden.Stonehenge.Services;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using ServiceStack.Common;
@@ -60,7 +61,7 @@ namespace IctBaden.Stonehenge
           Debug.WriteLine("CatchAllHandler({0}, {1}, {2})", httpMethod, pathInfo, filePath);
           if (pathInfo != "/")
             return new NotFoundHttpHandler();
-          return new RedirectHttpHandler { RelativeUrl = "/App/index.html#/" + StartPage };
+          return new RootRedirectHandler { RelativeUrl = "/App/index.html#/" + StartPage };
         });
 
       SetConfig(new EndpointHostConfig
