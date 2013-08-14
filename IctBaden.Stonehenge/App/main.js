@@ -17,7 +17,7 @@ define(function (require) {
     //%PAGES%
 
     app.title = '%TITLE%';
-    app.adaptToDevice();
+    //app.adaptToDevice();
     app.setRoot('shell');
   });
 });

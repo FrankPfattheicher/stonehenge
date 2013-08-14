@@ -1388,6 +1388,7 @@ $.extend(Sammy.DefaultLocationProxy.prototype , {
       $_method = $form.find('input[name="_method"]');
       if ($_method.length > 0) { verb = $_method.val(); }
       if (!verb) { verb = $form[0].getAttribute('method'); }
+      if (!verb || verb === '') { verb = $form.attr('method'); }
       if (!verb || verb === '') { verb = 'get'; }
       return $.trim(verb.toString().toLowerCase());
     },

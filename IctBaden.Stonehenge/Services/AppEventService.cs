@@ -57,16 +57,28 @@ namespace IctBaden.Stonehenge.Services
         Events.Clear();
       }
 
-			if (!string.IsNullOrEmpty(RequestContext.CompressionType))
-			{
-				var compressed = new CompressedResult(Encoding.UTF8.GetBytes(JsonSerializer.SerializeToString(values)), RequestContext.CompressionType)
-				{
-					ContentType = "application/json"
-				};
-				var httpResult = new HttpResult(compressed.Contents, "application/json");
-				httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
-				return httpResult;
-			}
+      if (!string.IsNullOrEmpty(RequestContext.CompressionType))
+      {
+        var properties = new List<string>();
+        foreach (var value in values)
+        {
+          if (value.Value == null)
+            continue;
+          var txt = JsonSerializer.SerializeToString(value.Value);
+          if (txt.StartsWith("\"{") && txt.EndsWith("}\""))
+            txt = txt.Substring(1, txt.Length - 2).Replace("\\\"", "\"");
+          properties.Add('"' + value.Key + '"' + ": " + txt);
+        }
+        var data = "{" + string.Join(",", properties) + "}";
+
+        var compressed = new CompressedResult(Encoding.UTF8.GetBytes(data), RequestContext.CompressionType)
+        {
+          ContentType = "application/json"
+        };
+        var httpResult = new HttpResult(compressed.Contents, "application/json");
+        httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
+        return httpResult;
+      }
 			return new HttpResult(values, "application/json");
     }
   }
