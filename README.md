@@ -18,9 +18,12 @@ How It Works
 If your .NET WPF Application ist already using the MVVM pattern
 just throw away the XAML views and replace them by HTML views.
 
+The .NET framework part parsing XAML, do data binding is
+replaced by a proxy and stub transferring data and knockout for binding.
+
 Note: It's chatty - it's designed for local use.
 
-Current project state: Experimental
+Current project state: Working (Basic)
 
 ![Stonehenge](http://ict-baden.de/images/stonehenge.png)
 
@@ -30,17 +33,20 @@ Features
 --------
 * WPF like ViewModels
 * No JavaScript coding necessary
-
-Known Problems
---------------
-* IE (all versions)
+* All controls usable using knockout bindings
 
 TODO
 ----
-* localization
+* Widgets
+* More controls
+* Kiosk runner for more browsers
+* localization support
 
 Planned Improvements
 --------------------
 * Replace long running polls by modern communication
 	as soon as ServiceStack (and IE) supports it
 
+Known bugs
+----------
+* current version does not support IE8
