@@ -34,37 +34,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="ServiceStack, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack, Version=3.9.58.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.3.9.56\lib\net35\ServiceStack.dll</HintPath>
+      <HintPath>ServiceStack\ServiceStack.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Common, Version=3.9.58.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.56\lib\net35\ServiceStack.Common.dll</HintPath>
+      <HintPath>ServiceStack\ServiceStack.Common.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Interfaces, Version=3.9.58.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.56\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>ServiceStack\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite, Version=3.9.55.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.ServiceInterface, Version=3.9.58.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.55\lib\ServiceStack.OrmLite.dll</HintPath>
+      <HintPath>ServiceStack\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite.SqlServer, Version=3.9.55.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Text, Version=3.9.58.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.55\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Redis, Version=3.9.55.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Redis.3.9.55\lib\net35\ServiceStack.Redis.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.ServiceInterface, Version=3.9.56.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.3.9.56\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text, Version=3.9.55.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Text.3.9.55\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>ServiceStack\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -100,6 +88,15 @@
     <Compile Include="Services\RootRedirectHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ServiceStack\ServiceStack.Common.dll" />
+    <Content Include="ServiceStack\ServiceStack.Common.xml" />
+    <Content Include="ServiceStack\ServiceStack.dll" />
+    <Content Include="ServiceStack\ServiceStack.Interfaces.dll" />
+    <Content Include="ServiceStack\ServiceStack.Interfaces.xml" />
+    <Content Include="ServiceStack\ServiceStack.ServiceInterface.dll" />
+    <Content Include="ServiceStack\ServiceStack.Text.dll" />
+    <Content Include="ServiceStack\ServiceStack.Text.XML" />
+    <Content Include="ServiceStack\ServiceStack.xml" />
     <EmbeddedResource Include="App\durandal\amd\almond-custom.js" />
     <None Include="App\durandal\amd\optimizer.exe" />
     <EmbeddedResource Include="App\durandal\amd\r.js" />
@@ -182,7 +179,6 @@
     <EmbeddedResource Include="scripts\sammy-0.7.4.js" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="scripts\flot\API.md" />
     <None Include="scripts\flot\CONTRIBUTING.md" />
     <None Include="scripts\flot\FAQ.md" />
