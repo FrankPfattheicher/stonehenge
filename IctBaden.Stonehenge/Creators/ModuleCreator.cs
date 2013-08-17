@@ -75,14 +75,14 @@ namespace IctBaden.Stonehenge.Creators
       var setData = new StringBuilder();
       foreach (var propName in assignPropNames)
       {
-        setData.AppendLine(string.Format("if(data.{0} != null) self.{0}(data.{0});", propName));
+        setData.AppendLine(string.Format("if(data.{0} != null) viewmodel.{0}(data.{0});", propName));
       }
 
       // plots
       foreach (var prop in vmProps.Where(p => (p.PropertyType == typeof(GraphSeries[]) && p.Name.EndsWith("Data"))))
       {
         var propName = prop.Name.Substring(0, prop.Name.Length - 4);  // remove "Data"
-        setData.AppendLine(string.Format("if(data.{0}Data) $.plot($('#{0}'), self.{0}Data(), self.{0}Options());", propName));
+        setData.AppendLine(string.Format("if(data.{0}Data) $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options());", propName));
       }
 
       // do not send ReadOnly or OneWay bound properties back
@@ -107,7 +107,7 @@ namespace IctBaden.Stonehenge.Creators
       var getData = new StringBuilder();
       foreach (var propName in postbackPropNames)
       {
-        getData.AppendLine(string.Format("if(self.{0}() != null) params += '{0}=' + encodeURIComponent(JSON.stringify(self.{0}()))+'&';", propName));
+        getData.AppendLine(string.Format("if(viewmodel.{0}() != null) params += '{0}=' + encodeURIComponent(JSON.stringify(viewmodel.{0}()))+'&';", propName));
       }
 
       var declareData = new StringBuilder();
