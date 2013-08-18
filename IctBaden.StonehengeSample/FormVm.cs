@@ -19,8 +19,6 @@ namespace IctBaden.StonehengeSample
     [Bindable(true, BindingDirection.OneWay)]
     public string Clock { get; private set; }
 
-    public bool AutoUpdate { get; set; }
-
     [Bindable(true, BindingDirection.OneWay)]
     public string Prompt { get { return "What is your Name?"; } }
     public string Name
@@ -34,10 +32,10 @@ namespace IctBaden.StonehengeSample
     }
 
     [ActionMethod]
-		public void SayHello(AppSession session)
-		{
-			MessageBox("Demo", "Hello " + Name);	
-		}
+    public void SayHello(AppSession session)
+    {
+      MessageBox("Demo", "Hello " + Name);
+    }
     public bool CanSayHello
     { get { return !string.IsNullOrEmpty(Name); } }
 
@@ -47,12 +45,7 @@ namespace IctBaden.StonehengeSample
     public List<string> SelectedOptions { get; set; }
     public string SelectedOption { get; set; }
 
-    public class CheckedItem
-    {
-      public string Title { get; set; }
-      public bool Checked { get; set; }
-      public int Value { get; set; }
-    }
+    public CheckedItem AutoUpdate { get; set; }
 
     public List<CheckedItem> BitValues { get; set; }
 
@@ -71,10 +64,11 @@ namespace IctBaden.StonehengeSample
       nid++;
       Id = "ViewModel #" + nid;
       Name = "Frank";
-      
-      OptionValues = new List<string>{"One", "Two", "Tree", "Four"};
-			SelectedOptions = new List<string>{"Tree"};
+
+      OptionValues = new List<string> { "One", "Two", "Tree", "Four" };
+      SelectedOptions = new List<string> { "Tree" };
       SelectedOption = "Two";
+      AutoUpdate = new CheckedItem { Title = "clock display" };
 
       BitValues = new List<CheckedItem>
         {
@@ -89,7 +83,7 @@ namespace IctBaden.StonehengeSample
         };
 
       ClockTick(this);
-      
+
     }
 
     private void ClockTick(object state)
@@ -115,11 +109,11 @@ namespace IctBaden.StonehengeSample
     [ActionMethod]
     public void OnAutoUpdateChanged()
     {
-      if (AutoUpdate && (timer == null))
+      if (AutoUpdate.Checked && (timer == null))
       {
         timer = new Timer(ClockTick, this, 1000, 1000);
       }
-      else if (!AutoUpdate && (timer != null))
+      else if (!AutoUpdate.Checked && (timer != null))
       {
         timer.Dispose();
         timer = null;

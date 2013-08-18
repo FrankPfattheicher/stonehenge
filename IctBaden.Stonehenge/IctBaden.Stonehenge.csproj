@@ -69,6 +69,7 @@
     <Compile Include="ActiveModel.cs" />
     <Compile Include="ActiveViewModel.cs" />
     <Compile Include="AppEngine.cs" />
+    <Compile Include="CheckedItem.cs" />
     <Compile Include="GraphOptions.cs" />
     <Compile Include="GraphSeries.cs" />
     <Compile Include="Services\AppEvent.cs" />

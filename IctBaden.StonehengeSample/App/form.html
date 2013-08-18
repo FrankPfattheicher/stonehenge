@@ -10,7 +10,12 @@
     </tr>
     <tr>
       <td>Auto-Update:</td>
-      <td><input type="checkbox" data-bind="checked: AutoUpdate" />&nbsp;<button data-bind="click: OnAutoUpdateChanged">SET</button></td>
+      <td>
+        <label data-bind="with: AutoUpdate">
+          <input type="checkbox" data-bind="checked: Checked, valueUpdate: 'click', event:{click: $root.OnAutoUpdateChanged}" />  
+          &nbsp;<span data-bind="text: Title"></span>
+        </label>
+      </td>
     </tr>
     <tr>
       <td>&nbsp;</td>
