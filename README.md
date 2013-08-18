@@ -35,18 +35,21 @@ Features
 * No JavaScript coding necessary
 * All controls usable using knockout bindings
 
+Known bugs
+----------
+* none
+
 TODO
 ----
 * Widgets
 * More controls
 * Kiosk runner for more browsers
 * localization support
+* NUGET package
+* VisualStudio templates
 
 Planned Improvements
 --------------------
 * Replace long running polls by modern communication
 	as soon as ServiceStack (and IE) supports it
 
-Known bugs
-----------
-* current version does not support IE8

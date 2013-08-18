@@ -12,23 +12,25 @@ namespace IctBaden.Stonehenge.Services
     public AppSession GetSession()
     {
       AppSession session = null;
-      try
-      {
-        session = Session.Get<object>("~session") as AppSession;
-      }
-      catch (Exception)
-      {
-        throw;
-      }
-      if (session == null)
-      {
-        session = new AppSession(Request.QueryString.Get("hostdomain"), Request.AbsoluteUri, Request.UserAgent, Session);
-        Session.Set("~session", session);
-
-        var host = GetResolver() as AppHost;
-        if (host != null)
+      lock (Session)
+      { 
+        try
         {
-          host.OnNewSession(session);
+          session = Session.Get<object>("~session") as AppSession;
+        }
+        catch
+        {
+        }
+        if (session == null)
+        {
+          session = new AppSession(Request.QueryString.Get("hostdomain"), Request.AbsoluteUri, Request.UserAgent, Session);
+          Session.Set("~session", session);
+
+          var host = GetResolver() as AppHost;
+          if (host != null)
+          {
+            host.OnNewSession(session);
+          }
         }
       }
       return session;
@@ -39,20 +41,30 @@ namespace IctBaden.Stonehenge.Services
       get
       {
         List<string> events = null;
-        try
-        {
-          events = Session.Get<object>("~ev") as List<string>;
-        }
-        catch (Exception)
-        {
-          throw;
-        }
-        if (events == null)
-        {
-          events = new List<string>();
-          Session.Set("~ev", events);
+        lock (Session)
+        { 
+          try
+          {
+            events = Session.Get<object>("~ev") as List<string>;
+          }
+          catch
+          {
+          }
+          if (events == null)
+          {
+            events = new List<string>();
+            Session.Set("~ev", events);
+          }
         }
         return events;
+      }
+    }
+
+    public void AddEvent(string name)
+    {
+      lock (Events)
+      {
+        Events.Add(name);
       }
     }
 
@@ -81,7 +93,7 @@ namespace IctBaden.Stonehenge.Services
             {
               lock (Events)
               {
-                Events.Add(args.PropertyName);
+                AddEvent(args.PropertyName);
               }
             };
         }
@@ -99,7 +111,7 @@ namespace IctBaden.Stonehenge.Services
         var avm = vm as ActiveViewModel;
         if (avm != null)
         {
-          Events.Add(string.Empty);
+          AddEvent(string.Empty);
         }
         var disposable = vm as IDisposable;
         if (disposable != null)
