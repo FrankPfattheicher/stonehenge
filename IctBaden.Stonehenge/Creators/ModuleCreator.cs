@@ -82,7 +82,7 @@ namespace IctBaden.Stonehenge.Creators
       foreach (var prop in vmProps.Where(p => (p.PropertyType == typeof(GraphSeries[]) && p.Name.EndsWith("Data"))))
       {
         var propName = prop.Name.Substring(0, prop.Name.Length - 4);  // remove "Data"
-        setData.AppendLine(string.Format("if(data.{0}Data) $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options());", propName));
+        setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }}", propName));
       }
 
       // do not send ReadOnly or OneWay bound properties back
