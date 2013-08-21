@@ -30,8 +30,7 @@ namespace IctBaden.Stonehenge.Services
       var vm = ViewModel as ActiveViewModel;
       if ((vm == null) || (vm.GetType().FullName != request.ViewModel))
       {
-        Response.Close();
-        return null;
+        return new HttpResult("{}", "application/json");
       }
       lock (Events)
       {

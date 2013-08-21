@@ -4,8 +4,10 @@ function poll%ViewModelName%Events(viewmodel) {
   var app = require('durandal/app');
   var ts = new Date().getTime();
   $.getJSON('/events/%ViewModelType%?ts=' + ts, function (data) {
-    set%ViewModelName%Data(viewmodel, false, data);
-    if (data.eval != null) eval(data.eval);
+    if (data != null) {
+      set%ViewModelName%Data(viewmodel, false, data);
+      if(data.eval != null) eval(data.eval); 
+    }
     setTimeout(function () { poll%ViewModelName%Events(viewmodel); }, 100);
   });
 }

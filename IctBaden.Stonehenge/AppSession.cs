@@ -9,6 +9,8 @@ namespace IctBaden.Stonehenge
     public string HostDomain { get; set; }
     public string UserAgent { get; set; }
     public DateTime ConnectedSince { get; set; }
+    public long Id { get; set; }
+    private static long nextId;
 
     public string SubDomain
     {
@@ -31,11 +33,12 @@ namespace IctBaden.Stonehenge
       UserAgent = userAgent;
       Session = session;
       ConnectedSince = DateTime.Now;
+      Id = ++nextId;
     }
 
     public override string ToString()
     {
-      return SubDomain;
+      return string.Format("[{0}] {1}", Id, SubDomain);
     }
 
     public void Set<T>(string key, T value)
