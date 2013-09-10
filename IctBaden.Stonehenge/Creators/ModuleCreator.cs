@@ -83,6 +83,7 @@ namespace IctBaden.Stonehenge.Creators
       {
         var propName = prop.Name.Substring(0, prop.Name.Length - 4);  // remove "Data"
         setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }}", propName));
+        setData.AppendLine(string.Format("$('#{0}').resize(function() {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }});", propName));
       }
 
       // do not send ReadOnly or OneWay bound properties back
