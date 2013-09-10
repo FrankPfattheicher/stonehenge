@@ -69,6 +69,25 @@ namespace IctBaden.Stonehenge
     }
   }
 
+  public class GraphGridOptions
+  {
+    public string show { get; set; }
+    public string aboveData { get; set; }
+    public string color  { get; set; }
+    public string backgroundColor  { get; set; }
+    public string margin  { get; set; }
+    public string labelMargin  { get; set; }
+    public string axisMargin  { get; set; }
+    public string markings  { get; set; }
+    public string borderWidth  { get; set; }
+    public string borderColor  { get; set; }
+    public string minBorderMargin  { get; set; }
+    public string clickable  { get; set; }
+    public string hoverable  { get; set; }
+    public string autoHighlight  { get; set; }
+    public string mouseActiveRadius { get; set; }
+  }
+
   public class GraphSeriesOptions
   {
     public GraphLinesOptions lines { get; set; }
@@ -100,6 +119,7 @@ namespace IctBaden.Stonehenge
 
     public string colors { get; set; }
 
+    public GraphGridOptions grid { get; set; }
     public GraphSeriesOptions series { get; set; }
     public GraphLegendOptions legend { get; set; }
 
@@ -137,5 +157,5 @@ namespace IctBaden.Stonehenge
     }
   }
 
-    // ReSharper restore InconsistentNaming
+  // ReSharper restore InconsistentNaming
 }
