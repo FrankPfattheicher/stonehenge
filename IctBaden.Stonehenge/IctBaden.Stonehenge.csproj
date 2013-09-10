@@ -89,6 +89,8 @@
     <Compile Include="Services\RootRedirectHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="css\bootstrap-theme.css" />
+    <EmbeddedResource Include="css\bootstrap-theme.min.css" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />
@@ -123,8 +125,6 @@
     <EmbeddedResource Include="App\shell.js" />
     <EmbeddedResource Include="Content\durandal.css" />
     <EmbeddedResource Include="Creators\ClientViewModel.js" />
-    <EmbeddedResource Include="css\bootstrap-responsive.css" />
-    <EmbeddedResource Include="css\bootstrap-responsive.min.css" />
     <EmbeddedResource Include="css\bootstrap.css" />
     <EmbeddedResource Include="css\bootstrap.min.css" />
     <EmbeddedResource Include="css\durandal.css" />
