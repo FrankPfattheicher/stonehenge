@@ -91,6 +91,7 @@
   <ItemGroup>
     <EmbeddedResource Include="css\bootstrap-theme.css" />
     <EmbeddedResource Include="css\bootstrap-theme.min.css" />
+    <EmbeddedResource Include="scripts\respond.min.js" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />
