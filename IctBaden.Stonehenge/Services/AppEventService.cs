@@ -34,13 +34,19 @@ namespace IctBaden.Stonehenge.Services
       }
       lock (Events)
       {
+        //if ((Events.Count > 0) && (Events.Last() == null))
+        //{
+        //  Events.Clear();
+        //  return new HttpResult("{}", "application/json");
+        //}
+        values.Add("stonehenge_poll", 1);
         foreach (var name in Events.Where(name => !string.IsNullOrEmpty(name) && !values.ContainsKey(name)))
         {
           if (name == "MessageBox")
           {
             var title = vm.MessageBoxTitle;
             var text = vm.MessageBoxText;
-            values.Add("eval", string.Format("app.showMessage('{0}','{1}');", text, title));
+            values.Add("stonehenge_eval", string.Format("app.showMessage('{0}','{1}');", text, title));
           }
           else
           {

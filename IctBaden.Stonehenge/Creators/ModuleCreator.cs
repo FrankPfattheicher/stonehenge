@@ -126,18 +126,18 @@ namespace IctBaden.Stonehenge.Creators
       var actionMethods = new StringBuilder();
       foreach (var methodInfo in vmType.GetMethods().Where(methodInfo => methodInfo.GetCustomAttributes(false).OfType<ActionMethodAttribute>().Any()))
       {
-        var method = "%method%: function (data, event) { post%ViewModelName%Data(self, event.currentTarget, '%method%'); },".Replace("%method%", methodInfo.Name);
-        actionMethods.AppendLine(method.Replace("%ViewModelName%", vmType.Name));
+        var method = "%method%: function (data, event) { post_ViewModelName_Data(self, event.currentTarget, '%method%'); },".Replace("%method%", methodInfo.Name);
+        actionMethods.AppendLine(method.Replace("_ViewModelName_", vmType.Name));
       }
 
       // create
-      var text = ClientViewModelTemplate.Replace("%ViewModelType%", vmType.FullName).Replace("%ViewModelName%", vmType.Name);
+      var text = ClientViewModelTemplate.Replace("_ViewModelType_", vmType.FullName).Replace("_ViewModelName_", vmType.Name);
 
-      text = text.Replace("%SetData%", string.Join(Environment.NewLine, setData));
-      text = text.Replace("%GetData%", string.Join(Environment.NewLine, getData));
-      text = text.Replace("%DeclareData%", string.Join(Environment.NewLine, declareData));
-      text = text.Replace("%ReturnData%", string.Join(Environment.NewLine, returnData));
-      text = text.Replace("%ActionMethods%", string.Join(Environment.NewLine, actionMethods));
+      text = text.Replace("_SetData_();", string.Join(Environment.NewLine, setData));
+      text = text.Replace("_GetData_();", string.Join(Environment.NewLine, getData));
+      text = text.Replace("_DeclareData_();", string.Join(Environment.NewLine, declareData));
+      text = text.Replace("_ReturnData_ : 0,", string.Join(Environment.NewLine, returnData));
+      text = text.Replace("_ActionMethods_ : 0,", string.Join(Environment.NewLine, actionMethods));
 
       ViewModels.Add(vmType, text);
       return text;
