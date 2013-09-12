@@ -62,7 +62,7 @@ namespace IctBaden.StonehengeSample
       : base(session)
     {
       nid++;
-      Id = "ViewModel #" + nid;
+      Id = "Form (Instance #" + nid + ")";
       Name = "Frank";
 
       OptionValues = new List<string> { "One", "Two", "Tree", "Four" };
