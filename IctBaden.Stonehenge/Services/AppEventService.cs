@@ -54,7 +54,7 @@ namespace IctBaden.Stonehenge.Services
 	          if (pi == null)
 		          continue;
             var bindable = pi.GetCustomAttributes(false).OfType<BindableAttribute>().ToArray();
-            if ((bindable.Length > 0) && !((BindableAttribute)bindable[0]).Bindable)
+            if ((bindable.Length > 0) && !bindable[0].Bindable)
               continue;
             values.Add(name, vm.TryGetMember(name));
           }

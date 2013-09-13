@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using IctBaden.Stonehenge.Creators;
 using ServiceStack.Common.Web;
-using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 
 namespace IctBaden.Stonehenge.Services
@@ -134,14 +134,13 @@ namespace IctBaden.Stonehenge.Services
       var userSession = Request.GetSession();
       Request.SaveSession(userSession, TimeSpan.FromMinutes(10));
 
-      var compressed = RequestContext.ToOptimizedResult(text);
-      var compressedResult = compressed as CompressedResult;
-      if (compressedResult != null)
-      {
-        compressedResult.ContentType = type;
-        return compressedResult;
-      }
-      return new HttpResult(text, type);
+      if (string.IsNullOrEmpty(RequestContext.CompressionType)) 
+        return new HttpResult(text, type);
+
+      var compressed = new CompressedResult(Encoding.UTF8.GetBytes(text), RequestContext.CompressionType) { ContentType = type };
+      var httpResult = new HttpResult(compressed.Contents, type);
+      httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
+      return httpResult;
     }
 
     public object Post(AppFile request)
