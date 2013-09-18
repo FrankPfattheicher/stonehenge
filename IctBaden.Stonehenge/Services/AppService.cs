@@ -60,7 +60,16 @@ namespace IctBaden.Stonehenge.Services
       }
     }
 
-    public void AddEvent(string name)
+    public void EventsClear()
+    {
+      lock (Events)
+      {
+        Events.Clear();
+        Events.Add(string.Empty);
+      }
+    }
+
+    public void EventAdd(string name)
     {
       lock (Events)
       {
@@ -93,7 +102,7 @@ namespace IctBaden.Stonehenge.Services
             {
               lock (Events)
               {
-                AddEvent(args.PropertyName);
+                EventAdd(args.PropertyName);
               }
             };
         }
@@ -111,7 +120,7 @@ namespace IctBaden.Stonehenge.Services
         var avm = vm as ActiveViewModel;
         if (avm != null)
         {
-          AddEvent(string.Empty);
+          EventsClear();
         }
         var disposable = vm as IDisposable;
         if (disposable != null)

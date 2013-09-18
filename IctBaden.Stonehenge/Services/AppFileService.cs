@@ -33,7 +33,7 @@ namespace IctBaden.Stonehenge.Services
     public object Get(AppFile request)
     {
       GetSession();
-      AddEvent(string.Empty);
+      EventsClear();
 
       var path = request.FullPath("");
       Debug.WriteLine("FileService:" + path);
