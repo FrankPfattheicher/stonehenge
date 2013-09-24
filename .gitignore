@@ -108,3 +108,5 @@ Backup*/
 UpgradeLog*.XML
 
 /IctBaden.StonehengeSample/packages.config
+
+/*.testsettings
