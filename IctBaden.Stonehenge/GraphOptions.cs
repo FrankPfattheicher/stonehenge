@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 
 namespace IctBaden.Stonehenge
 {
@@ -7,85 +10,85 @@ namespace IctBaden.Stonehenge
   // ReSharper disable InconsistentNaming
   public class GraphAxisOptions
   {
-    public string show { get; set; }
+    public object show { get; set; }
 
-    public string position { get; set; }
+    public object position { get; set; }
 
-    public string mode { get; set; }
-    public string timeformat { get; set; }
+    public object mode { get; set; }
+    public object timeformat { get; set; }
 
-    public string color { get; set; }
-    public string tickColor { get; set; }
-    public string font { get; set; }
+    public object color { get; set; }
+    public object tickColor { get; set; }
+    public object font { get; set; }
 
-    public string min { get; set; }
-    public string max { get; set; }
-    public string autoscaleMargin { get; set; }
+    public object min { get; set; }
+    public object max { get; set; }
+    public object autoscaleMargin { get; set; }
 
-    public string transform { get; set; }
-    public string inverseTransform { get; set; }
+    public object transform { get; set; }
+    public object inverseTransform { get; set; }
 
-    public string ticks { get; set; }
-    public string tickSize { get; set; }
-    public string minTickSize { get; set; }
-    public string tickFormatter { get; set; }
-    public string tickDecimals { get; set; }
+    public object ticks { get; set; }
+    public object tickSize { get; set; }
+    public object minTickSize { get; set; }
+    public object tickFormatter { get; set; }
+    public object tickDecimals { get; set; }
 
-    public string labelWidth { get; set; }
-    public string labelHeight { get; set; }
-    public string reserveSpace { get; set; }
+    public object labelWidth { get; set; }
+    public object labelHeight { get; set; }
+    public object reserveSpace { get; set; }
 
-    public string tickLength { get; set; }
+    public object tickLength { get; set; }
 
-    public string alignTicksWithAxis { get; set; }
+    public object alignTicksWithAxis { get; set; }
 
     public GraphAxisOptions()
     {
-      show = "true";
+      show = true;
     }
   }
 
   public class GraphLinesOptions
   {
-    public string show { get; set; }
-    public string lineWidth { get; set; }
-    public string fill { get; set; }
-    public string fillColor { get; set; }
-    public string steps { get; set; }
+    public object show { get; set; }
+    public object lineWidth { get; set; }
+    public object fill { get; set; }
+    public object fillColor { get; set; }
+    public object steps { get; set; }
 
     public GraphLinesOptions()
     {
-      show = "true";
+      show = true;
     }
   }
 
   public class GraphPointsOptions
   {
-    public string show { get; set; }
+    public object show { get; set; }
 
     public GraphPointsOptions()
     {
-      show = "true";
+      show = true;
     }
   }
 
   public class GraphGridOptions
   {
-    public string show { get; set; }
-    public string aboveData { get; set; }
-    public string color  { get; set; }
-    public string backgroundColor  { get; set; }
-    public string margin  { get; set; }
-    public string labelMargin  { get; set; }
-    public string axisMargin  { get; set; }
-    public string markings  { get; set; }
-    public string borderWidth  { get; set; }
-    public string borderColor  { get; set; }
-    public string minBorderMargin  { get; set; }
-    public string clickable  { get; set; }
-    public string hoverable  { get; set; }
-    public string autoHighlight  { get; set; }
-    public string mouseActiveRadius { get; set; }
+    public object show { get; set; }
+    public object aboveData { get; set; }
+    public object color { get; set; }
+    public object backgroundColor { get; set; }
+    public object margin { get; set; }
+    public object labelMargin { get; set; }
+    public object axisMargin { get; set; }
+    public object markings { get; set; }
+    public object borderWidth { get; set; }
+    public object borderColor { get; set; }
+    public object minBorderMargin { get; set; }
+    public object clickable { get; set; }
+    public object hoverable { get; set; }
+    public object autoHighlight { get; set; }
+    public object mouseActiveRadius { get; set; }
   }
 
   public class GraphSeriesOptions
@@ -96,59 +99,102 @@ namespace IctBaden.Stonehenge
 
   public class GraphLegendOptions
   {
-    public string show { get; set; }
-    public string labelFormatter { get; set; }
-    public string labelBoxBorderColor { get; set; }
-    public string noColumns { get; set; }
-    public string position { get; set; }
-    public string margin { get; set; }
-    public string backgroundColor { get; set; }
-    public string backgroundOpacity { get; set; }
-    public string container { get; set; }
+    public object show { get; set; }
+    public object labelFormatter { get; set; }
+    public object labelBoxBorderColor { get; set; }
+    public object noColumns { get; set; }
+    public object position { get; set; }
+    public object margin { get; set; }
+    public object backgroundColor { get; set; }
+    public object backgroundOpacity { get; set; }
+    public object container { get; set; }
 
     public GraphLegendOptions()
     {
-      show = "true";
+      show = true;
     }
   }
 
-  public struct GraphOptions
+  public class GraphColors
+  {
+    public object colors { get; set; }
+  }
+  public class GraphOpacity
+  {
+    public object opacity { get; set; }
+  }
+
+  public class GraphOptions
   {
     public GraphAxisOptions xaxis { get; set; }
     public GraphAxisOptions yaxis { get; set; }
+    public GraphAxisOptions[] xaxes { get; set; }
+    public GraphAxisOptions[] yaxes { get; set; }
 
-    public string colors { get; set; }
+    public object colors { get; set; }
 
     public GraphGridOptions grid { get; set; }
     public GraphSeriesOptions series { get; set; }
     public GraphLegendOptions legend { get; set; }
 
-    private static string ToJson(object option)
+    internal static string AsJsonValue(object option)
     {
-      var properties = new List<string>();
-
-      foreach (var property in option.GetType().GetProperties())
+      var oType = option.GetType();
+      if (oType == typeof(bool))
       {
-        var value = property.GetValue(option, null);
-        if (value == null)
-          continue;
+        return option.ToString().ToLower();
+      }
+      if ((oType == typeof(float)) || (oType == typeof(double)))
+      {
+        return ((double)option).ToString(CultureInfo.InvariantCulture);
+      }
+      if (oType == typeof(string))
+      {
+        var txt = option.ToString();
+        if (txt.StartsWith("{") || txt.StartsWith("["))
+          return txt;
+        return '\"' + option.ToString() + '\"';
+      }
+      if (oType.IsValueType)
+      {
+        return option.ToString();
+      }
 
-        if (property.PropertyType.IsClass && (property.PropertyType != typeof(string)))
+      var array = option as Array;
+      if (array != null)
+      {
+        var elements = new List<string>();
+        for (var ix = 0; ix < array.Length; ix++)
         {
-          properties.Add('"' + property.Name + '"' + ": {" + ToJson(value) + "}");
+          var av = array.GetValue(ix);
+          elements.Add(AsJsonValue(av));
         }
-        else
+        return "[" + string.Join(",", elements) + "]";
+      }
+
+      var properties = new List<string>();
+      foreach (var property in oType.GetProperties())
+      {
+        try
         {
-          properties.Add(string.Format("{0}: {1}", '"' + property.Name + '"', value.ToString()));
+          var value = property.GetValue(option, null);
+          if (value == null)
+            continue;
+
+          properties.Add('"' + property.Name + "\":" + AsJsonValue(value));
+        }
+        catch (Exception ex)
+        {
+          Debug.WriteLine("Could not serialize property {0}: {1}", property.Name, ex.Message);
         }
       }
 
-      return string.Join(",", properties);
+      return '{' + string.Join(",", properties) + '}';
     }
 
     public override string ToString()
     {
-      return "{" + ToJson(this) + "}";
+      return AsJsonValue(this);
     }
 
     public static GraphOptions Parse(string json)

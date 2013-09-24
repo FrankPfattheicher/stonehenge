@@ -29,25 +29,25 @@ namespace IctBaden.StonehengeSample
         {
           yaxis = new GraphAxisOptions
             {
-              position = "\"left\"",
-              min = "0", 
-              max = "100"
+              position = "left",
+              min = 0, 
+              max = 100
             },
           xaxis = new GraphAxisOptions
             {
-              mode = "\"time\"",
-              timeformat = "\"%H:%M\"",
+              mode = "time",
+              timeformat = "%H:%M",
               min = GetEpoch(new DateTime(1970,1,1)).ToString(),
               max = GetEpoch(new DateTime(1970, 1, 1, 23, 59, 0)).ToString()
             },
-          colors = "[\"#F90\", \"#222\", \"#666\", \"#BBB\"]",
+          colors = new [] { "#F90", "#222", "#666", "#BBB" },
           series = new GraphSeriesOptions
           {
             lines = new GraphLinesOptions
             {
-              lineWidth = "2",
-              fill = "true",
-              fillColor = "{ \"colors\": [{ \"opacity\": 0.6 }, { \"opacity\": 0.2 }] }"
+              lineWidth = 2,
+              fill = true,
+              fillColor = new GraphColors { colors = new[] { new GraphOpacity { opacity = 0.6 }, new GraphOpacity { opacity = 0.2 } } }
             }
           },
         };
