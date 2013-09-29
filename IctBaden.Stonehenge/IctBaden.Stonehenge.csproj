@@ -186,7 +186,7 @@
     <None Include="scripts\flot\NEWS.md" />
     <None Include="scripts\flot\PLUGINS.md" />
     <None Include="scripts\flot\README.md" />
-    <None Include="scripts\jquery-1.10.2.min.map" />
+    <EmbeddedResource Include="scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
