@@ -24,7 +24,7 @@ function set_ViewModelName_Data(viewmodel, loading, data) {
 }
 function post_ViewModelName_Data(viewmodel, sender, method) {
   //debugger;
-  var params = '_Command_Sender_Text_=' + encodeURIComponent(sender.innerText) + "&";
+  var params = '_Command_Sender_Name_=' + encodeURIComponent(sender.name) + "&";
   _GetData_();
   var ts = new Date().getTime();
   viewmodel.IsLoading(true);

@@ -173,13 +173,13 @@ namespace IctBaden.Stonehenge
     [Browsable(false)]
     public AppSession Session;
 
+    // ReSharper disable once InconsistentNaming
     [Bindable(false)]
-// ReSharper disable InconsistentNaming
-    public string _Command_Sender_Text_ { get; set; }
-// ReSharper restore InconsistentNaming
-    public string GetCommandSenderText()
+    public string _Command_Sender_Name_ { get; set; }
+    
+    public string GetCommandSenderName()
     {
-      return _Command_Sender_Text_;
+      return _Command_Sender_Name_;
     }
 
     protected bool ModelTypeExists(string prefix, object model) { return ActiveModels.FirstOrDefault(m => (m.TypeName == model.GetType().Name) && (m.Prefix == prefix)) != null; }
