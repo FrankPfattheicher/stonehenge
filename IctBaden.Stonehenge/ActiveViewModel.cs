@@ -173,7 +173,7 @@ namespace IctBaden.Stonehenge
     [Browsable(false)]
     public AppSession Session;
 
-    // ReSharper disable once InconsistentNaming
+    // ReSharper disable InconsistentNaming
     [Bindable(false)]
     public string _Command_Sender_Name_ { get; set; }
     
@@ -186,6 +186,9 @@ namespace IctBaden.Stonehenge
 
     #endregion
 
+    public ActiveViewModel() : this(null)
+    {
+    }
     public ActiveViewModel(AppSession session)
     {
       Session = session ?? new AppSession(null, null, null, null);
@@ -215,13 +218,13 @@ namespace IctBaden.Stonehenge
       set { TrySetMember(name, value); }
     }
 
-    public void AddModel(object model)
+    public void SetModel(object model)
     {
       if (model == null)
         return;
-      AddModel(null, model);
+      SetModel(null, model);
     }
-    public void AddModel(string prefix, object model)
+    public void SetModel(string prefix, object model)
     {
       if (model == null)
         return;
@@ -245,7 +248,11 @@ namespace IctBaden.Stonehenge
     public void UpdateModel(string prefix, object model)
     {
       if (!ModelTypeExists(prefix, model))
-        throw new ArgumentException(string.Format("No model of type '{0}' is added", model.GetType().Name));
+      {
+        //throw new ArgumentException(string.Format("No model of type '{0}' is added", model.GetType().Name));
+        SetModel(prefix, model);
+        return;
+      }
 
       var index = (from m in ActiveModels where (m.TypeName == model.GetType().Name) && (m.Prefix == prefix) select ActiveModels.IndexOf(m)).First();
       ActiveModels[index].Model = model;
