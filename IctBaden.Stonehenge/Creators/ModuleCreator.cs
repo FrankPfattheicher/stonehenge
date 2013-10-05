@@ -98,7 +98,8 @@ namespace IctBaden.Stonehenge.Creators
             continue;
           prop = activeVm.GetPropertyInfo(propName);
         }
-        if (!prop.CanWrite)
+
+        if (prop.GetSetMethod(false) == null) // not public writable
           continue;
         var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
         if ((bindable.Length > 0) && ((BindableAttribute)bindable[0]).Direction == BindingDirection.OneWay)
@@ -127,7 +128,15 @@ namespace IctBaden.Stonehenge.Creators
       var actionMethods = new StringBuilder();
       foreach (var methodInfo in vmType.GetMethods().Where(methodInfo => methodInfo.GetCustomAttributes(false).OfType<ActionMethodAttribute>().Any()))
       {
-        var method = "%method%: function (data, event) { post_ViewModelName_Data(self, event.currentTarget, '%method%'); },".Replace("%method%", methodInfo.Name);
+        string method;
+        if (methodInfo.GetParameters().Length > 0)
+        {
+          method = "%method%: function (data, event, param) { post_ViewModelName_Data(self, event.currentTarget, '%method%', param); },".Replace("%method%", methodInfo.Name);
+        }
+        else
+        {
+          method = "%method%: function (data, event) { post_ViewModelName_Data(self, event.currentTarget, '%method%', null); },".Replace("%method%", methodInfo.Name);
+        }
         actionMethods.AppendLine(method.Replace("_ViewModelName_", vmType.Name));
       }
 
@@ -137,8 +146,8 @@ namespace IctBaden.Stonehenge.Creators
       text = text.Replace("_SetData_();", string.Join(Environment.NewLine, setData));
       text = text.Replace("_GetData_();", string.Join(Environment.NewLine, getData));
       text = text.Replace("_DeclareData_();", string.Join(Environment.NewLine, declareData));
-      text = text.Replace("_ReturnData_ : 0,", string.Join(Environment.NewLine, returnData));
-      text = text.Replace("_ActionMethods_ : 0,", string.Join(Environment.NewLine, actionMethods));
+      text = text.Replace("_ReturnData_: 0,", string.Join(Environment.NewLine, returnData));
+      text = text.Replace("_ActionMethods_: 0,", string.Join(Environment.NewLine, actionMethods));
 
       ViewModels.Add(vmType, text);
       return text;

@@ -61,8 +61,6 @@ namespace IctBaden.Stonehenge.Services
 
       if (request.ViewModel == vm.GetType().FullName)
       {
-        var ty = vm.GetType();
-
         foreach (var query in Request.FormData.AllKeys)
         {
           var newval = Request.FormData[query];
@@ -79,8 +77,8 @@ namespace IctBaden.Stonehenge.Services
         }
         else
         {
-          var session = Session.Get<object>("~session") as AppSession;
-          mi.Invoke(vm, new object[] { session });
+          var parameter = Request.FormData["_Command_Parameter_"];
+          mi.Invoke(vm, new object[] { parameter });
         }
       }
 
@@ -99,7 +97,7 @@ namespace IctBaden.Stonehenge.Services
       return Get(request);
     }
 
-    private static List<string> SerializeObject(object obj)
+    private static IEnumerable<string> SerializeObject(object obj)
     {
       var data = new List<string>();
 

@@ -102,7 +102,7 @@ namespace IctBaden.StonehengeSample
     }
 
     [ActionMethod]
-    public void OnNameChanged()
+    public void OnNameChanged(object name)
     {
     }
 

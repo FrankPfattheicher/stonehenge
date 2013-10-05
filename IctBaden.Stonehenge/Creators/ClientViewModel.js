@@ -1,5 +1,6 @@
 ﻿//ViewModel:_ViewModelType_
 var self;
+var activation_data;
 // ReSharper disable InconsistentNaming
 // ReSharper disable UseOfImplicitGlobalInFunctionScope
 // ReSharper disable UnusedLocals
@@ -16,15 +17,21 @@ function poll_ViewModelName_Events(viewmodel, initial) {
 }
 function set_ViewModelName_Data(viewmodel, loading, data) {
   _SetData_();
+  if (activation_data) {
+    data = activation_data;
+    activation_data = null;
+    set_ViewModelName_Data(viewmodel, loading, data);
+  }
   if(loading)
   {
     viewmodel.InitialLoading(false);
     viewmodel.IsLoading(false);
   }
 }
-function post_ViewModelName_Data(viewmodel, sender, method) {
+function post_ViewModelName_Data(viewmodel, sender, method, param) {
   //debugger;
-  var params = '_Command_Sender_Name_=' + encodeURIComponent(sender.name) + "&";
+  var params = '_Command_Sender_Name_=' + encodeURIComponent(sender.name) + '&';
+  if (param != null) { params += '_Command_Parameter_=' + encodeURIComponent(param) + '&'; }
   _GetData_();
   var ts = new Date().getTime();
   viewmodel.IsLoading(true);
@@ -36,12 +43,13 @@ define(function (require) {
   var IsLoading = ko.observable(true);
   _DeclareData_();
   return {
-    _ReturnData_ : 0,
+    _ReturnData_: 0,
     InitialLoading: InitialLoading,
     IsLoading: IsLoading,
-    _ActionMethods_ : 0,
-    activate: function (view) {
+    _ActionMethods_: 0,
+    activate: function (data) {
       self = this;
+      if (activation_data == null) activation_data = data;
       self.IsLoading(true);
     },
     viewAttached: function (view) {

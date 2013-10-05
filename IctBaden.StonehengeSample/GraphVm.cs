@@ -40,7 +40,7 @@ namespace IctBaden.StonehengeSample
               min = GetEpoch(new DateTime(1970,1,1)).ToString(),
               max = GetEpoch(new DateTime(1970, 1, 1, 23, 59, 0)).ToString()
             },
-          colors = new [] { "#F90", "#222", "#666", "#BBB" },
+          colors = new [] { "#1010FF" },
           series = new GraphSeriesOptions
           {
             lines = new GraphLinesOptions
@@ -73,13 +73,13 @@ namespace IctBaden.StonehengeSample
       start += 1;
 
       GraphData = new[]
-		    {
-		      new GraphSeries
-		        {
-		          label = "sin(x)",
-		          data = points
-		        }
-		    };
+        {
+          new GraphSeries
+            {
+              label = "sin(x)",
+              data = points
+            }
+        };
     }
 
     public void Dispose()
@@ -89,5 +89,12 @@ namespace IctBaden.StonehengeSample
         timer.Dispose();
       }
     }
+
+    [ActionMethod]
+    public void SetParameter(object param)
+    {
+      GraphOptions.colors = new[] { param.ToString() };
+    }
+
   }
 }
