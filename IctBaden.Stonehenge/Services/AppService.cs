@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using ServiceStack.ServiceInterface;
 
@@ -18,8 +19,9 @@ namespace IctBaden.Stonehenge.Services
         {
           session = Session.Get<object>("~session") as AppSession;
         }
-        catch
+        catch (Exception ex)
         {
+          Debug.WriteLine(ex.Message);
         }
         if (session == null)
         {
@@ -47,8 +49,9 @@ namespace IctBaden.Stonehenge.Services
           {
             events = Session.Get<object>("~ev") as List<string>;
           }
-          catch
+          catch (Exception ex)
           {
+            Debug.WriteLine(ex.Message);
           }
           if (events == null)
           {
@@ -131,7 +134,7 @@ namespace IctBaden.Stonehenge.Services
 
       
       var asm = Assembly.GetEntryAssembly();
-      var vmtype = asm.GetType(typeName);
+      var vmtype = asm.GetTypes().FirstOrDefault(type => type.FullName.EndsWith(typeName));
       if (vmtype == null)
       {
         ViewModel = null;
@@ -143,8 +146,8 @@ namespace IctBaden.Stonehenge.Services
       {
         if (typeof(ActiveViewModel).IsAssignableFrom(vmtype))
         {
-          var appSession = GetSession();
-          vm = Activator.CreateInstance(vmtype, new object[] { appSession });
+          var sessionCtor = vmtype.GetConstructors().FirstOrDefault(ctor => ctor.GetParameters().Length == 1);
+          vm = (sessionCtor != null) ? Activator.CreateInstance(vmtype, new object[] { GetSession() }) : Activator.CreateInstance(vmtype);
         }
         else
         {

@@ -28,8 +28,15 @@ namespace IctBaden.Stonehenge
 
     internal AppSession(string hostDomain, string hostUrl, string userAgent, ISession session)
     {
-      var uri = new UriBuilder(hostUrl);
-      HostDomain = string.IsNullOrEmpty(hostDomain) ? uri.Host : hostDomain;
+      if (!string.IsNullOrEmpty(hostUrl))
+      {
+        var uri = new UriBuilder(hostUrl);
+        HostDomain = string.IsNullOrEmpty(hostDomain) ? uri.Host : hostDomain;
+      }
+      else
+      {
+        HostDomain = hostDomain;
+      }
       UserAgent = userAgent;
       Session = session;
       ConnectedSince = DateTime.Now;

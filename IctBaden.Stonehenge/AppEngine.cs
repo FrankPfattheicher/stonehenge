@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Drawing;
 
 namespace IctBaden.Stonehenge
 {
@@ -9,6 +10,7 @@ namespace IctBaden.Stonehenge
   {
     public string Title { get; set; }
     public string StartPage { get; set; }
+    public Point WindowSize { get; set; }
     private readonly int port;
     private AppHost host;
 
@@ -34,6 +36,7 @@ namespace IctBaden.Stonehenge
       port = hostPort;
       Title = title;
       StartPage = startPage;
+      WindowSize = new Point(800, 600);
     }
 
     public void Run(bool newWindow)
@@ -64,7 +67,8 @@ namespace IctBaden.Stonehenge
 			var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
 
 	    var dir = Directory.CreateDirectory(path);
-			var parameter = string.Format("--app=http://localhost:{0}/App/index.html?title={1} --app-window-size=800,600 --disable-translate --user-data-dir=\"{2}\"", port, Title, path);
+			var parameter = string.Format("--app=http://localhost:{0}/App/index.html?title={1} --app-window-size={2},{3} --disable-translate --user-data-dir=\"{4}\"",
+        port, Title, WindowSize.X, WindowSize.Y, path);
       var ui = Process.Start(cmd, parameter);
       if (ui == null)
       {

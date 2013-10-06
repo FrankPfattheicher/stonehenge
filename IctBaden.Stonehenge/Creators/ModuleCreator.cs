@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using ServiceStack.Text;
 
 namespace IctBaden.Stonehenge.Creators
 {
@@ -116,7 +117,15 @@ namespace IctBaden.Stonehenge.Creators
       var declareData = new StringBuilder();
       foreach (var propName in assignPropNames)
       {
-        declareData.AppendLine(string.Format("var {0} = ko.observable();", propName));
+        var defaultValue = vmType.GetProperty(propName).GetValue(viewModel, new object[0]);
+        if (defaultValue != null)
+        {
+          declareData.AppendLine(string.Format("var {0} = ko.observable({1});", propName, JsonSerializer.SerializeToString(defaultValue)));
+        }
+        else
+        {
+          declareData.AppendLine(string.Format("var {0} = ko.observable();", propName));
+        }
       }
       var returnData = new StringBuilder();
       foreach (var propName in assignPropNames)
