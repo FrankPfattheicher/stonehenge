@@ -14,13 +14,11 @@ namespace IctBaden.StonehengeSample
     private string name;
     private Timer timer;
 
-    [Bindable(true, BindingDirection.OneWay)]
-    public string Id { get; set; }
-    [Bindable(true, BindingDirection.OneWay)]
+    public string Id { get; private set; }
     public string Clock { get; private set; }
 
     [Bindable(true, BindingDirection.OneWay)]
-    public string Prompt { get { return "What is your Name?"; } }
+    public string Prompt { get { return "Enter name:"; } }
     public string Name
     {
       get { return name; }

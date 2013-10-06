@@ -12,13 +12,13 @@
 
   <table style="border-collapse:collapse;">
     <tr>
-      <td>Clock:</td>
+      <td >Output field:</td>
       <td><span class="time" data-bind="text: Clock">00:00</span></td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>Auto-Update:</td>
+      <td >Auto update:</td>
       <td>
         <label data-bind="with: AutoUpdate">
           <input type="checkbox" data-bind="checked: Checked, valueUpdate: 'click', event:{click: $root.OnAutoUpdateChanged}" />  
@@ -31,20 +31,14 @@
         turn server side clock update on/off</td>
     </tr>
     <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>Combo Selection:</td>
+      <td >Combo selection:</td>
       <td>
         <select size="1" data-bind="options: OptionValues, selectedOptions: SelectedOptions, event:{change: OnOptionChanged}" />
       </td>
       <td>&nbsp;</td>
       <td>
         <p>preselet using</p>
-        <pre style="font-family: Consolas; font-size: 13; color: black; background: white; ">SelectedOptions = <span 
+        <pre style="font-family: Consolas; font-size: 10pt; color: black; background: white; ">SelectedOptions = <span 
         style="color:blue;">new</span>&nbsp;<span style="color:#2b91af;">List</span>&lt;<span 
         style="color:blue;">string</span>&gt;&nbsp;{ "Tree" };</pre>
     </td>
@@ -66,15 +60,15 @@
         currently not working :-(</td>
     </tr> -->
     <tr>
-      <td>Byte:</td>
+      <td >Composed value:</td>
       <td><span data-bind="text: ByteValue"></span></td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>&nbsp;</td>
+      <td >Checked list:</td>
       <td>
-        <div style="border: 1px solid gray; width: 200px; height: 100px; overflow-y: scroll; padding-left: 10px; " >
+        <div style="border: 1px solid silver; width: 150px; height: 100px; overflow-y: scroll; padding-left: 10px; " >
           <ul data-bind="foreach: BitValues" style="list-style-type: none; margin: 0; padding: 0; overflow-x: hidden;">
             <li >
               <label>
@@ -91,25 +85,24 @@
         onchange events updating byte value</td>
     </tr>
     <tr>
-      <td><label data-bind="text: Prompt">Name:</label></td>
-      <td><input type="text" data-bind="value: Name, valueUpdate: 'afterkeydown', event:{keyup: OnNameChanged}" /></td>
-      <td><button type="submit" class="btn" data-bind="click: SayHello, enable: CanSayHello">Click Me</button></td>
+      <td ><label data-bind="text: Prompt">Name:</label></td>
+      <td>
+        <p>
+        <input type="text" data-bind="value: Name, valueUpdate: 'afterkeydown', event:{keyup: OnNameChanged}" />&nbsp;<button type="submit" class="btn btn-default" data-bind="click: SayHello, enable: CanSayHello">Hello</button>
+        </p>
+      </td>
+      <td>&nbsp;</td>
       <td>button disabled on empty input</td>
     </tr>
     <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
+      <td >Parametrisized link:</td>
       <td>
         <a href="#/login?User=Marvin" >
-          <button class="btn">Login Marvin</button>
+          <button class="btn btn-default">Login Marvin</button>
         </a>
       </td>
-      <td colspan="2">navigate to loginpage with parameter User=Marvin</td>
+      <td>&nbsp;</td>
+      <td>navigate to loginpage with parameter User=Marvin</td>
     </tr>
   </table>
   
