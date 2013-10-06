@@ -2,7 +2,7 @@ stonehenge
 ==========
 An open source .NET Framework to use Web UI technologies for desktop and/or web applications.
 
-New in version 0.4:  Bootstrap 3.0
+New in version 0.5: Many improvements to ease usage.
 
 Motivation
 ----------
