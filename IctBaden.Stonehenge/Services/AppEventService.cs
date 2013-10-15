@@ -17,14 +17,10 @@ namespace IctBaden.Stonehenge.Services
     public object Get(AppEvent request)
     {
       Debug.WriteLine("EventService:" + request.ViewModel);
-      
-      var delay = Environment.TickCount + MaxDelay;
-      while (Environment.TickCount < delay)
-      {
-        Thread.Sleep(100);
-        if (Events.Count > 0)
-          break;
-      }
+
+      EventRelease.Reset();
+      EventRelease.WaitOne(MaxDelay);
+      Thread.Sleep(10);
 
       var values = new Dictionary<string, object>();
       var vm = ViewModel as ActiveViewModel;
@@ -34,11 +30,6 @@ namespace IctBaden.Stonehenge.Services
       }
       lock (Events)
       {
-        //if ((Events.Count > 0) && (Events.Last() == null))
-        //{
-        //  Events.Clear();
-        //  return new HttpResult("{}", "application/json");
-        //}
         values.Add("stonehenge_poll", 1);
         foreach (var name in Events.Where(name => !string.IsNullOrEmpty(name) && !values.ContainsKey(name)))
         {
@@ -51,8 +42,8 @@ namespace IctBaden.Stonehenge.Services
           else
           {
             var pi = vm.GetPropertyInfo(name);
-	          if (pi == null)
-		          continue;
+            if (pi == null)
+              continue;
             var bindable = pi.GetCustomAttributes(false).OfType<BindableAttribute>().ToArray();
             if ((bindable.Length > 0) && !bindable[0].Bindable)
               continue;
@@ -84,7 +75,7 @@ namespace IctBaden.Stonehenge.Services
         httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
         return httpResult;
       }
-			return new HttpResult(values, "application/json");
+      return new HttpResult(values, "application/json");
     }
   }
 }

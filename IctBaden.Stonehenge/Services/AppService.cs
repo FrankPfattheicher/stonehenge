@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using ServiceStack.ServiceInterface;
 
 namespace IctBaden.Stonehenge.Services
@@ -62,6 +63,30 @@ namespace IctBaden.Stonehenge.Services
         return events;
       }
     }
+    public AutoResetEvent EventRelease
+    {
+      get
+      {
+        AutoResetEvent eventRelease = null;
+        lock (Session)
+        {
+          try
+          {
+            eventRelease = Session.Get<object>("~er") as AutoResetEvent;
+          }
+          catch (Exception ex)
+          {
+            Debug.WriteLine(ex.Message);
+          }
+          if (eventRelease == null)
+          {
+            eventRelease = new AutoResetEvent(false);
+            Session.Set("~er", eventRelease);
+          }
+        }
+        return eventRelease;
+      }
+    }
 
     public void EventsClear()
     {
@@ -77,6 +102,7 @@ namespace IctBaden.Stonehenge.Services
       lock (Events)
       {
         Events.Add(name);
+        EventRelease.Set();
       }
     }
 
