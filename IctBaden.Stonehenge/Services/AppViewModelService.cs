@@ -40,16 +40,18 @@ namespace IctBaden.Stonehenge.Services
 
       var result = "{" + string.Join(",", data) + "}";
 
-			if (!string.IsNullOrEmpty(RequestContext.CompressionType))
-			{
-				var compressed = new CompressedResult(Encoding.UTF8.GetBytes(result), RequestContext.CompressionType)
-					{
-						ContentType = "application/json"
-					};
-				var httpResult = new HttpResult(compressed.Contents, "application/json");
-				httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
-				return httpResult	;
-			}
+      EventsClear();
+
+      if (!string.IsNullOrEmpty(RequestContext.CompressionType))
+      {
+        var compressed = new CompressedResult(Encoding.UTF8.GetBytes(result), RequestContext.CompressionType)
+          {
+            ContentType = "application/json"
+          };
+        var httpResult = new HttpResult(compressed.Contents, "application/json");
+        httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
+        return httpResult;
+      }
       return new HttpResult(result, "application/json");
     }
 
