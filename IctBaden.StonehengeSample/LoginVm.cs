@@ -28,7 +28,7 @@ namespace IctBaden.StonehengeSample
       }
 
       Message = string.Empty;
-      MessageBox("Login", "Willkommen " + User);
+      MessageBox("Login", "You're welcome, " + User + "!");
     }
 
     [ActionMethod]

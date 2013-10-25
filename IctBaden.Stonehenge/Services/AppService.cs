@@ -96,7 +96,7 @@ namespace IctBaden.Stonehenge.Services
       {
         var msgBox = Events.FirstOrDefault(e => e == PropertyNameMessageBox);
         Events.Clear();
-        Events.Add(msgBox ?? string.Empty);
+        EventAdd(msgBox ?? string.Empty);
       }
     }
 

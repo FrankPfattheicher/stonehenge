@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Web;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
 
@@ -18,7 +19,6 @@ namespace IctBaden.Stonehenge.Services
     {
       Debug.WriteLine("EventService:" + request.ViewModel);
 
-      EventRelease.Reset();
       EventRelease.WaitOne(MaxDelay);
       Thread.Sleep(10);
 
@@ -37,7 +37,7 @@ namespace IctBaden.Stonehenge.Services
           {
             var title = vm.MessageBoxTitle;
             var text = vm.MessageBoxText;
-            values.Add("stonehenge_eval", string.Format("app.showMessage('{0}','{1}');", text, title));
+            values.Add("stonehenge_eval", string.Format("app.showMessage('{0}','{1}');", HttpUtility.HtmlEncode(text), HttpUtility.HtmlEncode(title)));
           }
           else
           {
