@@ -33,6 +33,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Markup;
 using System.Windows.Threading;
+using IctBaden.Stonehenge.Services;
 
 namespace IctBaden.Stonehenge
 {
@@ -175,11 +176,11 @@ namespace IctBaden.Stonehenge
 
     // ReSharper disable InconsistentNaming
     [Bindable(false)]
-    public string _Command_Sender_Name_ { get; set; }
+    public string _stonehenge_CommandSenderName_ { get; set; }
     
     public string GetCommandSenderName()
     {
-      return _Command_Sender_Name_;
+      return _stonehenge_CommandSenderName_;
     }
 
     protected bool ModelTypeExists(string prefix, object model) { return ActiveModels.FirstOrDefault(m => (m.TypeName == model.GetType().Name) && (m.Prefix == prefix)) != null; }
@@ -528,7 +529,7 @@ namespace IctBaden.Stonehenge
     {
       MessageBoxTitle = title;
       MessageBoxText = text;
-      NotifyPropertyChanged("MessageBox");
+      NotifyPropertyChanged(AppService.PropertyNameMessageBox);
     }
 
     #endregion

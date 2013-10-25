@@ -33,7 +33,7 @@ namespace IctBaden.Stonehenge.Services
         values.Add("stonehenge_poll", 1);
         foreach (var name in Events.Where(name => !string.IsNullOrEmpty(name) && !values.ContainsKey(name)))
         {
-          if (name == "MessageBox")
+          if (name == PropertyNameMessageBox)
           {
             var title = vm.MessageBoxTitle;
             var text = vm.MessageBoxText;

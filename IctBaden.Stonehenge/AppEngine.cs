@@ -63,11 +63,11 @@ namespace IctBaden.Stonehenge
         return;
 
       
-  		var cmd = Environment.OSVersion.Platform == PlatformID.Unix ? "chromium-browser" : "chrome.exe";
-			var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+      var cmd = Environment.OSVersion.Platform == PlatformID.Unix ? "chromium-browser" : "chrome.exe";
+      var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
 
-	    var dir = Directory.CreateDirectory(path);
-			var parameter = string.Format("--app=http://localhost:{0}/App/index.html?title={1} --app-window-size={2},{3} --disable-translate --user-data-dir=\"{4}\"",
+      var dir = Directory.CreateDirectory(path);
+      var parameter = string.Format("--app=http://localhost:{0}/App/index.html?title={1} --app-window-size={2},{3} --disable-translate --user-data-dir=\"{4}\"",
         port, Title, WindowSize.X, WindowSize.Y, path);
       var ui = Process.Start(cmd, parameter);
       if (ui == null)
@@ -77,7 +77,7 @@ namespace IctBaden.Stonehenge
       }
       Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
       ui.WaitForExit();
-			dir.Delete(true);
+      dir.Delete(true);
     }
 
     private void OnNewSession(AppSession session)

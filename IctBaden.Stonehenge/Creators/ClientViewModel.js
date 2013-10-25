@@ -30,8 +30,8 @@ function set_ViewModelName_Data(viewmodel, loading, data) {
 }
 function post_ViewModelName_Data(viewmodel, sender, method, param) {
   //debugger;
-  var params = '_Command_Sender_Name_=' + encodeURIComponent(sender.name) + '&';
-  if (param != null) { params += '_Command_Parameter_=' + encodeURIComponent(param) + '&'; }
+  var params = '_stonehenge_CommandSenderName_=' + encodeURIComponent(sender.name) + '&';
+  if (param != null) { params += '_stonehenge_CommandParameter_=' + encodeURIComponent(param) + '&'; }
   _GetData_();
   var ts = new Date().getTime();
   viewmodel.IsLoading(true);

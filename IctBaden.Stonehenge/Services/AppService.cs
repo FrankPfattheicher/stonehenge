@@ -11,6 +11,8 @@ namespace IctBaden.Stonehenge.Services
 {
   public class AppService : Service
   {
+    public const string PropertyNameMessageBox = "_stonehenge_MessageBox_";
+    
     public AppSession GetSession()
     {
       AppSession session = null;
@@ -92,8 +94,9 @@ namespace IctBaden.Stonehenge.Services
     {
       lock (Events)
       {
+        var msgBox = Events.FirstOrDefault(e => e == PropertyNameMessageBox);
         Events.Clear();
-        Events.Add(string.Empty);
+        Events.Add(msgBox ?? string.Empty);
       }
     }
 

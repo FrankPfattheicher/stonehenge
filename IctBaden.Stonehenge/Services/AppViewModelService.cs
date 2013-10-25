@@ -79,7 +79,7 @@ namespace IctBaden.Stonehenge.Services
         }
         else
         {
-          var parameter = Request.FormData["_Command_Parameter_"];
+          var parameter = Request.FormData["_stonehenge_CommandParameter_"];
           mi.Invoke(vm, new object[] { parameter });
         }
       }
