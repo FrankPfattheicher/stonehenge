@@ -113,6 +113,7 @@ namespace IctBaden.Stonehenge.Services
       {
         case @"App\index.html":
           text = UserStyleSheets.InsertUserCssLinks(RootPath, text, GetSession().SubDomain);
+          text = ContentDeliveryNetworkSupport.RersolveHosts(text);
           break;
         case @"App\shell.js":
           {

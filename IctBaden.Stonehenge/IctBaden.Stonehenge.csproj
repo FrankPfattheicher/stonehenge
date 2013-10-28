@@ -71,6 +71,7 @@
     <Compile Include="ActiveViewModel.cs" />
     <Compile Include="AppEngine.cs" />
     <Compile Include="CheckedItem.cs" />
+    <Compile Include="Creators\ContentDeliveryNetworkSupport.cs" />
     <Compile Include="GraphOptions.cs" />
     <Compile Include="GraphSeries.cs" />
     <Compile Include="Services\AppEvent.cs" />
@@ -94,6 +95,8 @@
     <EmbeddedResource Include="css\bootstrap-theme.min.css" />
     <EmbeddedResource Include="scripts\respond.min.js" />
     <EmbeddedResource Include="scripts\knockout-3.0.0.js" />
+    <EmbeddedResource Include="scripts\require.min.js" />
+    <EmbeddedResource Include="scripts\respond.js" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />
@@ -106,7 +109,7 @@
     <EmbeddedResource Include="App\durandal\amd\almond-custom.js" />
     <None Include="App\durandal\amd\optimizer.exe" />
     <EmbeddedResource Include="App\durandal\amd\r.js" />
-    <EmbeddedResource Include="App\durandal\amd\require.js" />
+    <EmbeddedResource Include="scripts\require.js" />
     <EmbeddedResource Include="App\durandal\amd\text.js" />
     <EmbeddedResource Include="App\durandal\app.js" />
     <EmbeddedResource Include="App\durandal\composition.js" />
@@ -180,6 +183,9 @@
     <EmbeddedResource Include="scripts\sammy-0.7.4.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CDN.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="scripts\flot\API.md" />
     <None Include="scripts\flot\CONTRIBUTING.md" />
     <None Include="scripts\flot\FAQ.md" />

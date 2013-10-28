@@ -9,7 +9,7 @@
   <link media="all" href="css/durandal.css" rel="stylesheet">
   <!--[if lt IE 9]>
     <script src="scripts/html5shiv.js"></script>
-    <script src="scripts/respond.min.js"></script>
+    <script src="scripts/respond.js"></script>
   <![endif]-->
   <link rel="apple-touch-icon-precomposed" href="App/icon.png" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -20,21 +20,18 @@
 <body>
   <div id="applicationHost">
   </div>
-  <!-- load jQuery from Google CDN -->
-  <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" ></script>-->
-  <!-- load jQuery from local source -->
   <script type="text/javascript" src="scripts/jquery-1.10.2.js"></script>
 
   <script type="text/javascript" src="scripts/knockout-3.0.0.js"></script>
   <!--Durandal does not require SammyJS. The router plugin uses it.-->
-  <script type="text/javascript" src="scripts/sammy-0.7.4.min.js"></script>
-  <script type="text/javascript" src="scripts/bootstrap.min.js"></script>
-  <script type="text/javascript" src="scripts/flot/jquery.flot.min.js"></script>
-  <script type="text/javascript" src="scripts/flot/jquery.flot.resize.min.js"></script>
-  <script type="text/javascript" src="scripts/flot/jquery.flot.time.min.js"></script>
+  <script type="text/javascript" src="scripts/sammy-0.7.4.js"></script>
+  <script type="text/javascript" src="scripts/bootstrap.js"></script>
+  <script type="text/javascript" src="scripts/flot/jquery.flot.js"></script>
+  <script type="text/javascript" src="scripts/flot/jquery.flot.resize.js"></script>
+  <script type="text/javascript" src="scripts/flot/jquery.flot.time.js"></script>
   <!--[if IE]>
-  <script language="javascript" type="text/javascript" src="scripts/flot/excanvas.min.js"></script>
+  <script language="javascript" type="text/javascript" src="scripts/flot/excanvas.js"></script>
   <![endif]-->
-  <script type="text/javascript" src="App/durandal/amd/require.js" data-main="App/main"></script>
+  <script type="text/javascript" src="scripts/require.min.js" data-main="App/main"></script>
 </body>
 </html>
