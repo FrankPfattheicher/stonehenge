@@ -44,37 +44,15 @@ namespace IctBaden.Stonehenge.Creators
       if (!File.Exists(CdnConfigurationFileName))
         return page;
 
-      var lines = new List<string>();
+      var script = new Regex("(?<a><script.*src=\"(?<b>scripts/(?<c>.*\\.js))\".*)|(?<a><link.*href=\"(?<b>css/(?<c>.*\\.css))\".*)", RegexOptions.Compiled);
 
-      var script = new Regex("<script.*src=\"scripts/(.*\\.js)\".*", RegexOptions.Compiled);
-      var css = new Regex("<link.*href=\"css/(.*\\.css)\".*", RegexOptions.Compiled);
+      var resultlines = from line in page.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
+                        let isScriptSource = script.Match(line)
+                        let source = isScriptSource.Groups["c"].Value
+                        select (isScriptSource.Success && CdnLookup.ContainsKey(source)) ? 
+                               isScriptSource.Groups["a"].Value.Replace(isScriptSource.Groups["b"].Value, CdnLookup[source]) : line;
 
-      foreach (var line in page.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
-      {
-        var isScriptSource = script.Match(line);
-        if (isScriptSource.Success)
-        {
-          var source = isScriptSource.Groups[1].Value;
-          lines.Add(!CdnLookup.ContainsKey(source)
-            ? line
-            : isScriptSource.Groups[0].ToString().Replace(source, CdnLookup[source]));
-          continue;
-        }
-
-        var isCssSource = css.Match(line);
-        if (isCssSource.Success)
-        {
-          var source = isCssSource.Groups[1].Value;
-          lines.Add(!CdnLookup.ContainsKey(source)
-            ? line
-            : isCssSource.Groups[0].ToString().Replace(source, CdnLookup[source]));
-          continue;
-        }
-
-        lines.Add(line);
-      }
-
-      return string.Join(Environment.NewLine, lines);
+      return string.Join(Environment.NewLine, resultlines);
     }
   }
 }
