@@ -13,7 +13,7 @@ using ServiceStack.WebHost.Endpoints.Support;
 
 namespace IctBaden.Stonehenge
 {
-  public class AppHost : AppHostHttpListenerBase
+  internal class AppHost : AppHostHttpListenerBase
   {
     public string Title { get; private set; }
     public string StartPage { get; private set; }

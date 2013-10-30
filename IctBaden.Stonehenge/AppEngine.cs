@@ -13,14 +13,10 @@ namespace IctBaden.Stonehenge
     public Point WindowSize { get; set; }
     private readonly int port;
     private AppHost host;
+    private string listeningOn;
 
     public event Action<AppSession> NewSession;
 
-    public string UserRole
-    {
-      get { return (host != null) ? host.UserRole : null; }
-      set { if (host != null) host.UserRole = value; }
-    }
     public void Redirect(string page)
     {
       if (host != null) 
@@ -41,7 +37,7 @@ namespace IctBaden.Stonehenge
 
     public void Run(bool newWindow)
     {
-      var listeningOn = string.Format("http://*:{0}/", port);
+      listeningOn = string.Format("http://*:{0}/", port);
       host = new AppHost(Title, StartPage);
       host.Init();
       try
@@ -62,22 +58,82 @@ namespace IctBaden.Stonehenge
       if (!newWindow)
         return;
 
-      
+      var window = ShowWindowChrome() ||
+                   ShowWindowInternetExplorer() ||
+                   ShowWindowFirefox() ||
+                   ShowWindowSafari();
+    }
+
+    private bool ShowWindowChrome()
+    {
       var cmd = Environment.OSVersion.Platform == PlatformID.Unix ? "chromium-browser" : "chrome.exe";
       var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
 
       var dir = Directory.CreateDirectory(path);
-      var parameter = string.Format("--app=http://localhost:{0}/App/index.html?title={1} --app-window-size={2},{3} --disable-translate --user-data-dir=\"{4}\"",
-        port, Title, WindowSize.X, WindowSize.Y, path);
+      var parameter =
+        string.Format(
+          "--app=http://localhost:{0}/App/index.html?title={1} --app-window-size={2},{3} --disable-translate --user-data-dir=\"{4}\"",
+          port, Title, WindowSize.X, WindowSize.Y, path);
       var ui = Process.Start(cmd, parameter);
       if (ui == null)
       {
-        Console.WriteLine("AppHost failed to create UI");
-        return;
+        return false;
       }
       Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
       ui.WaitForExit();
       dir.Delete(true);
+      return true;
+    }
+
+    private bool ShowWindowInternetExplorer()
+    {
+      if (Environment.OSVersion.Platform == PlatformID.Unix)
+        return false;
+
+      const string cmd = "iexplore.exe";
+      var parameter = string.Format("-private http://localhost:{0}/App/index.html?title={1}", port, Title);
+      var ui = Process.Start(cmd, parameter);
+      if (ui == null)
+      {
+        return false;
+      }
+      Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
+      ui.WaitForExit();
+      return true;
+    }
+
+    private bool ShowWindowFirefox()
+    {
+      if (Environment.OSVersion.Platform == PlatformID.Unix)
+        return false;
+
+      const string cmd = "firefox.exe";
+      var parameter = string.Format("http://localhost:{0}/App/index.html?title={1} -width {2} -height {3}", port, Title, WindowSize.X, WindowSize.Y);
+      var ui = Process.Start(cmd, parameter);
+      if (ui == null)
+      {
+        return false;
+      }
+      Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
+      ui.WaitForExit();
+      return true;
+    }
+
+    private bool ShowWindowSafari()
+    {
+      if (Environment.OSVersion.Platform == PlatformID.Unix)
+        return false;
+
+      const string cmd = "safari.exe";
+      var parameter = string.Format("-url http://localhost:{0}/App/index.html?title={1} -width {2} -height {3}", port, Title, WindowSize.X, WindowSize.Y);
+      var ui = Process.Start(cmd, parameter);
+      if (ui == null)
+      {
+        return false;
+      }
+      Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
+      ui.WaitForExit();
+      return true;
     }
 
     private void OnNewSession(AppSession session)
