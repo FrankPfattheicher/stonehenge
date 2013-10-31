@@ -6,13 +6,12 @@ namespace IctBaden.Stonehenge.Services
 {
   internal static class ResourceLoader
   {
-    private const string BaseName = "IctBaden.Stonehenge.";
     private static readonly Dictionary<string, string> Texts = new Dictionary<string, string>();
     private static readonly Dictionary<string, byte[]> Binaries = new Dictionary<string, byte[]>();
 
     public static string LoadText(string filePath, string resourcePath, string name)
     {
-      var resourceName = (BaseName + resourcePath.Replace(Path.DirectorySeparatorChar, '.') + "." + name).Replace("..", ".");
+      var resourceName = (resourcePath.Replace(Path.DirectorySeparatorChar, '.') + "." + name).Replace("..", ".");
 
       if (Texts.ContainsKey(resourceName))
       {
@@ -29,16 +28,19 @@ namespace IctBaden.Stonehenge.Services
         return text;
       }
 
-      var assembly = Assembly.GetExecutingAssembly();
-      using (var stream = assembly.GetManifestResourceStream(resourceName))
+      var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly(), Assembly.GetEntryAssembly()};
+      foreach (var assembly in assemblies)
       {
-        if (stream != null)
+        using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "." + resourceName))
         {
-          using (var reader = new StreamReader(stream))
+          if (stream != null)
           {
-            text = reader.ReadToEnd();
-            Texts.Add(resourceName, text);
-            return text;
+            using (var reader = new StreamReader(stream))
+            {
+              text = reader.ReadToEnd();
+              Texts.Add(resourceName, text);
+              return text;
+            }
           }
         }
       }
@@ -48,7 +50,7 @@ namespace IctBaden.Stonehenge.Services
 
     public static byte[] LoadBinary(string filePath, string resourcePath, string name)
     {
-      var resourceName = BaseName + resourcePath.Replace('\\', '.') + "." + name;
+      var resourceName = (resourcePath.Replace('\\', '.') + "." + name).Replace("..", ".");
 
       if (Binaries.ContainsKey(resourceName))
       {
@@ -65,16 +67,19 @@ namespace IctBaden.Stonehenge.Services
         return data;
       }
 
-      var assembly = Assembly.GetExecutingAssembly();
-      using (var stream = assembly.GetManifestResourceStream(resourceName))
+      var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly(), Assembly.GetEntryAssembly()};
+      foreach (var assembly in assemblies)
       {
-        if (stream != null)
+        using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "." + resourceName))
         {
-          using (var reader = new BinaryReader(stream))
+          if (stream != null)
           {
-            data = reader.ReadBytes((int)stream.Length);
-            Binaries.Add(resourceName, data);
-            return data;
+            using (var reader = new BinaryReader(stream))
+            {
+              data = reader.ReadBytes((int) stream.Length);
+              Binaries.Add(resourceName, data);
+              return data;
+            }
           }
         }
       }

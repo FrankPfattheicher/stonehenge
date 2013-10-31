@@ -25,6 +25,11 @@ namespace IctBaden.Stonehenge.Services
                     
                 };
 
+    public AppFileService()
+    {
+      UserPages.Init(RootPath);
+    }
+
     public object Any(AppFile request)
     {
       return "Any";
@@ -66,14 +71,14 @@ namespace IctBaden.Stonehenge.Services
       }
       else
       {
-        var vmPath = Path.ChangeExtension(fullPath, ".html");
-        if ((ext != ".js") || !File.Exists(vmPath))
+        var vmPath = Path.GetFileNameWithoutExtension(fullPath) + ".html";
+        text = ResourceLoader.LoadText(request.BasePath(RootPath), request.BasePath(""), vmPath);
+
+        if ((ext != ".js") || string.IsNullOrEmpty(text))
         {
           Debug.WriteLine("AppFileService NOT FOUND:" + request.FullPath(""));
           return new HttpResult(fullPath, HttpStatusCode.NotFound);
         }
-
-        text = File.ReadAllText(vmPath);
 
         string vmName;
         if (text.StartsWith(@"<!--ViewModel:"))
@@ -127,7 +132,7 @@ namespace IctBaden.Stonehenge.Services
             var host = GetResolver() as AppHost;
             if (host != null)
               text = text.Replace("%TITLE%", host.Title);
-            text = UserPages.InsertUserPages(RootPath, text);
+            text = UserPages.InsertUserPages(text);
           }
           break;
       }
