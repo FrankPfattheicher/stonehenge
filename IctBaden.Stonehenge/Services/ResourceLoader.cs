@@ -12,7 +12,7 @@ namespace IctBaden.Stonehenge.Services
 
     public static string LoadText(string filePath, string resourcePath, string name)
     {
-      var resourceName = BaseName + resourcePath.Replace('\\', '.') + "." + name;
+      var resourceName = (BaseName + resourcePath.Replace(Path.DirectorySeparatorChar, '.') + "." + name).Replace("..", ".");
 
       if (Texts.ContainsKey(resourceName))
       {
