@@ -37,6 +37,7 @@ Features
 * WPF like ViewModels
 * No JavaScript coding necessary
 * All controls usable using knockout bindings
+* Development environments: VS201, VS2013, MonoDevelop, XamarinStudio
 
 Known bugs
 ----------
@@ -44,16 +45,17 @@ Known bugs
 
 TODO
 ----
-* Widgets
+* VisualStudio templates
 * More controls
+* Widgets
+* Documentation
 * Kiosk runner for more browsers
 * localization support
 * NUGET package
-* VisualStudio templates
-* Documentation
 
 Planned Improvements
 --------------------
+* single responsible refactoring to isolate ServiceStack
 * Replace long running polls by modern communication
 	as soon as ServiceStack (and IE) supports it
 
