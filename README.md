@@ -2,7 +2,8 @@ stonehenge
 ==========
 An open source .NET Framework to use Web UI technologies for desktop and/or web applications.
 
-New in version 0.6: CDN support to improve loading speed.
+New in version 0.7: Additional CDN support for css files.
+                    Support for more browsers (non kiosk mode).
 
 Motivation
 ----------

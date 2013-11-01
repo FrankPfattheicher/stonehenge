@@ -64,6 +64,15 @@ namespace IctBaden.Stonehenge
                    ShowWindowSafari();
     }
 
+    public void Terminate()
+    {
+      if (host == null)
+        return;
+
+      host.Dispose();
+      host = null;
+    }
+
     private bool ShowWindowChrome()
     {
       var cmd = Environment.OSVersion.Platform == PlatformID.Unix ? "chromium-browser" : "chrome.exe";
