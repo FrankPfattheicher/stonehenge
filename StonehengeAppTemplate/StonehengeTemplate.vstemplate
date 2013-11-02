@@ -1,0 +1,46 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>Stonehenge Application</Name>
+    <Description>A project for creating an application that uses the stonehenge framework</Description>
+    <ProjectType>CSharp</ProjectType>
+    <ProjectSubType>
+    </ProjectSubType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>StonehengeApp</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>__TemplateIcon.ico</Icon>
+  </TemplateData>
+  <TemplateContent>
+    <Project TargetFileName="StonehengeApp.csproj" File="StonehengeApp.csproj" ReplaceParameters="true">
+      <Folder Name="App" TargetFolderName="App">
+        <ProjectItem ReplaceParameters="true" TargetFileName="shell.html">shell.html</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="start.html">start.html</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="App.config">App.config</ProjectItem>
+      <Folder Name="lib" TargetFolderName="lib">
+        <ProjectItem ReplaceParameters="false" TargetFileName="IctBaden.Stonehenge.dll">IctBaden.Stonehenge.dll</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="ServiceStack.Common.dll">ServiceStack.Common.dll</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="ServiceStack.Common.xml">ServiceStack.Common.xml</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="ServiceStack.dll">ServiceStack.dll</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="ServiceStack.Interfaces.dll">ServiceStack.Interfaces.dll</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="ServiceStack.Interfaces.xml">ServiceStack.Interfaces.xml</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="ServiceStack.ServiceInterface.dll">ServiceStack.ServiceInterface.dll</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="ServiceStack.Text.dll">ServiceStack.Text.dll</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="ServiceStack.Text.xml">ServiceStack.Text.xml</ProjectItem>
+        <ProjectItem ReplaceParameters="false" TargetFileName="ServiceStack.xml">ServiceStack.xml</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Program.cs">Program.cs</ProjectItem>
+      <Folder Name="Properties" TargetFolderName="Properties">
+        <ProjectItem ReplaceParameters="true" TargetFileName="AssemblyInfo.cs">AssemblyInfo.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Resources.resx">Resources.resx</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Resources.Designer.cs">Resources.Designer.cs</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Settings.settings">Settings.settings</ProjectItem>
+        <ProjectItem ReplaceParameters="true" TargetFileName="Settings.Designer.cs">Settings.Designer.cs</ProjectItem>
+      </Folder>
+      <ProjectItem ReplaceParameters="true" TargetFileName="StartVm.cs">StartVm.cs</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

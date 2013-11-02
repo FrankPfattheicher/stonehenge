@@ -4,6 +4,7 @@ An open source .NET Framework to use Web UI technologies for desktop and/or web 
 
 New in version 0.7: Additional CDN support for css files.
                     Support for more browsers (non kiosk mode).
+					VisualStudio template.
 
 Motivation
 ----------
@@ -45,7 +46,8 @@ Known bugs
 
 TODO
 ----
-* VisualStudio templates
+* Durandal 2.0
+* include toastr
 * More controls
 * Widgets
 * Documentation
@@ -56,6 +58,8 @@ TODO
 Planned Improvements
 --------------------
 * single responsible refactoring to isolate ServiceStack
+* Replace ServiceStack due to V4.0 is no more open source
+* Use self hostet webkit
 * Replace long running polls by modern communication
 	as soon as ServiceStack (and IE) supports it
 
