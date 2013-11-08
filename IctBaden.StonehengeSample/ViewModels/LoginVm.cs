@@ -1,6 +1,6 @@
 ﻿using IctBaden.Stonehenge;
 
-namespace IctBaden.StonehengeSample
+namespace IctBaden.StonehengeSample.ViewModels
 {
   public class LoginVm : ActiveViewModel
   {

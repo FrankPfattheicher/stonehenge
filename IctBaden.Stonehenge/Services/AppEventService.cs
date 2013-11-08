@@ -73,6 +73,7 @@ namespace IctBaden.Stonehenge.Services
         };
         var httpResult = new HttpResult(compressed.Contents, "application/json");
         httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
+        httpResult.Headers.Add("Expires", "0");
         return httpResult;
       }
       return new HttpResult(values, "application/json");

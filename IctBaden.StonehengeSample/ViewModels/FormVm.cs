@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using IctBaden.Stonehenge;
 
-namespace IctBaden.StonehengeSample
+namespace IctBaden.StonehengeSample.ViewModels
 {
   public class FormVm : ActiveViewModel
   {

@@ -42,17 +42,23 @@ namespace IctBaden.Stonehenge.Services
 
       EventsClear();
 
+      HttpResult httpResult;
+
       if (!string.IsNullOrEmpty(RequestContext.CompressionType))
       {
         var compressed = new CompressedResult(Encoding.UTF8.GetBytes(result), RequestContext.CompressionType)
           {
             ContentType = "application/json"
           };
-        var httpResult = new HttpResult(compressed.Contents, "application/json");
+        httpResult = new HttpResult(compressed.Contents, "application/json");
         httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
+        httpResult.Headers.Add("Expires", "0");
         return httpResult;
       }
-      return new HttpResult(result, "application/json");
+
+      httpResult = new HttpResult(result, "application/json");
+      httpResult.Headers.Add("Expires", "0");
+      return httpResult;
     }
 
     public object Post(AppViewModel request)

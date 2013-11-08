@@ -40,6 +40,8 @@ namespace IctBaden.Stonehenge.Services
       GetSession();
       EventsClear();
 
+      HttpResult httpResult;
+
       var path = request.FullPath("");
       Debug.WriteLine("FileService:" + path);
 
@@ -55,7 +57,9 @@ namespace IctBaden.Stonehenge.Services
       if (type.StartsWith("image"))
       {
         var data = ResourceLoader.LoadBinary(request.BasePath(RootPath), request.BasePath(""), request.FileName);
-        return new HttpResult(data, type);
+        httpResult = new HttpResult(data, type);
+        httpResult.Headers.Add("Expires", "0");
+        return httpResult;
       }
 
       var text = ResourceLoader.LoadText(request.BasePath(RootPath), request.BasePath(""), request.FileName);
@@ -77,7 +81,9 @@ namespace IctBaden.Stonehenge.Services
         if ((ext != ".js") || string.IsNullOrEmpty(text))
         {
           Debug.WriteLine("AppFileService NOT FOUND:" + request.FullPath(""));
-          return new HttpResult(fullPath, HttpStatusCode.NotFound);
+          httpResult = new HttpResult(fullPath, HttpStatusCode.NotFound);
+          httpResult.Headers.Add("Expires", "0");
+          return httpResult;
         }
 
         string vmName;
@@ -144,8 +150,9 @@ namespace IctBaden.Stonehenge.Services
         return new HttpResult(text, type);
 
       var compressed = new CompressedResult(Encoding.UTF8.GetBytes(text), RequestContext.CompressionType) { ContentType = type };
-      var httpResult = new HttpResult(compressed.Contents, type);
+      httpResult = new HttpResult(compressed.Contents, type);
       httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
+      httpResult.Headers.Add("Expires", "0");
       return httpResult;
     }
 

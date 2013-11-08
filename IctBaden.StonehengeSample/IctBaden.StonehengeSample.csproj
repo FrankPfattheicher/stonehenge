@@ -50,11 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormVm.cs" />
-    <Compile Include="AboutVm.cs" />
-    <Compile Include="GraphVm.cs" />
-    <Compile Include="InvisibleVm.cs" />
-    <Compile Include="LoginVm.cs" />
+    <Compile Include="ViewModels\FormVm.cs" />
+    <Compile Include="ViewModels\AboutVm.cs" />
+    <Compile Include="ViewModels\GraphVm.cs" />
+    <Compile Include="ViewModels\InvisibleVm.cs" />
+    <Compile Include="ViewModels\LoginVm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="app.config" />

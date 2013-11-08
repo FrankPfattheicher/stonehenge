@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace IctBaden.StonehengeSample
+namespace IctBaden.StonehengeSample.ViewModels
 {
   public class AboutVm
   {
