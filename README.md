@@ -2,7 +2,9 @@ stonehenge
 ==========
 An open source .NET Framework to use Web UI technologies for desktop and/or web applications.
 
-New in version 0.6: CDN support to improve loading speed.
+New in version 0.7: Additional CDN support for css files.
+                    Support for more browsers (non kiosk mode).
+					VisualStudio template.
 
 Motivation
 ----------
@@ -36,6 +38,7 @@ Features
 * WPF like ViewModels
 * No JavaScript coding necessary
 * All controls usable using knockout bindings
+* Development environments: VS201, VS2013, MonoDevelop, XamarinStudio
 
 Known bugs
 ----------
@@ -43,16 +46,20 @@ Known bugs
 
 TODO
 ----
-* Widgets
+* Durandal 2.0
+* include toastr
 * More controls
+* Widgets
+* Documentation
 * Kiosk runner for more browsers
 * localization support
 * NUGET package
-* VisualStudio templates
-* Documentation
 
 Planned Improvements
 --------------------
+* single responsible refactoring to isolate ServiceStack
+* Replace ServiceStack due to V4.0 is no more open source
+* Use self hostet webkit
 * Replace long running polls by modern communication
 	as soon as ServiceStack (and IE) supports it
 

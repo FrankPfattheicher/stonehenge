@@ -6,11 +6,17 @@ namespace IctBaden.Stonehenge
   public class AppSession
   {
     internal ISession Session { get; set; }
+    public DateTime Established { get; set; }
     public string HostDomain { get; set; }
     public string UserAgent { get; set; }
     public DateTime ConnectedSince { get; set; }
     public long Id { get; set; }
     private static long nextId;
+
+    public TimeSpan Livetime
+    {
+      get { return DateTime.UtcNow - Established; }
+    }
 
     public string SubDomain
     {
@@ -28,6 +34,8 @@ namespace IctBaden.Stonehenge
 
     internal AppSession(string hostDomain, string hostUrl, string userAgent, ISession session)
     {
+      Established = DateTime.UtcNow;
+
       if (!string.IsNullOrEmpty(hostUrl))
       {
         var uri = new UriBuilder(hostUrl);

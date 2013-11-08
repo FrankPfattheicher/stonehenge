@@ -114,20 +114,20 @@ namespace IctBaden.Stonehenge.Services
         }
       }
 
-      switch (path)
+      switch (path.Replace(Path.DirectorySeparatorChar, '.'))
       {
-        case @"App\index.html":
+        case @"App.index.html":
           text = UserStyleSheets.InsertUserCssLinks(RootPath, text, GetSession().SubDomain);
           text = ContentDeliveryNetworkSupport.RersolveHosts(text);
           break;
-        case @"App\shell.js":
+        case @"App.shell.js":
           {
             var host = GetResolver() as AppHost;
             if (host != null)
               text = text.Replace("%STARTPAGE%", host.StartPage);
           }
           break;
-        case @"App\main.js":
+        case @"App.main.js":
           {
             var host = GetResolver() as AppHost;
             if (host != null)
