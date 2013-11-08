@@ -34,6 +34,13 @@ namespace IctBaden.StonehengeSample
     {
       MessageBox("Demo", "Hello " + Name);
     }
+
+    [ActionMethod]
+    public void LoginMarvin(AppSession session)
+    {
+      
+    }
+
     public bool CanSayHello
     { get { return !string.IsNullOrEmpty(Name); } }
 
