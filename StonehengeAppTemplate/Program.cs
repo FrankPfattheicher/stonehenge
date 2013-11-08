@@ -1,5 +1,4 @@
-﻿using System;
-using IctBaden.Stonehenge;
+﻿using IctBaden.Stonehenge;
 
 namespace StonehengeApp
 {
@@ -9,7 +8,6 @@ namespace StonehengeApp
     /// <summary>
     /// The main entry point for the application.
     /// </summary>
-    [STAThread]
     static void Main()
     {
       App = new AppEngine("$projectname$", "start");
