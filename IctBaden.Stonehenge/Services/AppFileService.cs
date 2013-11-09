@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using IctBaden.Stonehenge.Creators;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
+using ServiceStack.WebHost.Endpoints.Extensions;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -124,7 +126,10 @@ namespace IctBaden.Stonehenge.Services
       {
         case @"App.index.html":
           text = UserStyleSheets.InsertUserCssLinks(RootPath, text, GetSession().SubDomain);
-          text = ContentDeliveryNetworkSupport.RersolveHosts(text);
+          if (!Request.IsLocal)
+          {
+            text = ContentDeliveryNetworkSupport.RersolveHosts(text);
+          }
           break;
         case @"App.shell.js":
           {
