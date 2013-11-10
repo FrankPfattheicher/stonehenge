@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using IctBaden.Stonehenge;
+using IctBaden.Stonehenge.Graph;
 
 namespace IctBaden.StonehengeSample.ViewModels
 {

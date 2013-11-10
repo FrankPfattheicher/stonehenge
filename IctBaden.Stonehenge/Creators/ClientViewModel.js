@@ -55,10 +55,11 @@ define(function (require) {
     viewAttached: function (view) {
       self = this;
       var ts = new Date().getTime();
+      var startPolling = function () { setTimeout(function () { poll_ViewModelName_Events(self, true); }, 100); };
       $.getJSON('/viewmodel/_ViewModelType_?ts=' + ts, function(data) {
-         set_ViewModelName_Data(self, true, data);
-         setTimeout(function () { poll_ViewModelName_Events(self, true); }, 100);
-       });
+        set_ViewModelName_Data(self, true, data);
+        startPolling();
+      });
     }
   };
 });

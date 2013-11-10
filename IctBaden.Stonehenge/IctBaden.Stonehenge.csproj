@@ -68,8 +68,8 @@
     <Compile Include="AppEngine.cs" />
     <Compile Include="CheckedItem.cs" />
     <Compile Include="Creators\ContentDeliveryNetworkSupport.cs" />
-    <Compile Include="GraphOptions.cs" />
-    <Compile Include="GraphSeries.cs" />
+    <Compile Include="Graph\GraphOptions.cs" />
+    <Compile Include="Graph\GraphSeries.cs" />
     <Compile Include="Services\AppEvent.cs" />
     <Compile Include="Services\AppEventService.cs" />
     <Compile Include="Services\AppFileService.cs" />
@@ -85,6 +85,9 @@
     <Compile Include="Creators\UserStyleSheets.cs" />
     <Compile Include="Services\ResourceLoader.cs" />
     <Compile Include="Services\RootRedirectHandler.cs" />
+    <Compile Include="Tree\TreeCheck.cs" />
+    <Compile Include="Tree\TreeNode.cs" />
+    <Compile Include="Tree\TreeSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="css\bootstrap-theme.css" />
@@ -93,6 +96,17 @@
     <EmbeddedResource Include="scripts\knockout-3.0.0.js" />
     <EmbeddedResource Include="scripts\require.min.js" />
     <EmbeddedResource Include="scripts\respond.js" />
+    <EmbeddedResource Include="css\zTreeStyle.css" />
+    <EmbeddedResource Include="scripts\jquery.ztree.core-3.5.js" />
+    <EmbeddedResource Include="scripts\jquery.ztree.core-3.5.min.js" />
+    <EmbeddedResource Include="scripts\jquery.ztree.excheck-3.5.js" />
+    <EmbeddedResource Include="scripts\jquery.ztree.excheck-3.5.min.js" />
+    <EmbeddedResource Include="scripts\jquery.ztree.exedit-3.5.js" />
+    <EmbeddedResource Include="scripts\jquery.ztree.exedit-3.5.min.js" />
+    <EmbeddedResource Include="scripts\jquery.ztree.exhide-3.5.js" />
+    <EmbeddedResource Include="scripts\jquery.ztree.exhide-3.5.min.js" />
+    <EmbeddedResource Include="css\img\zTreeStandard.png" />
+    <EmbeddedResource Include="css\img\line_conn.gif" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />

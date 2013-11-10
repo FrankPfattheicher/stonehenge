@@ -1,4 +1,5 @@
 ﻿using IctBaden.Stonehenge;
+using IctBaden.Stonehenge.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IctBaden.StonehengeTest

@@ -57,6 +57,7 @@
     <Compile Include="ViewModels\LoginVm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\TreeVm.cs" />
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +78,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
+    <EmbeddedResource Include="App\tree_user.js" />
+    <EmbeddedResource Include="App\tree.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

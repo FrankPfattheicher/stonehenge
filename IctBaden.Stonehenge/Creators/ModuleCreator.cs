@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using IctBaden.Stonehenge.Graph;
+using IctBaden.Stonehenge.Tree;
 using ServiceStack.Text;
 
 namespace IctBaden.Stonehenge.Creators
@@ -79,9 +81,19 @@ namespace IctBaden.Stonehenge.Creators
         setData.AppendLine(string.Format("if(data.{0} != null) viewmodel.{0}(data.{0});", propName));
       }
 
-      // plots
-      foreach (var prop in vmProps.Where(p => (p.PropertyType == typeof(GraphSeries[]) && p.Name.EndsWith("Data"))))
+      // trees
+      foreach (var prop in vmProps.Where(p => ((p.PropertyType == typeof(TreeNode[]) || (p.PropertyType == typeof(List<TreeNode>))) && p.Name.EndsWith("Data"))))
       {
+        // TODO: move this code to JS library
+        var propName = prop.Name.Substring(0, prop.Name.Length - 4);  // remove "Data"
+        setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ $.fn.zTree.init($('#{0}'), viewmodel.{0}Settings(), viewmodel.{0}Data()); }} catch(e) {{ }} }}", propName));
+        setData.AppendLine(string.Format("if(loading) {{ try {{ {0}Initialize(); }} catch(e) {{ }} }}", propName));
+      }
+
+      // plots
+      foreach (var prop in vmProps.Where(p => ((p.PropertyType == typeof(GraphSeries[]) || (p.PropertyType == typeof(List<GraphSeries>))) && p.Name.EndsWith("Data"))))
+      {
+        // TODO: move this code to JS library
         var propName = prop.Name.Substring(0, prop.Name.Length - 4);  // remove "Data"
         setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }}", propName));
         setData.AppendLine(string.Format("$('#{0}').resize(function() {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }});", propName));
