@@ -114,10 +114,11 @@ namespace IctBaden.Stonehenge.Services
           var vm = SetViewModelType(vmName);
           text = ModuleCreator.CreateFromViewModel(vm);
 
-          var userJsPath = fullPath.Replace(".js", "_user.js");
-          if (File.Exists(userJsPath))
+          var userJs = Path.GetFileName(fullPath.Replace(".js", "_user.js"));
+          var userjs = ResourceLoader.LoadText(request.BasePath(RootPath), request.BasePath(""), userJs);
+          if (userjs != null)
           {
-            text += File.ReadAllText(userJsPath);
+            text += userjs;
           }
         }
       }
