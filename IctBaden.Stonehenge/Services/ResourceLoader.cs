@@ -28,7 +28,7 @@ namespace IctBaden.Stonehenge.Services
         return text;
       }
 
-      var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly(), Assembly.GetEntryAssembly()};
+      var assemblies = new List<Assembly> {Assembly.GetEntryAssembly(), Assembly.GetExecutingAssembly()};
       foreach (var assembly in assemblies)
       {
         using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "." + resourceName))
@@ -67,7 +67,7 @@ namespace IctBaden.Stonehenge.Services
         return data;
       }
 
-      var assemblies = new List<Assembly> {Assembly.GetExecutingAssembly(), Assembly.GetEntryAssembly()};
+      var assemblies = new List<Assembly> {Assembly.GetEntryAssembly(), Assembly.GetExecutingAssembly()};
       foreach (var assembly in assemblies)
       {
         using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "." + resourceName))
