@@ -1,4 +1,7 @@
-﻿using IctBaden.Stonehenge;
+﻿using System;
+using System.Net.Mime;
+using System.Threading;
+using IctBaden.Stonehenge;
 
 namespace StonehengeApp
 {
@@ -11,7 +14,12 @@ namespace StonehengeApp
     static void Main()
     {
       App = new AppEngine("$projectname$", "start");
-      App.Run(true);
+      var asServer = Environment.CommandLine.Contains("/SVR");
+      App.Run(!asServer);
+      while (asServer && Thread.CurrentThread.IsAlive)
+      {
+        Thread.Sleep(1000);
+      }
     }
   }
 }
