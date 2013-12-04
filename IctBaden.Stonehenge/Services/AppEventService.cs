@@ -26,7 +26,7 @@ namespace IctBaden.Stonehenge.Services
 
       var values = new Dictionary<string, object>();
       var vm = ViewModel as ActiveViewModel;
-      if ((vm == null) || (vm.GetType().FullName != request.ViewModel))
+      if ((vm == null) || (vm.GetType().FullName != request.ViewModel) || !vm.SupportsEvents)
       {
         return new HttpResult("{}", "application/json");
       }

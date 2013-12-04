@@ -173,6 +173,8 @@ namespace IctBaden.Stonehenge
     internal IEnumerable<string> Models { get { return from model in ActiveModels select model.GetType().Name; } }
     [Browsable(false)]
     public AppSession Session;
+    [Browsable(false)]
+    public bool SupportsEvents;
 
     // ReSharper disable InconsistentNaming
     [Bindable(false)]
@@ -192,6 +194,7 @@ namespace IctBaden.Stonehenge
     }
     public ActiveViewModel(AppSession session)
     {
+      SupportsEvents = true;
       Session = session ?? new AppSession(string.Empty, string.Empty, string.Empty, null);
     }
 

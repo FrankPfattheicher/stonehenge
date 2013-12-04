@@ -26,23 +26,28 @@ namespace IctBaden.Stonehenge.Services
         {
           Debug.WriteLine(ex.Message);
         }
-        if (session == null)
-        {
-          session = new AppSession(Request.QueryString.Get("hostdomain"), Request.AbsoluteUri, Request.UserAgent, Session);
-          Session.Set("~session", session);
+        if (session != null) 
+          return session;
 
-          var host = GetResolver() as AppHost;
-          if (host != null)
-          {
-            host.OnSessionCreated(session);
-            if (host.HasSessionTimeout)
-            {
-              session.SetTerminator(this);
-              session.SetTimeout(host.SessionTimeout);
-              session.TimedOut += () => host.OnSessionTerminated(session);
-            }
-          }
-        }
+        session = new AppSession(Request.QueryString.Get("hostdomain"), Request.AbsoluteUri, Request.UserAgent, Session);
+        Session.Set("~session", session);
+
+        var host = GetResolver() as AppHost;
+        if (host == null) 
+          return session;
+
+        host.OnSessionCreated(session);
+        if (!host.HasSessionTimeout) 
+          return session;
+
+        session.SetTerminator(this);
+        session.SetTimeout(host.SessionTimeout);
+        session.TimedOut += () =>
+        {
+          Cache.FlushAll();
+          //Session.Set("~session", (object)null);
+          host.OnSessionTerminated(session);
+        };
       }
       return session;
     }

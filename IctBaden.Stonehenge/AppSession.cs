@@ -40,6 +40,8 @@ namespace IctBaden.Stonehenge
       }
       set
       {
+        if (this[key] == value) 
+          return;
         userData[key] = value;
         NotifyPropertyChanged(key);
       }
@@ -67,7 +69,7 @@ namespace IctBaden.Stonehenge
       SessionTimeout = timeout;
       if (Math.Abs(timeout.TotalMilliseconds) > 0.1)
       {
-        pollSessionTimeout = new Timer(CheckSessionTimeout, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+        pollSessionTimeout = new Timer(CheckSessionTimeout, null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
       }
     }
 
