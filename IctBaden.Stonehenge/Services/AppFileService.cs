@@ -4,12 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.Remoting.Contexts;
 using System.Text;
 using IctBaden.Stonehenge.Creators;
 using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
-using ServiceStack.WebHost.Endpoints.Extensions;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -39,7 +36,8 @@ namespace IctBaden.Stonehenge.Services
 
     public object Get(AppFile request)
     {
-      GetSession();
+      var appSession = GetSession();
+      appSession.Accessed();
       EventsClear();
 
       HttpResult httpResult;
@@ -126,7 +124,7 @@ namespace IctBaden.Stonehenge.Services
       switch (path.Replace(Path.DirectorySeparatorChar, '.'))
       {
         case @"App.index.html":
-          text = UserStyleSheets.InsertUserCssLinks(RootPath, text, GetSession().SubDomain);
+          text = UserStyleSheets.InsertUserCssLinks(RootPath, text, appSession.SubDomain);
           if (!Request.IsLocal)
           {
             text = ContentDeliveryNetworkSupport.RersolveHosts(text);
@@ -148,9 +146,6 @@ namespace IctBaden.Stonehenge.Services
           }
           break;
       }
-
-      var userSession = Request.GetSession();
-      Request.SaveSession(userSession, TimeSpan.FromMinutes(10));
 
       if (string.IsNullOrEmpty(RequestContext.CompressionType)) 
         return new HttpResult(text, type);

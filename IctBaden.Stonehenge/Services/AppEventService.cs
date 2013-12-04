@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -17,6 +16,9 @@ namespace IctBaden.Stonehenge.Services
 
     public object Get(AppEvent request)
     {
+      var appSession = GetSession();
+      appSession.Accessed();
+
       Debug.WriteLine("EventService:" + request.ViewModel);
 
       EventRelease.WaitOne(MaxDelay);

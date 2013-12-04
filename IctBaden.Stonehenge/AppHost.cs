@@ -19,7 +19,11 @@ namespace IctBaden.Stonehenge
     public string StartPage { get; private set; }
     public string Redirect { get; set; }
 
-    public event Action<AppSession> NewSession;
+    public TimeSpan SessionTimeout { get; set; }
+    public bool HasSessionTimeout { get { return SessionTimeout.TotalMilliseconds > 0.1; }}
+
+    public event Action<AppSession> SessionCreated;
+    public event Action<AppSession> SessionTerminated;
 
     public AppHost(string title, string startPage)
       : base(title, typeof(AppHost).Assembly)
@@ -28,9 +32,16 @@ namespace IctBaden.Stonehenge
       StartPage = startPage;
     }
 
-    internal void OnNewSession(AppSession session)
+    internal void OnSessionCreated(AppSession session)
     {
-      var handler = NewSession;
+      var handler = SessionCreated;
+      if (handler == null)
+        return;
+      handler(session);
+    }
+    internal void OnSessionTerminated(AppSession session)
+    {
+      var handler = SessionTerminated;
       if (handler == null)
         return;
       handler(session);

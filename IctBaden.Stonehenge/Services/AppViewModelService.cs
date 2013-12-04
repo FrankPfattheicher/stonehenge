@@ -12,6 +12,9 @@ namespace IctBaden.Stonehenge.Services
   {
     public object Get(AppViewModel request)
     {
+      var appSession = GetSession();
+      appSession.Accessed();
+
       Debug.WriteLine("ViewModelService:" + request.ViewModel);
 
       var vm = SetViewModelType(request.ViewModel);

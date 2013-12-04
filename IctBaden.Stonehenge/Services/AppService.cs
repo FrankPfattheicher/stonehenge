@@ -34,7 +34,13 @@ namespace IctBaden.Stonehenge.Services
           var host = GetResolver() as AppHost;
           if (host != null)
           {
-            host.OnNewSession(session);
+            host.OnSessionCreated(session);
+            if (host.HasSessionTimeout)
+            {
+              session.SetTerminator(this);
+              session.SetTimeout(host.SessionTimeout);
+              session.TimedOut += () => host.OnSessionTerminated(session);
+            }
           }
         }
       }

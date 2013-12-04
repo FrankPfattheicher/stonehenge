@@ -70,6 +70,7 @@
     <Compile Include="Creators\ContentDeliveryNetworkSupport.cs" />
     <Compile Include="Graph\GraphOptions.cs" />
     <Compile Include="Graph\GraphSeries.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Services\AppEvent.cs" />
     <Compile Include="Services\AppEventService.cs" />
     <Compile Include="Services\AppFileService.cs" />

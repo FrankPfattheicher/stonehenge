@@ -8,14 +8,19 @@ namespace IctBaden.Stonehenge
 {
   public class AppEngine
   {
+    public Point WindowSize { get; set; }
     public string Title { get; set; }
     public string StartPage { get; set; }
-    public Point WindowSize { get; set; }
+
+    public TimeSpan SessionTimeout { get; set; }
+    public bool HasSessionTimeout { get { return SessionTimeout.TotalMilliseconds > 0.1; } }
+
     private readonly int port;
     private AppHost host;
     private string listeningOn;
 
-    public event Action<AppSession> NewSession;
+    public event Action<AppSession> SessionCreated;
+    public event Action<AppSession> SessionTerminated;
 
     public void Redirect(string page)
     {
@@ -38,7 +43,7 @@ namespace IctBaden.Stonehenge
     public void Run(bool newWindow)
     {
       listeningOn = string.Format("http://*:{0}/", port);
-      host = new AppHost(Title, StartPage);
+      host = new AppHost(Title, StartPage) {SessionTimeout = SessionTimeout};
       host.Init();
       try
       {
@@ -53,7 +58,8 @@ namespace IctBaden.Stonehenge
         throw;
       }
 
-      host.NewSession += OnNewSession;
+      host.SessionCreated += OnSessionCreated;
+      host.SessionTerminated += OnSessionTerminated;
 
       if (!newWindow)
         return;
@@ -145,9 +151,16 @@ namespace IctBaden.Stonehenge
       return true;
     }
 
-    private void OnNewSession(AppSession session)
+    private void OnSessionCreated(AppSession session)
     {
-      var handler = NewSession;
+      var handler = SessionCreated;
+      if (handler == null)
+        return;
+      handler(session);
+    }
+    private void OnSessionTerminated(AppSession session)
+    {
+      var handler = SessionTerminated;
       if (handler == null)
         return;
       handler(session);
