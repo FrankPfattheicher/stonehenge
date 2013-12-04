@@ -108,6 +108,8 @@
     <EmbeddedResource Include="scripts\jquery.ztree.exhide-3.5.min.js" />
     <EmbeddedResource Include="css\img\zTreeStandard.png" />
     <EmbeddedResource Include="css\img\line_conn.gif" />
+    <EmbeddedResource Include="scripts\jquery.ba-throttle-debounce.js" />
+    <EmbeddedResource Include="scripts\jquery.ba-throttle-debounce.min.js" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />
