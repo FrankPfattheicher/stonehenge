@@ -79,17 +79,18 @@ namespace IctBaden.Stonehenge.Services
         }
       }
 
+      var returnData = true;
       var mi = vm.GetType().GetMethod(request.Source);
       if (mi != null)
       {
-        if (mi.GetParameters().Length == 0)
+        var parameters = (mi.GetParameters().Length == 0) ? new object[0] : new object[] { Request.FormData["_stonehenge_CommandParameter_"] };
+        if (mi.ReturnType == typeof(bool))
         {
-          mi.Invoke(vm, new object[0]);
+          returnData = (bool)mi.Invoke(vm, parameters);
         }
         else
         {
-          var parameter = Request.FormData["_stonehenge_CommandParameter_"];
-          mi.Invoke(vm, new object[] { parameter });
+          mi.Invoke(vm, parameters);
         }
       }
 
@@ -105,7 +106,7 @@ namespace IctBaden.Stonehenge.Services
         }
       }
 
-      return Get(request);
+      return returnData ? Get(request) : new HttpResult("{}", "application/json");
     }
 
     private static IEnumerable<string> SerializeObject(object obj)

@@ -64,10 +64,13 @@ namespace IctBaden.Stonehenge
       if (!newWindow)
         return;
 
-      var window = ShowWindowChrome() ||
-                   ShowWindowInternetExplorer() ||
-                   ShowWindowFirefox() ||
-                   ShowWindowSafari();
+      if (!ShowWindowChrome() &&
+          !ShowWindowInternetExplorer() &&
+          !ShowWindowFirefox() &&
+          !ShowWindowSafari())
+      {
+        Debug.WriteLine("Could not create main window");
+      }
     }
 
     public void Terminate()
