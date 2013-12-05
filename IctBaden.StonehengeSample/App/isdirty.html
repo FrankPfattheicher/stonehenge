@@ -1,0 +1,45 @@
+﻿<!--ViewModel:IsDirtyVm-->
+<form class="form-inline" >
+
+  <table style="border-collapse:collapse;">
+    <tr>
+      <td >Name</td>
+      <td>
+        <input type="text" data-bind="value: Name" />
+      </td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td >Address</td>
+      <td>
+        <input type="text" data-bind="value: Address" /></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td >Zip City</td>
+      <td>
+        <input type="text" data-bind="value: Zip" /><input type="text" data-bind="value: City" /></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <button type="submit" class="btn btn-default" 
+        data-bind="click: Save, enable: IsDirty">
+          Save</button>
+        </td>
+      <td>&nbsp;</td>
+      <td>button enabled on local changes</td>
+    </tr>
+  </table>
+  
+</form>

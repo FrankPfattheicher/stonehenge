@@ -138,14 +138,8 @@ namespace IctBaden.Stonehenge.Creators
         {
           defaultValue = vmType.GetProperty(propName).GetValue(viewModel, new object[0]);
         }
-        if (defaultValue != null)
-        {
-          declareData.AppendLine(string.Format("var {0} = ko.observable({1});", propName, JsonSerializer.SerializeToString(defaultValue)));
-        }
-        else
-        {
-          declareData.AppendLine(string.Format("var {0} = ko.observable();", propName));
-        }
+        declareData.AppendLine(string.Format("var {0} = ko.observable({1});", propName, (defaultValue != null) ? JsonSerializer.SerializeToString(defaultValue) : string.Empty));
+        declareData.AppendLine(string.Format("{0}.subscribe(function(newval){{IsDirty(true);}});", propName));
       }
       var returnData = new StringBuilder();
       foreach (var propName in assignPropNames)

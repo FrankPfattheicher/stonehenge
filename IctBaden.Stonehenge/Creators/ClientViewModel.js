@@ -26,6 +26,7 @@ function set_ViewModelName_Data(viewmodel, loading, data) {
   {
     viewmodel.InitialLoading(false);
     viewmodel.IsLoading(false);
+    viewmodel.IsDirty(false);
   }
 }
 function post_ViewModelName_Data(viewmodel, sender, method, param) {
@@ -41,11 +42,13 @@ define(function (require) {
   self = this;
   var InitialLoading = ko.observable(true);
   var IsLoading = ko.observable(true);
+  var IsDirty = ko.observable(false);
   _DeclareData_();
   return {
     _ReturnData_: 0,
     InitialLoading: InitialLoading,
     IsLoading: IsLoading,
+    IsDirty: IsDirty,
     _ActionMethods_: 0,
     activate: function (data) {
       self = this;

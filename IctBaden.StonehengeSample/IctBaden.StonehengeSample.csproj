@@ -54,6 +54,7 @@
     <Compile Include="ViewModels\AboutVm.cs" />
     <Compile Include="ViewModels\GraphVm.cs" />
     <Compile Include="ViewModels\InvisibleVm.cs" />
+    <Compile Include="ViewModels\IsDirtyVm.cs" />
     <Compile Include="ViewModels\LoginVm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
+    <EmbeddedResource Include="App\isdirty.html" />
     <EmbeddedResource Include="App\tree_user.js" />
     <EmbeddedResource Include="App\tree.html" />
   </ItemGroup>
