@@ -43,26 +43,27 @@ define(function (require) {
   var InitialLoading = ko.observable(true);
   var IsLoading = ko.observable(true);
   var IsDirty = ko.observable(false);
-  _DeclareData_();
-  return {
+   _DeclareData_();
+  var viewModel = {
     _ReturnData_: 0,
     InitialLoading: InitialLoading,
     IsLoading: IsLoading,
     IsDirty: IsDirty,
     _ActionMethods_: 0,
-    activate: function (data) {
+    activate: function(data) {
       self = this;
       if (activation_data == null) activation_data = data;
       self.IsLoading(true);
     },
-    viewAttached: function (view) {
+    viewAttached: function(view) {
       self = this;
       var ts = new Date().getTime();
-      var startPolling = function () { setTimeout(function () { poll_ViewModelName_Events(self, true); }, 100); };
+      var startPolling = function() { setTimeout(function() { poll_ViewModelName_Events(self, true); }, 100); };
       $.getJSON('/viewmodel/_ViewModelType_?ts=' + ts, function(data) {
         set_ViewModelName_Data(self, true, data);
         startPolling();
       });
     }
   };
+  return viewModel;
 });
