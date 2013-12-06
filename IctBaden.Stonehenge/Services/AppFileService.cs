@@ -109,8 +109,15 @@ namespace IctBaden.Stonehenge.Services
 
         if (!string.IsNullOrEmpty(vmName))
         {
-          var vm = SetViewModelType(vmName);
-          text = ModuleCreator.CreateFromViewModel(vm);
+          try
+          {
+            var vm = SetViewModelType(vmName);
+            text = ModuleCreator.CreateFromViewModel(vm);
+          }
+          catch (Exception ex)
+          {
+            text = ex.Message + Environment.NewLine + ex.StackTrace;
+          }
 
           var userJs = Path.GetFileName(fullPath.Replace(".js", "_user.js"));
           var userjs = ResourceLoader.LoadText(request.BasePath(RootPath), request.BasePath(""), userJs);
