@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 
 namespace IctBaden.Stonehenge.Graph
@@ -185,7 +184,7 @@ namespace IctBaden.Stonehenge.Graph
         }
         catch (Exception ex)
         {
-          Debug.WriteLine("Could not serialize property {0}: {1}", property.Name, ex.Message);
+          System.Diagnostics.Trace.TraceError(ex.Message);
         }
       }
 

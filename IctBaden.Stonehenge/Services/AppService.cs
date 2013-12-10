@@ -24,7 +24,7 @@ namespace IctBaden.Stonehenge.Services
         }
         catch (Exception ex)
         {
-          Debug.WriteLine(ex.Message);
+          Trace.TraceError(ex.Message);
         }
         if (session != null) 
           return session;
@@ -65,7 +65,7 @@ namespace IctBaden.Stonehenge.Services
           }
           catch (Exception ex)
           {
-            Debug.WriteLine(ex.Message);
+            Trace.TraceError(ex.Message);
           }
           if (events == null)
           {
@@ -89,7 +89,7 @@ namespace IctBaden.Stonehenge.Services
           }
           catch (Exception ex)
           {
-            Debug.WriteLine(ex.Message);
+            Trace.TraceError(ex.Message);
           }
           if (eventRelease == null)
           {
@@ -196,7 +196,7 @@ namespace IctBaden.Stonehenge.Services
       }
       catch (Exception ex)
       {
-        Debug.WriteLine(ex.Message);
+        Trace.TraceError(ex.Message);
         vm = null;
       }
 
