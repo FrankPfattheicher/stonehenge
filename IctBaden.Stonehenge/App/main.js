@@ -1,7 +1,8 @@
 ﻿require.config({
   paths: {
     'text': 'durandal/amd/text'
-  }
+  },
+  waitSeconds: 120
 });
 
 define(function (require) {
