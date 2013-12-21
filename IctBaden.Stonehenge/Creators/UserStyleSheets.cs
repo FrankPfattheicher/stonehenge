@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace IctBaden.Stonehenge.Creators
 {
-  public static class UserStyleSheets
+  internal static class UserStyleSheets
   {
     private const string InsertPoint = "<!--link-stylesheet-->";
     private const string LinkTemplate = "<link href='{0}' rel='stylesheet'>";

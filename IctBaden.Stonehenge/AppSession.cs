@@ -9,9 +9,10 @@ namespace IctBaden.Stonehenge
 {
   public class AppSession : INotifyPropertyChanged
   {
-    internal ISession Session { get; set; }
-    public string HostDomain { get; set; }
-    public string UserAgent { get; set; }
+    internal ISession Session { get; private set; }
+    public string HostDomain { get; private set; }
+    public string ClientAddress { get; private set; }
+    public string UserAgent { get; private set; }
     public DateTime ConnectedSince { get; private set; }
     public DateTime LastAccess { get; private set; }
     public long Id { get; set; }
@@ -95,7 +96,7 @@ namespace IctBaden.Stonehenge
       terminator = disposable;
     }
 
-    internal AppSession(string hostDomain, string hostUrl, string userAgent, ISession session)
+    internal AppSession(string hostDomain, string hostUrl, string clientAddress, string userAgent, ISession session)
     {
       if (!string.IsNullOrEmpty(hostUrl))
       {
@@ -106,6 +107,7 @@ namespace IctBaden.Stonehenge
       {
         HostDomain = hostDomain;
       }
+      ClientAddress = clientAddress;
       userData = new Dictionary<string, object>();
       UserAgent = userAgent;
       Session = session;

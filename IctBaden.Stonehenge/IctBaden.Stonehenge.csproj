@@ -68,6 +68,7 @@
     <Compile Include="AppEngine.cs" />
     <Compile Include="CheckedItem.cs" />
     <Compile Include="Creators\ContentDeliveryNetworkSupport.cs" />
+    <Compile Include="Creators\UserIcons.cs" />
     <Compile Include="Graph\GraphOptions.cs" />
     <Compile Include="Graph\GraphSeries.cs" />
     <Compile Include="Properties\Annotations.cs" />

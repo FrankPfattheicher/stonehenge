@@ -11,7 +11,7 @@ using ServiceStack.Text;
 
 namespace IctBaden.Stonehenge.Creators
 {
-  public class ModuleCreator
+  internal class ModuleCreator
   {
     private static string clientViewModelTemplate;
     private static string ClientViewModelTemplate

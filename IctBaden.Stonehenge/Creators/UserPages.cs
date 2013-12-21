@@ -7,7 +7,7 @@ using System.Text;
 
 namespace IctBaden.Stonehenge.Creators
 {
-  public static class UserPages
+  internal static class UserPages
   {
     private const string InsertPoint = "//%PAGES%";
     private const string PageTemplate = "router.mapRoute('{0}','{0}','{1}',{2});";
@@ -22,6 +22,8 @@ namespace IctBaden.Stonehenge.Creators
       public bool Visible = true;
     }
 
+    // ReSharper disable StringIndexOfIsCultureSpecific.1
+    // ReSharper disable StringIndexOfIsCultureSpecific.2
     private static Map GetMapFromPageText(string route, string pageText)
     {
       var map = new Map { Route = route, Title = route };
@@ -58,6 +60,7 @@ namespace IctBaden.Stonehenge.Creators
         var pageFiles = Directory.GetFiles(pageFilesPath, "*.html", SearchOption.AllDirectories)
           .Where(dir => (dir.IndexOf("index.html") == -1) && (dir.IndexOf("shell.html") == -1) && (dir.IndexOf("durandal") == -1));
 
+        // ReSharper disable once LoopCanBeConvertedToQuery
         foreach (var pageFile in pageFiles)
         {
           var route = pageFile.Substring(pageFile.IndexOf(AppPath) + 5).Replace('\\', '/').Replace(".html", string.Empty);
@@ -100,6 +103,7 @@ namespace IctBaden.Stonehenge.Creators
     {
       return text.Replace(InsertPoint, userPages);
     }
-  
+    // ReSharper restore StringIndexOfIsCultureSpecific.1
+    // ReSharper restore StringIndexOfIsCultureSpecific.2
   }
 }

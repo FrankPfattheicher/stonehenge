@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading;
 using ServiceStack.ServiceInterface;
@@ -29,7 +30,7 @@ namespace IctBaden.Stonehenge.Services
         if (session != null) 
           return session;
 
-        session = new AppSession(Request.QueryString.Get("hostdomain"), Request.AbsoluteUri, Request.UserAgent, Session);
+        session = new AppSession(Request.QueryString.Get("hostdomain"), Request.AbsoluteUri, Request.RemoteIp, Request.UserAgent, Session);
         Session.Set("~session", session);
 
         var host = GetResolver() as AppHost;

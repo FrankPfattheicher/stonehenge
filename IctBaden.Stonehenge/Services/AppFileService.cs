@@ -132,6 +132,7 @@ namespace IctBaden.Stonehenge.Services
       {
         case @"App.index.html":
           text = UserStyleSheets.InsertUserCssLinks(RootPath, text, appSession.SubDomain);
+          text = UserIcons.InsertUserIconLinks(RootPath, text);
           if (!Request.IsLocal)
           {
             text = ContentDeliveryNetworkSupport.RersolveHosts(text);

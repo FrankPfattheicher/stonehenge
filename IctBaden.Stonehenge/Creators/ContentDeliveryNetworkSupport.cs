@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace IctBaden.Stonehenge.Creators
 {
-  public static class ContentDeliveryNetworkSupport
+  internal static class ContentDeliveryNetworkSupport
   {
     private const string CdnConfigurationFileName = "CDN.cfg";
     private static Dictionary<string, string> cdnLookup;
