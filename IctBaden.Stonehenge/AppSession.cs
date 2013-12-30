@@ -15,8 +15,7 @@ namespace IctBaden.Stonehenge
     public string UserAgent { get; private set; }
     public DateTime ConnectedSince { get; private set; }
     public DateTime LastAccess { get; private set; }
-    public long Id { get; set; }
-    private static long nextId;
+    public Guid Id { get; private set; }
 
     public string SubDomain
     {
@@ -112,7 +111,7 @@ namespace IctBaden.Stonehenge
       UserAgent = userAgent;
       Session = session;
       ConnectedSince = DateTime.Now;
-      Id = ++nextId;
+      Id = Guid.NewGuid();
     }
 
     internal void Accessed()
