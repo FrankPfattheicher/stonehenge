@@ -38,7 +38,7 @@ function post_ViewModelName_Data(viewmodel, sender, method, param) {
   viewmodel.IsLoading(true);
   $.post('/viewmodel/_ViewModelType_/' + method + '?ts=' + ts, params, function (data) { set_ViewModelName_Data(viewmodel, true, data); });
 }
-define(function (require) {
+define(['durandal/app', 'durandal/system', '/lib/knockout'], function (app, system, ko) {
   self = this;
   var InitialLoading = ko.observable(true);
   var IsLoading = ko.observable(true);
@@ -55,7 +55,7 @@ define(function (require) {
       if (activation_data == null) activation_data = data;
       self.IsLoading(true);
     },
-    viewAttached: function(view) {
+    attached: function(view, parent) {
       self = this;
       var ts = new Date().getTime();
       var startPolling = function() { setTimeout(function() { poll_ViewModelName_Events(self, true); }, 100); };

@@ -54,7 +54,8 @@ namespace IctBaden.Stonehenge
       Routes.Add<AppFile>("/App/{FileName}")
             .Add<AppFile>("/App/{Path1}/{FileName}")
             .Add<AppFile>("/App/{Path1}/{Path2}/{FileName}")
-            .Add<AppFile>("/App/{Path1}/{Path2}/{Path3}/{FileName}");
+            .Add<AppFile>("/App/{Path1}/{Path2}/{Path3}/{FileName}")
+            .Add<AppFile>("/App/{Path1}/{Path2}/{Path3}/{Path4}/{FileName}");
 
       Routes.Add<AppViewModel>("/ViewModel/{ViewModel}")
             .Add<AppViewModel>("/ViewModel/{ViewModel}/{Source}");

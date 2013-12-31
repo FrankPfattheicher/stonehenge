@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace IctBaden.Stonehenge.Services
@@ -11,11 +12,29 @@ namespace IctBaden.Stonehenge.Services
 
     public static string LoadText(string filePath, string resourcePath, string name)
     {
-      var resourceName = (resourcePath.Replace(Path.DirectorySeparatorChar, '.') + "." + name).Replace("..", ".");
-
-      if (Texts.ContainsKey(resourceName))
+      if (name.Contains("text.js"))
       {
-        return Texts[resourceName];
+        name = "text.js";
+      }
+      resourcePath = resourcePath.Replace('-', '_');
+      var resourceName1 = (resourcePath.Replace(Path.DirectorySeparatorChar, '.') + "." + name).Replace("..", ".");
+
+      if (Texts.ContainsKey(resourceName1))
+      {
+        return Texts[resourceName1];
+      }
+
+      var resourceName2 = string.Empty;
+      var ext = Path.GetExtension(name);
+      if ((ext == ".js") || (ext == ".css"))
+      {
+        resourcePath += ext;
+        resourceName2 = (resourcePath.Replace(Path.DirectorySeparatorChar, '.') + "." + name).Replace("..", ".");
+      }
+
+      if (Texts.ContainsKey(resourceName2))
+      {
+        return Texts[resourceName2];
       }
 
       string text;
@@ -24,27 +43,59 @@ namespace IctBaden.Stonehenge.Services
       if (File.Exists(fullPath))
       {
         text = File.ReadAllText(fullPath);
-        Texts.Add(resourceName, text);
+        Texts.Add(resourceName1, text);
         return text;
       }
 
       var assemblies = new List<Assembly> {Assembly.GetEntryAssembly(), Assembly.GetExecutingAssembly()};
       foreach (var assembly in assemblies)
       {
-        using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "." + resourceName))
+        using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "." + resourceName1))
         {
           if (stream != null)
           {
             using (var reader = new StreamReader(stream))
             {
               text = reader.ReadToEnd();
-              Texts.Add(resourceName, text);
+              Texts.Add(resourceName1, text);
+              return text;
+            }
+          }
+        }
+
+        if(string.IsNullOrEmpty(resourceName2))
+          continue;
+
+        using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "." + resourceName2))
+        {
+          if (stream != null)
+          {
+            using (var reader = new StreamReader(stream))
+            {
+              text = reader.ReadToEnd();
+              Texts.Add(resourceName2, text);
               return text;
             }
           }
         }
       }
-
+      var names = assemblies[1].GetManifestResourceNames().OrderBy(n => n).ToList();
+      var libname = names.FirstOrDefault(n => n.Contains("lib." + name)) ?? names.FirstOrDefault(n => n.EndsWith(name));
+      if (libname != null)
+      {
+        using (var stream = assemblies[1].GetManifestResourceStream(libname))
+        {
+          if (stream != null)
+          {
+            using (var reader = new StreamReader(stream))
+            {
+              text = reader.ReadToEnd();
+              Texts.Add(resourceName2, text);
+              return text;
+            }
+          }
+        }
+      }
       return null;
     }
 

@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using IctBaden.Stonehenge.Creators;
+﻿using IctBaden.Stonehenge.Creators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IctBaden.StonehengeTest
 {
+  [DeploymentItem("CDN.cfg")]
   [TestClass]
   public class CdnTests
   {

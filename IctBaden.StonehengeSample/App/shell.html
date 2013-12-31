@@ -1,25 +1,20 @@
-﻿
-<div class="navbar navbar-default navbar-fixed-top">
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-    <a class="navbar-brand" href="#">Stonehenge</a>
+﻿<div>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <a class="brand" data-bind="attr: { href: router.navigationModel()[0].hash }">
+        <i class="icon-home"></i>
+        <span>Durandal</span>
+      </a>
+      <ul class="nav" data-bind="foreach: router.navigationModel">
+        <li data-bind="css: { active: isActive }">
+          <a data-bind="attr: { href: hash }, html: title"></a>
+        </li>
+      </ul>
+      <div class="loader pull-right" data-bind="css: { active: router.isNavigating }">
+        <i class="icon-spinner icon-2x icon-spin"></i>
+      </div>
+    </div>
   </div>
-  <div class="navbar-collapse collapse">
-    <ul class="nav navbar-nav" data-bind="foreach: router.visibleRoutes">
-      <li data-bind="css: { active: isActive }">
-        <a data-bind="attr: { href: hash }, html: name"></a>
-      </li>
-    </ul>
-  </div>
-</div>
-
-<div class="container" >
-  <!--ko compose: { 
-    model: router.activeItem,
-    afterCompose: router.afterCompose
-    }--><!--/ko-->
+    
+  <div class="container-fluid page-host" data-bind="router: { cacheViews:true }"></div>
 </div>
