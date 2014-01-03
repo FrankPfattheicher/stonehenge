@@ -11,7 +11,7 @@ namespace IctBaden.Stonehenge.Creators
     private const string InsertPoint = "<!--link-stylesheet-->";
     private const string LinkTemplate = "<link href='{0}' rel='stylesheet'>";
     private static readonly Dictionary<string, string> StyleSheets = new Dictionary<string, string>();
-    private static readonly string AppPath = Path.DirectorySeparatorChar + "App" + Path.DirectorySeparatorChar;
+    private static readonly string AppPath = Path.DirectorySeparatorChar + "app" + Path.DirectorySeparatorChar;
 
     public static string InsertUserCssLinks(string rootPath, string text, string theme)
     {
@@ -19,7 +19,7 @@ namespace IctBaden.Stonehenge.Creators
       {
         var styleSheets = string.Empty;
 
-        var path = Path.Combine(rootPath, "App", "styles");
+        var path = Path.Combine(rootPath, "app", "styles");
         if (Directory.Exists(path))
         {
           var links = Directory.GetFiles(path, "*.css", SearchOption.AllDirectories)
@@ -27,7 +27,7 @@ namespace IctBaden.Stonehenge.Creators
           styleSheets = string.Join(Environment.NewLine, links);
         }
 
-        path = Path.Combine(rootPath, "App", "themes", theme + ".css");
+        path = Path.Combine(rootPath, "app", "themes", theme + ".css");
         if (File.Exists(path))
         {
           var css = path.Substring(path.IndexOf(AppPath) + 1).Replace('\\', '/');
@@ -36,8 +36,8 @@ namespace IctBaden.Stonehenge.Creators
 
         var assembly = Assembly.GetEntryAssembly();
         var ressourceBaseName = assembly.GetName().Name + ".";
-        var baseNameStyles = ressourceBaseName + "App.styles.";
-        var baseNameTheme = ressourceBaseName + "App.themes.";
+        var baseNameStyles = ressourceBaseName + "app.styles.";
+        var baseNameTheme = ressourceBaseName + "app.themes.";
         foreach (var resourceName in assembly.GetManifestResourceNames()
           .Where(name => name.EndsWith(".css") && (name.StartsWith(baseNameStyles) || name.StartsWith(baseNameTheme + theme))))
         {

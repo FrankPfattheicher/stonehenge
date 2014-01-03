@@ -51,11 +51,11 @@ namespace IctBaden.Stonehenge
     {
       Config.AllowRouteContentTypeExtensions = false; // otherwise extensions are stripped out
 
-      Routes.Add<AppFile>("/App/{FileName}")
-            .Add<AppFile>("/App/{Path1}/{FileName}")
-            .Add<AppFile>("/App/{Path1}/{Path2}/{FileName}")
-            .Add<AppFile>("/App/{Path1}/{Path2}/{Path3}/{FileName}")
-            .Add<AppFile>("/App/{Path1}/{Path2}/{Path3}/{Path4}/{FileName}");
+      Routes.Add<AppFile>("/app/{FileName}")
+            .Add<AppFile>("/app/{Path1}/{FileName}")
+            .Add<AppFile>("/app/{Path1}/{Path2}/{FileName}")
+            .Add<AppFile>("/app/{Path1}/{Path2}/{Path3}/{FileName}")
+            .Add<AppFile>("/app/{Path1}/{Path2}/{Path3}/{Path4}/{FileName}");
 
       Routes.Add<AppViewModel>("/ViewModel/{ViewModel}")
             .Add<AppViewModel>("/ViewModel/{ViewModel}/{Source}");
@@ -72,7 +72,7 @@ namespace IctBaden.Stonehenge
           Debug.WriteLine("CatchAllHandler({0}, {1}, {2})", httpMethod, pathInfo, filePath);
           if (pathInfo != "/")
             return new NotFoundHttpHandler();
-          return new RootRedirectHandler { RelativeUrl = "/App/index.html#/" + StartPage };
+          return new RootRedirectHandler { RelativeUrl = "/app/index.html#/" + StartPage };
         });
 
       SetConfig(new EndpointHostConfig

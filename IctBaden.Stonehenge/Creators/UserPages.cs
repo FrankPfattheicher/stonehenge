@@ -12,7 +12,7 @@ namespace IctBaden.Stonehenge.Creators
     private const string InsertPoint = "//%PAGES%";
     private const string PageTemplate = "router.mapRoute('{0}','{0}','{1}',{2});";
     private static string userPages = string.Empty;
-    private static readonly string AppPath = Path.DirectorySeparatorChar + "App" + Path.DirectorySeparatorChar;
+    private static readonly string AppPath = Path.DirectorySeparatorChar + "app" + Path.DirectorySeparatorChar;
 
     private class Map
     {
@@ -54,7 +54,7 @@ namespace IctBaden.Stonehenge.Creators
     {
       var maps = new List<Map>();
 
-      var pageFilesPath = Path.Combine(rootPath, @"App");
+      var pageFilesPath = Path.Combine(rootPath, @"app");
       if (Directory.Exists(pageFilesPath))
       {
         var pageFiles = Directory.GetFiles(pageFilesPath, "*.html", SearchOption.AllDirectories)

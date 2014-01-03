@@ -130,7 +130,7 @@ namespace IctBaden.Stonehenge.Services
 
       switch (path.Replace(Path.DirectorySeparatorChar, '.'))
       {
-        case @"App.index.html":
+        case @"app.index.html":
           text = UserStyleSheets.InsertUserCssLinks(RootPath, text, appSession.SubDomain);
           text = UserIcons.InsertUserIconLinks(RootPath, text);
           if (!Request.IsLocal)
@@ -138,19 +138,19 @@ namespace IctBaden.Stonehenge.Services
             text = ContentDeliveryNetworkSupport.RersolveHosts(text);
           }
           break;
-        case @"App.shell.js":
+        case @"app.shell.js":
           {
             var host = GetResolver() as AppHost;
             if (host != null)
               text = text.Replace("%STARTPAGE%", host.StartPage);
+            text = UserPages.InsertUserPages(text);
           }
           break;
-        case @"App.main.js":
+        case @"app.main.js":
           {
             var host = GetResolver() as AppHost;
             if (host != null)
               text = text.Replace("%TITLE%", host.Title);
-            text = UserPages.InsertUserPages(text);
           }
           break;
       }

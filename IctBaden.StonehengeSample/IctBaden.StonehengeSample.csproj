@@ -62,14 +62,14 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App\about.html" />
-    <EmbeddedResource Include="App\invisible.html" />
-    <EmbeddedResource Include="App\graph.html" />
-    <EmbeddedResource Include="App\icon.png" />
-    <EmbeddedResource Include="App\login.html" />
-    <EmbeddedResource Include="App\shell.html" />
-    <EmbeddedResource Include="App\form.html" />
-    <EmbeddedResource Include="App\styles\sample.css" />
+    <EmbeddedResource Include="app\about.html" />
+    <EmbeddedResource Include="app\invisible.html" />
+    <EmbeddedResource Include="app\graph.html" />
+    <EmbeddedResource Include="app\icon.png" />
+    <EmbeddedResource Include="app\login.html" />
+    <EmbeddedResource Include="app\shell.html" />
+    <EmbeddedResource Include="app\form.html" />
+    <EmbeddedResource Include="app\styles\sample.css" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IctBaden.Stonehenge\IctBaden.Stonehenge.csproj">
@@ -79,9 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
-    <EmbeddedResource Include="App\isdirty.html" />
-    <EmbeddedResource Include="App\tree_user.js" />
-    <EmbeddedResource Include="App\tree.html" />
+    <EmbeddedResource Include="app\isdirty.html" />
+    <EmbeddedResource Include="app\tree_user.js" />
+    <EmbeddedResource Include="app\tree.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

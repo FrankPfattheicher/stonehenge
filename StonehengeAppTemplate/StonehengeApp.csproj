@@ -96,8 +96,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="App\start.html" />
-    <EmbeddedResource Include="App\shell.html" />
+    <EmbeddedResource Include="app\start.html" />
+    <EmbeddedResource Include="app\shell.html" />
     <Content Include="lib\IctBaden.Stonehenge.dll" />
     <Content Include="lib\ServiceStack.Common.dll" />
     <Content Include="lib\ServiceStack.Common.xml" />

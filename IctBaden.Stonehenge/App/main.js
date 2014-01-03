@@ -1,12 +1,12 @@
 ﻿requirejs.config({
     paths: {
-        'text': '/lib/require/js/text',
-        'durandal':'/App/durandal/js',
-        'plugins' : '/App/plugins',
-        'transitions' : '/App/transitions',
-//        'knockout': '/lib/knockout/js/knockout-3.0.0',
-//        'bootstrap': '/lib/bootstrap/js/bootstrap',
-//        'jquery': '/lib/jquery/js/jquery-1.10.2'
+        'text': '/app/lib/require/js/text',
+        'durandal':'/app/durandal/js',
+        'plugins' : '/app/plugins',
+        'transitions' : '/app/transitions',
+        'knockout': '/app/lib/knockout/js/knockout-3.0.0',
+        'bootstrap': '/app/lib/bootstrap/js/bootstrap',
+        'jquery': '/app/lib/jquery/js/jquery-1.10.2'
     },
     shim: {
         'bootstrap': {
@@ -25,19 +25,18 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'],  function (s
 
     //specify which plugins to install and their configuration
     app.configurePlugins({
-        router:true,
-        dialog: true,
-        widget: {
-            kinds: ['expander']
-        }
+      router:true,
+      dialog: true,
+      widget: true
     });
 
     app.start().then(function () {
-        //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
-        //Look for partial views in a 'views' folder in the root.
-        viewLocator.useConvention();
+      //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
+      //Look for partial views in a 'views' folder in the root.
+      // (modulesPath, viewsPath, areasPath)
+      viewLocator.useConvention('','','');
 
-        //Show the app by setting the root view model for our application.
-        app.setRoot('shell');
+      //Show the app by setting the root view model for our application.
+      app.setRoot('shell');
     });
 });

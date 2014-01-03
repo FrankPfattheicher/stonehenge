@@ -5307,7 +5307,8 @@
 
           // Even when returnValue equals to undefined Firefox will still show alert
           if (event.result !== undefined) {
-            event.originalEvent.returnValue = event.result;
+            //event.originalEvent.returnValue = event.result;
+            event.preventDefault();
           }
         }
       }

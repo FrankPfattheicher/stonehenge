@@ -10,9 +10,9 @@ namespace IctBaden.Stonehenge.Creators
   internal static class UserIcons
   {
     private const string InsertPoint = "<!--more-icons-->";
-    private const string ImageTemplate = "<link rel=\"apple-touch-icon\" sizes=\"{0}x{1}\" href=\"App/{2}\">\r\n" +
-                                         "<link rel=\"icon\" sizes=\"{0}x{1}\" href=\"App/{2}\">";
-    private static readonly string AppPath = Path.DirectorySeparatorChar + "App" + Path.DirectorySeparatorChar;
+    private const string ImageTemplate = "<link rel=\"apple-touch-icon\" sizes=\"{0}x{1}\" href=\"app/{2}\">\r\n" +
+                                         "<link rel=\"icon\" sizes=\"{0}x{1}\" href=\"app/{2}\">";
+    private static readonly string AppPath = Path.DirectorySeparatorChar + "app" + Path.DirectorySeparatorChar;
 
     private class Icon
     {

@@ -38,31 +38,29 @@ function post_ViewModelName_Data(viewmodel, sender, method, param) {
   viewmodel.IsLoading(true);
   $.post('/viewmodel/_ViewModelType_/' + method + '?ts=' + ts, params, function (data) { set_ViewModelName_Data(viewmodel, true, data); });
 }
-define(['durandal/app', 'durandal/system', '/lib/knockout'], function (app, system, ko) {
+define(['durandal/app', 'durandal/system', 'knockout'], function (app, system, ko) {
   self = this;
   var InitialLoading = ko.observable(true);
   var IsLoading = ko.observable(true);
   var IsDirty = ko.observable(false);
    _DeclareData_();
-  var viewModel = {
+   var viewModel = {
     _ReturnData_: 0,
     InitialLoading: InitialLoading,
     IsLoading: IsLoading,
     IsDirty: IsDirty,
     _ActionMethods_: 0,
-    activate: function(data) {
+    activate: function() {
       self = this;
-      if (activation_data == null) activation_data = data;
+      system.log('ClientViewModel : activate');
       self.IsLoading(true);
     },
-    attached: function(view, parent) {
-      self = this;
-      var ts = new Date().getTime();
-      var startPolling = function() { setTimeout(function() { poll_ViewModelName_Events(self, true); }, 100); };
-      $.getJSON('/viewmodel/_ViewModelType_?ts=' + ts, function(data) {
-        set_ViewModelName_Data(self, true, data);
-        startPolling();
-      });
+    attached: function (view, parent) {
+      system.log('ClientViewModel  : attached');
+    },
+    binding: function () {
+      system.log('ClientViewModel : binding');
+      return { cacheViews: false }; //cancels view caching for this module, allowing the triggering of the detached callback
     }
   };
   return viewModel;

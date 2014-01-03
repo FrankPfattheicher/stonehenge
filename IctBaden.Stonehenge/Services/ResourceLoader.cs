@@ -12,10 +12,6 @@ namespace IctBaden.Stonehenge.Services
 
     public static string LoadText(string filePath, string resourcePath, string name)
     {
-      if (name.Contains("text.js"))
-      {
-        name = "text.js";
-      }
       resourcePath = resourcePath.Replace('-', '_');
       var resourceName1 = (resourcePath.Replace(Path.DirectorySeparatorChar, '.') + "." + name).Replace("..", ".");
 
@@ -32,7 +28,7 @@ namespace IctBaden.Stonehenge.Services
         resourceName2 = (resourcePath.Replace(Path.DirectorySeparatorChar, '.') + "." + name).Replace("..", ".");
       }
 
-      if (Texts.ContainsKey(resourceName2))
+      if (!string.IsNullOrEmpty(resourceName2) && Texts.ContainsKey(resourceName2))
       {
         return Texts[resourceName2];
       }
@@ -73,14 +69,15 @@ namespace IctBaden.Stonehenge.Services
             using (var reader = new StreamReader(stream))
             {
               text = reader.ReadToEnd();
-              Texts.Add(resourceName2, text);
+              Texts.Add(resourceName1, text);
               return text;
             }
           }
         }
       }
       var names = assemblies[1].GetManifestResourceNames().OrderBy(n => n).ToList();
-      var libname = names.FirstOrDefault(n => n.Contains("lib." + name)) ?? names.FirstOrDefault(n => n.EndsWith(name));
+      var libname = names.FirstOrDefault(n => n.EndsWith(name))?? names.FirstOrDefault(n => n.Contains("lib." + name));
+      //libname = names.FirstOrDefault(n => n.Contains("lib." + name)) ?? names.FirstOrDefault(n => n.EndsWith(name));
       if (libname != null)
       {
         using (var stream = assemblies[1].GetManifestResourceStream(libname))
@@ -90,7 +87,7 @@ namespace IctBaden.Stonehenge.Services
             using (var reader = new StreamReader(stream))
             {
               text = reader.ReadToEnd();
-              Texts.Add(resourceName2, text);
+              Texts.Add(resourceName1, text);
               return text;
             }
           }

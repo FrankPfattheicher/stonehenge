@@ -10,7 +10,7 @@ namespace IctBaden.StonehengeTest
     [TestMethod]
     public void NoMatchReturnsOriginalText()
     {
-      const string page = "  <link href=\"App/icon.png\" rel=\"icon\" type=\"image/x-icon\" />   ";
+      const string page = "  <link href=\"app/icon.png\" rel=\"icon\" type=\"image/x-icon\" />   ";
 
       var resolved = ContentDeliveryNetworkSupport.RersolveHosts(page);
 
