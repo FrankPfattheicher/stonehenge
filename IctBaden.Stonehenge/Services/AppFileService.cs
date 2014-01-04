@@ -24,11 +24,6 @@ namespace IctBaden.Stonehenge.Services
                     
                 };
 
-    public AppFileService()
-    {
-      UserPages.Init(RootPath);
-    }
-
     public object Any(AppFile request)
     {
       return "Any";
@@ -140,10 +135,13 @@ namespace IctBaden.Stonehenge.Services
           break;
         case @"app.shell.js":
           {
+            var startPage = string.Empty;
             var host = GetResolver() as AppHost;
             if (host != null)
-              text = text.Replace("%STARTPAGE%", host.StartPage);
-            text = UserPages.InsertUserPages(text);
+            {
+              startPage = host.StartPage;
+            }
+            text = UserPages.InsertUserPages(RootPath, startPage, text).Replace("%STARTPAGE%", startPage);
           }
           break;
         case @"app.main.js":

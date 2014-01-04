@@ -10,8 +10,9 @@ namespace IctBaden.Stonehenge.Creators
   internal static class UserPages
   {
     private const string InsertPoint = "//%PAGES%";
-    private const string PageTemplate = "router.mapRoute('{0}','{0}','{1}',{2});";
-    private static string userPages = string.Empty;
+    private const string StartPageTemplate = "{{ route: ['', '{0}'], moduleId: '{0}', title: '{1}', nav: 1, visible: {2} }},";
+    private const string PageTemplate = "{{ route: '{0}', moduleId: '{0}', title: '{1}', nav: true, visible: {2} }},";
+    private static string userPages = null;
     private static readonly string AppPath = Path.DirectorySeparatorChar + "app" + Path.DirectorySeparatorChar;
 
     private class Map
@@ -50,8 +51,9 @@ namespace IctBaden.Stonehenge.Creators
       return map;
     }
 
-    public static void Init(string rootPath)
+    public static void Init(string rootPath, string startPage)
     {
+      userPages = string.Empty;
       var maps = new List<Map>();
 
       var pageFilesPath = Path.Combine(rootPath, @"app");
@@ -70,7 +72,7 @@ namespace IctBaden.Stonehenge.Creators
       }
 
       var assembly = Assembly.GetEntryAssembly();
-      var baseName = assembly.GetName().Name + ".App.";
+      var baseName = assembly.GetName().Name + ".app.";
       foreach (var resourceName in assembly.GetManifestResourceNames()
         .Where(name => (name.EndsWith(".html")) && (!name.Contains("shell.html"))).OrderBy(name => name))
       {
@@ -90,17 +92,17 @@ namespace IctBaden.Stonehenge.Creators
         maps.Add(GetMapFromPageText(route, pageText));
       }
 
-      var pages = new StringBuilder();
-      foreach (var page in maps.OrderBy(m => m.SortIndex).Select(map => string.Format(PageTemplate, map.Route, map.Title, map.Visible ? "true" : "false")))
-      {
-        pages.AppendLine(page);
-      }
-
+      var pages = maps.OrderBy(m => m.SortIndex)
+        .Select(map => string.Format((map.Route == startPage) ? StartPageTemplate : PageTemplate, map.Route, map.Title, map.Visible ? "true" : "false"));
       userPages = string.Join(Environment.NewLine, pages);
     }
 
-    public static string InsertUserPages(string text)
+    public static string InsertUserPages(string rootPath, string startPage, string text)
     {
+      if (userPages == null)
+      {
+        Init(rootPath, startPage);
+      }
       return text.Replace(InsertPoint, userPages);
     }
     // ReSharper restore StringIndexOfIsCultureSpecific.1
