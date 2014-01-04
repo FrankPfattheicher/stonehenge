@@ -95,7 +95,16 @@ namespace IctBaden.Stonehenge.Creators
       {
         // TODO: move this code to JS library
         var propName = prop.Name.Substring(0, prop.Name.Length - 4);  // remove "Data"
-        setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }}", propName));
+        //setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }}", propName));
+
+        setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ ", propName));
+        setData.AppendLine(string.Format("var div = $('#{0}'); var data = viewmodel.{0}Data(); var opt = viewmodel.{0}Options();", propName));
+        //setData.AppendLine(string.Format("require(['flot'], function(flot) {{ ", ""));
+        setData.AppendLine(string.Format("$.plot(div, data, opt); ", ""));
+        //setData.AppendLine(string.Format("}});", ""));
+        setData.AppendLine(string.Format(" }} catch(e) {{ }} }}", propName));
+
+
         setData.AppendLine(string.Format("$('#{0}').resize(function() {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }});", propName));
         setData.AppendLine(string.Format("if(loading) {{ try {{ {0}Initialize(); }} catch(e) {{ }} }}", propName));
       }

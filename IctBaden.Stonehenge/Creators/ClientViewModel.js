@@ -38,7 +38,7 @@ function post_ViewModelName_Data(viewmodel, sender, method, param) {
   viewmodel.IsLoading(true);
   $.post('/viewmodel/_ViewModelType_/' + method + '?ts=' + ts, params, function (data) { set_ViewModelName_Data(viewmodel, true, data); });
 }
-define(['durandal/app', 'durandal/system', 'knockout'], function (app, system, ko) {
+define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function (app, system, ko, flot) {
   self = this;
   var InitialLoading = ko.observable(true);
   var IsLoading = ko.observable(true);

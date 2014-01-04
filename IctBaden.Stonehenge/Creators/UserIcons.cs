@@ -25,7 +25,7 @@ namespace IctBaden.Stonehenge.Creators
       var icons = new List<Icon>();
 
       var assembly = Assembly.GetEntryAssembly();
-      var baseName = assembly.GetName().Name + ".App.";
+      var baseName = assembly.GetName().Name + ".app.";
       foreach (var resourceName in assembly.GetManifestResourceNames()
         .Where(name => (name.Contains(baseName + "icon_"))).OrderBy(name => name))
       {
