@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge", "IctBaden.Stonehenge\IctBaden.Stonehenge.csproj", "{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.StonehengeSample", "IctBaden.StonehengeSample\IctBaden.StonehengeSample.csproj", "{572CE674-DB53-42AE-B740-6C20C72703F6}"
@@ -10,14 +12,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65F46581-B6AB-4878-8174-BA207D491B06}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
+		README.md = README.md
 		Stonehenge.vsmdi = Stonehenge.vsmdi
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Stonehenge.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -38,6 +38,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Stonehenge.vsmdi
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = IctBaden.StonehengeSample\IctBaden.StonehengeSample.csproj
