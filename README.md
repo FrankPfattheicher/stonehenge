@@ -27,7 +27,7 @@ Note: It's chatty - it's primary designed for local use.
 
 Current project state: Working (Basic)
 
-![Stonehenge](https://github.com/FrankPfattheicher/stonehenge/blob/master/Stonehenge.png)
+![image](Stonehenge.png)
 
 A great application has to be founded on solid pilars of frameworks.
 
