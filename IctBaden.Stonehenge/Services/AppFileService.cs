@@ -52,6 +52,13 @@ namespace IctBaden.Stonehenge.Services
       if (type.StartsWith("image"))
       {
         var data = ResourceLoader.LoadBinary(request.BasePath(RootPath), request.BasePath(""), request.FileName);
+        if (data == null)
+        {
+          Debug.WriteLine("AppFileService NOT FOUND:" + request.FullPath(""));
+          httpResult = new HttpResult(fullPath, HttpStatusCode.NotFound);
+          httpResult.Headers.Add("Expires", "0");
+          return httpResult;
+        }
         httpResult = new HttpResult(data, type);
         httpResult.Headers.Add("Expires", "0");
         return httpResult;

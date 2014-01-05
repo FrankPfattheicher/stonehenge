@@ -33,7 +33,7 @@
     <tr>
       <td >Combo selection:</td>
       <td>
-        <select size="1" data-bind="options: OptionValues, selectedOptions: SelectedOptions, event:{change: OnOptionChanged}" />
+        <select size="1" data-bind="options: OptionValues, selectedOptions: SelectedOptions, event:{change: OnOptionChanged}" ></select>
       </td>
       <td>&nbsp;</td>
       <td>
@@ -95,14 +95,12 @@
       <td>button disabled on empty input</td>
     </tr>
     <tr>
-      <td >Parametrisized link:</td>
+      <td >Link:</td>
       <td>
-        <a href="#/login?User=Marvin" >
-          <button class="btn btn-default">Login Marvin</button>
-        </a>
+        <button class="btn btn-default" data-bind="click: LoginMarvin">Login</button>
       </td>
       <td>&nbsp;</td>
-      <td>navigate to loginpage with parameter User=Marvin</td>
+      <td>navigate to user login page</td>
     </tr>
   </table>
   

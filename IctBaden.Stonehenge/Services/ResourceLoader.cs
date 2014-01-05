@@ -120,14 +120,17 @@ namespace IctBaden.Stonehenge.Services
       {
         using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "." + resourceName))
         {
-          if (stream != null)
+          if (stream == null) 
+            continue;
+
+          using (var reader = new BinaryReader(stream))
           {
-            using (var reader = new BinaryReader(stream))
+            data = reader.ReadBytes((int) stream.Length);
+            if (!Binaries.ContainsKey(resourceName))
             {
-              data = reader.ReadBytes((int) stream.Length);
               Binaries.Add(resourceName, data);
-              return data;
             }
+            return data;
           }
         }
       }

@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace IctBaden.Stonehenge.Creators
 {
   internal static class UserPages
   {
     private const string InsertPoint = "//%PAGES%";
-    private const string StartPageTemplate = "{{ route: ['', '{0}'], moduleId: '{0}', title: '{1}', nav: 1, visible: {2} }},";
-    private const string PageTemplate = "{{ route: '{0}', moduleId: '{0}', title: '{1}', nav: true, visible: {2} }},";
-    private static string userPages = null;
+    private const string StartPageTemplate = "{{ route: ['', '{0}'], moduleId: '{0}', title: '{1}', nav: {2} }},";
+    private const string PageTemplate = "{{ route: '{0}', moduleId: '{0}', title: '{1}', nav: {2} }},";
+    private static string userPages;
     private static readonly string AppPath = Path.DirectorySeparatorChar + "app" + Path.DirectorySeparatorChar;
 
     private class Map

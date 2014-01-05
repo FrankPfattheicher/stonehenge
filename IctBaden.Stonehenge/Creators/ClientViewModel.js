@@ -7,11 +7,13 @@ var activation_data;
 // ReSharper disable UnusedParameter
 function poll_ViewModelName_Events(viewmodel, initial) {
   var app = require('durandal/app');
+  var router = require('plugins/router');
   var ts = new Date().getTime();
   $.getJSON('/events/_ViewModelType_?ts=' + ts, function (data) {
     if (data == null) return;
     set_ViewModelName_Data(viewmodel, false, data);
     if (data.stonehenge_eval != null) eval(data.stonehenge_eval);
+    if (data.stonehenge_navigate != null) router.navigate(data.stonehenge_navigate);
     if (initial || (data.stonehenge_poll != null)) setTimeout(function () { poll_ViewModelName_Events(viewmodel, false); }, 100);
   });
 }

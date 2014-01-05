@@ -537,6 +537,14 @@ namespace IctBaden.Stonehenge
 
     #endregion
 
+    public string NavigateToRoute;
+
+    public void NavigateTo(string route)
+    {
+      NavigateToRoute = route;
+      NotifyPropertyChanged(AppService.PropertyNameNavigate);
+    }
+
   }
 
 }

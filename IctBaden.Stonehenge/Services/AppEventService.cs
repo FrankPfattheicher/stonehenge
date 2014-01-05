@@ -39,7 +39,12 @@ namespace IctBaden.Stonehenge.Services
           {
             var title = vm.MessageBoxTitle;
             var text = vm.MessageBoxText;
-            values.Add("stonehenge_eval", string.Format("app.showMessage('{0}','{1}');", HttpUtility.HtmlEncode(text), HttpUtility.HtmlEncode(title)));
+            values.Add("stonehenge_eval", string.Format("app.showMessage('{0}','{1}');", HttpUtility.JavaScriptStringEncode(text), HttpUtility.JavaScriptStringEncode(title)));
+          }
+          else if (name == PropertyNameNavigate)
+          {
+            var route = vm.NavigateToRoute;
+            values.Add("stonehenge_navigate", route);
           }
           else
           {

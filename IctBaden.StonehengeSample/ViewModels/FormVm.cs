@@ -38,7 +38,7 @@ namespace IctBaden.StonehengeSample.ViewModels
     [ActionMethod]
     public void LoginMarvin(AppSession session)
     {
-      
+      NavigateTo("login");
     }
 
     public bool CanSayHello

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Threading;
 using ServiceStack.ServiceInterface;
@@ -12,7 +11,9 @@ namespace IctBaden.Stonehenge.Services
 {
   public class AppService : Service
   {
-    public const string PropertyNameMessageBox = "_stonehenge_MessageBox_";
+    public const string PropertyNameId = "_stonehenge_prop_";
+    public const string PropertyNameMessageBox = PropertyNameId + "MessageBox_";
+    public const string PropertyNameNavigate = PropertyNameId + "Navigate_";
     
     public AppSession GetSession()
     {
@@ -106,7 +107,7 @@ namespace IctBaden.Stonehenge.Services
     {
       lock (Events)
       {
-        var msgBox = Events.FirstOrDefault(e => e == PropertyNameMessageBox);
+        var msgBox = Events.FirstOrDefault(e => e.StartsWith(PropertyNameId));
         Events.Clear();
         EventAdd(msgBox ?? string.Empty);
       }

@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ICT Baden GmbH")]
 [assembly: AssemblyProduct("IctBaden.StonehengeTest")]
-[assembly: AssemblyCopyright("Copyright ©2013 ICT Baden GmbH")]
+[assembly: AssemblyCopyright("Copyright ©2013/2014 ICT Baden GmbH")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.7.1.1")]
-[assembly: AssemblyFileVersion("0.7.1.1")]
+[assembly: AssemblyVersion("0.8.1.1")]
+[assembly: AssemblyFileVersion("0.8.1.1")]

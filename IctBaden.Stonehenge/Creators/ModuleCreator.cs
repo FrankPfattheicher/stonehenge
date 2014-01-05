@@ -95,16 +95,7 @@ namespace IctBaden.Stonehenge.Creators
       {
         // TODO: move this code to JS library
         var propName = prop.Name.Substring(0, prop.Name.Length - 4);  // remove "Data"
-        //setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }}", propName));
-
-        setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ ", propName));
-        setData.AppendLine(string.Format("var div = $('#{0}'); var data = viewmodel.{0}Data(); var opt = viewmodel.{0}Options();", propName));
-        //setData.AppendLine(string.Format("require(['flot'], function(flot) {{ ", ""));
-        setData.AppendLine(string.Format("$.plot(div, data, opt); ", ""));
-        //setData.AppendLine(string.Format("}});", ""));
-        setData.AppendLine(string.Format(" }} catch(e) {{ }} }}", propName));
-
-
+        setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }}", propName));
         setData.AppendLine(string.Format("$('#{0}').resize(function() {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }});", propName));
         setData.AppendLine(string.Format("if(loading) {{ try {{ {0}Initialize(); }} catch(e) {{ }} }}", propName));
       }
@@ -138,15 +129,7 @@ namespace IctBaden.Stonehenge.Creators
       var declareData = new StringBuilder();
       foreach (var propName in assignPropNames)
       {
-        object defaultValue;
-        if (activeVm != null)
-        {
-          defaultValue = activeVm.TryGetMember(propName);
-        }
-        else
-        {
-          defaultValue = vmType.GetProperty(propName).GetValue(viewModel, new object[0]);
-        }
+        var defaultValue = (activeVm != null) ? activeVm.TryGetMember(propName) : vmType.GetProperty(propName).GetValue(viewModel, new object[0]);
         declareData.AppendLine(string.Format("var {0} = ko.observable({1});", propName, (defaultValue != null) ? JsonSerializer.SerializeToString(defaultValue) : string.Empty));
         declareData.AppendLine(string.Format("{0}.subscribe(function(newval){{IsDirty(true);}});", propName));
       }
@@ -160,15 +143,9 @@ namespace IctBaden.Stonehenge.Creators
       var actionMethods = new StringBuilder();
       foreach (var methodInfo in vmType.GetMethods().Where(methodInfo => methodInfo.GetCustomAttributes(false).OfType<ActionMethodAttribute>().Any()))
       {
-        string method;
-        if (methodInfo.GetParameters().Length > 0)
-        {
-          method = "%method%: function (data, event, param) { post_ViewModelName_Data(self, event.currentTarget, '%method%', param); },".Replace("%method%", methodInfo.Name);
-        }
-        else
-        {
-          method = "%method%: function (data, event) { post_ViewModelName_Data(self, event.currentTarget, '%method%', null); },".Replace("%method%", methodInfo.Name);
-        }
+        var method = (methodInfo.GetParameters().Length > 0) 
+          ? "%method%: function (data, event, param) { post_ViewModelName_Data(self, event.currentTarget, '%method%', param); },".Replace("%method%", methodInfo.Name) 
+          : "%method%: function (data, event) { post_ViewModelName_Data(self, event.currentTarget, '%method%', null); },".Replace("%method%", methodInfo.Name);
         actionMethods.AppendLine(method.Replace("_ViewModelName_", vmType.Name));
       }
 
