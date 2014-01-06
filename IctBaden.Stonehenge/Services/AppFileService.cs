@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using IctBaden.Stonehenge.Creators;
 using ServiceStack.Common.Web;
+using ServiceStack.WebHost.Endpoints.Support;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -31,9 +33,36 @@ namespace IctBaden.Stonehenge.Services
 
     public object Get(AppFile request)
     {
-      var appSession = GetSession(request.SessionId, true);
-      appSession.Accessed();
-      appSession.EventsClear();
+      var appSession = GetSession(request.SessionId);
+      if (appSession != null)
+      {
+        appSession.Accessed();
+        appSession.EventsClear();
+      }
+      if (appSession == null)
+      {
+        var uri = Request.AbsoluteUri;
+        var getsid = new Regex("/app/([^/]+)/");
+        var match = getsid.Match(uri);
+
+        if(!match.Success)
+          return new NotFoundHttpHandler();
+
+        Guid sid;
+        Guid.TryParse(match.Groups[1].Value, out sid);
+
+        if (sid != Guid.Empty)
+        {
+          var session = AppSessionCache.NewSession();
+          Trace.TraceInformation("Invalid Session {0} - redirect to new session {1}", sid, session.Id);
+
+          uri = uri.Replace(match.Groups[1].Value, session.Id.ToString());
+
+          var redirect = new HttpResult { StatusCode = HttpStatusCode.Redirect };
+          redirect.Headers.Add("Location", uri);
+          return redirect;
+        }
+      }
 
       HttpResult httpResult;
 
@@ -72,8 +101,11 @@ namespace IctBaden.Stonehenge.Services
           var end = text.IndexOf(@"\n", StringComparison.InvariantCulture);
           var name = text.Substring(12, end - 12).Trim();
 
-          appSession.SetViewModelType(name);
-          appSession.EventsClear();
+          if (appSession != null)
+          {
+            appSession.SetViewModelType(name);
+            appSession.EventsClear();
+          }
         }
       }
       else
@@ -110,7 +142,7 @@ namespace IctBaden.Stonehenge.Services
           }
         }
 
-        if (!string.IsNullOrEmpty(vmName))
+        if ((appSession != null) && !string.IsNullOrEmpty(vmName))
         {
           try
           {
@@ -136,7 +168,10 @@ namespace IctBaden.Stonehenge.Services
       {
         case @"index.html":
         case @"app.index.html":
-          text = UserStyleSheets.InsertUserCssLinks(RootPath, text, appSession.SubDomain);
+          if (appSession != null)
+          {
+            text = UserStyleSheets.InsertUserCssLinks(RootPath, text, appSession.SubDomain);
+          }
           text = UserIcons.InsertUserIconLinks(RootPath, text);
           if (!Request.IsLocal)
           {

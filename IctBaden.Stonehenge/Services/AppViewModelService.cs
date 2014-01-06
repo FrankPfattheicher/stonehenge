@@ -13,7 +13,7 @@ namespace IctBaden.Stonehenge.Services
   {
     public object Get(AppViewModel request)
     {
-      var appSession = GetSession(request.SessionId, false);
+      var appSession = GetSession(request.SessionId);
       if (appSession == null)
         return new NotFoundHttpHandler();
       appSession.Accessed();
@@ -70,7 +70,7 @@ namespace IctBaden.Stonehenge.Services
 
     public object Post(AppViewModel request)
     {
-      var appSession = GetSession(request.SessionId, false);
+      var appSession = GetSession(request.SessionId);
       if (appSession == null)
         return new NotFoundHttpHandler();
       var vm = appSession.ViewModel;

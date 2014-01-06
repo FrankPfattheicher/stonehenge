@@ -7,10 +7,11 @@ using System.Reflection;
 using System.Threading;
 using IctBaden.Stonehenge.Annotations;
 using IctBaden.Stonehenge.Services;
+using ServiceStack.CacheAccess;
 
 namespace IctBaden.Stonehenge
 {
-  public class AppSession : INotifyPropertyChanged
+  public class AppSession : INotifyPropertyChanged, ISession
   {
     public string HostDomain { get; private set; }
     public string ClientAddress { get; private set; }
@@ -123,6 +124,20 @@ namespace IctBaden.Stonehenge
       }
     }
 
+    public void Set<T>(string key, T value)
+    {
+      userData[key] = value;
+    }
+
+    public T Get<T>(string key)
+    {
+      if(!userData.ContainsKey(key))
+        return default(T);
+
+      return (T)userData[key];
+    }
+
+
     public TimeSpan ConnectedDuration
     {
       get { return DateTime.Now - ConnectedSince; }
@@ -224,20 +239,6 @@ namespace IctBaden.Stonehenge
     {
       return string.Format("[{0}] {1} {2}", Id, ConnectedSince.ToShortDateString() + " " + ConnectedSince.ToShortTimeString(), SubDomain);
     }
-
-    //public void Set<T>(string key, T value)
-    //{
-    //  if (Session == null)
-    //    return;
-    //  Session.Set(key, value);
-    //}
-
-    //public T Get<T>(string key)
-    //{
-    //  if (Session == null)
-    //    return default(T);
-    //  return Session.Get<T>(key);
-    //}
 
     public event PropertyChangedEventHandler PropertyChanged;
 

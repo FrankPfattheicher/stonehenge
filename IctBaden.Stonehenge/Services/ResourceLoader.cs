@@ -99,6 +99,10 @@ namespace IctBaden.Stonehenge.Services
     public static byte[] LoadBinary(string filePath, string resourcePath, string name)
     {
       var resourceName = (resourcePath.Replace('\\', '.') + "." + name).Replace("..", ".");
+      if (!resourceName.StartsWith("app."))
+      {
+        resourceName = "app." + resourceName;
+      }
 
       if (Binaries.ContainsKey(resourceName))
       {

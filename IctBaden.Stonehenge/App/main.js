@@ -1,16 +1,16 @@
 ﻿requirejs.config({
   paths: {
-    'text':         '/app/lib/require/js/text',
-    'durandal':     '/app/durandal/js',
-    'plugins':      '/app/plugins',
-    'transitions':  '/app/transitions',
-    'knockout':     '/app/lib/knockout/js/knockout-3.0.0',
-    'bootstrap':    '/app/lib/bootstrap/js/bootstrap',
-    'jquery':       '/app/lib/jquery/js/jquery-1.10.2',
-    'throttle':     '/app/lib/jquery.ba-throttle-debounce/jquery.ba-throttle-debounce',
-    'flot':         '/app/lib/flot/js/jquery.flot',
-    'flot_resize':  '/app/lib/flot/jquery.flot.resize',
-    'flot_time':    '/app/lib/flot/jquery.flot.time',
+    'text':         '/app/00000000-0000-0000-0000-000000000000/lib/require/js/text',
+    'durandal':     '/app/00000000-0000-0000-0000-000000000000/durandal/js',
+    'plugins':      '/app/00000000-0000-0000-0000-000000000000/plugins',
+    'transitions':  '/app/00000000-0000-0000-0000-000000000000/transitions',
+    'knockout':     '/app/00000000-0000-0000-0000-000000000000/lib/knockout/js/knockout-3.0.0',
+    'bootstrap':    '/app/00000000-0000-0000-0000-000000000000/lib/bootstrap/js/bootstrap',
+    'jquery':       '/app/00000000-0000-0000-0000-000000000000/lib/jquery/js/jquery-1.10.2',
+    'throttle':     '/app/00000000-0000-0000-0000-000000000000/lib/jquery.ba-throttle-debounce/jquery.ba-throttle-debounce',
+    'flot':         '/app/00000000-0000-0000-0000-000000000000/lib/flot/js/jquery.flot',
+    'flot_resize':  '/app/00000000-0000-0000-0000-000000000000/lib/flot/jquery.flot.resize',
+    'flot_time':    '/app/00000000-0000-0000-0000-000000000000/lib/flot/jquery.flot.time',
   },
   shim: {
     'bootstrap': {

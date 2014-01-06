@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.Caching;
 
 namespace IctBaden.Stonehenge
 {
   public class AppSessionCache
   {
-    private static Dictionary<Guid, AppSession> Cache = new Dictionary<Guid, AppSession>();
+    public static readonly Dictionary<Guid, AppSession> Cache = new Dictionary<Guid, AppSession>();
 
     public static AppSession NewSession()
     {
-      var session = new AppSession();
       lock (Cache)
       {
+        var session = new AppSession();
         Cache.Add(session.Id, session);
+        return session;
       }
-      return session;
     }
 
     public static AppSession GetSession(Guid id)
