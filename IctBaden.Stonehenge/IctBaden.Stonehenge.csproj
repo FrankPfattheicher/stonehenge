@@ -66,6 +66,7 @@
     <Compile Include="ActiveModel.cs" />
     <Compile Include="ActiveViewModel.cs" />
     <Compile Include="AppEngine.cs" />
+    <Compile Include="AppSessionCache.cs" />
     <Compile Include="CheckedItem.cs" />
     <Compile Include="Creators\ContentDeliveryNetworkSupport.cs" />
     <Compile Include="Creators\UserIcons.cs" />

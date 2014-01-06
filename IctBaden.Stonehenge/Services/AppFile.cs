@@ -17,6 +17,7 @@ namespace IctBaden.Stonehenge.Services
     public string Path3 { get; set; }
     public string Path4 { get; set; }
     public string FileName { get; set; }
+    public string SessionId { get; set; }
 
     public string BasePath(string root)
     {

@@ -90,7 +90,7 @@ namespace IctBaden.Stonehenge
       var dir = Directory.CreateDirectory(path);
       var parameter =
         string.Format(
-          "--app=http://localhost:{0}/app/index.html?title={1} --app-window-size={2},{3} --disable-translate --user-data-dir=\"{4}\"",
+          "--app=http://localhost:{0}/?title={1} --app-window-size={2},{3} --disable-translate --user-data-dir=\"{4}\"",
           port, Title, WindowSize.X, WindowSize.Y, path);
       var ui = Process.Start(cmd, parameter);
       if (ui == null)
@@ -109,7 +109,7 @@ namespace IctBaden.Stonehenge
         return false;
 
       const string cmd = "iexplore.exe";
-      var parameter = string.Format("-private http://localhost:{0}/app/index.html?title={1}", port, Title);
+      var parameter = string.Format("-private http://localhost:{0}/?title={1}", port, Title);
       var ui = Process.Start(cmd, parameter);
       if (ui == null)
       {
@@ -126,7 +126,7 @@ namespace IctBaden.Stonehenge
         return false;
 
       const string cmd = "firefox.exe";
-      var parameter = string.Format("http://localhost:{0}/app/index.html?title={1} -width {2} -height {3}", port, Title, WindowSize.X, WindowSize.Y);
+      var parameter = string.Format("http://localhost:{0}/?title={1} -width {2} -height {3}", port, Title, WindowSize.X, WindowSize.Y);
       var ui = Process.Start(cmd, parameter);
       if (ui == null)
       {
@@ -143,7 +143,7 @@ namespace IctBaden.Stonehenge
         return false;
 
       const string cmd = "safari.exe";
-      var parameter = string.Format("-url http://localhost:{0}/app/index.html?title={1} -width {2} -height {3}", port, Title, WindowSize.X, WindowSize.Y);
+      var parameter = string.Format("-url http://localhost:{0}/?title={1} -width {2} -height {3}", port, Title, WindowSize.X, WindowSize.Y);
       var ui = Process.Start(cmd, parameter);
       if (ui == null)
       {

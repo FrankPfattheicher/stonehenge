@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
+using ServiceStack.WebHost.Endpoints.Support;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -12,12 +13,15 @@ namespace IctBaden.Stonehenge.Services
   {
     public object Get(AppViewModel request)
     {
-      var appSession = GetSession();
+      var appSession = GetSession(request.SessionId, false);
+      if (appSession == null)
+        return new NotFoundHttpHandler();
       appSession.Accessed();
 
       Debug.WriteLine("ViewModelService:" + request.ViewModel);
 
-      var vm = SetViewModelType(request.ViewModel);
+      var vm = appSession.SetViewModelType(request.ViewModel);
+      appSession.EventsClear();
 
       var ty = vm.GetType();
       Debug.WriteLine("AppViewModelService: ~vm=" + ty.Name);
@@ -43,7 +47,7 @@ namespace IctBaden.Stonehenge.Services
 
       var result = "{" + string.Join(",", data) + "}";
 
-      EventsClear();
+      appSession.EventsClear();
 
       HttpResult httpResult;
 
@@ -66,7 +70,10 @@ namespace IctBaden.Stonehenge.Services
 
     public object Post(AppViewModel request)
     {
-      var vm = ViewModel;
+      var appSession = GetSession(request.SessionId, false);
+      if (appSession == null)
+        return new NotFoundHttpHandler();
+      var vm = appSession.ViewModel;
       if (vm == null)
         return Get(request);
 

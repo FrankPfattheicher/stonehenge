@@ -51,16 +51,16 @@ namespace IctBaden.Stonehenge
     {
       Config.AllowRouteContentTypeExtensions = false; // otherwise extensions are stripped out
 
-      Routes.Add<AppFile>("/app/{FileName}")
-            .Add<AppFile>("/app/{Path1}/{FileName}")
-            .Add<AppFile>("/app/{Path1}/{Path2}/{FileName}")
-            .Add<AppFile>("/app/{Path1}/{Path2}/{Path3}/{FileName}")
-            .Add<AppFile>("/app/{Path1}/{Path2}/{Path3}/{Path4}/{FileName}");
+      Routes.Add<AppFile>("/app/{SessionId}/{FileName}")
+            .Add<AppFile>("/app/{SessionId}/{Path1}/{FileName}")
+            .Add<AppFile>("/app/{SessionId}/{Path1}/{Path2}/{FileName}")
+            .Add<AppFile>("/app/{SessionId}/{Path1}/{Path2}/{Path3}/{FileName}")
+            .Add<AppFile>("/app/{SessionId}/{Path1}/{Path2}/{Path3}/{Path4}/{FileName}");
 
-      Routes.Add<AppViewModel>("/ViewModel/{ViewModel}")
-            .Add<AppViewModel>("/ViewModel/{ViewModel}/{Source}");
+      Routes.Add<AppViewModel>("/ViewModel/{SessionId}/{ViewModel}")
+            .Add<AppViewModel>("/ViewModel/{SessionId}/{ViewModel}/{Source}");
 
-      Routes.Add<AppEvent>("/Events/{ViewModel}");
+      Routes.Add<AppEvent>("/Events/{SessionId}/{ViewModel}");
 
       Plugins.Add(new SessionFeature());
       container.Register<ICacheClient>(new MemoryCacheClient());
@@ -72,7 +72,9 @@ namespace IctBaden.Stonehenge
           Debug.WriteLine("CatchAllHandler({0}, {1}, {2})", httpMethod, pathInfo, filePath);
           if (pathInfo != "/")
             return new NotFoundHttpHandler();
-          return new RootRedirectHandler { RelativeUrl = "/app/index.html#/" + StartPage };
+
+          var session = AppSessionCache.NewSession();
+          return new RootRedirectHandler { RelativeUrl = string.Format("/app/{0}/index.html#/{1}", session.Id, StartPage) };
         });
 
       SetConfig(new EndpointHostConfig

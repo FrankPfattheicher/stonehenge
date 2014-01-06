@@ -26,7 +26,7 @@ namespace IctBaden.Stonehenge.Creators
     // ReSharper disable StringIndexOfIsCultureSpecific.2
     private static Map GetMapFromPageText(string route, string pageText)
     {
-      var map = new Map { Route = route, Title = route };
+      var map = new Map { Route = route, Title = route.Substring(0, 1).ToUpper() + route.Substring(1) };
 
       var titleIndex = pageText.IndexOf("<!--Title:");
       if (titleIndex >= 0)

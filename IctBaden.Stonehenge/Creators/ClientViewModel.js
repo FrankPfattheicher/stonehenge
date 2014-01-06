@@ -5,11 +5,16 @@ var activation_data;
 // ReSharper disable UseOfImplicitGlobalInFunctionScope
 // ReSharper disable UnusedLocals
 // ReSharper disable UnusedParameter
+function sessionId() {
+  try { return location.pathname.split('/')[2]; } catch (e) { }
+  return "0";
+}
+
 function poll_ViewModelName_Events(viewmodel, initial) {
   var app = require('durandal/app');
   var router = require('plugins/router');
   var ts = new Date().getTime();
-  $.getJSON('/events/_ViewModelType_?ts=' + ts, function (data) {
+  $.getJSON('/events/' + sessionId() + '/_ViewModelType_?ts=' + ts, function (data) {
     if (data == null) return;
     set_ViewModelName_Data(viewmodel, false, data);
     if (data.stonehenge_eval != null) eval(data.stonehenge_eval);
@@ -38,7 +43,7 @@ function post_ViewModelName_Data(viewmodel, sender, method, param) {
   _GetData_();
   var ts = new Date().getTime();
   viewmodel.IsLoading(true);
-  $.post('/viewmodel/_ViewModelType_/' + method + '?ts=' + ts, params, function (data) { set_ViewModelName_Data(viewmodel, true, data); });
+  $.post('/viewmodel/' + sessionId() + '/_ViewModelType_/' + method + '?ts=' + ts, params, function (data) { set_ViewModelName_Data(viewmodel, true, data); });
 }
 define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function (app, system, ko, flot) {
   self = this;
@@ -62,7 +67,7 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function (app, s
       system.log('ClientViewModel  : attached');
       var ts = new Date().getTime();
       var startPolling = function () { setTimeout(function () { poll_ViewModelName_Events(self, true); }, 100); };
-      $.getJSON('/viewmodel/_ViewModelType_?ts=' + ts, function (data) {
+      $.getJSON('/viewmodel/' + sessionId() + '/_ViewModelType_?ts=' + ts, function (data) {
         set_ViewModelName_Data(self, true, data);
         startPolling();
       });

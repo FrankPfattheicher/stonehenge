@@ -31,9 +31,9 @@ namespace IctBaden.Stonehenge.Services
 
     public object Get(AppFile request)
     {
-      var appSession = GetSession();
+      var appSession = GetSession(request.SessionId, true);
       appSession.Accessed();
-      EventsClear();
+      appSession.EventsClear();
 
       HttpResult httpResult;
 
@@ -71,8 +71,9 @@ namespace IctBaden.Stonehenge.Services
         {
           var end = text.IndexOf(@"\n", StringComparison.InvariantCulture);
           var name = text.Substring(12, end - 12).Trim();
-          
-          SetViewModelType(name);
+
+          appSession.SetViewModelType(name);
+          appSession.EventsClear();
         }
       }
       else
@@ -113,7 +114,8 @@ namespace IctBaden.Stonehenge.Services
         {
           try
           {
-            var vm = SetViewModelType(vmName);
+            var vm = appSession.SetViewModelType(vmName);
+            appSession.EventsClear();
             text = ModuleCreator.CreateFromViewModel(vm);
           }
           catch (Exception ex)
@@ -136,7 +138,7 @@ namespace IctBaden.Stonehenge.Services
         case @"app.index.html":
           text = UserStyleSheets.InsertUserCssLinks(RootPath, text, appSession.SubDomain);
           text = UserIcons.InsertUserIconLinks(RootPath, text);
-          //if (!Request.IsLocal)
+          if (!Request.IsLocal)
           {
             text = ContentDeliveryNetworkSupport.RersolveHostsHtml(text);
           }
@@ -158,7 +160,7 @@ namespace IctBaden.Stonehenge.Services
             if (host != null)
               text = text.Replace("%TITLE%", host.Title);
           }
-          //if (!Request.IsLocal)
+          if (!Request.IsLocal)
           {
             text = ContentDeliveryNetworkSupport.RersolveHostsJs(text);
           }

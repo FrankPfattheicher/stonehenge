@@ -1,21 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using IctBaden.Stonehenge.Annotations;
-using ServiceStack.CacheAccess;
+using IctBaden.Stonehenge.Services;
 
 namespace IctBaden.Stonehenge
 {
   public class AppSession : INotifyPropertyChanged
   {
-    internal ISession Session { get; private set; }
     public string HostDomain { get; private set; }
     public string ClientAddress { get; private set; }
     public string UserAgent { get; private set; }
     public DateTime ConnectedSince { get; private set; }
     public DateTime LastAccess { get; private set; }
     public Guid Id { get; private set; }
+
+    public List<string> Events = new List<string>();
+    public AutoResetEvent EventRelease = new AutoResetEvent(false);
+
+    private object viewModel;
+    public object ViewModel
+    {
+      get { return viewModel; }
+      set
+      {
+        viewModel = value;
+        var npc = value as INotifyPropertyChanged;
+        if (npc != null)
+        {
+          npc.PropertyChanged += (sender, args) =>
+          {
+            var avm = sender as ActiveViewModel;
+            if (avm == null)
+              return;
+            lock (avm.Session.Events)
+            {
+              avm.Session.EventAdd(args.PropertyName);
+            }
+          };
+        }
+      }
+    }
+
+    public object SetViewModelType(string typeName)
+    {
+      var vm = ViewModel;
+      if (ViewModel != null)
+      {
+        if ((ViewModel.GetType().FullName == typeName))
+          return vm;
+
+        var disposable = vm as IDisposable;
+        if (disposable != null)
+        {
+          disposable.Dispose();
+        }
+      }
+
+
+      var asm = Assembly.GetEntryAssembly();
+      var vmtype = asm.GetTypes().FirstOrDefault(type => type.FullName.EndsWith(typeName));
+      if (vmtype == null)
+      {
+        ViewModel = null;
+        Debug.WriteLine("Could not create ViewModel:" + typeName);
+        return null;
+      }
+
+      try
+      {
+        if (typeof(ActiveViewModel).IsAssignableFrom(vmtype))
+        {
+          var sessionCtor = vmtype.GetConstructors().FirstOrDefault(ctor => ctor.GetParameters().Length == 1);
+          vm = (sessionCtor != null) ? Activator.CreateInstance(vmtype, new object[] { this }) : Activator.CreateInstance(vmtype);
+        }
+        else
+        {
+          vm = Activator.CreateInstance(vmtype);
+        }
+      }
+      catch (Exception ex)
+      {
+        Trace.TraceError(ex.Message);
+        vm = null;
+      }
+
+      ViewModel = vm;
+      return vm;
+    }
 
     public string SubDomain
     {
@@ -95,7 +171,15 @@ namespace IctBaden.Stonehenge
       terminator = disposable;
     }
 
-    internal AppSession(string hostDomain, string hostUrl, string clientAddress, string userAgent, ISession session)
+    internal AppSession()
+    {
+      userData = new Dictionary<string, object>();
+      Id = Guid.NewGuid();
+    }
+
+    internal bool IsInitialized { get { return UserAgent != null; }}
+
+    internal void Initialize(string hostDomain, string hostUrl, string clientAddress, string userAgent)
     {
       if (!string.IsNullOrEmpty(hostUrl))
       {
@@ -107,11 +191,8 @@ namespace IctBaden.Stonehenge
         HostDomain = hostDomain;
       }
       ClientAddress = clientAddress;
-      userData = new Dictionary<string, object>();
       UserAgent = userAgent;
-      Session = session;
       ConnectedSince = DateTime.Now;
-      Id = Guid.NewGuid();
     }
 
     internal void Accessed()
@@ -120,24 +201,43 @@ namespace IctBaden.Stonehenge
       NotifyPropertyChanged("LastAccess");
     }
 
+    public void EventsClear()
+    {
+      lock (Events)
+      {
+        var msgBox = Events.FirstOrDefault(e => e.StartsWith(AppService.PropertyNameId));
+        Events.Clear();
+        EventAdd(msgBox ?? string.Empty);
+      }
+    }
+
+    public void EventAdd(string name)
+    {
+      lock (Events)
+      {
+        Events.Add(name);
+        EventRelease.Set();
+      }
+    }
+
     public override string ToString()
     {
       return string.Format("[{0}] {1} {2}", Id, ConnectedSince.ToShortDateString() + " " + ConnectedSince.ToShortTimeString(), SubDomain);
     }
 
-    public void Set<T>(string key, T value)
-    {
-      if (Session == null)
-        return;
-      Session.Set(key, value);
-    }
+    //public void Set<T>(string key, T value)
+    //{
+    //  if (Session == null)
+    //    return;
+    //  Session.Set(key, value);
+    //}
 
-    public T Get<T>(string key)
-    {
-      if (Session == null)
-        return default(T);
-      return Session.Get<T>(key);
-    }
+    //public T Get<T>(string key)
+    //{
+    //  if (Session == null)
+    //    return default(T);
+    //  return Session.Get<T>(key);
+    //}
 
     public event PropertyChangedEventHandler PropertyChanged;
 

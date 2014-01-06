@@ -7,6 +7,7 @@ using System.Threading;
 using System.Web;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
+using ServiceStack.WebHost.Endpoints.Support;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -16,24 +17,26 @@ namespace IctBaden.Stonehenge.Services
 
     public object Get(AppEvent request)
     {
-      var appSession = GetSession();
+      var appSession = GetSession(request.SessionId, false);
+      if (appSession == null)
+        return new NotFoundHttpHandler();
       appSession.Accessed();
 
       Debug.WriteLine("EventService:" + request.ViewModel);
 
-      EventRelease.WaitOne(MaxDelay);
+      appSession.EventRelease.WaitOne(MaxDelay);
       Thread.Sleep(10);
 
       var values = new Dictionary<string, object>();
-      var vm = ViewModel as ActiveViewModel;
+      var vm = appSession.ViewModel as ActiveViewModel;
       if ((vm == null) || (vm.GetType().FullName != request.ViewModel) || !vm.SupportsEvents)
       {
         return new HttpResult("{}", "application/json");
       }
-      lock (Events)
+      lock (appSession.Events)
       {
         values.Add("stonehenge_poll", 1);
-        foreach (var name in Events.Where(name => !string.IsNullOrEmpty(name) && !values.ContainsKey(name)))
+        foreach (var name in appSession.Events.Where(name => !string.IsNullOrEmpty(name) && !values.ContainsKey(name)))
         {
           if (name == PropertyNameMessageBox)
           {
@@ -57,7 +60,7 @@ namespace IctBaden.Stonehenge.Services
             values.Add(name, vm.TryGetMember(name));
           }
         }
-        Events.Clear();
+        appSession.Events.Clear();
       }
 
       if (!string.IsNullOrEmpty(RequestContext.CompressionType))

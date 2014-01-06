@@ -195,7 +195,7 @@ namespace IctBaden.Stonehenge
     public ActiveViewModel(AppSession session)
     {
       SupportsEvents = true;
-      Session = session ?? new AppSession(string.Empty, string.Empty, string.Empty, string.Empty, null);
+      Session = session ?? new AppSession();
     }
 
     protected void SetParent(ActiveViewModel parent)
