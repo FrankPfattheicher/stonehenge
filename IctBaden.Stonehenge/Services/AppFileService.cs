@@ -132,6 +132,7 @@ namespace IctBaden.Stonehenge.Services
 
       switch (path.Replace(Path.DirectorySeparatorChar, '.'))
       {
+        case @"index.html":
         case @"app.index.html":
           text = UserStyleSheets.InsertUserCssLinks(RootPath, text, appSession.SubDomain);
           text = UserIcons.InsertUserIconLinks(RootPath, text);
