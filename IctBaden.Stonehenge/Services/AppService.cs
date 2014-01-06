@@ -44,6 +44,7 @@ namespace IctBaden.Stonehenge.Services
           session.TimedOut += () =>
           {
             Cache.FlushAll();
+            AppSessionCache.RemoveSession(session.Id);
             host.OnSessionTerminated(session);
           };
         }

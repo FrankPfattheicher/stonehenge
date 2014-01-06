@@ -136,6 +136,8 @@
     <EmbeddedResource Include="app\lib\font-awesome\css\font-awesome.css" />
     <EmbeddedResource Include="app\lib\font-awesome\css\font-awesome.min.css" />
     <EmbeddedResource Include="app\lib\font-awesome\font\fontawesome-webfont.svg" />
+    <EmbeddedResource Include="app\lib\respondjs\js\respond.min.js" />
+    <EmbeddedResource Include="app\lib\respondjs\js\respond.js" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />
@@ -212,6 +214,7 @@
     <EmbeddedResource Include="app\lib\font-awesome\font\fontawesome-webfont.ttf" />
     <EmbeddedResource Include="app\lib\font-awesome\font\fontawesome-webfont.woff" />
     <EmbeddedResource Include="app\lib\font-awesome\font\FontAwesome.otf" />
+    <None Include="app\lib\respondjs\js\README.md" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

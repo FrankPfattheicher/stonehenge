@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace IctBaden.Stonehenge
 {
@@ -13,6 +14,7 @@ namespace IctBaden.Stonehenge
       {
         var session = new AppSession();
         Cache.Add(session.Id, session);
+        Trace.TraceInformation("New AppSession created: {0}, {1} sessions", session.Id, Cache.Count);
         return session;
       }
     }
@@ -31,6 +33,7 @@ namespace IctBaden.Stonehenge
       {
         if (Cache.ContainsKey(id))
         {
+          Trace.TraceInformation("Remove AppSession: {0}, {1} sessions", id, Cache.Count - 1);
           Cache.Remove(id);
         }
       }
