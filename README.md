@@ -2,9 +2,7 @@ stonehenge
 ==========
 An open source .NET Framework to use Web UI technologies for desktop and/or web applications.
 
-New in version 0.7: Additional CDN support for css files.
-                    Support for more browsers (non kiosk mode).
-					VisualStudio template.
+New in version 0.8:  Moved to Durandal 2.0.1
 
 Motivation
 ----------
@@ -22,14 +20,14 @@ How It Works
 If your .NET WPF Application ist already using the MVVM pattern
 just throw away the XAML views and replace them by HTML views.
 
-The .NET framework part parsing XAML, do data binding is
-replaced by a proxy and stub transferring data and knockout for binding.
+The .NET framework part of doing XAML data binding is
+replaced by a proxy and stub transferring data and knockout is used for client site binding.
 
-Note: It's chatty - it's designed for local use.
+Note: It's chatty - it's primary designed for local use.
 
 Current project state: Working (Basic)
 
-![Stonehenge](http://ict-baden.de/images/stonehenge.png)
+![image](Stonehenge.png)
 
 A great application has to be founded on solid pilars of frameworks.
 
@@ -38,7 +36,9 @@ Features
 * WPF like ViewModels
 * No JavaScript coding necessary
 * All controls usable using knockout bindings
+* CDN support for js and css files
 * Development environments: VS201, VS2013, MonoDevelop, XamarinStudio
+* VisualStudio template
 
 Known bugs
 ----------
@@ -46,7 +46,6 @@ Known bugs
 
 TODO
 ----
-* Durandal 2.0
 * include toastr
 * More controls
 * Widgets
