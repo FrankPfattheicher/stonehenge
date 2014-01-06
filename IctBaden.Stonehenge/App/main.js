@@ -10,7 +10,7 @@
     'throttle':     '/app/lib/jquery.ba-throttle-debounce/jquery.ba-throttle-debounce',
     'flot':         '/app/lib/flot/js/jquery.flot',
     'flot_resize':  '/app/lib/flot/jquery.flot.resize',
-    'flot_time':    '/app/lib/flot/jquery.flot.time'
+    'flot_time':    '/app/lib/flot/jquery.flot.time',
   },
   shim: {
     'bootstrap': {

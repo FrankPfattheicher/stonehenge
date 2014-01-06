@@ -39,18 +39,34 @@ namespace IctBaden.Stonehenge.Creators
       }
     }
 
-    public static string RersolveHosts(string page)
+    public static string RersolveHostsHtml(string page)
     {
       if (!File.Exists(CdnConfigurationFileName))
         return page;
 
-      var script = new Regex("(?<a><script.*src=\"(?<b>scripts/(?<c>.*\\.js))\".*)|(?<a><link.*href=\"(?<b>css/(?<c>.*\\.css))\".*)", RegexOptions.Compiled);
+      var script = new Regex("(?<a><script.*src=\"(?<b>(?<c>.*\\.js))\".*)|(?<a><link.*href=\"(?<b>(?<c>.*\\.css))\".*)", RegexOptions.Compiled);
 
       var resultlines = from line in page.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
                         let isScriptSource = script.Match(line)
-                        let source = isScriptSource.Groups["c"].Value
+                        let source = isScriptSource.Groups["c"].Value.Split(new[] { '/' }).Last()
                         select (isScriptSource.Success && CdnLookup.ContainsKey(source)) ? 
                                isScriptSource.Groups["a"].Value.Replace(isScriptSource.Groups["b"].Value, CdnLookup[source]) : line;
+
+      return string.Join(Environment.NewLine, resultlines);
+    }
+
+    public static string RersolveHostsJs(string page)
+    {
+      if (!File.Exists(CdnConfigurationFileName))
+        return page;
+      
+      var script = new Regex("(?<map>'(?<id>.+)' *: *'(?<path>.*)'.*)", RegexOptions.Compiled);
+      
+      var resultlines = from line in page.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                        let isMapPath = script.Match(line)
+                        let source = isMapPath.Groups["path"].Value.Split(new []{'/'}).Last() + ".js"
+                        select (isMapPath.Success && CdnLookup.ContainsKey(source)) ?
+                               isMapPath.Groups["map"].Value.Replace(isMapPath.Groups["path"].Value, CdnLookup[source]).Replace(".js'", "'") : line;
 
       return string.Join(Environment.NewLine, resultlines);
     }
