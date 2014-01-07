@@ -5,10 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Text.RegularExpressions;
 using IctBaden.Stonehenge.Creators;
 using ServiceStack.Common.Web;
-using ServiceStack.WebHost.Endpoints.Support;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -39,27 +37,11 @@ namespace IctBaden.Stonehenge.Services
         appSession.Accessed();
         appSession.EventsClear();
       }
-      if (appSession == null)
+      else
       {
-        var uri = Request.AbsoluteUri;
-        var getsid = new Regex("/app/([^/]+)/");
-        var match = getsid.Match(uri);
-
-        if(!match.Success)
-          return new NotFoundHttpHandler();
-
-        Guid sid;
-        Guid.TryParse(match.Groups[1].Value, out sid);
-
-        if (sid != Guid.Empty)
+        var redirect = RedirectToNewSession();
+        if (redirect != null)
         {
-          var session = AppSessionCache.NewSession();
-          Trace.TraceInformation("Invalid Session {0} - redirect to new session {1}", sid, session.Id);
-
-          uri = uri.Replace(match.Groups[1].Value, session.Id.ToString());
-
-          var redirect = new HttpResult { StatusCode = HttpStatusCode.Redirect };
-          redirect.Headers.Add("Location", uri);
           return redirect;
         }
       }

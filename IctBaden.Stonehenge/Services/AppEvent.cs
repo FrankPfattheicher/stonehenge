@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace IctBaden.Stonehenge.Services
+﻿namespace IctBaden.Stonehenge.Services
 {
   public class AppEvent
   {

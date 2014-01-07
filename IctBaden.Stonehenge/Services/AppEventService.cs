@@ -2,12 +2,12 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Web;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
-using ServiceStack.WebHost.Endpoints.Support;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -19,7 +19,7 @@ namespace IctBaden.Stonehenge.Services
     {
       var appSession = GetSession(request.SessionId);
       if (appSession == null)
-        return new NotFoundHttpHandler();
+        return new HttpResult("No view for event request", HttpStatusCode.NotFound);
       appSession.Accessed();
 
       Debug.WriteLine("EventService:" + request.ViewModel);

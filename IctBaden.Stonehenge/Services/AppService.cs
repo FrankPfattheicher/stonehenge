@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Net;
+using System.Text.RegularExpressions;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 
 namespace IctBaden.Stonehenge.Services
@@ -50,6 +54,32 @@ namespace IctBaden.Stonehenge.Services
         }
         return session;
       }
+    }
+
+    protected object RedirectToNewSession()
+    {
+      var uri = Request.AbsoluteUri;
+      var getsid = new Regex("/(app|viewmodel)/(?<sid>[^/]+)/");
+      var match = getsid.Match(uri);
+
+      if (!match.Success)
+        return new HttpResult("No session id found", HttpStatusCode.NotFound);
+
+      Guid sid;
+      Guid.TryParse(match.Groups["sid"].Value, out sid);
+
+      if (sid != Guid.Empty)
+      {
+        var session = AppSessionCache.NewSession();
+        Trace.TraceInformation("Invalid Session {0} - redirect to new session {1}", sid, session.Id);
+
+        uri = uri.Replace(match.Groups["sid"].Value, session.Id.ToString());
+
+        var redirect = new HttpResult { StatusCode = HttpStatusCode.Redirect };
+        redirect.Headers.Add("Location", uri);
+        return redirect;
+      }
+      return null;
     }
 
   }

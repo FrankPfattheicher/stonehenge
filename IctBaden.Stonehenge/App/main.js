@@ -17,7 +17,8 @@
       deps: ['jquery'],
       exports: 'jQuery'
     }
-  }
+  },
+  waitSeconds: 15
 });
 
 define(['durandal/system', 'durandal/app', 'durandal/viewLocator'], function (system, app, viewLocator) {
@@ -27,10 +28,11 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'], function (sy
 
   app.title = '%TITLE%';
 
-  require(['throttle'], function (_) { });
+  require(['bootstrap']);
+  require(['throttle']);
   require(['flot'], function(_) {
-    require(['flot_resize'], function (_) { });
-    require(['flot_time'], function (_) { });
+    require(['flot_resize']);
+    require(['flot_time']);
   });
 
   //specify which plugins to install and their configuration

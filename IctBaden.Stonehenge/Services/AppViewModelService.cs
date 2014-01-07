@@ -5,7 +5,6 @@ using System.Net;
 using System.Text;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
-using ServiceStack.WebHost.Endpoints.Support;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -15,7 +14,7 @@ namespace IctBaden.Stonehenge.Services
     {
       var appSession = GetSession(request.SessionId);
       if (appSession == null)
-        return new NotFoundHttpHandler();
+        return new HttpResult("No session for viewmodel request", HttpStatusCode.NotFound);
       appSession.Accessed();
 
       Debug.WriteLine("ViewModelService:" + request.ViewModel);
@@ -72,7 +71,9 @@ namespace IctBaden.Stonehenge.Services
     {
       var appSession = GetSession(request.SessionId);
       if (appSession == null)
-        return new NotFoundHttpHandler();
+      {
+        return new HttpResult("No session for viewmodel request", HttpStatusCode.NotFound);
+      }
       var vm = appSession.ViewModel;
       if (vm == null)
         return Get(request);
