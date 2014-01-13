@@ -39,6 +39,11 @@ namespace IctBaden.Stonehenge.Services
       }
       else
       {
+        if (request.IsEmpty)
+        {
+          var robots = ResourceLoader.LoadText("", "", "robots.txt");
+          return new HttpResult(robots, "text/plain");
+        }
         var redirect = RedirectToNewSession();
         if (redirect != null)
         {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Web;
 using Funq;
 using IctBaden.Stonehenge.Services;
 using ServiceStack.CacheAccess;
@@ -51,7 +53,8 @@ namespace IctBaden.Stonehenge
     {
       Config.AllowRouteContentTypeExtensions = false; // otherwise extensions are stripped out
 
-      Routes.Add<AppFile>("/app/{SessionId}/{FileName}")
+      Routes.Add<AppFile>("/robots.txt")
+            .Add<AppFile>("/app/{SessionId}/{FileName}")
             .Add<AppFile>("/app/{SessionId}/{Path1}/{FileName}")
             .Add<AppFile>("/app/{SessionId}/{Path1}/{Path2}/{FileName}")
             .Add<AppFile>("/app/{SessionId}/{Path1}/{Path2}/{Path3}/{FileName}")
@@ -71,8 +74,9 @@ namespace IctBaden.Stonehenge
         {
           Debug.WriteLine("CatchAllHandler({0}, {1}, {2})", httpMethod, pathInfo, filePath);
           if (pathInfo != "/")
+          {
             return new NotFoundHttpHandler();
-
+          }
           var session = AppSessionCache.NewSession();
           return new RootRedirectHandler { RelativeUrl = string.Format("/app/{0}/index.html#/{1}", session.Id, StartPage) };
         });

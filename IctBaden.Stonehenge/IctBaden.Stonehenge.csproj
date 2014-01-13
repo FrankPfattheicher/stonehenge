@@ -138,6 +138,7 @@
     <EmbeddedResource Include="app\lib\font-awesome\font\fontawesome-webfont.svg" />
     <EmbeddedResource Include="app\lib\respondjs\js\respond.min.js" />
     <EmbeddedResource Include="app\lib\respondjs\js\respond.js" />
+    <EmbeddedResource Include="robots.txt" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />

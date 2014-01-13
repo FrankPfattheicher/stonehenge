@@ -12,6 +12,19 @@ namespace IctBaden.Stonehenge.Services
       Path4 = string.Empty;
     }
 
+    public bool IsEmpty
+    {
+      get
+      {
+        return (Path1 == string.Empty)
+               && (Path2 == string.Empty)
+               && (Path3 == string.Empty)
+               && (Path4 == string.Empty)
+               && (FileName == null)
+               && (SessionId == null);
+      }
+    }
+
     public string Path1 { get; set; }
     public string Path2 { get; set; }
     public string Path3 { get; set; }
