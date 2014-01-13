@@ -117,7 +117,7 @@ namespace IctBaden.Stonehenge.Creators
         var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
         if ((bindable.Length > 0) && ((BindableAttribute)bindable[0]).Direction == BindingDirection.OneWay)
           continue;
-        postbackPropNames.Add(prop.Name);
+        postbackPropNames.Add(propName);
       }
 
       var getData = new StringBuilder();

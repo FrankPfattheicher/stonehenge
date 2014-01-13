@@ -38,11 +38,11 @@ namespace IctBaden.Stonehenge.Services
       {
         foreach (var model in activeVm.ActiveModels)
         {
-          data.AddRange(SerializeObject(model.Model));
+          data.AddRange(SerializeObject(model.Prefix, model.Model));
         }
       }
 
-      data.AddRange(SerializeObject(vm));
+      data.AddRange(SerializeObject(null, vm));
 
       var result = "{" + string.Join(",", data) + "}";
 
@@ -117,9 +117,11 @@ namespace IctBaden.Stonehenge.Services
       return returnData ? Get(request) : new HttpResult("{}", "application/json");
     }
 
-    private static IEnumerable<string> SerializeObject(object obj)
+    private static IEnumerable<string> SerializeObject(string prefix, object obj)
     {
       var data = new List<string>();
+      if (prefix == null)
+        prefix = string.Empty;
 
       foreach (var prop in obj.GetType().GetProperties())
       {
@@ -134,11 +136,11 @@ namespace IctBaden.Stonehenge.Services
         string json;
         if (prop.PropertyType.Name == "GraphOptions")
         {
-          json = "\"" + prop.Name + "\":" + value;
+          json = "\"" + prefix + prop.Name + "\":" + value;
         }
         else
         {
-          json = "\"" + prop.Name + "\":" + JsonSerializer.SerializeToString(value);
+          json = "\"" + prefix + prop.Name + "\":" + JsonSerializer.SerializeToString(value);
         }
         data.Add(json);
       }
