@@ -74,18 +74,30 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function (app, s
       system.log('ClientViewModel  : attached');
       var ts = new Date().getTime();
       var startPolling = function () { setTimeout(function () { poll_ViewModelName_Events(self, true); }, 100); };
-      $.getJSON('/viewmodel/' + sessionId() + '/_ViewModelType_?ts=' + ts, function (data) {
-        set_ViewModelName_Data(self, true, data);
-        startPolling();
-      }).fail(function () {
-        //alert("_ViewModelName_ attached getJSON failed");
-        window.location.reload();
-      });
+      var loadVM = function(initial) {
+        $.getJSON('/viewmodel/' + sessionId() + '/_ViewModelType_?ts=' + ts, function(data) {
+          set_ViewModelName_Data(self, initial, data);
+          startPolling();
+        }).fail(function() {
+          //alert("_ViewModelName_ attached getJSON failed");
+          window.location.reload();
+        });
+      };
+      var resizeTimeoutId;
+      window.onresize = function () {
+        window.clearTimeout(resizeTimeoutId);
+        resizeTimeoutId = window.setTimeout(function () { loadVM(false); }, 200);
+      };
+      loadVM(true);
     },
     binding: function () {
       system.log('ClientViewModel : binding');
       return { cacheViews: false }; //cancels view caching for this module, allowing the triggering of the detached callback
-    }
+    },
+    compositionComplete: function () {
+      system.log('ClientViewModel : compositionComplete');
+      
+    },
   };
   return viewModel;
 });
