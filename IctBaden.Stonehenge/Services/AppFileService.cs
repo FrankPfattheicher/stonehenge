@@ -180,7 +180,18 @@ namespace IctBaden.Stonehenge.Services
           {
             var host = GetResolver() as AppHost;
             if (host != null)
+            {
               text = text.Replace("%TITLE%", host.Title);
+              if (host.MessageBoxContentHtml)
+              {
+                text = text.Replace("//MessageBox=HTML", "var dialog = require('plugins/dialog');" +
+                                                         "dialog.MessageBox.defaultViewMarkup = dialog.MessageBox.defaultViewMarkup.replace('data-bind=\"text: message\"', 'data-bind=\"html: message\"');");
+              }
+              else
+              {
+                text = text.Replace("//MessageBox=HTML", "");
+              }
+            }
           }
           if (!Request.IsLocal)
           {
@@ -189,7 +200,7 @@ namespace IctBaden.Stonehenge.Services
           break;
       }
 
-      if (string.IsNullOrEmpty(RequestContext.CompressionType)) 
+      if (string.IsNullOrEmpty(RequestContext.CompressionType))
         return new HttpResult(text, type);
 
       var compressed = new CompressedResult(Encoding.UTF8.GetBytes(text), RequestContext.CompressionType) { ContentType = type };

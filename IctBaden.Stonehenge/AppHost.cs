@@ -19,6 +19,7 @@ namespace IctBaden.Stonehenge
   {
     public string Title { get; private set; }
     public string StartPage { get; private set; }
+    public bool MessageBoxContentHtml { get; private set; }
     public string Redirect { get; set; }
 
     public TimeSpan SessionTimeout { get; set; }
@@ -27,11 +28,12 @@ namespace IctBaden.Stonehenge
     public event Action<AppSession> SessionCreated;
     public event Action<AppSession> SessionTerminated;
 
-    public AppHost(string title, string startPage)
+    public AppHost(string title, string startPage, bool messageBoxContentHtml)
       : base(title, typeof(AppHost).Assembly)
     {
       Title = title;
       StartPage = startPage;
+      MessageBoxContentHtml = messageBoxContentHtml;
     }
 
     internal void OnSessionCreated(AppSession session)
