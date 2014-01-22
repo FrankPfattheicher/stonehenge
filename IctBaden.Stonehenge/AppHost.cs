@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq.Expressions;
-using System.Web;
 using Funq;
 using IctBaden.Stonehenge.Services;
 using ServiceStack.CacheAccess;
@@ -21,7 +19,7 @@ namespace IctBaden.Stonehenge
     public string StartPage { get; private set; }
     public bool MessageBoxContentHtml { get; private set; }
     public string Redirect { get; set; }
-
+    public TimeSpan EventTimeout { get; set; }
     public TimeSpan SessionTimeout { get; set; }
     public bool HasSessionTimeout { get { return SessionTimeout.TotalMilliseconds > 0.1; }}
 
@@ -34,6 +32,7 @@ namespace IctBaden.Stonehenge
       Title = title;
       StartPage = startPage;
       MessageBoxContentHtml = messageBoxContentHtml;
+      EventTimeout = TimeSpan.FromSeconds(10);
     }
 
     internal void OnSessionCreated(AppSession session)

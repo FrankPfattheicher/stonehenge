@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -13,7 +14,14 @@ namespace IctBaden.Stonehenge.Services
 {
   public class AppEventService : AppService
   {
-    private const int MaxDelay = 10000;
+    private TimeSpan EventTimeout
+    {
+      get
+      {
+        var host = GetResolver() as AppHost;
+        return (host != null) ? host.EventTimeout : TimeSpan.FromSeconds(10);
+      }
+    }
 
     public object Get(AppEvent request)
     {
@@ -21,11 +29,16 @@ namespace IctBaden.Stonehenge.Services
       if (appSession == null)
         return new HttpResult("No view for event request", HttpStatusCode.NotFound);
       appSession.Accessed();
-
+      
       Debug.WriteLine("EventService:" + request.ViewModel);
 
-      appSession.EventRelease.WaitOne(MaxDelay);
-      Thread.Sleep(10);
+      appSession.EventRelease.WaitOne(EventTimeout);
+      // wait for maximum 500ms for more events - if there is none within 100ms - continue
+      var max = 5;
+      while (appSession.EventRelease.WaitOne(100) && (max > 0))
+      {
+        max--;
+      }
 
       var values = new Dictionary<string, object>();
       var vm = appSession.ViewModel as ActiveViewModel;
@@ -61,6 +74,7 @@ namespace IctBaden.Stonehenge.Services
           }
         }
         appSession.Events.Clear();
+        appSession.EventRelease.Reset();
       }
 
       if (!string.IsNullOrEmpty(RequestContext.CompressionType))

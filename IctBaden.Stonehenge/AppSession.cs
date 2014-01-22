@@ -230,6 +230,8 @@ namespace IctBaden.Stonehenge
     {
       lock (Events)
       {
+        if (Events.Contains(name))
+          return;
         Events.Add(name);
         EventRelease.Set();
       }

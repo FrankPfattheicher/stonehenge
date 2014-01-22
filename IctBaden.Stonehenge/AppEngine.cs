@@ -12,7 +12,7 @@ namespace IctBaden.Stonehenge
     public string Title { get; set; }
     public string StartPage { get; set; }
     public bool MessageBoxContentHtml { get; set; }
-
+    public TimeSpan EventTimeout { get; set; }
     public TimeSpan SessionTimeout { get; set; }
     public bool HasSessionTimeout { get { return SessionTimeout.TotalMilliseconds > 0.1; } }
 
@@ -44,7 +44,7 @@ namespace IctBaden.Stonehenge
     public void Run(bool newWindow)
     {
       listeningOn = string.Format("http://*:{0}/", port);
-      host = new AppHost(Title, StartPage, MessageBoxContentHtml) { SessionTimeout = SessionTimeout };
+      host = new AppHost(Title, StartPage, MessageBoxContentHtml) { EventTimeout = EventTimeout, SessionTimeout = SessionTimeout };
       host.Init();
       try
       {
