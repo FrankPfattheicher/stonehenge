@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -21,7 +22,16 @@ namespace IctBaden.Stonehenge.Services
       }
 
       var resourceName2 = string.Empty;
-      var ext = Path.GetExtension(name);
+      var fullPath = string.Empty;
+      var ext = string.Empty;
+      try
+      {
+        ext = Path.GetExtension(name);
+        fullPath = Path.Combine(filePath, name);
+      }
+      catch (Exception)
+      {
+      }
       if ((ext == ".js") || (ext == ".css"))
       {
         resourcePath += ext;
@@ -35,7 +45,6 @@ namespace IctBaden.Stonehenge.Services
 
       string text;
 
-      var fullPath = Path.Combine(filePath, name);
       if (File.Exists(fullPath))
       {
         text = File.ReadAllText(fullPath);

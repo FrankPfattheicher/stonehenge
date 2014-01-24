@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -40,7 +41,15 @@ namespace IctBaden.Stonehenge.Services
     }
     public string FullPath(string root)
     {
-      return Path.Combine(BasePath(root), FileName);
+      var fullPath = string.Empty;
+      try
+      {
+        fullPath = Path.Combine(BasePath(root), FileName);
+      }
+      catch (Exception)
+      {
+      }
+      return fullPath;
     }
   }
 }
