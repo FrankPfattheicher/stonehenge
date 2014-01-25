@@ -23,21 +23,15 @@ namespace IctBaden.Stonehenge.Creators
         if (Directory.Exists(path))
         {
           var links = Directory.GetFiles(path, "*.css", SearchOption.AllDirectories)
-            .Select(dir => string.Format(LinkTemplate, dir.Substring(dir.IndexOf(AppPath) + 1).Replace('\\', '/')));
+            .Select(dir => string.Format(LinkTemplate, dir.Substring(dir.IndexOf(AppPath, StringComparison.InvariantCulture) + 1).Replace('\\', '/')));
           styleSheets = string.Join(Environment.NewLine, links);
-        }
-
-        path = Path.Combine(rootPath, "app", "themes", theme + ".css");
-        if (File.Exists(path))
-        {
-          var css = path.Substring(path.IndexOf(AppPath) + 1).Replace('\\', '/');
-          styleSheets += Environment.NewLine + string.Format(LinkTemplate, css);
         }
 
         var assembly = Assembly.GetEntryAssembly();
         var ressourceBaseName = assembly.GetName().Name + ".";
         var baseNameStyles = ressourceBaseName + "app.styles.";
         var baseNameTheme = ressourceBaseName + "app.themes.";
+        // ReSharper disable once LoopCanBeConvertedToQuery
         foreach (var resourceName in assembly.GetManifestResourceNames()
           .Where(name => name.EndsWith(".css") && (name.StartsWith(baseNameStyles) || name.StartsWith(baseNameTheme + theme))))
         {
@@ -45,7 +39,14 @@ namespace IctBaden.Stonehenge.Creators
           styleSheets += Environment.NewLine + string.Format(LinkTemplate, css);
         }
 
-        UserStyleSheets.StyleSheets.Add(theme, styleSheets);
+        path = Path.Combine(rootPath, "app", "themes", theme + ".css");
+        if (File.Exists(path))
+        {
+          var css = path.Substring(path.IndexOf(AppPath, StringComparison.InvariantCulture) + 1).Replace('\\', '/');
+          styleSheets += Environment.NewLine + string.Format(LinkTemplate, css);
+        }
+
+        StyleSheets.Add(theme, styleSheets);
       }
       return text.Replace(InsertPoint, StyleSheets[theme]);
     }

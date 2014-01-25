@@ -12,6 +12,7 @@ namespace IctBaden.Stonehenge.Services
     public const string PropertyNameId = "_stonehenge_prop_";
     public const string PropertyNameMessageBox = PropertyNameId + "MessageBox_";
     public const string PropertyNameNavigate = PropertyNameId + "Navigate_";
+    public const string PropertyNameClientScript = PropertyNameId + "ClientScript_";
 
     public AppSession GetSession(string id)
     {

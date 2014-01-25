@@ -23,7 +23,7 @@ namespace IctBaden.Stonehenge.Services
 
       var resourceName2 = string.Empty;
       var fullPath = string.Empty;
-      var ext = string.Empty;
+      string ext;
       try
       {
         ext = Path.GetExtension(name);
@@ -31,6 +31,7 @@ namespace IctBaden.Stonehenge.Services
       }
       catch (Exception)
       {
+        ext = string.Empty;
       }
       if ((ext == ".js") || (ext == ".css"))
       {

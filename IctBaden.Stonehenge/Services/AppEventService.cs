@@ -62,6 +62,11 @@ namespace IctBaden.Stonehenge.Services
             var route = vm.NavigateToRoute;
             values.Add("stonehenge_navigate", route);
           }
+          else if (name == PropertyNameClientScript)
+          {
+            var script = vm.ClientScript;
+            values.Add("stonehenge_eval", script);
+          }
           else
           {
             var pi = vm.GetPropertyInfo(name);

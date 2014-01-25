@@ -537,6 +537,8 @@ namespace IctBaden.Stonehenge
 
     #endregion
 
+    #region Serve site navigation
+
     public string NavigateToRoute;
 
     public void NavigateTo(string route)
@@ -544,6 +546,19 @@ namespace IctBaden.Stonehenge
       NavigateToRoute = route;
       NotifyPropertyChanged(AppService.PropertyNameNavigate);
     }
+
+    #endregion
+
+    #region Client site scripting
+
+    public string ClientScript;
+    public void ExecuteClientScript(string script)
+    {
+      ClientScript = script;
+      NotifyPropertyChanged(AppService.PropertyNameClientScript);
+    }
+
+    #endregion
 
   }
 
