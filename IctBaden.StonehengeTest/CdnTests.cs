@@ -44,7 +44,7 @@ namespace IctBaden.StonehengeTest
     [TestMethod]
     public void JsNoMatchReturnsOriginalText()
     {
-      const string script = "  'none':         '/app/lib/flot/js/jquery.flot',   ";
+      const string script = "  'none':         '/app/lib/flot/js/nothing',   ";
 
       var resolved = ContentDeliveryNetworkSupport.RersolveHostsJs(script);
 

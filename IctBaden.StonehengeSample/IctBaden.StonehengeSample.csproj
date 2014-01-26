@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModels\DownloadsVm.cs" />
     <Compile Include="ViewModels\FormVm.cs" />
     <Compile Include="ViewModels\AboutVm.cs" />
     <Compile Include="ViewModels\GraphVm.cs" />
@@ -84,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
+    <EmbeddedResource Include="app\downloads.html" />
     <EmbeddedResource Include="app\images.html" />
     <EmbeddedResource Include="app\images\lightbulb.png" />
     <EmbeddedResource Include="app\images\lightbulb_on.png" />

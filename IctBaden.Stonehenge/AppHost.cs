@@ -21,7 +21,7 @@ namespace IctBaden.Stonehenge
     public string Redirect { get; set; }
     public TimeSpan EventTimeout { get; set; }
     public TimeSpan SessionTimeout { get; set; }
-    public bool HasSessionTimeout { get { return SessionTimeout.TotalMilliseconds > 0.1; }}
+    public bool HasSessionTimeout { get { return SessionTimeout.TotalMilliseconds > 0.1; } }
 
     public event Action<AppSession> SessionCreated;
     public event Action<AppSession> SessionTerminated;
@@ -56,6 +56,7 @@ namespace IctBaden.Stonehenge
 
       Routes.Add<AppFile>("/robots.txt")
             .Add<AppFile>("/app/{SessionId}/{FileName}")
+            .Add<UserFile>("/app/{SessionId}/user/{FileName}")
             .Add<AppFile>("/app/{SessionId}/{Path1}/{FileName}")
             .Add<AppFile>("/app/{SessionId}/{Path1}/{Path2}/{FileName}")
             .Add<AppFile>("/app/{SessionId}/{Path1}/{Path2}/{Path3}/{FileName}")

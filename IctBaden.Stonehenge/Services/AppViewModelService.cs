@@ -96,6 +96,11 @@ namespace IctBaden.Stonehenge.Services
         {
           returnData = (bool)mi.Invoke(vm, parameters);
         }
+        else if (mi.ReturnType == typeof (UserData))
+        {
+          var data = (UserData)mi.Invoke(vm, parameters);
+          return new HttpResult(data.Bytes, data.ContentType);
+        }
         else
         {
           mi.Invoke(vm, parameters);
