@@ -52,7 +52,7 @@ namespace IctBaden.Stonehenge
       }
       if (HasSessionTimeout)
       {
-        SessionTimeout = SessionTimeout;
+        host.SessionTimeout = SessionTimeout;
       }
       host.Init();
       try
