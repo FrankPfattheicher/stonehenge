@@ -15,15 +15,14 @@ namespace IctBaden.Stonehenge.Services
         var vm = appSession.ViewModel;
         if (vm != null)
         {
-          var methodName = "Get" + request.FileName.Replace(".", "");
           var method = vm.GetType()
             .GetMethods()
-            .FirstOrDefault(m => string.Compare(m.Name, methodName, StringComparison.InvariantCultureIgnoreCase) == 0);
+            .FirstOrDefault(m => string.Compare(m.Name, "GetUserData", StringComparison.InvariantCultureIgnoreCase) == 0);
           if (method != null)
           {
             if (method.ReturnType == typeof(UserData))
             {
-              var data = (UserData)method.Invoke(vm, new object[0]);
+              var data = (UserData)method.Invoke(vm, new object[] { request.FileName });
               return new HttpResult(data.Bytes, data.ContentType);
             }
           }
