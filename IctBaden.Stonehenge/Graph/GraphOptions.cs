@@ -60,6 +60,21 @@ namespace IctBaden.Stonehenge.Graph
       show = true;
     }
   }
+  public class GraphBarsOptions
+  {
+    public object show { get; set; }
+    public object lineWidth { get; set; }
+    public object fill { get; set; }
+    public object fillColor { get; set; }
+    public object barWidth { get; set; }
+    public object align { get; set; }
+    public object horizontal { get; set; }
+
+    public GraphBarsOptions()
+    {
+      show = true;
+    }
+  }
 
   public class GraphPointsOptions
   {
@@ -93,6 +108,7 @@ namespace IctBaden.Stonehenge.Graph
   public class GraphSeriesOptions
   {
     public GraphLinesOptions lines { get; set; }
+    public GraphBarsOptions bars { get; set; }
     public GraphPointsOptions points { get; set; }
   }
 

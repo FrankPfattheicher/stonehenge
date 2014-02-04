@@ -194,7 +194,7 @@ namespace IctBaden.Stonehenge
     }
     public ActiveViewModel(AppSession session)
     {
-      SupportsEvents = true;
+      SupportsEvents = (session != null);
       Session = session ?? new AppSession();
     }
 
