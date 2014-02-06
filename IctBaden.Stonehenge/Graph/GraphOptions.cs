@@ -41,6 +41,11 @@ namespace IctBaden.Stonehenge.Graph
 
     public object alignTicksWithAxis { get; set; }
 
+    public object axisLabel { get; set; }
+    public object axisLabelUseCanvas { get; set; }
+    public object axisLabelFontSizePixels { get; set; }
+    public object axisLabelFontFamily { get; set; }
+
     public GraphAxisOptions()
     {
       show = true;

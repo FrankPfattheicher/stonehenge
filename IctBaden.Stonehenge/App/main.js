@@ -11,6 +11,7 @@
     'flot':         '/app/00000000-0000-0000-0000-000000000000/lib/flot/js/jquery.flot',
     'flot_resize':  '/app/00000000-0000-0000-0000-000000000000/lib/flot/jquery.flot.resize',
     'flot_time':    '/app/00000000-0000-0000-0000-000000000000/lib/flot/jquery.flot.time',
+    'flot_labels':  '/app/00000000-0000-0000-0000-000000000000/lib/flot/jquery.flot.axislabels',
   },
   shim: {
     'bootstrap': {
@@ -33,6 +34,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'], function (sy
   require(['flot'], function(_) {
     require(['flot_resize']);
     require(['flot_time']);
+    require(['flot_labels']);
   });
 
   //specify which plugins to install and their configuration

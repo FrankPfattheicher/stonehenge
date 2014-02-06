@@ -142,6 +142,7 @@
     <EmbeddedResource Include="app\lib\respondjs\js\respond.min.js" />
     <EmbeddedResource Include="app\lib\respondjs\js\respond.js" />
     <EmbeddedResource Include="robots.txt" />
+    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.axislabels.js" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />
