@@ -76,7 +76,7 @@ namespace IctBaden.Stonehenge.Services
 
         uri = uri.Replace(match.Groups["sid"].Value, session.Id.ToString());
 
-        var redirect = new HttpResult { StatusCode = HttpStatusCode.Redirect };
+        var redirect = new HttpResult { StatusCode = HttpStatusCode.Moved };
         redirect.Headers.Add("Location", uri);
         return redirect;
       }
