@@ -129,7 +129,8 @@ namespace IctBaden.Stonehenge.Creators
       var declareData = new StringBuilder();
       foreach (var propName in assignPropNames)
       {
-        var defaultValue = (activeVm != null) ? activeVm.TryGetMember(propName) : vmType.GetProperty(propName).GetValue(viewModel, new object[0]);
+        //var defaultValue = (activeVm != null) ? activeVm.TryGetMember(propName) : vmType.GetProperty(propName).GetValue(viewModel, new object[0]);
+        object defaultValue = null;
         declareData.AppendLine(string.Format("var {0} = ko.observable({1});", propName, (defaultValue != null) ? JsonSerializer.SerializeToString(defaultValue) : string.Empty));
         declareData.AppendLine(string.Format("{0}.subscribe(function(newval){{IsDirty(true);}});", propName));
       }
