@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace IctBaden.Stonehenge.Services
 {
-  internal static class ResourceLoader
+  public static class ResourceLoader
   {
     private static readonly Dictionary<string, string> Texts = new Dictionary<string, string>();
     private static readonly Dictionary<string, byte[]> Binaries = new Dictionary<string, byte[]>();
@@ -54,7 +54,7 @@ namespace IctBaden.Stonehenge.Services
       }
 
       var assemblies = new List<Assembly> {Assembly.GetEntryAssembly(), Assembly.GetExecutingAssembly()};
-      foreach (var assembly in assemblies)
+      foreach (var assembly in assemblies.Where(a => a != null))
       {
         using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "." + resourceName1))
         {

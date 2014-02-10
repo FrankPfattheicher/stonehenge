@@ -1,4 +1,5 @@
 ﻿using IctBaden.Stonehenge.Creators;
+using IctBaden.Stonehenge.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace IctBaden.StonehengeTest
@@ -54,13 +55,25 @@ namespace IctBaden.StonehengeTest
     [TestMethod]
     public void JsMatchMapReturnsResolvedText()
     {
-      const string script = "  'flot':         '/app/lib/flot/js/jquery.flot',   ";
+      const string script = "    'flot':         '/app/00000000-0000-0000-0000-000000000000/lib/flot/js/jquery.flot',";
       var target = ContentDeliveryNetworkSupport.CdnLookup["jquery.flot.js"];
-      var expected = script.Replace("/app/lib/flot/js/jquery.flot", target).Replace(".js'", "'").Trim();
+      var expected = script.Replace("/app/00000000-0000-0000-0000-000000000000/lib/flot/js/jquery.flot", target).Replace(".js'", "'").Trim();
       
       var resolved = ContentDeliveryNetworkSupport.RersolveHostsJs(script).Trim();
       
       Assert.AreEqual(expected, resolved);
+    }
+
+    [TestMethod]
+    public void JsMainJsReturnsResolvedText()
+    {
+      var mainjs = ResourceLoader.LoadText("", "", "main.js");
+      var resolved = ContentDeliveryNetworkSupport.RersolveHostsJs(mainjs);
+
+      Assert.IsFalse(resolved.Contains("/app/00000000-0000-0000-0000-000000000000/lib/knockout/js/"));
+      Assert.IsFalse(resolved.Contains("/app/00000000-0000-0000-0000-000000000000/lib/bootstrap/js/"));
+      Assert.IsFalse(resolved.Contains("/app/00000000-0000-0000-0000-000000000000/lib/jquery/js/"));
+      Assert.IsFalse(resolved.Contains("/app/00000000-0000-0000-0000-000000000000/lib/flot/js/"));
     }
 
   }

@@ -46,7 +46,7 @@ namespace IctBaden.Stonehenge.Creators
 
       var script = new Regex("(?<a><script.*src=\"(?<b>(?<c>.*\\.js))\".*)|(?<a><link.*href=\"(?<b>(?<c>.*\\.css))\".*)", RegexOptions.Compiled);
 
-      var resultlines = from line in page.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
+      var resultlines = from line in page.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
                         let isScriptSource = script.Match(line)
                         let source = isScriptSource.Groups["c"].Value.Split(new[] { '/' }).Last()
                         select (isScriptSource.Success && CdnLookup.ContainsKey(source)) ? 
@@ -61,8 +61,8 @@ namespace IctBaden.Stonehenge.Creators
         return page;
       
       var script = new Regex("(?<map>'(?<id>.+)' *: *'(?<path>.*)'.*)", RegexOptions.Compiled);
-      
-      var resultlines = from line in page.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+
+      var resultlines = from line in page.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
                         let isMapPath = script.Match(line)
                         let source = isMapPath.Groups["path"].Value.Split(new []{'/'}).Last() + ".js"
                         select (isMapPath.Success && CdnLookup.ContainsKey(source)) ?
