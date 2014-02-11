@@ -76,7 +76,8 @@ namespace IctBaden.Stonehenge.Services
           return httpResult;
         }
         httpResult = new HttpResult(data, type);
-        httpResult.Headers.Add("Expires", "0");
+        httpResult.Headers.Add("Cache-Control", "max-age=86400");
+        httpResult.Headers.Add("Expires", "86400");
         return httpResult;
       }
 
