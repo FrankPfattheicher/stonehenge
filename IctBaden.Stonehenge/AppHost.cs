@@ -13,81 +13,81 @@ using ServiceStack.WebHost.Endpoints.Support;
 
 namespace IctBaden.Stonehenge
 {
-  internal class AppHost : AppHostHttpListenerBase
-  {
-    public string Title { get; private set; }
-    public string StartPage { get; private set; }
-    public bool MessageBoxContentHtml { get; private set; }
-    public string Redirect { get; set; }
-    public TimeSpan EventTimeout { get; set; }
-    public TimeSpan SessionTimeout { get; set; }
-    public bool HasSessionTimeout { get { return SessionTimeout.TotalMilliseconds > 0.1; } }
-
-    public event Action<AppSession> SessionCreated;
-    public event Action<AppSession> SessionTerminated;
-
-    public AppHost(string title, string startPage, bool messageBoxContentHtml)
-      : base(title, typeof(AppHost).Assembly)
+    internal class AppHost : AppHostHttpListenerBase
     {
-      Title = title;
-      StartPage = startPage;
-      MessageBoxContentHtml = messageBoxContentHtml;
-      EventTimeout = TimeSpan.FromSeconds(10);
-    }
+        public string Title { get; private set; }
+        public string StartPage { get; private set; }
+        public bool MessageBoxContentHtml { get; private set; }
+        public string Redirect { get; set; }
+        public TimeSpan EventTimeout { get; set; }
+        public TimeSpan SessionTimeout { get; set; }
+        public bool HasSessionTimeout { get { return SessionTimeout.TotalMilliseconds > 0.1; } }
 
-    internal void OnSessionCreated(AppSession session)
-    {
-      var handler = SessionCreated;
-      if (handler == null)
-        return;
-      handler(session);
-    }
-    internal void OnSessionTerminated(AppSession session)
-    {
-      var handler = SessionTerminated;
-      if (handler == null)
-        return;
-      handler(session);
-    }
+        public event Action<AppSession> SessionCreated;
+        public event Action<AppSession> SessionTerminated;
 
-    public override void Configure(Container container)
-    {
-      Config.AllowRouteContentTypeExtensions = false; // otherwise extensions are stripped out
-
-      Routes.Add<AppFile>("/robots.txt")
-            .Add<AppFile>("/app/{SessionId}/{FileName}")
-            .Add<UserFile>("/app/{SessionId}/user/{FileName}")
-            .Add<AppFile>("/app/{SessionId}/{Path1}/{FileName}")
-            .Add<AppFile>("/app/{SessionId}/{Path1}/{Path2}/{FileName}")
-            .Add<AppFile>("/app/{SessionId}/{Path1}/{Path2}/{Path3}/{FileName}")
-            .Add<AppFile>("/app/{SessionId}/{Path1}/{Path2}/{Path3}/{Path4}/{FileName}");
-
-      Routes.Add<AppViewModel>("/ViewModel/{SessionId}/{ViewModel}")
-            .Add<AppViewModel>("/ViewModel/{SessionId}/{ViewModel}/{Source}");
-
-      Routes.Add<AppEvent>("/Events/{SessionId}/{ViewModel}");
-
-      Plugins.Add(new SessionFeature());
-      container.Register<ICacheClient>(new MemoryCacheClient());
-      var authRepository = new InMemoryAuthRepository();
-      container.Register<IUserAuthRepository>(authRepository);
-
-      CatchAllHandlers.Add((httpMethod, pathInfo, filePath) =>
+        public AppHost(string title, string startPage, bool messageBoxContentHtml)
+            : base(title, typeof(AppHost).Assembly)
         {
-          Debug.WriteLine("CatchAllHandler({0}, {1}, {2})", httpMethod, pathInfo, filePath);
-          if (pathInfo != "/")
-          {
-            return new NotFoundHttpHandler();
-          }
-          var session = AppSessionCache.NewSession();
-          return new RootRedirectHandler { RelativeUrl = string.Format("/app/{0}/index.html#/{1}", session.Id, StartPage) };
-        });
+            Title = title;
+            StartPage = startPage;
+            MessageBoxContentHtml = messageBoxContentHtml;
+            EventTimeout = TimeSpan.FromSeconds(10);
+        }
 
-      SetConfig(new EndpointHostConfig
-      {
-        EnableFeatures = Feature.All.Remove(Feature.Metadata)
-      });
+        internal void OnSessionCreated(AppSession session)
+        {
+            var handler = SessionCreated;
+            if (handler == null)
+                return;
+            handler(session);
+        }
+        internal void OnSessionTerminated(AppSession session)
+        {
+            var handler = SessionTerminated;
+            if (handler == null)
+                return;
+            handler(session);
+        }
+
+        public override void Configure(Container container)
+        {
+            Config.AllowRouteContentTypeExtensions = false; // otherwise extensions are stripped out
+
+            Routes.Add<AppFile>("/robots.txt")
+                  .Add<AppFile>("/app/{FileName}")
+                  .Add<UserFile>("/app/user/{FileName}")
+                  .Add<AppFile>("/app/{Path1}/{FileName}")
+                  .Add<AppFile>("/app/{Path1}/{Path2}/{FileName}")
+                  .Add<AppFile>("/app/{Path1}/{Path2}/{Path3}/{FileName}")
+                  .Add<AppFile>("/app/{Path1}/{Path2}/{Path3}/{Path4}/{FileName}");
+
+            Routes.Add<AppViewModel>("/ViewModel/{ViewModel}")
+                  .Add<AppViewModel>("/ViewModel/{ViewModel}/{Source}");
+
+            Routes.Add<AppEvent>("/Events/{ViewModel}");
+
+            Plugins.Add(new SessionFeature());
+            container.Register<ICacheClient>(new MemoryCacheClient());
+            var authRepository = new InMemoryAuthRepository();
+            container.Register<IUserAuthRepository>(authRepository);
+
+            CatchAllHandlers.Add((httpMethod, pathInfo, filePath) =>
+              {
+                  Debug.WriteLine("CatchAllHandler({0}, {1}, {2})", httpMethod, pathInfo, filePath);
+                  if (pathInfo != "/")
+                  {
+                      return new NotFoundHttpHandler();
+                  }
+                  var session = AppSessionCache.NewSession();
+                  return new RootRedirectHandler { RelativeUrl = string.Format("/app/index.html#/{0}?stonehenge_id={1}", StartPage, session.Id) };
+              });
+
+            SetConfig(new EndpointHostConfig
+            {
+                EnableFeatures = Feature.All.Remove(Feature.Metadata)
+            });
+        }
+
     }
-
-  }
 }

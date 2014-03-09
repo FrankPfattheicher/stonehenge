@@ -11,247 +11,247 @@ using ServiceStack.CacheAccess;
 
 namespace IctBaden.Stonehenge
 {
-  public class AppSession : INotifyPropertyChanged, ISession
-  {
-    public string HostDomain { get; private set; }
-    public string ClientAddress { get; private set; }
-    public string UserAgent { get; private set; }
-    public DateTime ConnectedSince { get; private set; }
-    public DateTime LastAccess { get; private set; }
-    public Guid Id { get; private set; }
-
-    public List<string> Events = new List<string>();
-    public AutoResetEvent EventRelease = new AutoResetEvent(false);
-
-    private object viewModel;
-    public object ViewModel
+    public class AppSession : INotifyPropertyChanged, ISession
     {
-      get { return viewModel; }
-      set
-      {
-        viewModel = value;
-        var npc = value as INotifyPropertyChanged;
-        if (npc != null)
+        public string HostDomain { get; private set; }
+        public string ClientAddress { get; private set; }
+        public string UserAgent { get; private set; }
+        public DateTime ConnectedSince { get; private set; }
+        public DateTime LastAccess { get; private set; }
+        public Guid Id { get; private set; }
+
+        public List<string> Events = new List<string>();
+        public AutoResetEvent EventRelease = new AutoResetEvent(false);
+
+        private object viewModel;
+        public object ViewModel
         {
-          npc.PropertyChanged += (sender, args) =>
-          {
-            var avm = sender as ActiveViewModel;
-            if (avm == null)
-              return;
-            lock (avm.Session.Events)
+            get { return viewModel; }
+            set
             {
-              avm.Session.EventAdd(args.PropertyName);
+                viewModel = value;
+                var npc = value as INotifyPropertyChanged;
+                if (npc != null)
+                {
+                    npc.PropertyChanged += (sender, args) =>
+                    {
+                        var avm = sender as ActiveViewModel;
+                        if (avm == null)
+                            return;
+                        lock (avm.Session.Events)
+                        {
+                            avm.Session.EventAdd(args.PropertyName);
+                        }
+                    };
+                }
             }
-          };
         }
-      }
-    }
 
-    public object SetViewModelType(string typeName)
-    {
-      var vm = ViewModel;
-      if (ViewModel != null)
-      {
-        if ((ViewModel.GetType().FullName == typeName))
-          return vm;
-
-        var disposable = vm as IDisposable;
-        if (disposable != null)
+        public object SetViewModelType(string typeName)
         {
-          disposable.Dispose();
+            var vm = ViewModel;
+            if (ViewModel != null)
+            {
+                if ((ViewModel.GetType().FullName == typeName))
+                    return vm;
+
+                var disposable = vm as IDisposable;
+                if (disposable != null)
+                {
+                    disposable.Dispose();
+                }
+            }
+
+
+            var asm = Assembly.GetEntryAssembly();
+            var vmtype = asm.GetTypes().FirstOrDefault(type => type.FullName.EndsWith(typeName));
+            if (vmtype == null)
+            {
+                ViewModel = null;
+                Debug.WriteLine("Could not create ViewModel:" + typeName);
+                return null;
+            }
+
+            try
+            {
+                if (typeof(ActiveViewModel).IsAssignableFrom(vmtype))
+                {
+                    var sessionCtor = vmtype.GetConstructors().FirstOrDefault(ctor => ctor.GetParameters().Length == 1);
+                    vm = (sessionCtor != null) ? Activator.CreateInstance(vmtype, new object[] { this }) : Activator.CreateInstance(vmtype);
+                }
+                else
+                {
+                    vm = Activator.CreateInstance(vmtype);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError(ex.Message);
+                vm = null;
+            }
+
+            ViewModel = vm;
+            return vm;
         }
-      }
 
-
-      var asm = Assembly.GetEntryAssembly();
-      var vmtype = asm.GetTypes().FirstOrDefault(type => type.FullName.EndsWith(typeName));
-      if (vmtype == null)
-      {
-        ViewModel = null;
-        Debug.WriteLine("Could not create ViewModel:" + typeName);
-        return null;
-      }
-
-      try
-      {
-        if (typeof(ActiveViewModel).IsAssignableFrom(vmtype))
+        public string SubDomain
         {
-          var sessionCtor = vmtype.GetConstructors().FirstOrDefault(ctor => ctor.GetParameters().Length == 1);
-          vm = (sessionCtor != null) ? Activator.CreateInstance(vmtype, new object[] { this }) : Activator.CreateInstance(vmtype);
+            get
+            {
+                if (string.IsNullOrEmpty(HostDomain))
+                    return string.Empty;
+
+                var parts = HostDomain.Split(new[] { '.' });
+                int val;
+                var isNumeric = int.TryParse(parts[0], out val);
+                return isNumeric ? HostDomain : parts[0];
+            }
         }
-        else
+
+        private readonly Dictionary<string, object> userData;
+        public object this[string key]
         {
-          vm = Activator.CreateInstance(vmtype);
+            get
+            {
+                return userData.ContainsKey(key) ? userData[key] : null;
+            }
+            set
+            {
+                if (this[key] == value)
+                    return;
+                userData[key] = value;
+                NotifyPropertyChanged(key);
+            }
         }
-      }
-      catch (Exception ex)
-      {
-        Trace.TraceError(ex.Message);
-        vm = null;
-      }
 
-      ViewModel = vm;
-      return vm;
-    }
-
-    public string SubDomain
-    {
-      get
-      {
-        if (string.IsNullOrEmpty(HostDomain))
-          return string.Empty;
-
-        var parts = HostDomain.Split(new[] { '.' });
-        int val;
-        var isNumeric = int.TryParse(parts[0], out val);
-        return isNumeric ? HostDomain : parts[0];
-      }
-    }
-
-    private readonly Dictionary<string, object> userData;
-    public object this[string key]
-    {
-      get
-      {
-        return userData.ContainsKey(key) ? userData[key] : null;
-      }
-      set
-      {
-        if (this[key] == value) 
-          return;
-        userData[key] = value;
-        NotifyPropertyChanged(key);
-      }
-    }
-
-    public void Set<T>(string key, T value)
-    {
-      userData[key] = value;
-    }
-
-    public T Get<T>(string key)
-    {
-      if(!userData.ContainsKey(key))
-        return default(T);
-
-      return (T)userData[key];
-    }
-
-
-    public TimeSpan ConnectedDuration
-    {
-      get { return DateTime.Now - ConnectedSince; }
-    }
-    public TimeSpan LastAccessDuration
-    {
-      get { return DateTime.Now - LastAccess; }
-    }
-
-    public event Action TimedOut;
-    private Timer pollSessionTimeout;
-    public TimeSpan SessionTimeout { get; private set; }
-
-    public void SetTimeout(TimeSpan timeout)
-    {
-      if (pollSessionTimeout != null)
-      {
-        pollSessionTimeout.Dispose();
-      }
-      SessionTimeout = timeout;
-      if (Math.Abs(timeout.TotalMilliseconds) > 0.1)
-      {
-        pollSessionTimeout = new Timer(CheckSessionTimeout, null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
-      }
-    }
-
-    private void CheckSessionTimeout(object _)
-    {
-      if ((LastAccessDuration > SessionTimeout) && (terminator != null))
-      {
-        pollSessionTimeout.Dispose();
-        terminator.Dispose();
-        if (TimedOut != null)
+        public void Set<T>(string key, T value)
         {
-          TimedOut();
+            userData[key] = value;
         }
-      }
-      NotifyPropertyChanged("ConnectedDuration");
-      NotifyPropertyChanged("LastAccessDuration");
+
+        public T Get<T>(string key)
+        {
+            if (!userData.ContainsKey(key))
+                return default(T);
+
+            return (T)userData[key];
+        }
+
+
+        public TimeSpan ConnectedDuration
+        {
+            get { return DateTime.Now - ConnectedSince; }
+        }
+        public TimeSpan LastAccessDuration
+        {
+            get { return DateTime.Now - LastAccess; }
+        }
+
+        public event Action TimedOut;
+        private Timer pollSessionTimeout;
+        public TimeSpan SessionTimeout { get; private set; }
+
+        public void SetTimeout(TimeSpan timeout)
+        {
+            if (pollSessionTimeout != null)
+            {
+                pollSessionTimeout.Dispose();
+            }
+            SessionTimeout = timeout;
+            if (Math.Abs(timeout.TotalMilliseconds) > 0.1)
+            {
+                pollSessionTimeout = new Timer(CheckSessionTimeout, null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
+            }
+        }
+
+        private void CheckSessionTimeout(object _)
+        {
+            if ((LastAccessDuration > SessionTimeout) && (terminator != null))
+            {
+                pollSessionTimeout.Dispose();
+                terminator.Dispose();
+                if (TimedOut != null)
+                {
+                    TimedOut();
+                }
+            }
+            NotifyPropertyChanged("ConnectedDuration");
+            NotifyPropertyChanged("LastAccessDuration");
+        }
+
+        private IDisposable terminator;
+
+        public void SetTerminator(IDisposable disposable)
+        {
+            terminator = disposable;
+        }
+
+        internal AppSession()
+        {
+            userData = new Dictionary<string, object>();
+            Id = Guid.NewGuid();
+        }
+
+        internal bool IsInitialized { get { return UserAgent != null; } }
+
+        internal void Initialize(string hostDomain, string hostUrl, string clientAddress, string userAgent)
+        {
+            if (!string.IsNullOrEmpty(hostUrl))
+            {
+                var uri = new UriBuilder(hostUrl);
+                HostDomain = string.IsNullOrEmpty(hostDomain) ? uri.Host : hostDomain;
+            }
+            else
+            {
+                HostDomain = hostDomain;
+            }
+            ClientAddress = clientAddress;
+            UserAgent = userAgent;
+            ConnectedSince = DateTime.Now;
+        }
+
+        internal void Accessed()
+        {
+            LastAccess = DateTime.Now;
+            NotifyPropertyChanged("LastAccess");
+        }
+
+        public void EventsClear()
+        {
+            lock (Events)
+            {
+                var msgBox = Events.FirstOrDefault(e => e.StartsWith(AppService.PropertyNameId));
+                Events.Clear();
+                EventAdd(msgBox ?? string.Empty);
+            }
+        }
+
+        public void EventAdd(string name)
+        {
+            lock (Events)
+            {
+                if (Events.Contains(name))
+                    return;
+                Events.Add(name);
+                EventRelease.Set();
+            }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("[{0}] {1} {2}", Id, ConnectedSince.ToShortDateString() + " " + ConnectedSince.ToShortTimeString(), SubDomain);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void NotifyPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
-
-    private IDisposable terminator;
-
-    public void SetTerminator(IDisposable disposable)
-    {
-      terminator = disposable;
-    }
-
-    internal AppSession()
-    {
-      userData = new Dictionary<string, object>();
-      Id = Guid.NewGuid();
-    }
-
-    internal bool IsInitialized { get { return UserAgent != null; }}
-
-    internal void Initialize(string hostDomain, string hostUrl, string clientAddress, string userAgent)
-    {
-      if (!string.IsNullOrEmpty(hostUrl))
-      {
-        var uri = new UriBuilder(hostUrl);
-        HostDomain = string.IsNullOrEmpty(hostDomain) ? uri.Host : hostDomain;
-      }
-      else
-      {
-        HostDomain = hostDomain;
-      }
-      ClientAddress = clientAddress;
-      UserAgent = userAgent;
-      ConnectedSince = DateTime.Now;
-    }
-
-    internal void Accessed()
-    {
-      LastAccess = DateTime.Now;
-      NotifyPropertyChanged("LastAccess");
-    }
-
-    public void EventsClear()
-    {
-      lock (Events)
-      {
-        var msgBox = Events.FirstOrDefault(e => e.StartsWith(AppService.PropertyNameId));
-        Events.Clear();
-        EventAdd(msgBox ?? string.Empty);
-      }
-    }
-
-    public void EventAdd(string name)
-    {
-      lock (Events)
-      {
-        if (Events.Contains(name))
-          return;
-        Events.Add(name);
-        EventRelease.Set();
-      }
-    }
-
-    public override string ToString()
-    {
-      return string.Format("[{0}] {1} {2}", Id, ConnectedSince.ToShortDateString() + " " + ConnectedSince.ToShortTimeString(), SubDomain);
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual void NotifyPropertyChanged(string propertyName)
-    {
-      var handler = PropertyChanged;
-      if (handler != null)
-      {
-        handler(this, new PropertyChangedEventArgs(propertyName));
-      }
-    }
-  }
 }

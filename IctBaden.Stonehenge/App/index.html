@@ -1,37 +1,53 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-  <title>Loading...</title>
-  <link href="app/icon.png" rel="icon" type="image/x-icon" />
-  <link rel="apple-touch-icon" sizes="16x16" href="app/icon.png" />
-  <link rel="icon" sizes="16x16" href="app/icon.png" />
-  <!--more-icons-->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <meta name="format-detection" content="telephone=yes" />
-  <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=10.0, minimum-scale=0.5, width=device-width, height=device-height" />
-  <link type="text/css" media="all" href="lib/bootstrap/bootstrap.css" rel="stylesheet">
-  <link type="text/css" media="all" href="lib/bootstrap/bootstrap-theme.css" rel="stylesheet">
-  <link type="text/css" media="all" href="lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
-  <link type="text/css" media="all" href="durandal/durandal.css" rel="stylesheet">
-  <link type="text/css" media="all" href="lib/jquery.ztree/zTreeStyle.css" rel="stylesheet">
-  <!--[if lt IE 9]>
+    <title>Loading...</title>
+    <link href="app/icon.png" rel="icon" type="image/x-icon" />
+    <link rel="apple-touch-icon" sizes="16x16" href="app/icon.png" />
+    <link rel="icon" sizes="16x16" href="app/icon.png" />
+    <!--more-icons-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=yes" />
+    <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=10.0, minimum-scale=0.5, width=device-width, height=device-height" />
+    <link type="text/css" media="all" href="lib/bootstrap/bootstrap.css" rel="stylesheet">
+    <link type="text/css" media="all" href="lib/bootstrap/bootstrap-theme.css" rel="stylesheet">
+    <link type="text/css" media="all" href="lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link type="text/css" media="all" href="durandal/durandal.css" rel="stylesheet">
+    <link type="text/css" media="all" href="lib/jquery.ztree/zTreeStyle.css" rel="stylesheet">
+    <!--[if lt IE 9]>
     <script src="lib/html5shiv/html5shiv.js"></script>
     <script src="lib/respondjs/respond.js"></script>
   <![endif]-->
-  <!--link-stylesheet-->
+    <!--link-stylesheet-->
 </head>
-<body>
-  <div id="applicationHost">
-    <div class="splash">
-      <div class="message" style="margin-left: 60px;">
-        Loading...
-      </div>
+<body style="margin-top: 60px;">
+    <div id="applicationHost">
+        <div class="splash">
+            <div class="message" style="margin-left: 60px;">
+                Loading...
+            </div>
+        </div>
     </div>
-  </div>
-  <!--[if IE]>
+    <!--[if IE]>
   <script language="javascript" type="text/javascript" src="lib/flot/excanvas.js"></script>
   <![endif]-->
-  <script type="text/javascript" src="lib/require/require.js" data-main="app/main"></script>
+    <script type="text/javascript">
+        function get_url_param(name) {
+            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+
+            var regexS = "[\\?&]" + name + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var results = regex.exec(window.location.href);
+
+            if (results == null)
+                return "";
+            else
+                return results[1];
+        }
+        var stonehenge_id = get_url_param("stonehenge_id");
+        document.cookie = "stonehenge_id=" + stonehenge_id;
+    </script>
+    <script type="text/javascript" src="lib/require/require.js" data-main="app/main"></script>
 </body>
 </html>

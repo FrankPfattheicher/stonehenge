@@ -14,6 +14,17 @@ namespace IctBaden.Stonehenge.Services
     public const string PropertyNameNavigate = PropertyNameId + "Navigate_";
     public const string PropertyNameClientScript = PropertyNameId + "ClientScript_";
 
+      public string GetSessionId()
+      {
+          var sessionId = Request.QueryString.Get("stonehenge_id");
+          if (!string.IsNullOrEmpty(sessionId))
+              return sessionId;
+          if (Request.Cookies.ContainsKey("stonehenge_id"))
+          {
+              sessionId = Request.Cookies["stonehenge_id"].Value;
+          }
+          return sessionId;
+      }
     public AppSession GetSession(string id)
     {
       lock (AppSessionCache.Cache)

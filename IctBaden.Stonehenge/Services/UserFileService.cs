@@ -5,30 +5,31 @@ using ServiceStack.Common.Web;
 
 namespace IctBaden.Stonehenge.Services
 {
-  public class UserFileService : AppService
-  {
-    public object Get(UserFile request)
+    public class UserFileService : AppService
     {
-      var appSession = GetSession(request.SessionId);
-      if (appSession != null)
-      {
-        var vm = appSession.ViewModel;
-        if (vm != null)
+        public object Get(UserFile request)
         {
-          var method = vm.GetType()
-            .GetMethods()
-            .FirstOrDefault(m => string.Compare(m.Name, "GetUserData", StringComparison.InvariantCultureIgnoreCase) == 0);
-          if (method != null)
-          {
-            if (method.ReturnType == typeof(UserData))
+            var sessionId = GetSessionId();
+            var appSession = GetSession(sessionId);
+            if (appSession != null)
             {
-              var data = (UserData)method.Invoke(vm, new object[] { request.FileName });
-              return new HttpResult(data.Bytes, data.ContentType);
+                var vm = appSession.ViewModel;
+                if (vm != null)
+                {
+                    var method = vm.GetType()
+                      .GetMethods()
+                      .FirstOrDefault(m => string.Compare(m.Name, "GetUserData", StringComparison.InvariantCultureIgnoreCase) == 0);
+                    if (method != null)
+                    {
+                        if (method.ReturnType == typeof(UserData))
+                        {
+                            var data = (UserData)method.Invoke(vm, new object[] { request.FileName });
+                            return new HttpResult(data.Bytes, data.ContentType);
+                        }
+                    }
+                }
             }
-          }
+            return new HttpResult("User file not found: " + request.FileName, HttpStatusCode.NotFound);
         }
-      }
-      return new HttpResult("User file not found: " + request.FileName, HttpStatusCode.NotFound);
     }
-  }
 }
