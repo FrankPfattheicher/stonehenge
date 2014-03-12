@@ -67,14 +67,17 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function (app, s
             self = this;
             system.log('ClientViewModel  : attached');
             var ts = new Date().getTime();
-            var startPolling = function () { setTimeout(function () { poll_ViewModelName_Events(self, true); }, 100); };
-            $.getJSON('/viewmodel/_ViewModelType_?ts=' + ts + '&stonehenge_id=' + stonehenge_id, function (data) {
-                set_ViewModelName_Data(self, true, data);
-                startPolling();
-            }).fail(function () {
-                //alert("_ViewModelName_ attached getJSON failed");
-                window.location.reload();
-            });
+            if (stonehenge_id != null)
+            {
+                var startPolling = function () { setTimeout(function () { poll_ViewModelName_Events(self, true); }, 100); };
+                $.getJSON('/viewmodel/_ViewModelType_?ts=' + ts + '&stonehenge_id=' + stonehenge_id, function (data) {
+                    set_ViewModelName_Data(self, true, data);
+                    startPolling();
+                }).fail(function () {
+                    //alert("_ViewModelName_ attached getJSON failed");
+                    window.location.reload();
+                });
+            }
         },
         binding: function () {
             system.log('ClientViewModel : binding');

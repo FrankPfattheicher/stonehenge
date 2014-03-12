@@ -79,8 +79,7 @@ namespace IctBaden.Stonehenge
                   {
                       return new NotFoundHttpHandler();
                   }
-                  var session = AppSessionCache.NewSession();
-                  return new RootRedirectHandler { RelativeUrl = string.Format("/app/index.html#/{0}?stonehenge_id={1}", StartPage, session.Id) };
+                  return new RootRedirectHandler { RelativeUrl = string.Format("/app/index.html#/{0}", StartPage) };
               });
 
             SetConfig(new EndpointHostConfig

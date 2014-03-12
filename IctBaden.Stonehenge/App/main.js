@@ -44,15 +44,15 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'], function (sy
     widget: true
   });
 
+  viewLocator.convertModuleIdToViewId = function (moduleId) {
+      return moduleId + '?stonehenge_id=' + stonehenge_id;
+  };
+
   app.start().then(function () {
     //Replace 'viewmodels' in the moduleId with 'views' to locate the view.
     //Look for partial views in a 'views' folder in the root.
     // (modulesPath, viewsPath, areasPath)
     viewLocator.useConvention('', '', '');
-
-    viewLocator.convertViewIdToRequirePath = function (viewId) {
-        return this.viewPlugin + '!' + viewId + this.viewExtension + '?stonehenge_id=' + stonehenge_id;
-    };
 
     //MessageBox=HTML
 

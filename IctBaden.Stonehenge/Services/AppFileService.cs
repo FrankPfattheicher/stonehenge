@@ -55,6 +55,11 @@ namespace IctBaden.Stonehenge.Services
             var fullPath = request.FullPath(RootPath);
             var ext = Path.GetExtension(fullPath) ?? string.Empty;
 
+            if((appSession == null) && (string.Compare(request.FileName, "index.html", StringComparison.OrdinalIgnoreCase) == 0))
+            {
+                return RedirectToNewSession();
+            }
+
             var type = "text/html";
             if (ContentType.ContainsKey(ext))
             {
