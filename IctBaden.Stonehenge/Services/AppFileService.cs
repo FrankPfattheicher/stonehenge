@@ -21,6 +21,7 @@ namespace IctBaden.Stonehenge.Services
                     { ".gif", "image/gif" },
                     { ".jpg", "image/jpeg" },
                     { ".jpeg", "image/jpeg" },
+                    { ".wav", "audio/x-wav" },
                     
                 };
 
@@ -66,7 +67,7 @@ namespace IctBaden.Stonehenge.Services
                 type = ContentType[ext];
             }
 
-            if (type.StartsWith("image"))
+            if (type.StartsWith("image") || type.StartsWith("audio"))
             {
                 var data = ResourceLoader.LoadBinary(request.BasePath(RootPath), request.BasePath(""), request.FileName);
                 if (data == null)

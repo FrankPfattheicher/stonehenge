@@ -1,19 +1,16 @@
 ﻿<div>
-  
-  <h1>Image animations</h1>
-  <table >
-    <tr>
-      <td>Use switch to control lamp.<br />
-        &nbsp;
-      </td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td><img style="cursor: pointer;" data-bind="click: Switch, attr:{ src: '/app/app/images/' + SwitchImg() + '.png'}" title="click to toggle switch"/></td>
-      <td><img data-bind="attr: { src: '/app/app/images/' + LampImg() + '.png' }" title="see swich result"/></td>
-    </tr>
-  </table>
-  
-  
-  
+
+    <audio id="on" preload="auto" src="/app/switch_on.wav"></audio>
+    <audio id="off" preload="auto" src="/app/switch_off.wav"></audio>
+
+    <h1>Image animations</h1>
+    <p>
+        Use switch to control lamp.
+    </p>
+    <div style="display: inline-block;">
+        <img style="cursor: pointer;" title="click to toggle switch"
+            data-bind="click: Switch, attr: { src: '/app/app/images/' + SwitchImg() + '.png', onclick: IsOn() ? '$(\'#off\')[0].play()' : '$(\'#on\')[0].play()' }" />
+        <div style="display: inline-block;" data-bind="style: { color: IsOn() ? 'red' : 'black' }" >▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</div>
+        <img data-bind="attr: { src: '/app/app/images/' + LampImg() + '.png' }" title="see swich result" />
+    </div>
 </div>

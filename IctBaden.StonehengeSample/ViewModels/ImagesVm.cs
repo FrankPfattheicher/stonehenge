@@ -1,32 +1,31 @@
 ﻿using IctBaden.Stonehenge;
-using IctBaden.Stonehenge.Annotations;
 
 namespace IctBaden.StonehengeSample.ViewModels
 {
-  public class ImagesVm : ActiveViewModel
-  {
-    private bool isOn;
-
-    public string SwitchImg
+    public class ImagesVm : ActiveViewModel
     {
-      get { return isOn ? "switch_on" : "switch_off"; }
-    }
+        public bool IsOn { get; set; }
 
-    public string LampImg
-    {
-      get { return isOn ? "lightbulb_on" : "lightbulb"; }
-    }
+        public string SwitchImg
+        {
+            get { return IsOn ? "switch_on" : "switch_off"; }
+        }
 
-    public ImagesVm(AppSession session)
-      : base(session)
-    {
-      
-    }
+        public string LampImg
+        {
+            get { return IsOn ? "lightbulb_on" : "lightbulb"; }
+        }
 
-    [ActionMethod]
-    public void Switch()
-    {
-      isOn = !isOn;
+        public ImagesVm(AppSession session)
+            : base(session)
+        {
+
+        }
+
+        [ActionMethod]
+        public void Switch()
+        {
+            IsOn = !IsOn;
+        }
     }
-  }
 }

@@ -85,6 +85,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
+    <EmbeddedResource Include="app\switch_off.wav" />
+    <EmbeddedResource Include="app\switch_on.wav" />
     <EmbeddedResource Include="app\downloads.html" />
     <EmbeddedResource Include="app\images.html" />
     <EmbeddedResource Include="app\images\lightbulb.png" />
