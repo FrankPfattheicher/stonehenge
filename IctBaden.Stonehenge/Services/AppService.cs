@@ -92,7 +92,7 @@ namespace IctBaden.Stonehenge.Services
             //uri = request.FileName + "?stonehenge_id=" + session.Id;
             uri += "?stonehenge_id=" + session.Id;
 
-            var redirect = new HttpResult { StatusCode = HttpStatusCode.Moved };
+            var redirect = new HttpResult { StatusCode = HttpStatusCode.SeeOther };
             redirect.Headers.Add("Location", uri);
             return redirect;
         }

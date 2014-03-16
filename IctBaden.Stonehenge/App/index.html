@@ -20,6 +20,33 @@
     <script src="lib/respondjs/respond.js"></script>
   <![endif]-->
     <!--link-stylesheet-->
+    <script type="text/javascript">
+
+        if (("standalone" in window.navigator) && window.navigator.standalone) {
+
+            var noddy, remotes = false;
+
+            document.addEventListener('click', function (event) {
+
+                noddy = event.target;
+
+                while (noddy.nodeName !== "A" && noddy.nodeName !== "HTML") {
+                    noddy = noddy.parentNode;
+                }
+
+                if ('href' in noddy && noddy.href.indexOf('http') !== -1 && (noddy.href.indexOf(document.location.host) !== -1 || remotes)) {
+                    event.preventDefault();
+                    document.location.href = noddy.href;
+                    if (typeof (user_compositionComplete) == 'function') {
+                        try {
+                            user_compositionComplete();
+                        } catch (e) { }
+                    }
+                }
+
+            }, false);
+        }
+    </script>
 </head>
 <body>
     <div id="applicationHost">
@@ -47,6 +74,7 @@
         }
         var stonehenge_id = get_url_param("stonehenge_id");
     </script>
+    <script language="javascript" type="text/javascript" src="app/global_user.js"></script>
     <script type="text/javascript" src="lib/require/require.js" data-main="app/main"></script>
 </body>
 </html>

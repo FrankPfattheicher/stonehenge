@@ -83,6 +83,9 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function (app, s
             system.log('ClientViewModel : binding');
             return { cacheViews: false }; //cancels view caching for this module, allowing the triggering of the detached callback
         },
+        bindingComplete: function () {
+            system.log('ClientViewModel : bindingComplete');
+        },
         compositionComplete: function () {
             system.log('ClientViewModel : compositionComplete');
             if (typeof (user_compositionComplete) == 'function') {
