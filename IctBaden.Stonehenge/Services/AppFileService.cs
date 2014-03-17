@@ -168,6 +168,15 @@ namespace IctBaden.Stonehenge.Services
                     {
                         text = ContentDeliveryNetworkSupport.RersolveHostsHtml(text);
                     }
+
+                    var globalUserJs = ResourceLoader.LoadText("app", "app", "global_user.js");
+                    if (globalUserJs == null)
+                    {
+                        text =
+                            text.Replace(
+                                "<script language=\"javascript\" type=\"text/javascript\" src=\"app/global_user.js\"></script>",
+                                string.Empty);
+                    }
                     break;
                 case @"app.shell.js":
                     {
