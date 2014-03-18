@@ -4,21 +4,21 @@ using IctBaden.Stonehenge;
 
 namespace IctBaden.StonehengeSample
 {
-  static class Program
-  {
-    public static AppEngine App;
-
-    static void Main()
+    static class Program
     {
-      App = new AppEngine("Stonehenge Sample", "about");
+        public static AppEngine App;
 
-      var asApp = Environment.CommandLine.ToUpper().Contains("/APP");
-      App.Run(asApp);
+        static void Main()
+        {
+            App = new AppEngine("Stonehenge Sample", "about");
 
-      if (!asApp)
-      {
-        MessageBox.Show("Stonehenge Sample running...");
-      }
+            var asApp = Environment.CommandLine.ToUpper().Contains("/APP");
+            App.Run(asApp);
+
+            if (!asApp)
+            {
+                MessageBox.Show("Stonehenge Sample running...");
+            }
+        }
     }
-  }
 }
