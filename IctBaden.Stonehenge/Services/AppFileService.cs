@@ -166,7 +166,7 @@ namespace IctBaden.Stonehenge.Services
                     text = UserIcons.InsertUserIconLinks(RootPath, text);
                     if (!Request.IsLocal)
                     {
-                        text = ContentDeliveryNetworkSupport.RersolveHostsHtml(text);
+                        text = ContentDeliveryNetworkSupport.RersolveHostsHtml(text, Request.IsSecureConnection);
                     }
 
                     var globalUserJs = ResourceLoader.LoadText("app", "app", "global_user.js");
@@ -208,7 +208,7 @@ namespace IctBaden.Stonehenge.Services
                     }
                     if (!Request.IsLocal)
                     {
-                        text = ContentDeliveryNetworkSupport.RersolveHostsJs(text);
+                        text = ContentDeliveryNetworkSupport.RersolveHostsJs(text, Request.IsSecureConnection);
                     }
                     break;
             }
