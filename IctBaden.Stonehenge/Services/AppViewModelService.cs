@@ -15,7 +15,9 @@ namespace IctBaden.Stonehenge.Services
             var sessionId = GetSessionId();
             var appSession = GetSession(sessionId);
             if (appSession == null)
+            {
                 return new HttpResult("No session for viewmodel request", HttpStatusCode.NotFound);
+            }
             appSession.Accessed();
 
             Debug.WriteLine("ViewModelService:" + request.ViewModel);

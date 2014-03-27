@@ -12,12 +12,12 @@ namespace IctBaden.StonehengeSample
         {
             App = new AppEngine("Stonehenge Sample", "about");
 
-            var asApp = Environment.CommandLine.ToUpper().Contains("/APP");
+            var asApp = Environment.CommandLine.ToUpper().Contains("APP");
             App.Run(asApp);
 
             if (!asApp)
             {
-                MessageBox.Show("Stonehenge Sample running...");
+                MessageBox.Show("Sample running on http://localhost:42000", "Stonehenge");
             }
         }
     }

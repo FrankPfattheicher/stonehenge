@@ -74,7 +74,6 @@ namespace IctBaden.Stonehenge.Services
                 {
                     Debug.WriteLine("AppFileService NOT FOUND:" + request.FullPath(""));
                     httpResult = new HttpResult(fullPath, HttpStatusCode.NotFound);
-                    httpResult.Headers.Add("Expires", "0");
                     return httpResult;
                 }
                 httpResult = new HttpResult(data, type);
@@ -107,7 +106,6 @@ namespace IctBaden.Stonehenge.Services
                 {
                     Debug.WriteLine("AppFileService NOT FOUND:" + request.FullPath(""));
                     httpResult = new HttpResult(fullPath, HttpStatusCode.NotFound);
-                    httpResult.Headers.Add("Expires", "0");
                     return httpResult;
                 }
 

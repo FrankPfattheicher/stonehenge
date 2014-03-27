@@ -27,7 +27,9 @@ namespace IctBaden.Stonehenge.Services
             var sessionId = GetSessionId();
             var appSession = GetSession(sessionId);
             if (appSession == null)
+            {
                 return new HttpResult("No view for event request", HttpStatusCode.NotFound);
+            }
             appSession.Accessed();
 
             Debug.WriteLine("EventService:" + request.ViewModel);

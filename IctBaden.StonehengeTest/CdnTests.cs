@@ -13,7 +13,7 @@ namespace IctBaden.StonehengeTest
         {
             const string page = "  <link href=\"app/icon.png\" rel=\"icon\" type=\"image/x-icon\" />   ";
 
-            var resolved = ContentDeliveryNetworkSupport.RersolveHostsHtml(page);
+            var resolved = ContentDeliveryNetworkSupport.RersolveHostsHtml(page, false);
 
             Assert.AreEqual(page, resolved);
         }
@@ -25,7 +25,7 @@ namespace IctBaden.StonehengeTest
             var target = ContentDeliveryNetworkSupport.CdnLookup["bootstrap.css"];
             var expected = page.Replace("css/bootstrap.css", target).Trim();
 
-            var resolved = ContentDeliveryNetworkSupport.RersolveHostsHtml(page).Trim();
+            var resolved = ContentDeliveryNetworkSupport.RersolveHostsHtml(page, false).Trim();
 
             Assert.AreEqual(expected, resolved);
         }
@@ -37,7 +37,7 @@ namespace IctBaden.StonehengeTest
             var target = ContentDeliveryNetworkSupport.CdnLookup["jquery-1.10.2.js"];
             var expected = page.Replace("scripts/jquery-1.10.2.js", target).Trim();
 
-            var resolved = ContentDeliveryNetworkSupport.RersolveHostsHtml(page).Trim();
+            var resolved = ContentDeliveryNetworkSupport.RersolveHostsHtml(page, false).Trim();
 
             Assert.AreEqual(expected, resolved);
         }
@@ -47,7 +47,7 @@ namespace IctBaden.StonehengeTest
         {
             const string script = "  'none':         '/app/lib/flot/js/nothing',   ";
 
-            var resolved = ContentDeliveryNetworkSupport.RersolveHostsJs(script);
+            var resolved = ContentDeliveryNetworkSupport.RersolveHostsJs(script, false);
 
             Assert.AreEqual(script, resolved);
         }
@@ -59,7 +59,7 @@ namespace IctBaden.StonehengeTest
             var target = ContentDeliveryNetworkSupport.CdnLookup["jquery.flot.js"];
             var expected = script.Replace("/app/lib/flot/js/jquery.flot", target).Replace(".js'", "'").Trim();
 
-            var resolved = ContentDeliveryNetworkSupport.RersolveHostsJs(script).Trim();
+            var resolved = ContentDeliveryNetworkSupport.RersolveHostsJs(script, false).Trim();
 
             Assert.AreEqual(expected, resolved);
         }
@@ -68,7 +68,7 @@ namespace IctBaden.StonehengeTest
         public void JsMainJsReturnsResolvedText()
         {
             var mainjs = ResourceLoader.LoadText("", "", "main.js");
-            var resolved = ContentDeliveryNetworkSupport.RersolveHostsJs(mainjs);
+            var resolved = ContentDeliveryNetworkSupport.RersolveHostsJs(mainjs, false);
 
             Assert.IsFalse(resolved.Contains("/app/lib/knockout/js/"));
             Assert.IsFalse(resolved.Contains("/app/lib/bootstrap/js/"));
