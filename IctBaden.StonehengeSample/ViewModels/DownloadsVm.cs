@@ -20,7 +20,7 @@ namespace IctBaden.StonehengeSample.ViewModels
             if (fileName == "Test.txt")
             {
                 var txt = "Hello World at " + DateTime.Now.ToLongDateString() + "  " + DateTime.Now.ToLongTimeString();
-                return new UserData("text/txt", Encoding.Default.GetBytes(txt.ToString()));
+                return new UserData(txt);
             }
 
             var csv = new StringBuilder();

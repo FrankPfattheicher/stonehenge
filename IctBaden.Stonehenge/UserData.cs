@@ -15,7 +15,7 @@ namespace IctBaden.Stonehenge
     public UserData(string text)
     {
       Bytes = Encoding.UTF8.GetBytes(text);
-      ContentType = "text/plain";
+      ContentType = "text/plain; charset=utf-8";
     }
   }
 }

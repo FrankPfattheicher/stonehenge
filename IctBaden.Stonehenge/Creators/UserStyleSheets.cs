@@ -33,7 +33,7 @@ namespace IctBaden.Stonehenge.Creators
         var baseNameTheme = ressourceBaseName + "app.themes.";
         // ReSharper disable once LoopCanBeConvertedToQuery
         foreach (var resourceName in assembly.GetManifestResourceNames()
-          .Where(name => name.EndsWith(".css") && (name.StartsWith(baseNameStyles) || name.StartsWith(baseNameTheme + theme))))
+          .Where(name => name.EndsWith(".css") && (name.StartsWith(baseNameStyles, StringComparison.InvariantCultureIgnoreCase) || name.StartsWith(baseNameTheme + theme))))
         {
           var css = resourceName.Replace(ressourceBaseName, string.Empty).Replace(".", "/").Replace("/css", ".css");
           styleSheets += Environment.NewLine + string.Format(LinkTemplate, css);
