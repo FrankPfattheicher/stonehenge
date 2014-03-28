@@ -75,7 +75,7 @@ namespace IctBaden.Stonehenge.Creators
       foreach (var resourceName in assembly.GetManifestResourceNames()
         .Where(name => (name.EndsWith(".html")) && (!name.Contains("shell.html"))).OrderBy(name => name))
       {
-        var route = resourceName.Replace(baseName, string.Empty).Replace(".html", string.Empty);
+        var route = resourceName.Substring(baseName.Length).Replace(".html", string.Empty);
         var pageText = "";
         using (var stream = assembly.GetManifestResourceStream(resourceName))
         {

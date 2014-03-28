@@ -6,6 +6,9 @@ namespace IctBaden.StonehengeSample.ViewModels
 {
     public class DownloadsVm : ActiveViewModel
     {
+        public string TextFileName { get { return "user/Test.txt?stonehenge_id=" + Session.Id; } }
+        public string CsvFileName { get { return "user/Test.csv?stonehenge_id=" + Session.Id; } }
+
         public DownloadsVm(AppSession session)
             : base(session)
         {
@@ -17,7 +20,7 @@ namespace IctBaden.StonehengeSample.ViewModels
             if (fileName == "Test.txt")
             {
                 var txt = "Hello World at " + DateTime.Now.ToLongDateString() + "  " + DateTime.Now.ToLongTimeString();
-                return new UserData(txt);
+                return new UserData("text/txt", Encoding.Default.GetBytes(txt.ToString()));
             }
 
             var csv = new StringBuilder();

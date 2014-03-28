@@ -11,6 +11,12 @@ namespace IctBaden.Stonehenge.Services
         private static readonly Dictionary<string, string> Texts = new Dictionary<string, string>();
         private static readonly Dictionary<string, byte[]> Binaries = new Dictionary<string, byte[]>();
 
+        private static bool IsName(this string name, string name1, string name2)
+        {
+            return (string.Compare(name, name1, StringComparison.InvariantCultureIgnoreCase) == 0) ||
+                   (string.Compare(name, name2, StringComparison.InvariantCultureIgnoreCase) == 0);
+        }
+
         public static string LoadText(string filePath, string resourcePath, string name)
         {
             resourcePath = resourcePath.Replace('-', '_');
@@ -60,9 +66,7 @@ namespace IctBaden.Stonehenge.Services
                 {
 					var assemblyResourceName1 = assembly.GetName().Name + "." + resourceName1;
 					var assemblyResourceName2 = assembly.GetName().Name + "." + resourceName2;
-					var realName = assembly
-						.GetManifestResourceNames()
-							.FirstOrDefault(n => (string.Compare(n, assemblyResourceName1, StringComparison.InvariantCultureIgnoreCase) == 0) || (string.Compare(n, assemblyResourceName2, StringComparison.InvariantCultureIgnoreCase) == 0));
+					var realName = assembly.GetManifestResourceNames().FirstOrDefault(n => n.IsName(assemblyResourceName1, assemblyResourceName2));
 					if(realName == null)
 						continue;
                     using (var stream = assembly.GetManifestResourceStream(realName))
@@ -128,7 +132,12 @@ namespace IctBaden.Stonehenge.Services
                 var assemblies = new List<Assembly> { Assembly.GetEntryAssembly(), Assembly.GetExecutingAssembly() };
                 foreach (var assembly in assemblies)
                 {
-                    using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "." + resourceName))
+                    var assemblyResourceName = assembly.GetName().Name + "." + resourceName;
+                    var realName = assembly.GetManifestResourceNames().FirstOrDefault(n => n.IsName(assemblyResourceName, string.Empty));
+                    if (realName == null)
+                        continue;
+
+                    using (var stream = assembly.GetManifestResourceStream(realName))
                     {
                         if (stream == null)
                             continue;
