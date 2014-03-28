@@ -1,8 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="IctBaden.Stonehenge/Services/ResourceLoader.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="IctBaden.Stonehenge/Services/AppFileService.cs">
     <Files>
-      <File FileName="IctBaden.Stonehenge/Services/ResourceLoader.cs" Line="9" Column="60" />
+      <File FileName="Stonehenge11.sln" Line="4" Column="24" />
+      <File FileName="IctBaden.Stonehenge/Services/ResourceLoader.cs" Line="124" Column="1" />
+      <File FileName="IctBaden.Stonehenge/Services/AppFileService.cs" Line="21" Column="45" />
+      <File FileName="IctBaden.Stonehenge/Services/AppService.cs" Line="31" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -25,8 +25,12 @@ namespace IctBaden.Stonehenge.Services
             }
             return sessionId;
         }
-        public AppSession GetSession(string id)
-        {
+        public AppSession GetSession (string id)
+		{
+			if (string.IsNullOrEmpty (id)) 
+			{
+				return null;
+			}
             lock (AppSessionCache.Cache)
             {
                 Guid sessionId;
