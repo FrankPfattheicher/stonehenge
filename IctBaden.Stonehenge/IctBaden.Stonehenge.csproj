@@ -10,10 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IctBaden.Stonehenge</RootNamespace>
     <AssemblyName>IctBaden.Stonehenge</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,33 +30,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ServiceStack, Version=3.9.58.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>ServiceStack\ServiceStack.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Common, Version=3.9.58.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>ServiceStack\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=3.9.58.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>ServiceStack\ServiceStack.Interfaces.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="ServiceStack.ServiceInterface, Version=3.9.58.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>ServiceStack\ServiceStack.ServiceInterface.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text, Version=3.9.58.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>ServiceStack\ServiceStack.Text.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
+    <Reference Include="ServiceStack">
+      <HintPath>ServiceStack\ServiceStack.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>ServiceStack\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>ServiceStack\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.ServiceInterface">
+      <HintPath>ServiceStack\ServiceStack.ServiceInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>ServiceStack\ServiceStack.Text.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionMethodAttribute.cs" />
@@ -96,53 +87,7 @@
     <Compile Include="UserData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="app\lib\bootstrap\css\bootstrap-theme.css" />
-    <EmbeddedResource Include="app\lib\bootstrap\css\bootstrap-theme.min.css" />
-    <EmbeddedResource Include="app\lib\knockout\js\knockout-3.0.0.js" />
-    <EmbeddedResource Include="app\lib\jquery.ztree\css\zTreeStyle.css" />
-    <EmbeddedResource Include="app\lib\jquery.ztree\js\jquery.ztree.core-3.5.js" />
-    <EmbeddedResource Include="app\lib\jquery.ztree\js\jquery.ztree.core-3.5.min.js" />
-    <EmbeddedResource Include="app\lib\jquery.ztree\js\jquery.ztree.excheck-3.5.js" />
-    <EmbeddedResource Include="app\lib\jquery.ztree\js\jquery.ztree.excheck-3.5.min.js" />
-    <EmbeddedResource Include="app\lib\jquery.ztree\js\jquery.ztree.exedit-3.5.js" />
-    <EmbeddedResource Include="app\lib\jquery.ztree\js\jquery.ztree.exedit-3.5.min.js" />
-    <EmbeddedResource Include="app\lib\jquery.ztree\js\jquery.ztree.exhide-3.5.js" />
-    <EmbeddedResource Include="app\lib\jquery.ztree\js\jquery.ztree.exhide-3.5.min.js" />
-    <EmbeddedResource Include="app\lib\jquery.ztree\img\zTreeStandard.png" />
-    <EmbeddedResource Include="app\lib\jquery.ztree\img\line_conn.gif" />
-    <EmbeddedResource Include="app\lib\jquery.ba-throttle-debounce\js\jquery.ba-throttle-debounce.js" />
-    <EmbeddedResource Include="app\lib\jquery.ba-throttle-debounce\js\jquery.ba-throttle-debounce.min.js" />
-    <EmbeddedResource Include="app\plugins\js\dialog.js" />
-    <EmbeddedResource Include="app\plugins\js\history.js" />
-    <EmbeddedResource Include="app\plugins\js\http.js" />
-    <EmbeddedResource Include="app\plugins\js\observable.js" />
-    <EmbeddedResource Include="app\plugins\js\router.js" />
-    <EmbeddedResource Include="app\plugins\js\serializer.js" />
-    <EmbeddedResource Include="app\plugins\js\widget.js" />
-    <EmbeddedResource Include="app\durandal\js\activator.js" />
-    <EmbeddedResource Include="app\durandal\js\app.js" />
-    <EmbeddedResource Include="app\durandal\js\binder.js" />
-    <EmbeddedResource Include="app\durandal\js\composition.js" />
-    <EmbeddedResource Include="app\durandal\js\events.js" />
-    <EmbeddedResource Include="app\durandal\js\system.js" />
-    <EmbeddedResource Include="app\durandal\js\viewEngine.js" />
-    <EmbeddedResource Include="app\durandal\js\viewLocator.js" />
-    <EmbeddedResource Include="app\durandal\css\durandal.css" />
-    <EmbeddedResource Include="app\transitions\js\entrance.js" />
-    <EmbeddedResource Include="app\lib\require\js\almond-custom.js" />
-    <EmbeddedResource Include="app\lib\require\js\r.js" />
-    <EmbeddedResource Include="app\lib\require\js\require.js" />
-    <EmbeddedResource Include="app\lib\require\js\text.js" />
-    <EmbeddedResource Include="app\main.js" />
-    <EmbeddedResource Include="app\lib\font-awesome\css\font-awesome-ie7.css" />
-    <EmbeddedResource Include="app\lib\font-awesome\css\font-awesome-ie7.min.css" />
-    <EmbeddedResource Include="app\lib\font-awesome\css\font-awesome.css" />
-    <EmbeddedResource Include="app\lib\font-awesome\css\font-awesome.min.css" />
-    <EmbeddedResource Include="app\lib\font-awesome\font\fontawesome-webfont.svg" />
-    <EmbeddedResource Include="app\lib\respondjs\js\respond.min.js" />
-    <EmbeddedResource Include="app\lib\respondjs\js\respond.js" />
     <EmbeddedResource Include="robots.txt" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.axislabels.js" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />
@@ -152,74 +97,120 @@
     <Content Include="ServiceStack\ServiceStack.Text.dll" />
     <Content Include="ServiceStack\ServiceStack.Text.XML" />
     <Content Include="ServiceStack\ServiceStack.xml" />
-    <EmbeddedResource Include="app\index.html" />
-    <EmbeddedResource Include="app\shell.js" />
     <EmbeddedResource Include="Creators\ClientViewModel.js" />
-    <EmbeddedResource Include="app\lib\bootstrap\css\bootstrap.css" />
-    <EmbeddedResource Include="app\lib\bootstrap\css\bootstrap.min.css" />
     <EmbeddedResource Include="img\glyphicons-halflings-white.png" />
     <EmbeddedResource Include="img\glyphicons-halflings.png" />
-    <EmbeddedResource Include="app\lib\bootstrap\js\bootstrap.js" />
-    <EmbeddedResource Include="app\lib\bootstrap\js\bootstrap.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\excanvas.js" />
-    <EmbeddedResource Include="app\lib\flot\js\excanvas.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.colorhelpers.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.colorhelpers.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.canvas.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.canvas.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.categories.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.categories.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.crosshair.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.crosshair.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.errorbars.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.errorbars.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.fillbetween.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.fillbetween.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.image.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.image.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.navigate.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.navigate.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.pie.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.pie.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.resize.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.resize.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.selection.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.selection.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.stack.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.stack.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.symbol.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.symbol.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.threshold.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.threshold.min.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.time.js" />
-    <EmbeddedResource Include="app\lib\flot\js\jquery.flot.time.min.js" />
-    <EmbeddedResource Include="app\icon.png" />
-    <Content Include="app\lib\flot\LICENSE.txt" />
-    <EmbeddedResource Include="app\lib\html5shiv\js\html5shiv-printshiv.js" />
-    <EmbeddedResource Include="app\lib\html5shiv\js\html5shiv.js" />
-    <EmbeddedResource Include="app\lib\jquery\js\jquery-1.9.1-vsdoc.js" />
-    <EmbeddedResource Include="app\lib\jquery\js\jquery-1.10.2.js" />
-    <EmbeddedResource Include="app\lib\jquery\js\jquery-1.10.2.min.js" />
+    <EmbeddedResource Include="App\lib\bootstrap\css\bootstrap-theme.css" />
+    <EmbeddedResource Include="App\lib\bootstrap\css\bootstrap-theme.min.css" />
+    <EmbeddedResource Include="App\lib\knockout\js\knockout-3.0.0.js" />
+    <EmbeddedResource Include="App\lib\jquery.ztree\css\zTreeStyle.css" />
+    <EmbeddedResource Include="App\lib\jquery.ztree\js\jquery.ztree.core-3.5.js" />
+    <EmbeddedResource Include="App\lib\jquery.ztree\js\jquery.ztree.core-3.5.min.js" />
+    <EmbeddedResource Include="App\lib\jquery.ztree\js\jquery.ztree.excheck-3.5.js" />
+    <EmbeddedResource Include="App\lib\jquery.ztree\js\jquery.ztree.excheck-3.5.min.js" />
+    <EmbeddedResource Include="App\lib\jquery.ztree\js\jquery.ztree.exedit-3.5.js" />
+    <EmbeddedResource Include="App\lib\jquery.ztree\js\jquery.ztree.exedit-3.5.min.js" />
+    <EmbeddedResource Include="App\lib\jquery.ztree\js\jquery.ztree.exhide-3.5.js" />
+    <EmbeddedResource Include="App\lib\jquery.ztree\js\jquery.ztree.exhide-3.5.min.js" />
+    <EmbeddedResource Include="App\lib\jquery.ztree\img\zTreeStandard.png" />
+    <EmbeddedResource Include="App\lib\jquery.ztree\img\line_conn.gif" />
+    <EmbeddedResource Include="App\lib\jquery.ba-throttle-debounce\js\jquery.ba-throttle-debounce.js" />
+    <EmbeddedResource Include="App\lib\jquery.ba-throttle-debounce\js\jquery.ba-throttle-debounce.min.js" />
+    <EmbeddedResource Include="App\plugins\js\dialog.js" />
+    <EmbeddedResource Include="App\plugins\js\history.js" />
+    <EmbeddedResource Include="App\plugins\js\http.js" />
+    <EmbeddedResource Include="App\plugins\js\observable.js" />
+    <EmbeddedResource Include="App\plugins\js\router.js" />
+    <EmbeddedResource Include="App\plugins\js\serializer.js" />
+    <EmbeddedResource Include="App\plugins\js\widget.js" />
+    <EmbeddedResource Include="App\durandal\js\activator.js" />
+    <EmbeddedResource Include="App\durandal\js\app.js" />
+    <EmbeddedResource Include="App\durandal\js\binder.js" />
+    <EmbeddedResource Include="App\durandal\js\composition.js" />
+    <EmbeddedResource Include="App\durandal\js\events.js" />
+    <EmbeddedResource Include="App\durandal\js\system.js" />
+    <EmbeddedResource Include="App\durandal\js\viewEngine.js" />
+    <EmbeddedResource Include="App\durandal\js\viewLocator.js" />
+    <EmbeddedResource Include="App\durandal\css\durandal.css" />
+    <EmbeddedResource Include="App\transitions\js\entrance.js" />
+    <EmbeddedResource Include="App\lib\require\js\almond-custom.js" />
+    <EmbeddedResource Include="App\lib\require\js\r.js" />
+    <EmbeddedResource Include="App\lib\require\js\require.js" />
+    <EmbeddedResource Include="App\lib\require\js\text.js" />
+    <EmbeddedResource Include="App\main.js" />
+    <EmbeddedResource Include="App\lib\font-awesome\css\font-awesome-ie7.css" />
+    <EmbeddedResource Include="App\lib\font-awesome\css\font-awesome-ie7.min.css" />
+    <EmbeddedResource Include="App\lib\font-awesome\css\font-awesome.css" />
+    <EmbeddedResource Include="App\lib\font-awesome\css\font-awesome.min.css" />
+    <EmbeddedResource Include="App\lib\font-awesome\font\fontawesome-webfont.svg" />
+    <EmbeddedResource Include="App\lib\respondjs\js\respond.min.js" />
+    <EmbeddedResource Include="App\lib\respondjs\js\respond.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.axislabels.js" />
+    <EmbeddedResource Include="App\index.html" />
+    <EmbeddedResource Include="App\shell.js" />
+    <EmbeddedResource Include="App\lib\bootstrap\css\bootstrap.css" />
+    <EmbeddedResource Include="App\lib\bootstrap\css\bootstrap.min.css" />
+    <EmbeddedResource Include="App\lib\bootstrap\js\bootstrap.js" />
+    <EmbeddedResource Include="App\lib\bootstrap\js\bootstrap.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\excanvas.js" />
+    <EmbeddedResource Include="App\lib\flot\js\excanvas.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.colorhelpers.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.colorhelpers.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.canvas.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.canvas.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.categories.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.categories.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.crosshair.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.crosshair.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.errorbars.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.errorbars.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.fillbetween.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.fillbetween.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.image.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.image.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.navigate.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.navigate.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.pie.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.pie.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.resize.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.resize.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.selection.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.selection.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.stack.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.stack.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.symbol.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.symbol.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.threshold.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.threshold.min.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.time.js" />
+    <EmbeddedResource Include="App\lib\flot\js\jquery.flot.time.min.js" />
+    <EmbeddedResource Include="App\icon.png" />
+    <Content Include="App\lib\flot\LICENSE.txt" />
+    <EmbeddedResource Include="App\lib\html5shiv\js\html5shiv-printshiv.js" />
+    <EmbeddedResource Include="App\lib\html5shiv\js\html5shiv.js" />
+    <EmbeddedResource Include="App\lib\jquery\js\jquery-1.9.1-vsdoc.js" />
+    <EmbeddedResource Include="App\lib\jquery\js\jquery-1.10.2.js" />
+    <EmbeddedResource Include="App\lib\jquery\js\jquery-1.10.2.min.js" />
+    <EmbeddedResource Include="App\lib\jquery\jquery-1.10.2.min.map" />
+    <EmbeddedResource Include="App\lib\font-awesome\font\fontawesome-webfont.eot" />
+    <EmbeddedResource Include="App\lib\font-awesome\font\fontawesome-webfont.ttf" />
+    <EmbeddedResource Include="App\lib\font-awesome\font\fontawesome-webfont.woff" />
+    <EmbeddedResource Include="App\lib\font-awesome\font\FontAwesome.otf" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CDN.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="app\lib\flot\API.md" />
-    <None Include="app\lib\flot\CONTRIBUTING.md" />
-    <None Include="app\lib\flot\FAQ.md" />
-    <None Include="app\lib\flot\Makefile" />
-    <None Include="app\lib\flot\NEWS.md" />
-    <None Include="app\lib\flot\PLUGINS.md" />
-    <None Include="app\lib\flot\README.md" />
-    <EmbeddedResource Include="app\lib\jquery\jquery-1.10.2.min.map" />
-    <EmbeddedResource Include="app\lib\font-awesome\font\fontawesome-webfont.eot" />
-    <EmbeddedResource Include="app\lib\font-awesome\font\fontawesome-webfont.ttf" />
-    <EmbeddedResource Include="app\lib\font-awesome\font\fontawesome-webfont.woff" />
-    <EmbeddedResource Include="app\lib\font-awesome\font\FontAwesome.otf" />
-    <None Include="app\lib\respondjs\js\README.md" />
+    <None Include="App\lib\flot\API.md" />
+    <None Include="App\lib\flot\CONTRIBUTING.md" />
+    <None Include="App\lib\flot\FAQ.md" />
+    <None Include="App\lib\flot\Makefile" />
+    <None Include="App\lib\flot\NEWS.md" />
+    <None Include="App\lib\flot\PLUGINS.md" />
+    <None Include="App\lib\flot\README.md" />
+    <None Include="App\lib\respondjs\js\README.md" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

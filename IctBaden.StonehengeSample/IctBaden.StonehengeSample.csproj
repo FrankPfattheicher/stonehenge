@@ -10,10 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IctBaden.StonehengeSample</RootNamespace>
     <AssemblyName>IctBaden.StonehengeSample</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -40,10 +37,6 @@
     <ApplicationIcon>App.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ServiceStack.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\IctBaden.Stonehenge\ServiceStack\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
@@ -52,6 +45,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\IctBaden.Stonehenge\ServiceStack\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ViewModels\DownloadsVm.cs" />
@@ -68,14 +64,25 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="app\about.html" />
-    <EmbeddedResource Include="app\invisible.html" />
-    <EmbeddedResource Include="app\graph.html" />
-    <EmbeddedResource Include="app\icon.png" />
-    <EmbeddedResource Include="app\login.html" />
-    <EmbeddedResource Include="app\shell.html" />
-    <EmbeddedResource Include="app\form.html" />
-    <EmbeddedResource Include="app\styles\sample.css" />
+    <EmbeddedResource Include="App\about.html" />
+    <EmbeddedResource Include="App\invisible.html" />
+    <EmbeddedResource Include="App\graph.html" />
+    <EmbeddedResource Include="App\icon.png" />
+    <EmbeddedResource Include="App\login.html" />
+    <EmbeddedResource Include="App\shell.html" />
+    <EmbeddedResource Include="App\form.html" />
+    <EmbeddedResource Include="App\styles\sample.css" />
+    <EmbeddedResource Include="App\switch_off.wav" />
+    <EmbeddedResource Include="App\switch_on.wav" />
+    <EmbeddedResource Include="App\downloads.html" />
+    <EmbeddedResource Include="App\images.html" />
+    <EmbeddedResource Include="App\images\lightbulb.png" />
+    <EmbeddedResource Include="App\images\lightbulb_on.png" />
+    <EmbeddedResource Include="App\images\switch_off.png" />
+    <EmbeddedResource Include="App\images\switch_on.png" />
+    <EmbeddedResource Include="App\isdirty.html" />
+    <EmbeddedResource Include="App\tree_user.js" />
+    <EmbeddedResource Include="App\tree.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IctBaden.Stonehenge\IctBaden.Stonehenge.csproj">
@@ -85,17 +92,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
-    <EmbeddedResource Include="app\switch_off.wav" />
-    <EmbeddedResource Include="app\switch_on.wav" />
-    <EmbeddedResource Include="app\downloads.html" />
-    <EmbeddedResource Include="app\images.html" />
-    <EmbeddedResource Include="app\images\lightbulb.png" />
-    <EmbeddedResource Include="app\images\lightbulb_on.png" />
-    <EmbeddedResource Include="app\images\switch_off.png" />
-    <EmbeddedResource Include="app\images\switch_on.png" />
-    <EmbeddedResource Include="app\isdirty.html" />
-    <EmbeddedResource Include="app\tree_user.js" />
-    <EmbeddedResource Include="app\tree.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

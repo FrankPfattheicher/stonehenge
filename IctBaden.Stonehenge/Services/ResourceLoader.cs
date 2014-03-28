@@ -58,23 +58,14 @@ namespace IctBaden.Stonehenge.Services
                 var assemblies = new List<Assembly> { Assembly.GetEntryAssembly(), Assembly.GetExecutingAssembly() };
                 foreach (var assembly in assemblies.Where(a => a != null))
                 {
-                    using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "." + resourceName1))
-                    {
-                        if (stream != null)
-                        {
-                            using (var reader = new StreamReader(stream))
-                            {
-                                text = reader.ReadToEnd();
-                                Texts.Add(resourceName1, text);
-                                return text;
-                            }
-                        }
-                    }
-
-                    if (string.IsNullOrEmpty(resourceName2))
-                        continue;
-
-                    using (var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "." + resourceName2))
+					var assemblyResourceName1 = assembly.GetName().Name + "." + resourceName1;
+					var assemblyResourceName2 = assembly.GetName().Name + "." + resourceName2;
+					var realName = assembly
+						.GetManifestResourceNames()
+							.FirstOrDefault(n => (string.Compare(n, assemblyResourceName1, StringComparison.InvariantCultureIgnoreCase) == 0) || (string.Compare(n, assemblyResourceName2, StringComparison.InvariantCultureIgnoreCase) == 0));
+					if(realName == null)
+						continue;
+                    using (var stream = assembly.GetManifestResourceStream(realName))
                     {
                         if (stream != null)
                         {
