@@ -12,7 +12,8 @@ namespace IctBaden.StonehengeSample
         {
             App = new AppEngine("Stonehenge Sample", "about");
 
-            var asApp = Environment.CommandLine.ToUpper().Contains("APP");
+            var options = Environment.CommandLine.ToUpper();
+            var asApp = options.Contains("/APP") || options.Contains("-APP");
             App.Run(asApp);
 
             if (!asApp)
