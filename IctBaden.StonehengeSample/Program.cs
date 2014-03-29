@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using IctBaden.Stonehenge;
 
@@ -10,15 +11,15 @@ namespace IctBaden.StonehengeSample
 
         static void Main()
         {
-            App = new AppEngine("Stonehenge Sample", "about");
-
             var options = Environment.CommandLine.ToUpper();
-            var asApp = options.Contains("/APP") || options.Contains("-APP");
+            var asApp = options.Contains("/APP") || options.Contains("-APP") || File.Exists("IctBaden.StonehengeSample.app");
+
+            App = new AppEngine(asApp ? 0 : 42000, false, "Stonehenge Sample", "about");
             App.Run(asApp);
 
             if (!asApp)
             {
-                MessageBox.Show("Sample running on http://localhost:42000", "Stonehenge");
+                MessageBox.Show("Sample running on http://localhost:" + App.UsedPort, "Stonehenge");
             }
         }
     }
