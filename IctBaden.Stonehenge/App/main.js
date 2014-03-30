@@ -4,7 +4,7 @@
     'durandal':     '/app/durandal/js',
     'plugins':      '/app/plugins',
     'transitions':  '/app/transitions',
-    'knockout':     '/app/lib/knockout/js/knockout-3.0.0',
+    'knockout':     '/app/lib/knockout/js/knockout-3.1.0',
     'bootstrap':    '/app/lib/bootstrap/js/bootstrap',
     'jquery':       '/app/lib/jquery/js/jquery-1.10.2',
     'throttle':     '/app/lib/jquery.ba-throttle-debounce/jquery.ba-throttle-debounce',

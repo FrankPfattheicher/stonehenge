@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="robots.txt" />
+    <EmbeddedResource Include="App\lib\knockout\js\knockout-3.1.0.js" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />
@@ -102,7 +103,6 @@
     <EmbeddedResource Include="img\glyphicons-halflings.png" />
     <EmbeddedResource Include="App\lib\bootstrap\css\bootstrap-theme.css" />
     <EmbeddedResource Include="App\lib\bootstrap\css\bootstrap-theme.min.css" />
-    <EmbeddedResource Include="App\lib\knockout\js\knockout-3.0.0.js" />
     <EmbeddedResource Include="App\lib\jquery.ztree\css\zTreeStyle.css" />
     <EmbeddedResource Include="App\lib\jquery.ztree\js\jquery.ztree.core-3.5.js" />
     <EmbeddedResource Include="App\lib\jquery.ztree\js\jquery.ztree.core-3.5.min.js" />

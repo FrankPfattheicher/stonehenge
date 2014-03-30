@@ -2,7 +2,9 @@ stonehenge
 ==========
 An open source .NET Framework to use Web UI technologies for desktop and/or web applications.
 
-New in version 0.8:  Moved to Durandal 2.0.1
+New in version 0.9: Session ID stored in URL parameter 'stonehenge_id' 
+                    Support for Midori browser - now runs on Raspberry Pi
+                    KnockoutJS 3.1.0
 
 Motivation
 ----------
@@ -50,7 +52,6 @@ TODO
 * More controls
 * Widgets
 * Documentation
-* Kiosk runner for more browsers
 * localization support
 * NUGET package
 
@@ -58,7 +59,8 @@ Planned Improvements
 --------------------
 * single responsible refactoring to isolate ServiceStack
 * Replace ServiceStack due to V4.0 is no more open source
+* Microsoft Azure hosted version
 * Use self hostet webkit
 * Replace long running polls by modern communication
-	as soon as ServiceStack (and IE) supports it
+    as soon as ServiceStack (and IE) supports it
 
