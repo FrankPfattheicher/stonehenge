@@ -3,6 +3,11 @@ body {
   padding-top: 60px;
 }
 
+.icon-bar {
+    background-color: #428bca;
+    background-color: rgba(66, 139, 202, 0.5); 
+}
+
 .time {
   color: #F90;
   font-size: 16px;  
