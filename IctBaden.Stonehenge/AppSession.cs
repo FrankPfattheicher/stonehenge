@@ -128,7 +128,6 @@ namespace IctBaden.Stonehenge
         {
             userData[key] = value;
         }
-
         public T Get<T>(string key)
         {
             if (!userData.ContainsKey(key))
@@ -136,7 +135,10 @@ namespace IctBaden.Stonehenge
 
             return (T)userData[key];
         }
-
+        public void Remove(string key)
+        {
+            userData.Remove(key);
+        }
 
         public TimeSpan ConnectedDuration
         {
