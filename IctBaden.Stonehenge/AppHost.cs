@@ -25,6 +25,7 @@ namespace IctBaden.Stonehenge
 
         public event Action<AppSession> SessionCreated;
         public event Action<AppSession> SessionTerminated;
+        public event Action<Exception> ClientException;
 
         public AppHost(string title, string startPage, bool messageBoxContentHtml)
             : base(title, typeof(AppHost).Assembly)
@@ -49,6 +50,13 @@ namespace IctBaden.Stonehenge
                 return;
             handler(session);
         }
+        internal void OnClientException(Exception exception)
+        {
+            var handler = ClientException;
+            if (handler == null)
+                return;
+            handler(exception);
+        }
 
         public override void Configure(Container container)
         {
@@ -66,6 +74,8 @@ namespace IctBaden.Stonehenge
                   .Add<AppViewModel>("/ViewModel/{ViewModel}/{Source}");
 
             Routes.Add<AppEvent>("/Events/{ViewModel}");
+
+            Routes.Add<AppException>("/Exception/{Cause}");
 
             Plugins.Add(new SessionFeature());
             container.Register<ICacheClient>(new MemoryCacheClient());

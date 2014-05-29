@@ -64,8 +64,10 @@
     <Compile Include="Graph\GraphOptions.cs" />
     <Compile Include="Graph\GraphSeries.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Services\AppException.cs" />
     <Compile Include="Services\AppEvent.cs" />
     <Compile Include="Services\AppEventService.cs" />
+    <Compile Include="Services\AppExceptionService.cs" />
     <Compile Include="Services\AppFileService.cs" />
     <Compile Include="AppHost.cs" />
     <Compile Include="Services\AppService.cs" />

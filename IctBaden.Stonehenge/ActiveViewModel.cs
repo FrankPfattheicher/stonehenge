@@ -37,8 +37,6 @@ using IctBaden.Stonehenge.Services;
 
 namespace IctBaden.Stonehenge
 {
-    using ServiceStack.Common;
-
     public class ActiveViewModel : DynamicObject, ICustomTypeDescriptor, INotifyPropertyChanged
     {
         #region helper classes

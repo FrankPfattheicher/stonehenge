@@ -15,6 +15,8 @@ namespace IctBaden.StonehengeSample
             var asApp = options.Contains("/APP") || options.Contains("-APP") || File.Exists("IctBaden.StonehengeSample.app");
 
             App = new AppEngine(asApp ? 0 : 42000, false, "Stonehenge Sample", "about");
+
+            App.ClientException += exception => MessageBox.Show(exception.Message, "stonehenge - Client exception");
             App.Run(asApp);
 
             if (!asApp)

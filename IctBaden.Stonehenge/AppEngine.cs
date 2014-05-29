@@ -26,11 +26,14 @@ namespace IctBaden.Stonehenge
 
         public event Action<AppSession> SessionCreated;
         public event Action<AppSession> SessionTerminated;
+        public event Action<Exception> ClientException;
 
         public void Redirect(string page)
         {
             if (host != null)
+            {
                 host.Redirect = page;
+            }
         }
 
         public AppEngine(string title, string startPage)
@@ -86,6 +89,7 @@ namespace IctBaden.Stonehenge
 
             host.SessionCreated += OnSessionCreated;
             host.SessionTerminated += OnSessionTerminated;
+            host.ClientException += OnClientException;
 
             if (!newWindow)
                 return;
@@ -214,6 +218,13 @@ namespace IctBaden.Stonehenge
             if (handler == null)
                 return;
             handler(session);
+        }
+        private void OnClientException(Exception exception)
+        {
+            var handler = ClientException;
+            if (handler == null)
+                return;
+            handler(exception);
         }
     }
 }
