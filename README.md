@@ -12,10 +12,12 @@ Due to Microsofts unclear future of WPF and the lack of WPF support
 with Mono on other platforms there was the idea to use HTML5/CSS for
 use with desktop applications.
 
+Compile one EXE - copy and run on multiple platforms: Windows, Ubuntu and even Raspberry Pi
+
 There are always other products featuring this
 * [awesomium](http://awesomium.com/)
 
-But this products are not free...
+But this is not free...
 
 How It Works
 ------------
@@ -25,7 +27,8 @@ just throw away the XAML views and replace them by HTML views.
 The .NET framework part of doing XAML data binding is
 replaced by a proxy and stub transferring data and knockout is used for client site binding.
 
-Note: It's chatty - it's primary designed for local use.
+Note: It's chatty - it's primary designed for local/intranet use.
+Sample running on [http://stonehengecs.de/](http://stonehengecs.de/)
 
 Current project state: Working (Basic)
 
@@ -39,7 +42,7 @@ Features
 * No JavaScript coding necessary
 * All controls usable using knockout bindings
 * CDN support for js and css files
-* Development environments: VS201, VS2013, MonoDevelop, XamarinStudio
+* Development environments: VS2010, VS2013, MonoDevelop, XamarinStudio
 * VisualStudio template
 
 Known bugs
@@ -48,10 +51,10 @@ Known bugs
 
 TODO
 ----
+* Documentation
 * include toastr
 * More controls
 * Widgets
-* Documentation
 * localization support
 * NUGET package
 
@@ -60,7 +63,7 @@ Planned Improvements
 * single responsible refactoring to isolate ServiceStack
 * Replace ServiceStack due to V4.0 is no more open source
 * Microsoft Azure hosted version
+* Replace long running polls by modern communication as soon as commonly supported
+#### Future Plans
 * Use self hostet webkit
-* Replace long running polls by modern communication
-    as soon as ServiceStack (and IE) supports it
 
