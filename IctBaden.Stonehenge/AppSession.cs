@@ -47,6 +47,12 @@ namespace IctBaden.Stonehenge
             }
         }
 
+        public void ClientAddressChanged(string address)
+        {
+            ClientAddress = address;
+            NotifyPropertyChanged("ClientAddress");
+        }
+
         public object SetViewModelType(string typeName)
         {
             var vm = ViewModel;

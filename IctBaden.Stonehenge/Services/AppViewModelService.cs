@@ -25,6 +25,12 @@ namespace IctBaden.Stonehenge.Services
             var vm = appSession.SetViewModelType(request.ViewModel);
             appSession.EventsClear();
 
+            if (Request.RemoteIp != appSession.ClientAddress)
+            {
+                appSession.ClientAddressChanged(Request.RemoteIp);
+                Debug.WriteLine("AppViewModelService: Client address changed: " + appSession.ClientAddress);
+            }
+
             var ty = vm.GetType();
             Debug.WriteLine("AppViewModelService: ~vm=" + ty.Name);
 
