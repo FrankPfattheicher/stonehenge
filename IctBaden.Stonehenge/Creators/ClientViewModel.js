@@ -8,32 +8,33 @@ var polling_ViewModelName_active = false;
 // ReSharper disable UnusedLocals
 // ReSharper disable UnusedParameter
 function poll_ViewModelName_Events(viewmodel, initial) {
+    if (polling_ViewModelName_active)
+        return;
     var app = require('durandal/app');
     var router = require('plugins/router');
     var ts = new Date().getTime();
-    polling_ViewModelName_active = true;
-    $.getJSON('/events/_ViewModelType_?ts=' + ts + '&stonehenge_id=' + stonehenge_id, function (data) {
-        polling_ViewModelName_active = false;
+    polling_ViewModelName_active = $.getJSON('/events/_ViewModelType_?ts=' + ts + '&stonehenge_id=' + stonehenge_id, function (data) {
+        polling_ViewModelName_active = null;
         if (!loading_ViewModelName_active && (data != null)) {
             set_ViewModelName_Data(viewmodel, false, data);
             if (data.stonehenge_eval != null) eval(data.stonehenge_eval);
             if (data.stonehenge_navigate != null) router.navigate(data.stonehenge_navigate);
             if (data.stonehenge_poll != null) initial = true;
         }
-        if (initial && !polling_ViewModelName_active) {
-            polling_ViewModelName_active = true;
+        if (initial) {
             setTimeout(function () { poll_ViewModelName_Events(viewmodel, false); }, 200);
         }
     }).fail(function () {
         //alert("poll_ViewModelName_Events getJSON failed");
-        polling_ViewModelName_active = false;
-        if (!polling_ViewModelName_active) {
-            polling_ViewModelName_active = true;
+        polling_ViewModelName_active = null;
+        if (!loading_ViewModelName_active) {
             setTimeout(function () { poll_ViewModelName_Events(self, true); }, 200);
         }
     });
 }
 function set_ViewModelName_Data(viewmodel, loading, data) {
+    if (loading_ViewModelName_active)
+        return;
     _SetData_();
     if (activation_data) {
         data = activation_data;
@@ -42,24 +43,26 @@ function set_ViewModelName_Data(viewmodel, loading, data) {
     }
     if (loading) {
         if (!polling_ViewModelName_active) {
-            polling_ViewModelName_active = true;
             setTimeout(function () { poll_ViewModelName_Events(self, true); }, 200);
         }
         viewmodel.InitialLoading(false);
         viewmodel.IsLoading(false);
         viewmodel.IsDirty(false);
     }
-    loading_ViewModelName_active = false;
 }
 function post_ViewModelName_Data(viewmodel, sender, method, param) {
     //debugger;
+    loading_ViewModelName_active = true;
+    if (polling_ViewModelName_active) {
+        polling_ViewModelName_active.abort();
+    }
     var params = '_stonehenge_CommandSenderName_=' + encodeURIComponent(sender.name) + '&';
     if (param != null) { params += '_stonehenge_CommandParameter_=' + encodeURIComponent(param) + '&'; }
     _GetData_();
     var ts = new Date().getTime();
     viewmodel.IsLoading(true);
-    loading_ViewModelName_active = true;
     $.post('/viewmodel/_ViewModelType_/' + method + '?ts=' + ts + '&stonehenge_id=' + stonehenge_id, params, function (data) {
+        loading_ViewModelName_active = false;
         set_ViewModelName_Data(viewmodel, true, data);
     }).fail(function () {
         //alert("post_ViewModelName_Data post failed");
@@ -115,7 +118,11 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function (app, s
             if (stonehenge_id != null)
             {
                 loading_ViewModelName_active = true;
+                if (polling_ViewModelName_active) {
+                    polling_ViewModelName_active.abort();
+                }
                 $.getJSON('/viewmodel/_ViewModelType_?ts=' + ts + '&stonehenge_id=' + stonehenge_id, function (data) {
+                    loading_ViewModelName_active = false;
                     set_ViewModelName_Data(self, true, data);
                 }).fail(function () {
                     //alert("_ViewModelName_ attached getJSON failed");

@@ -37,7 +37,7 @@ namespace IctBaden.Stonehenge.Services
             if (appSession != null)
             {
                 appSession.Accessed();
-                appSession.EventsClear();
+                appSession.EventsClear(false);
             }
             else
             {
@@ -49,6 +49,7 @@ namespace IctBaden.Stonehenge.Services
             }
 
             HttpResult httpResult;
+            var doNotCache = false;
 
             var path = request.FullPath("");
             Debug.WriteLine("FileService:" + path);
@@ -93,7 +94,7 @@ namespace IctBaden.Stonehenge.Services
                     if (appSession != null)
                     {
                         appSession.SetViewModelType(name);
-                        appSession.EventsClear();
+                        appSession.EventsClear(true);
                     }
                 }
             }
@@ -136,7 +137,7 @@ namespace IctBaden.Stonehenge.Services
                     {
                         appSession = new AppSession();
                         var vm = appSession.SetViewModelType(vmName);
-                        appSession.EventsClear();
+                        appSession.EventsClear(true);
                         text = ModuleCreator.CreateFromViewModel(vm);
                     }
                     catch (Exception ex)
@@ -151,6 +152,8 @@ namespace IctBaden.Stonehenge.Services
                         text += userjs;
                     }
                 }
+
+                doNotCache = true;
             }
 
             switch (path.Replace(Path.DirectorySeparatorChar, '.'))
@@ -217,6 +220,11 @@ namespace IctBaden.Stonehenge.Services
             var compressed = new CompressedResult(Encoding.UTF8.GetBytes(text), RequestContext.CompressionType) { ContentType = type };
             httpResult = new HttpResult(compressed.Contents, type);
             httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
+            if (doNotCache)
+            {
+                httpResult.Headers.Add("Cache-Control", "no-cache");
+                httpResult.Headers.Add("Expires", "0");
+            }
             return httpResult;
         }
 

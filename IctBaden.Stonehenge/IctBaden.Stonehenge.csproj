@@ -136,7 +136,7 @@
     <EmbeddedResource Include="App\durandal\css\durandal.css" />
     <EmbeddedResource Include="App\transitions\js\entrance.js" />
     <EmbeddedResource Include="App\lib\require\js\almond-custom.js" />
-    <EmbeddedResource Include="App\lib\require\js\r.js" />
+    <EmbeddedResource Include="App\lib\require\js\require_min.js" />
     <EmbeddedResource Include="App\lib\require\js\require.js" />
     <EmbeddedResource Include="App\lib\require\js\text.js" />
     <EmbeddedResource Include="App\main.js" />

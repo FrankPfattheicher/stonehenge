@@ -224,13 +224,18 @@ namespace IctBaden.Stonehenge
             NotifyPropertyChanged("LastAccess");
         }
 
-        public void EventsClear()
+        public void EventsClear(bool forceEnd)
         {
             lock (Events)
             {
                 var msgBox = Events.FirstOrDefault(e => e.StartsWith(AppService.PropertyNameId));
                 Events.Clear();
                 EventAdd(msgBox ?? string.Empty);
+                if (forceEnd)
+                {
+                    EventRelease.Set();
+                    EventRelease.Set();
+                }
             }
         }
 

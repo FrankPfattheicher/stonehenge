@@ -23,7 +23,7 @@ namespace IctBaden.Stonehenge.Services
             Debug.WriteLine("ViewModelService:" + request.ViewModel);
 
             var vm = appSession.SetViewModelType(request.ViewModel);
-            appSession.EventsClear();
+            appSession.EventsClear(true);
 
             if (Request.RemoteIp != appSession.ClientAddress)
             {
@@ -55,7 +55,7 @@ namespace IctBaden.Stonehenge.Services
 
             var result = "{" + string.Join(",", data) + "}";
 
-            appSession.EventsClear();
+            appSession.EventsClear(true);
 
             HttpResult httpResult;
 
@@ -82,6 +82,9 @@ namespace IctBaden.Stonehenge.Services
             {
                 return new HttpResult("No session for viewmodel request", HttpStatusCode.NotFound);
             }
+
+            appSession.EventsClear(true);
+
             var vm = appSession.ViewModel;
             if (vm == null)
                 return Get(request);
