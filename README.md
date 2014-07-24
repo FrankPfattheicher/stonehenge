@@ -2,10 +2,11 @@ stonehenge
 ==========
 An open source .NET Framework to use Web UI technologies for desktop and/or web applications.
 
-New in version 0.9: Session ID stored in URL parameter 'stonehenge_id' 
-                    Support for Midori browser - now runs on Raspberry Pi
-                    KnockoutJS 3.1.0
-
+New in version 1.0: Client side aborting event polling fixed sync problems of th UI
+                    SSL support (also for CDN)
+					Fixed some Linux issues according to case sensivity of paths
+					Server side handling of client side binding exceptions added
+					
 Motivation
 ----------
 Due to Microsofts unclear future of WPF and the lack of WPF support
@@ -36,6 +37,15 @@ Current project state: Working (Basic)
 
 A great application has to be founded on solid pilars of frameworks.
 
+What It Is Not
+--------------
+There are no plans to support mobile platforms as native apps.
+If you are looking for this - see [PhoneGap](http://phonegap.com/) for example.
+
+The framework does not support offline scenarios.
+You are free to implement more client side code on your own to achieve this.
+
+
 Features
 --------
 * WPF like ViewModels
@@ -62,6 +72,8 @@ Planned Improvements
 --------------------
 * single responsible refactoring to isolate ServiceStack
 * Replace ServiceStack due to V4.0 is no more open source
+* refactoring to isolate client side technology
+* Support AngularJS as client side technology
 * Microsoft Azure hosted version
 * Replace long running polls by modern communication as soon as commonly supported
 #### Future Plans

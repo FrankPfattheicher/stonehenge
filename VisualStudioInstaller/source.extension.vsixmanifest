@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="StonehengeInstaller..1c7d5788-6046-4869-a79d-bd736a12e258" Version="0.8" Language="en-US" Publisher="Frank Pfattheicher" />
+        <Identity Id="StonehengeInstaller..1c7d5788-6046-4869-a79d-bd736a12e258" Version="1.0" Language="en-US" Publisher="Frank Pfattheicher" />
         <DisplayName>Stonehenge Project Template</DisplayName>
         <Description xml:space="preserve">A project template to create C# projects based on the stonehenge MVVM framework with HTML5/CSS3 user interface.</Description>
         <MoreInfo>https://github.com/FrankPfattheicher/stonehenge</MoreInfo>
