@@ -50,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModels\ExceptionVm.cs" />
     <Compile Include="ViewModels\DownloadsVm.cs" />
     <Compile Include="ViewModels\FormVm.cs" />
     <Compile Include="ViewModels\AboutVm.cs" />
