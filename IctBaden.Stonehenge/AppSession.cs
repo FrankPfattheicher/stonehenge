@@ -20,8 +20,17 @@ namespace IctBaden.Stonehenge
         public DateTime LastAccess { get; private set; }
         public Guid Id { get; private set; }
 
-        public List<string> Events = new List<string>();
-        public AutoResetEvent EventRelease = new AutoResetEvent(false);
+        internal List<string> Events = new List<string>();
+        internal AutoResetEvent EventRelease = new AutoResetEvent(false);
+        internal readonly PassiveTimer EventPollingActive = new PassiveTimer();
+
+        public bool IsWaitingForEvents
+        {
+            get
+            {
+                return EventPollingActive.Running && !EventPollingActive.Timeout;
+            }
+        }
 
         private object viewModel;
         public object ViewModel
