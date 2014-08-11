@@ -4,6 +4,10 @@
  * see: http://durandaljs.com or https://github.com/BlueSpire/Durandal for details
  */
 
+.initialfocus {
+    
+}
+
 .modalBlockout {
     position: fixed;
     top: 0;

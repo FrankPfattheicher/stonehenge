@@ -144,6 +144,7 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function (app, s
                     user_compositionComplete();
                 } catch (e) { }
             }
+            $('.initialfocus').focus();
         },
     };
     return viewModel;
