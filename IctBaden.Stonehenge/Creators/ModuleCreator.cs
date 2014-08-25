@@ -21,10 +21,10 @@ namespace IctBaden.Stonehenge.Creators
         if (clientViewModelTemplate != null)
           return clientViewModelTemplate;
 
-        const string resourceName = "IctBaden.Stonehenge.Creators.ClientViewModel.js";
+        const string ResourceName = "IctBaden.Stonehenge.Creators.ClientViewModel.js";
         var assembly = Assembly.GetExecutingAssembly();
 
-        using (var stream = assembly.GetManifestResourceStream(resourceName))
+        using (var stream = assembly.GetManifestResourceStream(ResourceName))
         {
           if (stream != null)
           {

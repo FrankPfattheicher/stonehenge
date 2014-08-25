@@ -41,8 +41,8 @@ namespace IctBaden.Stonehenge.Creators
           var parts = map.Title.Split(new[] { ':' });
           if (parts.Length > 1)
           {
-            map.Title = parts[0];
-            map.SortIndex = int.Parse(parts[1]);
+              map.Title = parts[0];
+              map.SortIndex = string.IsNullOrEmpty(parts[1]) ? -1 : int.Parse(parts[1]);
           }
         }
       }
