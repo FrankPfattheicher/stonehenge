@@ -25,12 +25,12 @@ namespace IctBaden.Stonehenge.Services
             }
             return sessionId;
         }
-        public AppSession GetSession (string id)
-		{
-			if (string.IsNullOrEmpty (id)) 
-			{
-				return null;
-			}
+        public AppSession GetSession(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return null;
+            }
             lock (AppSessionCache.Cache)
             {
                 Guid sessionId;
@@ -78,7 +78,13 @@ namespace IctBaden.Stonehenge.Services
             }
         }
 
+
+
         protected object RedirectToNewSession()
+        {
+            return RedirectToSession(AppSessionCache.NewSession());
+        }
+        protected object RedirectToSession(AppSession session)
         {
             var uri = Request.AbsoluteUri;
             var getsid = new Regex(@".*\?stonehenge_id\=(?<sid>[^/&]+)");
@@ -96,7 +102,6 @@ namespace IctBaden.Stonehenge.Services
                 uri = uri.Substring(0, ix);
             }
 
-            var session = AppSessionCache.NewSession();
             Trace.TraceInformation("Redirect to new session {0}", session.Id);
 
             //uri = request.FileName + "?stonehenge_id=" + session.Id;

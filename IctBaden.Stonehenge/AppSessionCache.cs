@@ -4,7 +4,9 @@ using System.Diagnostics;
 
 namespace IctBaden.Stonehenge
 {
-  public class AppSessionCache
+    using System.Linq;
+
+    public class AppSessionCache
   {
     public static readonly Dictionary<Guid, AppSession> Cache = new Dictionary<Guid, AppSession>();
 
@@ -25,6 +27,14 @@ namespace IctBaden.Stonehenge
       {
         return Cache.ContainsKey(id) ? Cache[id] : null;
       }
+    }
+
+    public static AppSession GetSessionByIpAddress(string address)
+    {
+        lock (Cache)
+        {
+            return Cache.Where(s => s.Value.ClientAddress == address).Select(s => s.Value).FirstOrDefault();
+        }
     }
 
     public static void RemoveSession(Guid id)
