@@ -59,7 +59,10 @@ namespace IctBaden.Stonehenge.Services
 
             if((appSession == null) && (string.Compare(request.FileName, "index.html", StringComparison.OrdinalIgnoreCase) == 0))
             {
-                appSession = AppSessionCache.GetSessionByIpAddress(Request.RemoteIp);
+                if ((AppSessionCache.ReuseSessions & AppSessionCache.ReuseSessionStrategy.ClientAddress) != 0)
+                {
+                    appSession = AppSessionCache.GetSessionByIpAddress(Request.RemoteIp);
+                }
                 return (appSession != null) ? RedirectToSession(appSession) : RedirectToNewSession();
             }
 
