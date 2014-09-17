@@ -49,6 +49,12 @@ namespace IctBaden.Stonehenge.Services
                 {
                     data.AddRange(SerializeObject(model.Prefix, model.Model));
                 }
+
+                if (!string.IsNullOrEmpty(activeVm.NavigateToRoute))
+                {
+                    data.Add("\"stonehenge_navigate\":" + JsonSerializer.SerializeToString(activeVm.NavigateToRoute));
+                }
+
             }
 
             data.AddRange(SerializeObject(null, vm));

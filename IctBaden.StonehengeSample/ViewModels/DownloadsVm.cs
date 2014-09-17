@@ -4,6 +4,8 @@ using IctBaden.Stonehenge;
 
 namespace IctBaden.StonehengeSample.ViewModels
 {
+    using IctBaden.Stonehenge.Services;
+
     public class DownloadsVm : ActiveViewModel
     {
         public string TextFileName { get { return "user/Test.txt?stonehenge_id=" + Session.Id; } }

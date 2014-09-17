@@ -11,6 +11,8 @@ using ServiceStack.CacheAccess;
 
 namespace IctBaden.Stonehenge
 {
+    using ServiceStack.Common.Extensions;
+
     public class AppSession : INotifyPropertyChanged, ISession
     {
         public string HostDomain { get; private set; }
@@ -237,9 +239,9 @@ namespace IctBaden.Stonehenge
         {
             lock (Events)
             {
-                var msgBox = Events.FirstOrDefault(e => e.StartsWith(AppService.PropertyNameId));
+                var privateEvents = Events.Where(e => e.StartsWith(AppService.PropertyNameId)).ToList();
                 Events.Clear();
-                EventAdd(msgBox ?? string.Empty);
+                Events.AddRange(privateEvents);
                 if (forceEnd)
                 {
                     EventRelease.Set();
