@@ -60,7 +60,7 @@
   <script language="javascript" type="text/javascript" src="lib/flot/excanvas.js"></script>
   <![endif]-->
     <script type="text/javascript">
-        function get_url_param(name) {
+        function getUrlParam(name) {
             name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
 
             var regexS = "[\\?&]" + name + "=([^&#]*)";
@@ -72,7 +72,30 @@
             else
                 return results[1];
         }
-        var stonehenge_id = get_url_param("stonehenge_id");
+        function getCookie(name) {
+            var i=0;  //Suchposition im Cookie
+            var suche = name + "=";
+            var maxlen = document.cookie.length;
+            while ( i <maxlen) {
+                if (document.cookie.substring(i, i + suche.length) == suche) {
+                    var ende = document.cookie.indexOf(";", i + suche.length);
+                    if (ende < 0) {
+                        ende = maxlen;
+                    }
+                    var cook = document.cookie.substring(i
+                       + suche.length, ende);
+                    return unescape(cook);
+                }
+                i++;
+            }
+            return "";
+        }
+
+        var stonehenge_id = getUrlParam("stonehenge_id");
+        if (stonehenge_id == "") {
+            stonehenge_id = getCookie("stonehenge_id");
+        }
+
     </script>
     <script language="javascript" type="text/javascript" src="app/global_user.js"></script>
     <script type="text/javascript" src="lib/require/require_min.js" data-main="app/main"></script>

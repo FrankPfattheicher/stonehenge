@@ -36,7 +36,7 @@ namespace IctBaden.Stonehenge.Services
             var appSession = GetSession(sessionId);
             if (appSession != null)
             {
-                appSession.Accessed();
+                appSession.Accessed(Request.Cookies);
                 appSession.EventsClear(false);
             }
             else
@@ -59,6 +59,19 @@ namespace IctBaden.Stonehenge.Services
 
             if((appSession == null) && (string.Compare(request.FileName, "index.html", StringComparison.OrdinalIgnoreCase) == 0))
             {
+                if (((AppSessionCache.ReuseSessions & AppSessionCache.ReuseSessionStrategy.Cookie) != 0))
+                {
+                    if (Request.Cookies.ContainsKey("stonehenge_id"))
+                    {
+                        sessionId = Request.Cookies["stonehenge_id"].Value;
+                        appSession = GetSession(sessionId);
+                    }
+                    if ((appSession == null) && Request.Cookies.ContainsKey("ss-pid"))
+                    {
+                        appSession = AppSessionCache.GetSessionByStackId(Request.Cookies["ss-pid"].Value);
+                    }
+                    
+                }
                 if ((AppSessionCache.ReuseSessions & AppSessionCache.ReuseSessionStrategy.ClientAddress) != 0)
                 {
                     appSession = AppSessionCache.GetSessionByIpAddress(Request.RemoteIp);

@@ -68,9 +68,9 @@ function post_ViewModelName_Data(viewmodel, sender, method, param) {
     $.post('/viewmodel/_ViewModelType_/' + method + '?ts=' + ts + '&stonehenge_id=' + stonehenge_id, params, function (data) {
         loading_ViewModelName_active = false;
         set_ViewModelName_Data(viewmodel, true, data);
-    }).fail(function () {
+    }).fail(function (err) {
         //alert("post_ViewModelName_Data post failed");
-        window.location.reload();
+        setTimeout(function () { window.location.reload(); }, 1000);
     });
 }
 define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function (app, system, ko, flot) {
@@ -119,6 +119,9 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function (app, s
             self = this;
             system.log('ClientViewModel  : attached');
             var ts = new Date().getTime();
+            if (stonehenge_id == "") {
+                stonehenge_id = getCookie("stonehenge_id");
+            }
             if (stonehenge_id != null)
             {
                 loading_ViewModelName_active = true;
@@ -128,9 +131,9 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function (app, s
                 $.getJSON('/viewmodel/_ViewModelType_?ts=' + ts + '&stonehenge_id=' + stonehenge_id, function (data) {
                     loading_ViewModelName_active = false;
                     set_ViewModelName_Data(self, true, data);
-                }).fail(function () {
+                }).fail(function (err) {
                     //alert("_ViewModelName_ attached getJSON failed");
-                    window.location.reload();
+                    setTimeout(function () { window.location.reload(); }, 1000);
                 });
             }
         },

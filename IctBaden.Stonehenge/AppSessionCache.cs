@@ -39,6 +39,14 @@ namespace IctBaden.Stonehenge
             }
         }
 
+        public static AppSession GetSessionByStackId(string id)
+        {
+            lock (Cache)
+            {
+                return Cache.Select(ce => ce.Value).FirstOrDefault(session => session.StackId == id);
+            }
+        }
+
         public static AppSession GetSessionByIpAddress(string address)
         {
             lock (Cache)

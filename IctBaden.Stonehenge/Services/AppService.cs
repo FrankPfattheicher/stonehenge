@@ -109,6 +109,7 @@ namespace IctBaden.Stonehenge.Services
 
             var redirect = new HttpResult { StatusCode = HttpStatusCode.SeeOther };
             redirect.Headers.Add("Location", uri);
+            redirect.Headers.Add("Set-Cookie", "stonehenge_id=" + session.Id);
             return redirect;
         }
 

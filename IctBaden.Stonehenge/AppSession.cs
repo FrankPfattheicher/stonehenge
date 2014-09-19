@@ -11,6 +11,8 @@ using ServiceStack.CacheAccess;
 
 namespace IctBaden.Stonehenge
 {
+    using System.Net;
+
     using ServiceStack.Common.Extensions;
 
     public class AppSession : INotifyPropertyChanged, ISession
@@ -21,6 +23,7 @@ namespace IctBaden.Stonehenge
         public DateTime ConnectedSince { get; private set; }
         public DateTime LastAccess { get; private set; }
         public Guid Id { get; private set; }
+        public string StackId { get; set; }
 
         internal List<string> Events = new List<string>();
         internal AutoResetEvent EventRelease = new AutoResetEvent(false);
@@ -229,8 +232,12 @@ namespace IctBaden.Stonehenge
             ConnectedSince = DateTime.Now;
         }
 
-        internal void Accessed()
+        internal void Accessed(IDictionary<string, Cookie> cookies)
         {
+            if ((StackId == null) && cookies.ContainsKey("ss-pid"))
+            {
+                StackId = cookies["ss-pid"].Value;
+            }
             LastAccess = DateTime.Now;
             NotifyPropertyChanged("LastAccess");
         }
