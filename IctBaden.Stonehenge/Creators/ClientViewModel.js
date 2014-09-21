@@ -73,28 +73,34 @@ function post_ViewModelName_Data(viewmodel, sender, method, param) {
         setTimeout(function () { window.location.reload(); }, 1000);
     });
 }
-define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function (app, system, ko, flot) {
+define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function(app, system, ko, flot) {
     self = this;
 
-    var ErrorHandlingBindingProvider = function () {
+    var ErrorHandlingBindingProvider = function() {
         var original = new ko.bindingProvider();
         //determine if an element has any bindings
         this.nodeHasBindings = original.nodeHasBindings;
         //return the bindings given a node and the bindingContext
-        this.getBindings = function (node, bindingContext) {
+        this.getBindings = function(node, bindingContext) {
             var message = '';
-            try { return original.getBindings(node, bindingContext); }
-            catch (e) {
+            try {
+                return original.getBindings(node, bindingContext);
+            } catch (e) {
                 message = e.message;
-                if (console && console.log) { console.log("Error in binding: " + message); }
+                if (console && console.log) {
+                    console.log("Error in binding: " + message);
+                }
             }
             try {
                 var params = 'Message=' + encodeURIComponent(message);
                 params += '&Binding=' + encodeURIComponent(node.dataset.bind);
                 var ts = new Date().getTime();
-                $.post('/Exception/Binding?ts=' + ts + '&stonehenge_id=' + stonehenge_id, params, function (data) { });
+                $.post('/Exception/Binding?ts=' + ts + '&stonehenge_id=' + stonehenge_id, params, function(data) {});
+            } catch (e) {
+                if (console && console.log) {
+                    console.log("Error: " + e.message);
+                }
             }
-            catch (e) { if (console && console.log) { console.log("Error: " + e.message); } }
             return null;
         };
     };

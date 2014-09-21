@@ -8,74 +8,77 @@ using IctBaden.Stonehenge;
 
 namespace IctBaden.StonehengeSample.ViewModels
 {
-  public class FormVm : ActiveViewModel
-  {
-    private static int nid = 1;
-    private string name;
-    private Timer timer;
-
-    public string Id { get; private set; }
-    public string Clock { get; private set; }
-
-    [Bindable(true, BindingDirection.OneWay)]
-    public string Prompt { get { return "Enter name:"; } }
-    public string Name
+    public class FormVm : ActiveViewModel
     {
-      get { return name; }
-      set
-      {
-        name = value;
-        Debug.WriteLine("[{0}] Name={1}", Id, name);
-      }
-    }
+        private static int nid = 1;
+        private string name;
+        private Timer timer;
 
-    [ActionMethod]
-    public void SayHello(AppSession session)
-    {
-      MessageBox("Demo", "Hello " + Name);
-    }
+        public string Id { get; private set; }
+        public string Clock { get; private set; }
 
-    [ActionMethod]
-    public void LoginMarvin(AppSession session)
-    {
-      NavigateTo("login");
-    }
+        [Bindable(true, BindingDirection.OneWay)]
+        public string Prompt { get { return "Enter name:"; } }
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                name = value;
+                Debug.WriteLine("[{0}] Name={1}", Id, name);
+            }
+        }
 
-    public bool CanSayHello
-    { get { return !string.IsNullOrEmpty(Name); } }
+        [ActionMethod]
+        public void SayHello(AppSession session)
+        {
+            MessageBox("Demo", "Hello " + Name);
+        }
+
+        [ActionMethod]
+        public void LoginMarvin(AppSession session)
+        {
+            //User = "Marvin";
+            NavigateTo("login");
+        }
+
+        public bool CanSayHello
+        { get { return !string.IsNullOrEmpty(Name); } }
 
 
-    [Bindable(true, BindingDirection.OneWay)]
-    public List<string> OptionValues { get; set; }
-    public List<string> SelectedOptions { get; set; }
-    public string SelectedOption { get; set; }
+        [Bindable(true, BindingDirection.OneWay)]
+        public List<string> OptionValues { get; set; }
+        public List<string> SelectedOptions { get; set; }
+        public string SelectedOption { get; set; }
 
-    public CheckedItem AutoUpdate { get; set; }
+        public CheckedItem AutoUpdate { get; set; }
 
-    public List<CheckedItem> BitValues { get; set; }
+        public List<CheckedItem> BitValues { get; set; }
 
-    public string ByteValue
-    {
-      get
-      {
-        var value = BitValues.Where(bitValue => bitValue.Checked).Aggregate(0, (current, bitValue) => current | bitValue.Value);
-        return string.Format("0x{0:X2}", value);
-      }
-    }
+        public string ByteValue
+        {
+            get
+            {
+                var value = BitValues.Where(bitValue => bitValue.Checked).Aggregate(0, (current, bitValue) => current | bitValue.Value);
+                return string.Format("0x{0:X2}", value);
+            }
+        }
 
-    public FormVm(AppSession session)
-      : base(session)
-    {
-      nid++;
-      Id = "Form (Instance #" + nid + ")";
-      Name = "Frank";
+        public DateTime TimeStamp { get; set; }
 
-      OptionValues = new List<string> { "One", "Two", "Tree", "Four" };
-      SelectedOptions = new List<string> { "Tree" };
-      SelectedOption = "Two";
-      AutoUpdate = new CheckedItem { Title = "clock display" };
+        public FormVm(AppSession session)
+            : base(session)
+        {
+            nid++;
+            Id = "Form (Instance #" + nid + ")";
+            Name = "Frank";
 
-      BitValues = new List<CheckedItem>
+            OptionValues = new List<string> { "One", "Two", "Tree", "Four" };
+            SelectedOptions = new List<string> { "Tree" };
+            SelectedOption = "Two";
+            AutoUpdate = new CheckedItem { Title = "clock display" };
+
+            BitValues = new List<CheckedItem>
         {
           new CheckedItem { Title = "Bit 0", Value = 0x01, Checked = true},
           new CheckedItem { Title = "Bit 1", Value = 0x02, Checked = false},
@@ -87,43 +90,44 @@ namespace IctBaden.StonehengeSample.ViewModels
           new CheckedItem { Title = "Bit 7", Value = 0x80, Checked = true},
         };
 
-      ClockTick(this);
+            ClockTick(this);
+
+            TimeStamp = DateTime.Now;
+        }
+
+        private void ClockTick(object state)
+        {
+            this["Clock"] = DateTime.Now.ToLongTimeString();
+        }
+
+        [ActionMethod]
+        public void OnOptionChanged()
+        {
+        }
+
+        [ActionMethod]
+        public void OnBitsChanged()
+        {
+        }
+
+        [ActionMethod]
+        public void OnNameChanged(object name)
+        {
+        }
+
+        [ActionMethod]
+        public void OnAutoUpdateChanged()
+        {
+            if (AutoUpdate.Checked && (timer == null))
+            {
+                timer = new Timer(ClockTick, this, 1000, 1000);
+            }
+            else if (!AutoUpdate.Checked && (timer != null))
+            {
+                timer.Dispose();
+                timer = null;
+            }
+        }
 
     }
-
-    private void ClockTick(object state)
-    {
-      this["Clock"] = DateTime.Now.ToLongTimeString();
-    }
-
-    [ActionMethod]
-    public void OnOptionChanged()
-    {
-    }
-
-    [ActionMethod]
-    public void OnBitsChanged()
-    {
-    }
-
-    [ActionMethod]
-    public void OnNameChanged(object name)
-    {
-    }
-
-    [ActionMethod]
-    public void OnAutoUpdateChanged()
-    {
-      if (AutoUpdate.Checked && (timer == null))
-      {
-        timer = new Timer(ClockTick, this, 1000, 1000);
-      }
-      else if (!AutoUpdate.Checked && (timer != null))
-      {
-        timer.Dispose();
-        timer = null;
-      }
-    }
-
-  }
 }
