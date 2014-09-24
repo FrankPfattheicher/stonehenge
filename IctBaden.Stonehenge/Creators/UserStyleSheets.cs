@@ -31,11 +31,12 @@ namespace IctBaden.Stonehenge.Creators
         var ressourceBaseName = assembly.GetName().Name + ".";
         var baseNameStyles = ressourceBaseName + "app.styles.";
         var baseNameTheme = ressourceBaseName + "app.themes.";
+        var ressourceNames = assembly.GetManifestResourceNames();
         // ReSharper disable once LoopCanBeConvertedToQuery
-        foreach (var resourceName in assembly.GetManifestResourceNames()
+        foreach (var resourceName in ressourceNames
           .Where(name => name.EndsWith(".css") && (name.StartsWith(baseNameStyles, StringComparison.InvariantCultureIgnoreCase) || name.StartsWith(baseNameTheme + theme))))
         {
-          var css = resourceName.Replace(ressourceBaseName, string.Empty).Replace(".", "/").Replace("/css", ".css");
+          var css = resourceName.Substring(ressourceBaseName.Length).Replace(".", "/").Replace("/css", ".css");
           styleSheets += Environment.NewLine + string.Format(LinkTemplate, css);
         }
 
