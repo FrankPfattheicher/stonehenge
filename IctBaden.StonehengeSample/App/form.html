@@ -1,118 +1,121 @@
 ﻿<!--ViewModel:FormVm-->
 <!--Title:Form-Controls-->
-<form class="form-inline" >
-<fieldset>
-  <legend data-bind="text: Id">fieldset</legend>
-  
-  <style>
-    table td {
-       padding: 4px;
-      vertical-align: top;
-    }
-  </style>
+<form class="form-inline">
+    <fieldset>
+        <legend data-bind="text: Id">fieldset</legend>
 
-  <table style="border-collapse:collapse;">
-    <tr>
-      <td >Output field:</td>
-      <td><span class="time" data-bind="text: Clock">00:00</span></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td >Auto update:</td>
-      <td>
-        <label data-bind="with: AutoUpdate">
-          <input type="checkbox" data-bind="checked: Checked, valueUpdate: 'click', event:{click: $root.OnAutoUpdateChanged}" />  
-          &nbsp;<span data-bind="text: Title"></span>
-        </label>
-      </td>
-      <td>
-        &nbsp;</td>
-      <td>
-        turn server side clock update on/off</td>
-    </tr>
-    <tr>
-      <td >Combo selection:</td>
-      <td>
-        <select size="1" data-bind="options: OptionValues, selectedOptions: SelectedOptions, event:{change: OnOptionChanged}" ></select>
-      </td>
-      <td>&nbsp;</td>
-      <td>
-        <p>preselet using</p>
-        <pre style="font-family: Consolas; font-size: 10pt; color: black; background: white; ">SelectedOptions = <span 
-        style="color:blue;">new</span>&nbsp;<span style="color:#2b91af;">List</span>&lt;<span 
-        style="color:blue;">string</span>&gt;&nbsp;{ "Tree" };</pre>
-    </td>
-    </tr>
-<!--    <tr >
-      <td>List Selection:</td>
-      <td>
-        <div class="uneditable-input" style="width: 200px; height: 50px; overflow-y: scroll; cursor: default; " >
-          <ul data-bind="foreach: OptionValues" style="list-style-type: none; margin: 0; padding: 0; overflow-x: hidden;">
-            <li >
-              <label data-selected="true" class="listbox-item" data-bind="text: $data">
-              </label>
-            </li>
-          </ul>
-        </div>
-      </td>
-      <td>&nbsp;</td>
-      <td>
-        currently not working :-(</td>
-    </tr> -->
-    <tr>
-      <td >Composed value:</td>
-      <td><span data-bind="text: ByteValue"></span></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td >Checked list:</td>
-      <td>
-        <div style="border: 1px solid silver; width: 150px; height: 100px; overflow-y: scroll; padding-left: 10px; " >
-          <ul data-bind="foreach: BitValues" style="list-style-type: none; margin: 0; padding: 0; overflow-x: hidden;">
-            <li >
-              <label>
-                <input type="checkbox" data-bind="checked: Checked, valueUpdate: 'click', event: {click: $root.OnBitsChanged}" />
-                &nbsp;<span data-bind="text: Title"></span>
-              </label>
-            </li>
-          </ul>
-        </div>
-      </td>
-      <td>
-        &nbsp;</td>
-      <td>
-        onchange events updating byte value</td>
-    </tr>
-      <tr>
-      <td ><label data-bind="text: Prompt">DateTime:</label></td>
-      <td>
-        <p>
-        <input type="datetime" />&nbsp;</p>
-      </td>
-      <td>&nbsp;</td>
-      <td>button disabled on empty input</td>
-      </tr>
-    <tr>
-      <td ><label data-bind="text: Prompt">Name:</label></td>
-      <td>
-        <p>
-        <input type="text" data-bind="value: Name, valueUpdate: 'afterkeydown', event:{keyup: OnNameChanged}" />&nbsp;<button type="submit" class="btn btn-default" data-bind="click: SayHello, enable: CanSayHello">Hello</button>
-        </p>
-      </td>
-      <td>&nbsp;</td>
-      <td>button disabled on empty input</td>
-    </tr>
-    <tr>
-      <td >Link:</td>
-      <td>
-        <button class="btn btn-default" data-bind="click: LoginMarvin">Login</button>
-      </td>
-      <td>&nbsp;</td>
-      <td>navigate to user login page</td>
-    </tr>
-  </table>
-  
-</fieldset>
+        <style>
+            table td {
+                padding: 4px;
+                vertical-align: top;
+            }
+        </style>
+
+        <table style="border-collapse:collapse;">
+            <tr>
+                <td>Output field:</td>
+                <td><span class="time" data-bind="text: Clock">00:00</span></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Auto update:</td>
+                <td>
+                    <label data-bind="with: AutoUpdate">
+                        <input type="checkbox" data-bind="checked: Checked, valueUpdate: 'click', event:{click: $root.OnAutoUpdateChanged}" />
+                        &nbsp;<span data-bind="text: Title"></span>
+                    </label>
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    turn server side clock update on/off
+                </td>
+            </tr>
+            <tr>
+                <td>Combo selection:</td>
+                <td>
+                    <select size="1" data-bind="options: OptionValues, selectedOptions: SelectedOptions, event:{change: OnOptionChanged}"></select>
+                </td>
+                <td>&nbsp;</td>
+                <td>
+                    <p>preselet using</p>
+                    <pre style="font-family: Consolas; font-size: 10pt; color: black; background: white; ">SelectedOptions = <span style="color:blue;">new</span>&nbsp;<span style="color:#2b91af;">List</span>&lt;<span style="color:blue;">string</span>&gt;&nbsp;{ "Tree" };</pre>
+                </td>
+            </tr>
+            <!--    <tr >
+                  <td>List Selection:</td>
+                  <td>
+                    <div class="uneditable-input" style="width: 200px; height: 50px; overflow-y: scroll; cursor: default; " >
+                      <ul data-bind="foreach: OptionValues" style="list-style-type: none; margin: 0; padding: 0; overflow-x: hidden;">
+                        <li >
+                          <label data-selected="true" class="listbox-item" data-bind="text: $data">
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>&nbsp;</td>
+                  <td>
+                    currently not working :-(</td>
+                </tr> -->
+            <tr>
+                <td>Composed value:</td>
+                <td><span data-bind="text: ByteValue"></span></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Checked list:</td>
+                <td>
+                    <div style="border: 1px solid silver; width: 150px; height: 100px; overflow-y: scroll; padding-left: 10px; ">
+                        <ul data-bind="foreach: BitValues" style="list-style-type: none; margin: 0; padding: 0; overflow-x: hidden;">
+                            <li>
+                                <label>
+                                    <input type="checkbox" data-bind="checked: Checked, valueUpdate: 'click', event: {click: $root.OnBitsChanged}" />
+                                    &nbsp;<span data-bind="text: Title"></span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+                <td>
+                    onchange events updating byte value
+                </td>
+            </tr>
+            <tr>
+                <td>DateTime:</td>
+                <td>
+                    <p>
+                        <input data-provide="datepicker" data-date-format="dd.mm.yyyy" data-bind="datepicker: TimeStamp">
+                    </p>
+                </td>
+                <td>&nbsp;</td>
+                <td>button disabled on empty input</td>
+            </tr>
+            <tr>
+                <td><label data-bind="text: Prompt">Name:</label></td>
+                <td>
+                    <p>
+                        <input type="text" data-bind="value: Name, valueUpdate: 'afterkeydown', event:{keyup: OnNameChanged}" />&nbsp;<button type="submit" class="btn btn-default" data-bind="click: SayHello, enable: CanSayHello">Hello</button>
+                    </p>
+                </td>
+                <td>&nbsp;</td>
+                <td>button disabled on empty input</td>
+            </tr>
+            <tr>
+                <td>Link:</td>
+                <td>
+                    <button class="btn btn-default" data-bind="click: LoginMarvin">Login</button>
+                </td>
+                <td>&nbsp;</td>
+                <td>navigate to user login page</td>
+            </tr>
+        </table>
+
+    </fieldset>
 </form>

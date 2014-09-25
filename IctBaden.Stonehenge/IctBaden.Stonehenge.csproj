@@ -92,6 +92,8 @@
   <ItemGroup>
     <EmbeddedResource Include="robots.txt" />
     <EmbeddedResource Include="App\lib\knockout\js\knockout-3.1.0.js" />
+    <EmbeddedResource Include="App\lib\bootstrap\css\datepicker.css" />
+    <EmbeddedResource Include="App\lib\bootstrap\js\bootstrap-datepicker.js" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />
