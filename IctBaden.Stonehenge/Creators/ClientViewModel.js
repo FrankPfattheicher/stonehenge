@@ -36,6 +36,9 @@ function set_ViewModelName_Data(viewmodel, loading, data) {
     if (loading_ViewModelName_active)
         return;
     _SetData_();
+    if ((data != null) && (data.stonehenge_eval != null)) {
+        eval(data.stonehenge_eval);
+    }
     if ((data != null) && (data.stonehenge_navigate != null)) {
         var router = require('plugins/router');
         router.navigate(data.stonehenge_navigate);

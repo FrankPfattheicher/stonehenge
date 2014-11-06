@@ -284,6 +284,10 @@ namespace IctBaden.Stonehenge
             names.AddRange(from elem in dictionary select elem.Key);
             return names;
         }
+        public IEnumerable<string> GetDictionaryNames()
+        {
+            return dictionary.Select(e => e.Key);
+        }
 
         private PropertyInfoEx GetPropertyInfoEx(string name)
         {
@@ -560,7 +564,8 @@ namespace IctBaden.Stonehenge
         public void ExecuteClientScript(string script)
         {
             ClientScript = script;
-            NotifyPropertyChanged(AppService.PropertyNameClientScript);
+            Session.EventAdd(AppService.PropertyNameClientScript);
+            //NotifyPropertyChanged(AppService.PropertyNameClientScript);
         }
 
         #endregion

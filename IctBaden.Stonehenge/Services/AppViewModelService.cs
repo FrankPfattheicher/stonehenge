@@ -55,6 +55,11 @@ namespace IctBaden.Stonehenge.Services
                     data.Add("\"stonehenge_navigate\":" + JsonSerializer.SerializeToString(activeVm.NavigateToRoute));
                 }
 
+                // ReSharper disable once LoopCanBeConvertedToQuery
+                foreach (var name in activeVm.GetDictionaryNames())
+                {
+                    data.Add(string.Format("\"{0}\":{1}", name, JsonSerializer.SerializeToString(activeVm.TryGetMember(name))));
+                }
             }
 
             data.AddRange(SerializeObject(null, vm));
