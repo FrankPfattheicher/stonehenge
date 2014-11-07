@@ -13,8 +13,6 @@ namespace IctBaden.Stonehenge
 {
     using System.Net;
 
-    using ServiceStack.Common.Extensions;
-
     public class AppSession : INotifyPropertyChanged, ISession
     {
         public string HostDomain { get; private set; }
