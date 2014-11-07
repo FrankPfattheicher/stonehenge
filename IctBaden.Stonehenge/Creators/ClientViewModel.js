@@ -24,8 +24,11 @@ function poll_ViewModelName_Events(viewmodel, initial) {
         if (initial) {
             setTimeout(function () { poll_ViewModelName_Events(viewmodel, false); }, 200);
         }
-    }).fail(function () {
+    }).fail(function (jqXHR, status, error) {
         //alert("poll_ViewModelName_Events getJSON failed");
+        if (jqXHR.status == 200) {
+            setTimeout(function () { window.location.reload(); }, 1000);
+        }
         polling_ViewModelName_active = null;
         if (!loading_ViewModelName_active) {
             setTimeout(function () { poll_ViewModelName_Events(self, true); }, 200);

@@ -8,6 +8,7 @@ using System.Text;
 using System.Web;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
+using ServiceStack.WebHost.Endpoints.Support;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -28,11 +29,12 @@ namespace IctBaden.Stonehenge.Services
             var appSession = GetSession(sessionId);
             if (appSession == null)
             {
-                // TODO: Neue session aufbauen und Seite wieder herstellen
-                //var uri = Request.AbsoluteUri;
-                //uri = uri.Replace("/events/", "/ViewModel/");
-                //return new RootRedirectHandler { RelativeUrl = uri };
-                return new HttpResult("No view for event request", HttpStatusCode.NotFound);
+                return new HttpResult()
+                {
+                    StatusCode = HttpStatusCode.SeeOther,
+                    Headers = { { HttpHeaders.Location, Request.UrlReferrer.AbsoluteUri } }
+                };
+                //return new HttpResult("No view for event request", HttpStatusCode.NotFound);
             }
             appSession.Accessed(Request.Cookies);
             appSession.EventPollingActive.Start((long)EventTimeout.TotalMilliseconds * 2);
