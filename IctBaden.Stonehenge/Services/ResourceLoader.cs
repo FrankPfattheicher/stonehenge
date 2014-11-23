@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -57,7 +58,10 @@ namespace IctBaden.Stonehenge.Services
                 if (File.Exists(fullPath))
                 {
                     text = File.ReadAllText(fullPath);
-                    Texts.Add(resourceName1, text);
+                    if (!Texts.ContainsKey(resourceName1))
+                    {
+                        Texts.Add(resourceName1, text);
+                    }
                     return text;
                 }
 
@@ -76,7 +80,10 @@ namespace IctBaden.Stonehenge.Services
                             using (var reader = new StreamReader(stream))
                             {
                                 text = reader.ReadToEnd();
-                                Texts.Add(resourceName1, text);
+                                if (!Texts.ContainsKey(resourceName1))
+                                {
+                                    Texts.Add(resourceName1, text);
+                                }
                                 return text;
                             }
                         }
@@ -94,7 +101,10 @@ namespace IctBaden.Stonehenge.Services
                             using (var reader = new StreamReader(stream))
                             {
                                 text = reader.ReadToEnd();
-                                Texts.Add(resourceName1, text);
+                                if (!Texts.ContainsKey(resourceName1))
+                                {
+                                    Texts.Add(resourceName1, text);
+                                }
                                 return text;
                             }
                         }
@@ -125,7 +135,10 @@ namespace IctBaden.Stonehenge.Services
                 if (File.Exists(fullPath))
                 {
                     data = File.ReadAllBytes(fullPath);
-                    Binaries.Add(resourceName, data);
+                    if (!Binaries.ContainsKey(resourceName))
+                    {
+                        Binaries.Add(resourceName, data);
+                    }
                     return data;
                 }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -47,7 +48,10 @@ namespace IctBaden.Stonehenge.Creators
           styleSheets += Environment.NewLine + string.Format(LinkTemplate, css);
         }
 
-        StyleSheets.Add(theme, styleSheets);
+          if(!StyleSheets.ContainsKey(theme))
+          {
+              StyleSheets.Add(theme, styleSheets);
+          }
       }
       return text.Replace(InsertPoint, StyleSheets[theme]);
     }
