@@ -40,8 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IStonehengeHost.cs" />
+    <Compile Include="Hosting\IStonehengeHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AppWindow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repository\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
