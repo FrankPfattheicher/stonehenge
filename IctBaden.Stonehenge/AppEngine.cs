@@ -77,11 +77,16 @@ namespace IctBaden.Stonehenge
                     {
                         throw new AccessViolationException("You need administartion privileges or use HttpCfg");
                     }
-                    if ((ex.ErrorCode == 183) && (desiredPort == 0))
+                    if (((ex.ErrorCode == 32) || (ex.ErrorCode == 183)) && (desiredPort == 0))
                     {
                         UsedPort = new Random().Next(5000, 65500);
                         listeningOn = string.Format("{0}://*:{1}/", Protocol, UsedPort);
                         continue;
+                    }
+                    if (ex.ErrorCode == 32)
+                    {
+                        // Skype ?
+                        throw new AccessViolationException(String.Format("Http port {0} already used by other application", desiredPort));
                     }
                     throw;
                 }
