@@ -4,7 +4,7 @@
 
     public class AppWindow
     {
-        public AppWindow(string startUrl)
+        public AppWindow(IStonehengeHost host)
         {
             
         }

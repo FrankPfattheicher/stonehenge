@@ -28,6 +28,7 @@
                     new ResourceType( ".jpg", "image/jpeg" , true),
                     new ResourceType( ".jpeg", "image/jpeg" , true),
                     new ResourceType( ".wav", "audio/x-wav" , true),
+                    new ResourceType( ".ico", "image/x-icon" , true),
                 };
 
         public static ResourceType GetByExtension(string extension)

@@ -21,7 +21,7 @@
 
             if (context.Request.Path.Value == "/")
             {
-                context.Response.Redirect("/App/Index.html");
+                context.Response.Redirect("/Index.html");
                 return;
             }
 

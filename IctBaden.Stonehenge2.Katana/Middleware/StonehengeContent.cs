@@ -2,7 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading.Tasks;
+
+    using IctBaden.Stonehenge2.Resources;
 
     using Microsoft.Owin;
 
@@ -19,15 +22,38 @@
         {
             IOwinContext context = new OwinContext(environment);
 
-
-            if (context.Request.Path.Value == "/")
+            var path = context.Request.Path.Value;
+            if (path == "/")
             {
-                context.Response.Redirect("/App/Index.html");
+                await next.Invoke(environment);
                 return;
             }
 
-            await context.Response.WriteAsync("<h1>Hello from My First Middleware</h1>");
-            await next.Invoke(environment);
+            var response = context.Get<Stream>("owin.ResponseBody");
+            var resourceLoader = context.Get<IResourceProvider>("stonehenge.ResourceLoader");
+            var content = resourceLoader.Load(path.ToString().Substring(1));
+
+            if (content == null)
+            {
+                await next.Invoke(environment);
+                return;
+            }
+            context.Response.ContentType = content.ContentType;
+            if (content.IsBinary)
+            {
+                using (var writer = new BinaryWriter(response))
+                {
+                    writer.Write(content.Data);
+                }
+            }
+            else
+            {
+                using (var writer = new StreamWriter(response))
+                {
+                    writer.Write(content.Text);
+                }
+            }
+
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -60,7 +61,7 @@
         public Resource Load(string resourceName)
         {
             var asmResource = resources.Value
-                .FirstOrDefault(res => System.String.Compare(res.Key, resourceName, System.StringComparison.Ordinal) == 0);
+                .FirstOrDefault(res => String.Compare(res.Key, resourceName, true, CultureInfo.InvariantCulture) == 0);
             if (asmResource.Key == null) return null;
 
             var resourceExtension = Path.GetExtension(resourceName);

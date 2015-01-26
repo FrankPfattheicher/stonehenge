@@ -22,11 +22,14 @@ namespace IctBaden.Stonehenge2.Katana
 
         public string BaseUrl { get; private set; }
 
-        public bool Start(string hostAddress, int hostPort, bool useSsl)
+        public bool Start(bool useSsl, string hostAddress, int hostPort)
         {
             try
             {
-                BaseUrl = (useSsl ? "https://" : "http://") + hostAddress + ":" + hostPort;
+                BaseUrl = (useSsl ? "https://" : "http://") 
+                    + (hostAddress ?? "127.0.0.1" )
+                    + ":" 
+                    + ((hostPort != 0) ? hostPort : (useSsl ? 443 : 80));
                 var startup = new Startup(resourceLoader);
                 webApp = WebApp.Start(BaseUrl, startup.Configuration);
             }

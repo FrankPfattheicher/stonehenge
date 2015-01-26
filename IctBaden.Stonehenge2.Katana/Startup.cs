@@ -23,25 +23,17 @@
 #if DEBUG
             app.UseErrorPage();
 #endif
-
-            app.Properties.Add("test", 2323);
-            app.Use<StonehengeRoot>();
             app.Use(async (context, next) =>
             {
                 var path = context.Request.Path;
                 Debug.WriteLine("Begin Request: " + path);
-                
-                var response = context.Get<Stream>("owin.ResponseBody");
-                using (var writer = new StreamWriter(response))
-                {
-                    var content = resourceLoader.Load(path.ToString());
-                    context.Response.ContentType = content.ContentType;
-                    await writer.WriteAsync(content.Text);
-                }
-                var headers = context.Get<IDictionary<string, string[]>>("owin.ResponseHeaders");
-
+                context.Environment.Add("stonehenge.ResourceLoader", resourceLoader);
+                await next.Invoke();
                 Debug.WriteLine("End Request: " + path);
             });
+
+            app.Use<StonehengeContent>();
+            app.Use<StonehengeRoot>();
         } 
     }
 }
