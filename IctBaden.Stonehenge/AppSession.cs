@@ -11,13 +11,21 @@ using ServiceStack.CacheAccess;
 
 namespace IctBaden.Stonehenge
 {
+    using System.Collections;
+    using System.Collections.Specialized;
     using System.Net;
+    using System.Web;
+    using System.Web.Configuration;
 
     public class AppSession : INotifyPropertyChanged, ISession
     {
         public string HostDomain { get; private set; }
         public string ClientAddress { get; private set; }
         public string UserAgent { get; private set; }
+        public string Platform { get; private set; }
+        public string Browser { get; private set; }
+        public bool Cookies { get; private set; }
+
         public DateTime ConnectedSince { get; private set; }
         public DateTime LastAccess { get; private set; }
         public Guid Id { get; private set; }
@@ -228,6 +236,17 @@ namespace IctBaden.Stonehenge
             ClientAddress = clientAddress;
             UserAgent = userAgent;
             ConnectedSince = DateTime.Now;
+
+            var browser = new HttpBrowserCapabilities
+            {
+                Capabilities = new Hashtable { { string.Empty, userAgent } }
+            };
+            var factory = new BrowserCapabilitiesFactory();
+            factory.ConfigureBrowserCapabilities(new NameValueCollection(), browser);
+
+            Browser = browser.Browser + " " + browser.Version;
+            Cookies = browser.Cookies;
+            Platform = browser.Platform;
         }
 
         internal void Accessed(IDictionary<string, Cookie> cookies)
