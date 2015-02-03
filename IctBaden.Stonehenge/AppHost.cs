@@ -63,6 +63,7 @@ namespace IctBaden.Stonehenge
             Config.AllowRouteContentTypeExtensions = false; // otherwise extensions are stripped out
 
             Routes.Add<AppFile>("/robots.txt")
+                  .Add<AppFile>("/favicon.ico")
                   .Add<AppFile>("/app/{FileName}")
                   .Add<UserFile>("/app/user/{FileName}")
                   .Add<AppFile>("/app/{Path1}/{FileName}")

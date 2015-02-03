@@ -39,7 +39,17 @@
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "image/png");
             Assert.IsTrue(resource.IsBinary);
-            Assert.AreEqual(180, resource.Data.Length);
+            Assert.AreEqual(179, resource.Data.Length);
+        }
+
+        [TestMethod]
+        public void Load_resource_icon32_png()
+        {
+            var resource = loader.Load("icon32.png");
+            Assert.IsNotNull(resource);
+            Assert.AreEqual(resource.ContentType, "image/png");
+            Assert.IsTrue(resource.IsBinary);
+            Assert.AreEqual(227, resource.Data.Length);
         }
 
         [TestMethod]

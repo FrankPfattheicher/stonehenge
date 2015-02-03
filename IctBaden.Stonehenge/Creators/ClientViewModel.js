@@ -26,6 +26,7 @@ function poll_ViewModelName_Events(viewmodel, initial) {
         }
     }).fail(function (jqXHR, status, error) {
         //alert("poll_ViewModelName_Events getJSON failed");
+        viewmodel.IsDisconnected(true);
         if (jqXHR.status == 200) {
             setTimeout(function () { window.location.reload(); }, 1000);
         }
@@ -58,6 +59,7 @@ function set_ViewModelName_Data(viewmodel, loading, data) {
         viewmodel.InitialLoading(false);
         viewmodel.IsLoading(false);
         viewmodel.IsDirty(false);
+        viewmodel.IsDisconnected(false);
     }
 }
 function post_ViewModelName_Data(viewmodel, sender, method, param) {
@@ -76,6 +78,7 @@ function post_ViewModelName_Data(viewmodel, sender, method, param) {
         set_ViewModelName_Data(viewmodel, true, data);
     }).fail(function (err) {
         //alert("post_ViewModelName_Data post failed");
+        viewmodel.IsDisconnected(true);
         setTimeout(function () { window.location.reload(); }, 1000);
     });
 }
@@ -115,12 +118,14 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function(app, sy
     var InitialLoading = ko.observable(true);
     var IsLoading = ko.observable(true);
     var IsDirty = ko.observable(false);
+    var IsDisconnected = ko.observable(false);
     _DeclareData_();
     var viewModel = {
         _ReturnData_: 0,
         InitialLoading: InitialLoading,
         IsLoading: IsLoading,
         IsDirty: IsDirty,
+        IsDisconnected: IsDisconnected,
         _ActionMethods_: 0,
         activate: function () {
             self = this;
