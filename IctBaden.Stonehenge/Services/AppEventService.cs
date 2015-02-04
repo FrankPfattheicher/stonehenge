@@ -8,7 +8,6 @@ using System.Text;
 using System.Web;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
-using ServiceStack.WebHost.Endpoints.Support;
 
 namespace IctBaden.Stonehenge.Services
 {
