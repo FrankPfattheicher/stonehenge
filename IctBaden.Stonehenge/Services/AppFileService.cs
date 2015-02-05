@@ -43,8 +43,19 @@ namespace IctBaden.Stonehenge.Services
             {
                 if (request.IsEmpty)
                 {
-                    var robots = ResourceLoader.LoadText("", "", "robots.txt");
-                    return new HttpResult(robots, "text/plain");
+                    if (Request.RawUrl.Contains("favicon.ico"))
+                    {
+                        var favicon = ResourceLoader.LoadText("", "", "favicon.ico");
+                        return new HttpResult(favicon, "image/x-icon");
+                    }
+                    if (Request.RawUrl.Contains("robots.txt"))
+                    {
+                        var robots = ResourceLoader.LoadText("", "", "robots.txt");
+                        return new HttpResult(robots, "text/plain");
+                    }
+
+                    Debug.WriteLine("AppFileService NOT FOUND:" + Request.RawUrl);
+                    return new HttpResult(Request.RawUrl, HttpStatusCode.NotFound);
                 }
             }
 
@@ -97,6 +108,10 @@ namespace IctBaden.Stonehenge.Services
                 httpResult = new HttpResult(data, type);
                 httpResult.Headers.Add("Cache-Control", "max-age=86400");
                 httpResult.Headers.Add("Expires", "86400");
+                if ((appSession != null) && !appSession.CookieSet)
+                {
+                    httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
+                }
                 return httpResult;
             }
 
@@ -124,6 +139,10 @@ namespace IctBaden.Stonehenge.Services
                 {
                     Debug.WriteLine("AppFileService NOT FOUND:" + request.FullPath(""));
                     httpResult = new HttpResult(fullPath, HttpStatusCode.NotFound);
+                    if ((appSession != null) && !appSession.CookieSet)
+                    {
+                        httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
+                    }
                     return httpResult;
                 }
 
@@ -232,7 +251,14 @@ namespace IctBaden.Stonehenge.Services
             }
 
             if (string.IsNullOrEmpty(RequestContext.CompressionType))
-                return new HttpResult(text, type);
+            {
+                httpResult = new HttpResult(text, type);
+                if ((appSession != null) && !appSession.CookieSet)
+                {
+                    httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
+                }
+                return httpResult;
+            }
 
             var compressed = new CompressedResult(Encoding.UTF8.GetBytes(text), RequestContext.CompressionType) { ContentType = type };
             httpResult = new HttpResult(compressed.Contents, type);
@@ -241,6 +267,10 @@ namespace IctBaden.Stonehenge.Services
             {
                 httpResult.Headers.Add("Cache-Control", "no-cache");
                 httpResult.Headers.Add("Expires", "0");
+            }
+            if ((appSession != null) && !appSession.CookieSet)
+            {
+                httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
             }
             return httpResult;
         }

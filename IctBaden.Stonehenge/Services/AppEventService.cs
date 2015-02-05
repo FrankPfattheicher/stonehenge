@@ -97,6 +97,7 @@ namespace IctBaden.Stonehenge.Services
                 appSession.EventRelease.Reset();
             }
 
+            HttpResult httpResult;
             if (!string.IsNullOrEmpty(RequestContext.CompressionType))
             {
                 var properties = new List<string>();
@@ -115,12 +116,19 @@ namespace IctBaden.Stonehenge.Services
                 {
                     ContentType = "application/json"
                 };
-                var httpResult = new HttpResult(compressed.Contents, "application/json");
+                httpResult = new HttpResult(compressed.Contents, "application/json");
                 httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
                 httpResult.Headers.Add("Expires", "0");
-                return httpResult;
             }
-            return new HttpResult(values, "application/json");
+            else
+            {
+                httpResult = new HttpResult(values, "application/json");
+            }
+            if (!appSession.CookieSet)
+            {
+                httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
+            }
+            return httpResult;
         }
     }
 }
