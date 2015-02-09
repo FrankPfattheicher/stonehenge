@@ -40,6 +40,7 @@ function set_ViewModelName_Data(viewmodel, loading, data) {
         return;
     _SetData_();
     if ((data != null) && (data.stonehenge_eval != null)) {
+	    var app = require('durandal/app');
         eval(data.stonehenge_eval);
     }
     if ((data != null) && (data.stonehenge_navigate != null)) {
