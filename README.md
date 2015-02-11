@@ -2,10 +2,14 @@ stonehenge
 ==========
 An open source .NET Framework to use Web UI technologies for desktop and/or web applications.
 
-New in version 1.0: Client side aborting event polling fixed sync problems of th UI
-                    SSL support (also for CDN)
-					Fixed some Linux issues according to case sensivity of paths
-					Server side handling of client side binding exceptions added
+New in version 1.20: Update to Durandal 2.1 and jQuery 2.1.3
+
+New in version 1.10: Reuse sessions from cookies
+
+New in version 1.00: Client side aborting event polling fixed sync problems of th UI
+                     SSL support (also for CDN)
+					 Fixed some Linux issues according to case sensivity of paths
+					 Server side handling of client side binding exceptions added
 					
 Motivation
 ----------

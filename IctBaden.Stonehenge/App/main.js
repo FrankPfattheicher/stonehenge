@@ -7,7 +7,7 @@
     'knockout':     '/app/lib/knockout/js/knockout-3.1.0',
     'bootstrap': '/app/lib/bootstrap/js/bootstrap',
     'datepicker': '/app/lib/bootstrap/js/bootstrap-datepicker',
-    'jquery': '/app/lib/jquery/js/jquery-1.10.2',
+    'jquery': '/app/lib/jquery/js/jquery-2.1.3',
     'throttle':     '/app/lib/jquery.ba-throttle-debounce/jquery.ba-throttle-debounce',
     'flot':         '/app/lib/flot/js/jquery.flot',
     'flot_resize':  '/app/lib/flot/jquery.flot.resize',

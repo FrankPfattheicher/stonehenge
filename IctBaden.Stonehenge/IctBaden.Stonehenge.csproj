@@ -94,6 +94,9 @@
     <EmbeddedResource Include="App\lib\knockout\js\knockout-3.1.0.js" />
     <EmbeddedResource Include="App\lib\bootstrap\css\datepicker.css" />
     <EmbeddedResource Include="App\lib\bootstrap\js\bootstrap-datepicker.js" />
+    <EmbeddedResource Include="App\lib\require\js\require.js" />
+    <EmbeddedResource Include="App\lib\jquery\js\jquery-2.1.3.js" />
+    <EmbeddedResource Include="App\lib\jquery\js\jquery-2.1.3.min.js" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />
@@ -140,16 +143,11 @@
     <EmbeddedResource Include="App\transitions\js\entrance.js" />
     <EmbeddedResource Include="App\lib\require\js\almond-custom.js" />
     <EmbeddedResource Include="App\lib\require\js\require_min.js" />
-    <EmbeddedResource Include="App\lib\require\js\require.js" />
     <EmbeddedResource Include="App\lib\require\js\text.js" />
     <EmbeddedResource Include="App\main.js" />
-    <EmbeddedResource Include="App\lib\font-awesome\css\font-awesome-ie7.css" />
-    <EmbeddedResource Include="App\lib\font-awesome\css\font-awesome-ie7.min.css" />
     <EmbeddedResource Include="App\lib\font-awesome\css\font-awesome.css" />
     <EmbeddedResource Include="App\lib\font-awesome\css\font-awesome.min.css" />
     <EmbeddedResource Include="App\lib\font-awesome\font\fontawesome-webfont.svg" />
-    <EmbeddedResource Include="App\lib\respondjs\js\respond.min.js" />
-    <EmbeddedResource Include="App\lib\respondjs\js\respond.js" />
     <EmbeddedResource Include="App\lib\flot\js\jquery.flot.axislabels.js" />
     <EmbeddedResource Include="App\index.html" />
     <EmbeddedResource Include="App\shell.js" />
@@ -193,12 +191,6 @@
     <EmbeddedResource Include="App\lib\flot\js\jquery.flot.time.min.js" />
     <EmbeddedResource Include="App\icon.png" />
     <Content Include="App\lib\flot\LICENSE.txt" />
-    <EmbeddedResource Include="App\lib\html5shiv\js\html5shiv-printshiv.js" />
-    <EmbeddedResource Include="App\lib\html5shiv\js\html5shiv.js" />
-    <EmbeddedResource Include="App\lib\jquery\js\jquery-1.9.1-vsdoc.js" />
-    <EmbeddedResource Include="App\lib\jquery\js\jquery-1.10.2.js" />
-    <EmbeddedResource Include="App\lib\jquery\js\jquery-1.10.2.min.js" />
-    <EmbeddedResource Include="App\lib\jquery\jquery-1.10.2.min.map" />
     <EmbeddedResource Include="App\lib\font-awesome\font\fontawesome-webfont.eot" />
     <EmbeddedResource Include="App\lib\font-awesome\font\fontawesome-webfont.ttf" />
     <EmbeddedResource Include="App\lib\font-awesome\font\fontawesome-webfont.woff" />
@@ -208,6 +200,8 @@
     <Content Include="CDN.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="App\lib\bootstrap\css\bootstrap-theme.css.map" />
+    <EmbeddedResource Include="App\lib\bootstrap\css\bootstrap.css.map" />
     <None Include="App\lib\flot\API.md" />
     <None Include="App\lib\flot\CONTRIBUTING.md" />
     <None Include="App\lib\flot\FAQ.md" />
@@ -215,7 +209,7 @@
     <None Include="App\lib\flot\NEWS.md" />
     <None Include="App\lib\flot\PLUGINS.md" />
     <None Include="App\lib\flot\README.md" />
-    <None Include="App\lib\respondjs\js\README.md" />
+    <None Include="App\lib\jquery\js\jquery-2.1.3.min.map" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

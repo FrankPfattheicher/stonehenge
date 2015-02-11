@@ -10,11 +10,13 @@ var polling_ViewModelName_active = false;
 function poll_ViewModelName_Events(viewmodel, initial) {
     if (polling_ViewModelName_active)
         return;
-    var app = require('durandal/app');
-    var router = require('plugins/router');
+    var app = require("durandal/app");
+    var router = require("plugins/router");
     var ts = new Date().getTime();
-    polling_ViewModelName_active = $.getJSON('/events/_ViewModelType_?ts=' + ts + '&stonehenge_id=' + stonehenge_id, function (data) {
+    $.ajaxSetup({timeout: 60000});
+    polling_ViewModelName_active = $.getJSON("/events/_ViewModelType_?ts=" + ts + "&stonehenge_id=" + stonehenge_id, function (data) {
         polling_ViewModelName_active = null;
+        viewmodel.IsDisconnected(false);
         if (!loading_ViewModelName_active && (data != null)) {
             set_ViewModelName_Data(viewmodel, false, data);
             if (data.stonehenge_eval != null) eval(data.stonehenge_eval);
@@ -24,16 +26,13 @@ function poll_ViewModelName_Events(viewmodel, initial) {
         if (initial) {
             setTimeout(function () { poll_ViewModelName_Events(viewmodel, false); }, 200);
         }
+// ReSharper disable once PossiblyUnassignedProperty
     }).fail(function (jqXHR, status, error) {
         //alert("poll_ViewModelName_Events getJSON failed");
-        viewmodel.IsDisconnected(true);
-        if (jqXHR.status == 200) {
-            setTimeout(function () { window.location.reload(); }, 1000);
-        }
+        if (error !== "abort") { viewmodel.IsDisconnected(true); }
+        if (jqXHR.status === 200) { setTimeout(function () { window.location.reload(); }, 1000); }
         polling_ViewModelName_active = null;
-        if (!loading_ViewModelName_active) {
-            setTimeout(function () { poll_ViewModelName_Events(self, true); }, 200);
-        }
+        if (!loading_ViewModelName_active) { setTimeout(function () { poll_ViewModelName_Events(self, true); }, 200); }
     });
 }
 function set_ViewModelName_Data(viewmodel, loading, data) {
@@ -41,6 +40,7 @@ function set_ViewModelName_Data(viewmodel, loading, data) {
         return;
     _SetData_();
     if ((data != null) && (data.stonehenge_eval != null)) {
+	    var app = require('durandal/app');
         eval(data.stonehenge_eval);
     }
     if ((data != null) && (data.stonehenge_navigate != null)) {
@@ -68,21 +68,22 @@ function post_ViewModelName_Data(viewmodel, sender, method, param) {
     if (polling_ViewModelName_active) {
         polling_ViewModelName_active.abort();
     }
-    var params = '_stonehenge_CommandSenderName_=' + encodeURIComponent(sender.name) + '&';
-    if (param != null) { params += '_stonehenge_CommandParameter_=' + encodeURIComponent(param) + '&'; }
+    var params = "_stonehenge_CommandSenderName_=" + encodeURIComponent(sender.name) + "&";
+    if (param != null) { params += "_stonehenge_CommandParameter_=" + encodeURIComponent(param) + "&"; }
     _GetData_();
     var ts = new Date().getTime();
     viewmodel.IsLoading(true);
-    $.post('/viewmodel/_ViewModelType_/' + method + '?ts=' + ts + '&stonehenge_id=' + stonehenge_id, params, function (data) {
+    $.post("/viewmodel/_ViewModelType_/" + method + "?ts=" + ts + "&stonehenge_id=" + stonehenge_id, params, function (data) {
         loading_ViewModelName_active = false;
         set_ViewModelName_Data(viewmodel, true, data);
+// ReSharper disable once PossiblyUnassignedProperty
     }).fail(function (err) {
         //alert("post_ViewModelName_Data post failed");
         viewmodel.IsDisconnected(true);
         setTimeout(function () { window.location.reload(); }, 1000);
     });
 }
-define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function(app, system, ko, flot) {
+define(["durandal/app", "durandal/system", "knockout", "flot"], function(app, system, ko, flot) {
     self = this;
 
     var ErrorHandlingBindingProvider = function() {
@@ -91,7 +92,7 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function(app, sy
         this.nodeHasBindings = original.nodeHasBindings;
         //return the bindings given a node and the bindingContext
         this.getBindings = function(node, bindingContext) {
-            var message = '';
+            var message;
             try {
                 return original.getBindings(node, bindingContext);
             } catch (e) {
@@ -101,10 +102,10 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function(app, sy
                 }
             }
             try {
-                var params = 'Message=' + encodeURIComponent(message);
-                params += '&Binding=' + encodeURIComponent(node.dataset.bind);
+                var params = "Message=" + encodeURIComponent(message);
+                params += "&Binding=" + encodeURIComponent(node.dataset.bind);
                 var ts = new Date().getTime();
-                $.post('/Exception/Binding?ts=' + ts + '&stonehenge_id=' + stonehenge_id, params, function(data) {});
+                $.post("/Exception/Binding?ts=" + ts + "&stonehenge_id=" + stonehenge_id, params, function(data) {});
             } catch (e) {
                 if (console && console.log) {
                     console.log("Error: " + e.message);
@@ -129,14 +130,15 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function(app, sy
         _ActionMethods_: 0,
         activate: function () {
             self = this;
-            system.log('ClientViewModel : activate');
+            system.log("ClientViewModel : activate");
             self.IsLoading(true);
         },
         attached: function (view, parent) {
             self = this;
-            system.log('ClientViewModel  : attached');
+            system.log("ClientViewModel  : attached");
             var ts = new Date().getTime();
-            if (stonehenge_id == "") {
+            if (stonehenge_id === "") {
+                // ReSharper disable once AssignToImplicitGlobalInFunctionScope
                 stonehenge_id = getCookie("stonehenge_id");
             }
             if (stonehenge_id != null)
@@ -145,9 +147,10 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function(app, sy
                 if (polling_ViewModelName_active) {
                     polling_ViewModelName_active.abort();
                 }
-                $.getJSON('/viewmodel/_ViewModelType_?ts=' + ts + '&stonehenge_id=' + stonehenge_id, function (data) {
+                $.getJSON("/viewmodel/_ViewModelType_?ts=" + ts + "&stonehenge_id=" + stonehenge_id, function (data) {
                     loading_ViewModelName_active = false;
                     set_ViewModelName_Data(self, true, data);
+// ReSharper disable once PossiblyUnassignedProperty
                 }).fail(function (err) {
                     //alert("_ViewModelName_ attached getJSON failed");
                     setTimeout(function () { window.location.reload(); }, 1000);
@@ -155,21 +158,21 @@ define(['durandal/app', 'durandal/system', 'knockout', 'flot'], function(app, sy
             }
         },
         binding: function () {
-            system.log('ClientViewModel : binding');
+            system.log("ClientViewModel : binding");
             return { cacheViews: false }; //cancels view caching for this module, allowing the triggering of the detached callback
         },
         bindingComplete: function () {
-            system.log('ClientViewModel : bindingComplete');
+            system.log("ClientViewModel : bindingComplete");
         },
         compositionComplete: function () {
-            system.log('ClientViewModel : compositionComplete');
+            system.log("ClientViewModel : compositionComplete");
             if (typeof (user_compositionComplete) == 'function') {
                 try {
                     user_compositionComplete();
                 } catch (e) { }
             }
-            $('.initialfocus').focus();
-        },
+            $(".initialfocus").focus();
+        }
     };
     return viewModel;
 });

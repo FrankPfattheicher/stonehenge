@@ -27,7 +27,10 @@
                 Thread.Sleep(1000);
             }
 
+#pragma warning disable 0162
+            // ReSharper disable once HeuristicUnreachableCode
             server.Terminate();
+            // ReSharper disable once FunctionNeverReturns
         }
     }
 }
