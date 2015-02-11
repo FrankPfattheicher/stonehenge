@@ -25,6 +25,7 @@ namespace IctBaden.Stonehenge
         public string Platform { get; private set; }
         public string Browser { get; private set; }
         public bool Cookies { get; private set; }
+        public bool CookieSet { get; private set; }
 
         public DateTime ConnectedSince { get; private set; }
         public DateTime LastAccess { get; private set; }
@@ -257,6 +258,8 @@ namespace IctBaden.Stonehenge
             }
             LastAccess = DateTime.Now;
             NotifyPropertyChanged("LastAccess");
+            CookieSet = cookies.ContainsKey("stonehenge_id");
+            NotifyPropertyChanged("CookieSet");
         }
 
         public void EventsClear(bool forceEnd)

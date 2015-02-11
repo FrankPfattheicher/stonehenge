@@ -78,10 +78,15 @@ namespace IctBaden.Stonehenge.Services
                   };
                 httpResult = new HttpResult(compressed.Contents, "application/json");
                 httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
-                return httpResult;
             }
-
-            httpResult = new HttpResult(result, "application/json");
+            else
+            {
+                httpResult = new HttpResult(result, "application/json");
+            }
+            if (!appSession.CookieSet)
+            {
+                httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
+            }
             return httpResult;
         }
 
@@ -121,7 +126,12 @@ namespace IctBaden.Stonehenge.Services
                 else if (mi.ReturnType == typeof(UserData))
                 {
                     var data = (UserData)mi.Invoke(vm, parameters);
-                    return new HttpResult(data.Bytes, data.ContentType);
+                    var httpResult = new HttpResult(data.Bytes, data.ContentType);
+                    if (!appSession.CookieSet)
+                    {
+                        httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
+                    }
+                    return httpResult;
                 }
                 else
                 {
