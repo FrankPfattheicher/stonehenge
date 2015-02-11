@@ -97,6 +97,7 @@
     <EmbeddedResource Include="App\lib\require\js\require.js" />
     <EmbeddedResource Include="App\lib\jquery\js\jquery-2.1.3.js" />
     <EmbeddedResource Include="App\lib\jquery\js\jquery-2.1.3.min.js" />
+    <EmbeddedResource Include="favicon.ico" />
     <Content Include="ServiceStack\ServiceStack.Common.dll" />
     <Content Include="ServiceStack\ServiceStack.Common.xml" />
     <Content Include="ServiceStack\ServiceStack.dll" />
