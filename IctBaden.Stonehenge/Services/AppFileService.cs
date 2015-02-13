@@ -242,6 +242,11 @@ namespace IctBaden.Stonehenge.Services
                                 text = text.Replace("//MessageBox=HTML", "");
                             }
                         }
+                        if ((appSession != null)
+                            && ((appSession.Browser == "IE 7.0") || (appSession.Browser == "IE 8.0")))
+                        {
+                            text = text.Replace("jquery-2.1.3", "jquery-1.11.2");
+                        }
                     }
                     if (!Request.IsLocal)
                     {

@@ -12,7 +12,7 @@
     'flot':         '/app/lib/flot/js/jquery.flot',
     'flot_resize':  '/app/lib/flot/jquery.flot.resize',
     'flot_time':    '/app/lib/flot/jquery.flot.time',
-    'flot_labels':  '/app/lib/flot/jquery.flot.axislabels',
+    'flot_labels':  '/app/lib/flot/jquery.flot.axislabels'
   },
   shim: {
     'bootstrap': {
