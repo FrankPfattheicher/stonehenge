@@ -656,7 +656,6 @@ define(['durandal/system', 'durandal/app', 'durandal/activator', 'durandal/event
         router.map = function(route, config) {
             if (system.isArray(route)) {
                 for (var i = 0; i < route.length; i++) {
-                    alert(route[i]);
                     router.map(route[i]);
                 }
 
