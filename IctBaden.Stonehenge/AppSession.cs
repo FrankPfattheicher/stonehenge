@@ -238,9 +238,17 @@ namespace IctBaden.Stonehenge
             UserAgent = userAgent;
             ConnectedSince = DateTime.Now;
 
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                DetectBrowser(userAgent);
+            }
+        }
+
+        private void DetectBrowser(string userAgent)
+        {
             var browser = new HttpBrowserCapabilities
             {
-                Capabilities = new Hashtable { { string.Empty, userAgent } }
+                Capabilities = new Hashtable {{string.Empty, userAgent}}
             };
             var factory = new BrowserCapabilitiesFactory();
             factory.ConfigureBrowserCapabilities(new NameValueCollection(), browser);
