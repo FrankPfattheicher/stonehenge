@@ -126,7 +126,7 @@ namespace IctBaden.Stonehenge
             var dir = Directory.CreateDirectory(path);
             var parameter =
               string.Format(
-                "--app={0}://localhost:{1}/?title={2} --app-window-size={3},{4} --disable-translate --user-data-dir=\"{5}\"",
+                "--app={0}://localhost:{1}/?title={2} --window-size={3},{4} --disable-translate --user-data-dir=\"{5}\"",
                 Protocol, UsedPort, Title, WindowSize.X, WindowSize.Y, path);
             var ui = Process.Start(cmd, parameter);
             if (ui == null)

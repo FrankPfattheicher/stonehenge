@@ -1,16 +1,18 @@
 ﻿namespace IctBaden.Stonehenge
 {
-  public class ActiveModel
-  {
-    public readonly string Prefix;
-    public readonly string TypeName;
-    public object Model;
-
-    public ActiveModel(string prefix, object model)
+    public class ActiveModel
     {
-      Prefix = prefix;
-      Model = model;
-      TypeName = model.GetType().Name;
+        public readonly string Prefix;
+        public readonly string TypeName;
+        public readonly bool ReadOnly;
+        public object Model;
+
+        public ActiveModel(string prefix, object model, bool readOnly)
+        {
+            Prefix = prefix;
+            Model = model;
+            ReadOnly = readOnly;
+            TypeName = model.GetType().Name;
+        }
     }
-  }
 }

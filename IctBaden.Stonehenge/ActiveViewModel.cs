@@ -59,12 +59,14 @@ namespace IctBaden.Stonehenge
         {
             private readonly string propertyName;
             private readonly PropertyDescriptor originalDescriptor;
+            private readonly bool readOnly;
 
-            internal PropertyDescriptorEx(string name, PropertyInfo info)
+            internal PropertyDescriptorEx(string name, PropertyInfo info, bool readOnly)
                 : base(name, null)
             {
                 propertyName = name;
                 originalDescriptor = FindOrigPropertyDescriptor(info);
+                this.readOnly = readOnly;
             }
 
             public override AttributeCollection Attributes
@@ -104,7 +106,7 @@ namespace IctBaden.Stonehenge
             {
                 get
                 {
-                    return originalDescriptor != null && originalDescriptor.IsReadOnly;
+                    return readOnly || ((originalDescriptor != null) && originalDescriptor.IsReadOnly);
                 }
             }
 
@@ -151,11 +153,13 @@ namespace IctBaden.Stonehenge
         {
             public PropertyInfo Info { get; private set; }
             public object Obj { get; private set; }
+            public bool ReadOnly { get; private set; }
 
-            public PropertyInfoEx(PropertyInfo pi, object obj)
+            public PropertyInfoEx(PropertyInfo pi, object obj, bool readOnly)
             {
                 Info = pi;
                 Obj = obj;
+                ReadOnly = readOnly;
             }
         }
 
@@ -223,13 +227,13 @@ namespace IctBaden.Stonehenge
             set { TrySetMember(name, value); }
         }
 
-        public void SetModel(object model)
+        public void SetModel(object model, bool readOnly = false)
         {
             if (model == null)
                 return;
-            SetModel(null, model);
+            SetModel(null, model, readOnly);
         }
-        public void SetModel(string prefix, object model)
+        public void SetModel(string prefix, object model, bool readOnly = false)
         {
             if (model == null)
                 return;
@@ -239,7 +243,7 @@ namespace IctBaden.Stonehenge
                 return;
             }
 
-            ActiveModels.Add(new ActiveModel(prefix, model));
+            ActiveModels.Add(new ActiveModel(prefix, model, readOnly));
 
             properties = null;
             propertiesAttrib = null;
@@ -294,7 +298,7 @@ namespace IctBaden.Stonehenge
             var pi = GetType().GetProperty(name);
             if (pi != null)
             {
-                return new PropertyInfoEx(pi, this);
+                return new PropertyInfoEx(pi, this, false);
             }
             foreach (var model in ActiveModels)
             {
@@ -308,7 +312,7 @@ namespace IctBaden.Stonehenge
                 if (pi == null)
                     continue;
 
-                return new PropertyInfoEx(pi, model.Model);
+                return new PropertyInfoEx(pi, model.Model, model.ReadOnly);
             }
             return null;
         }
@@ -316,6 +320,12 @@ namespace IctBaden.Stonehenge
         {
             var infoEx = GetPropertyInfoEx(name);
             return (infoEx == null) ? null : infoEx.Info;
+        }
+
+        public bool IsPropertyReadOnly(string name)
+        {
+            var infoEx = GetPropertyInfoEx(name);
+            return (infoEx == null) || infoEx.ReadOnly;
         }
 
         public override bool TryGetMember(GetMemberBinder binder, out object result)
@@ -403,7 +413,7 @@ namespace IctBaden.Stonehenge
             foreach (PropertyDescriptor prop in TypeDescriptor.GetProperties(this, true))
             {
                 var pi = GetType().GetProperty(prop.Name);
-                var desc = new PropertyDescriptorEx(prop.Name, pi);
+                var desc = new PropertyDescriptorEx(prop.Name, pi, false);
                 properties.Add(desc);
             }
             foreach (var model in ActiveModels)
@@ -418,13 +428,13 @@ namespace IctBaden.Stonehenge
                     if (properties.Cast<PropertyDescriptor>().Any(pd => pd.Name == name))
                         throw new ArgumentException("Duplicate property", name);
 
-                    var desc = new PropertyDescriptorEx(name, pi);
+                    var desc = new PropertyDescriptorEx(name, pi, model.ReadOnly);
                     properties.Add(desc);
                 }
             }
             foreach (var elem in dictionary)
             {
-                var desc = new PropertyDescriptorEx(elem.Key, null);
+                var desc = new PropertyDescriptorEx(elem.Key, null, false);
                 properties.Add(desc);
             }
 

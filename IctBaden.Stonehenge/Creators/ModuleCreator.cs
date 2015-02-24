@@ -110,9 +110,11 @@ namespace IctBaden.Stonehenge.Creators
           if (activeVm == null)
             continue;
           prop = activeVm.GetPropertyInfo(propName);
+            if ((prop != null) && activeVm.IsPropertyReadOnly(propName))
+                continue;
         }
 
-        if ((prop == null) || (prop.GetSetMethod(false) == null)) // not public writable
+        if ((prop == null) ||  (prop.GetSetMethod(false) == null)) // not public writable
           continue;
         var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
         if ((bindable.Length > 0) && ((BindableAttribute)bindable[0]).Direction == BindingDirection.OneWay)
