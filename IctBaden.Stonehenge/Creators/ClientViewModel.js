@@ -114,6 +114,19 @@ define(["durandal/app", "durandal/system", "knockout", "flot"], function(app, sy
             return null;
         };
     };
+    ko.bindingHandlers.enterkey = {
+        init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+            var allBindings = allBindingsAccessor();
+            $(element).keypress(function (event) {
+                var keyCode = (event.which ? event.which : event.keyCode);
+                if (keyCode === 13) {
+                    allBindings.enterkey(viewModel, event);
+                    return false;
+                }
+                return true;
+            });
+        }
+    };
     ko.bindingProvider.instance = new ErrorHandlingBindingProvider();
 
     var InitialLoading = ko.observable(true);
