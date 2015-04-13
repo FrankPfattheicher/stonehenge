@@ -4,7 +4,7 @@
     'durandal':     '/app/durandal/js',
     'plugins':      '/app/plugins',
     'transitions':  '/app/transitions',
-    'knockout':     '/app/lib/knockout/js/knockout-3.1.0',
+    'knockout':     '/app/lib/knockout/js/knockout-3.3.0',
     'bootstrap': '/app/lib/bootstrap/js/bootstrap',
     'datepicker': '/app/lib/bootstrap/js/bootstrap-datepicker',
     'jquery': '/app/lib/jquery/js/jquery-2.1.3',

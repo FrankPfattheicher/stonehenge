@@ -2,6 +2,8 @@ stonehenge
 ==========
 An open source .NET Framework to use Web UI technologies for desktop and/or web applications.
 
+New in version 1.30: Update to Knockout 3.3.0, simple struct support
+
 New in version 1.20: Update to Durandal 2.1 and jQuery 2.1.3
 
 New in version 1.10: Reuse sessions from cookies

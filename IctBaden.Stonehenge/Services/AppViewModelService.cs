@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
@@ -175,6 +176,23 @@ namespace IctBaden.Stonehenge.Services
                 {
                     json = "\"" + prefix + prop.Name + "\":" + value;
                 }
+                else if (prop.PropertyType.IsValueType && !prop.PropertyType.IsPrimitive && (prop.PropertyType.Namespace != "System")) // struct
+                {
+                    var structJson = new List<string>();
+
+                    foreach (var member in prop.PropertyType.GetProperties())
+                    {
+                        var memberValue = member.GetValue(value, null);
+                        if (memberValue != null)
+                        {
+                            json = "\"" + prefix + member.Name + "\":" + JsonSerializer.SerializeToString(memberValue);
+                            structJson.Add(json);
+                        }
+                    }
+
+
+                    json = "\"" + prefix + prop.Name + "\": { " + string.Join(",", structJson) + " }";
+                }
                 else
                 {
                     json = "\"" + prefix + prop.Name + "\":" + JsonSerializer.SerializeToString(value);
@@ -197,8 +215,32 @@ namespace IctBaden.Stonehenge.Services
                     if ((pi == null) || !pi.CanWrite)
                         return;
 
-                    var val = JsonSerializer.DeserializeFromString(newval, pi.PropertyType);
-                    activeVm.TrySetMember(propName, val);
+                    if (pi.PropertyType.IsValueType && !pi.PropertyType.IsPrimitive && (pi.PropertyType.Namespace != "System")) // struct
+                    {
+                        object structObj = activeVm.TryGetMember(propName);
+                        if (structObj != null)
+                        {
+                            var members = JsonSerializer.DeserializeFromString(newval, typeof(JsonObject));
+                            if (members != null)
+                            {
+                                foreach (var member in members.ToStringDictionary())
+                                {
+                                    var mProp = pi.PropertyType.GetProperty(member.Key);
+                                    if (mProp != null)
+                                    {
+                                        var val = JsonSerializer.DeserializeFromString(member.Value, mProp.PropertyType);
+                                        mProp.SetValue(structObj, val, null);
+                                    }
+                                }
+                            }
+                            activeVm.TrySetMember(propName, structObj);
+                        }
+                    }
+                    else
+                    {
+                        var val = JsonSerializer.DeserializeFromString(newval, pi.PropertyType);
+                        activeVm.TrySetMember(propName, val);
+                    }
                 }
                 else
                 {
@@ -211,8 +253,9 @@ namespace IctBaden.Stonehenge.Services
                 }
             }
             // ReSharper disable EmptyGeneralCatchClause
-            catch
+            catch(Exception ex)
             {
+                Debug.WriteLine(ex.Message);
             }
             // ReSharper restore EmptyGeneralCatchClause
         }
