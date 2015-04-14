@@ -24,12 +24,15 @@ namespace IctBaden.Stonehenge.Services
                         if (method.ReturnType == typeof(UserData))
                         {
                             var data = (UserData)method.Invoke(vm, new object[] { request.FileName });
-                            var httpResult = new HttpResult(data.Bytes, data.ContentType);
-                            if (!appSession.CookieSet)
+                            if (data != null)
                             {
-                                httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
+                                var httpResult = new HttpResult(data.Bytes, data.ContentType);
+                                if (!appSession.CookieSet)
+                                {
+                                    httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
+                                }
+                                return httpResult;
                             }
-                            return httpResult;
                         }
                     }
                 }
