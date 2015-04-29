@@ -29,6 +29,7 @@ namespace IctBaden.Stonehenge
 
         public DateTime ConnectedSince { get; private set; }
         public DateTime LastAccess { get; private set; }
+        public DateTime LastUserAction { get; private set; }
         public Guid Id { get; private set; }
         public string StackId { get; set; }
 
@@ -175,7 +176,11 @@ namespace IctBaden.Stonehenge
         {
             get { return DateTime.Now - LastAccess; }
         }
-
+        public TimeSpan LastUserActionDuration
+        {
+            get { return DateTime.Now - LastUserAction; }
+        }
+        
         public event Action TimedOut;
         private Timer pollSessionTimeout;
         public TimeSpan SessionTimeout { get; private set; }
@@ -258,7 +263,7 @@ namespace IctBaden.Stonehenge
             Platform = browser.Platform;
         }
 
-        internal void Accessed(IDictionary<string, Cookie> cookies)
+        internal void Accessed(IDictionary<string, Cookie> cookies, bool userAction)
         {
             if ((StackId == null) && cookies.ContainsKey("ss-pid"))
             {
@@ -266,6 +271,11 @@ namespace IctBaden.Stonehenge
             }
             LastAccess = DateTime.Now;
             NotifyPropertyChanged("LastAccess");
+            if (userAction)
+            {
+                LastUserAction = DateTime.Now;
+                NotifyPropertyChanged("LastUserAction");
+            }
             CookieSet = cookies.ContainsKey("stonehenge_id");
             NotifyPropertyChanged("CookieSet");
         }

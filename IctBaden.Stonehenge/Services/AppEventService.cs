@@ -35,7 +35,7 @@ namespace IctBaden.Stonehenge.Services
                 };
                 //return new HttpResult("No view for event request", HttpStatusCode.NotFound);
             }
-            appSession.Accessed(Request.Cookies);
+            appSession.Accessed(Request.Cookies, false);
             appSession.EventPollingActive.Start((long)EventTimeout.TotalMilliseconds * 2);
 
             Debug.WriteLine("EventService:" + request.ViewModel);

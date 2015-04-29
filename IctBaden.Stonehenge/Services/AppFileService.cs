@@ -36,7 +36,7 @@ namespace IctBaden.Stonehenge.Services
             var appSession = GetSession(sessionId);
             if (appSession != null)
             {
-                appSession.Accessed(Request.Cookies);
+                appSession.Accessed(Request.Cookies, true);
                 appSession.EventsClear(false);
             }
             else

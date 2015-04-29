@@ -19,7 +19,7 @@ namespace IctBaden.Stonehenge.Services
             {
                 return new HttpResult("No session for viewmodel request", HttpStatusCode.NotFound);
             }
-            appSession.Accessed(Request.Cookies);
+            appSession.Accessed(Request.Cookies, false);
 
             Debug.WriteLine("ViewModelService:" + request.ViewModel);
 
@@ -100,6 +100,7 @@ namespace IctBaden.Stonehenge.Services
                 return new HttpResult("No session for viewmodel request", HttpStatusCode.NotFound);
             }
 
+            appSession.Accessed(Request.Cookies, true);
             appSession.EventsClear(true);
 
             var vm = appSession.ViewModel;
