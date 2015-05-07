@@ -17,12 +17,12 @@ namespace IctBaden.Stonehenge
         public TimeSpan SessionTimeout { get; set; }
         public bool HasSessionTimeout { get { return SessionTimeout.TotalMilliseconds > 0.1; } }
         public string Protocol { get { return useSsl ? "https" : "http"; } }
+        public string ListeningOn { get; private set; }
 
         private readonly int desiredPort;
         public int UsedPort { get; private set; }
         private readonly bool useSsl;
         private AppHost host;
-        private string listeningOn;
 
         public event Action<AppSession> SessionCreated;
         public event Action<AppSession> SessionTerminated;
@@ -52,7 +52,7 @@ namespace IctBaden.Stonehenge
         public void Run(bool newWindow)
         {
             UsedPort = (desiredPort != 0) ? desiredPort : 42000;
-            listeningOn = string.Format("{0}://*:{1}/", Protocol, UsedPort);
+            ListeningOn = string.Format("{0}://*:{1}/", Protocol, UsedPort);
 
             host = new AppHost(Title, StartPage, MessageBoxContentHtml);
             if (HasEventTimeout)
@@ -68,7 +68,7 @@ namespace IctBaden.Stonehenge
             {
                 try
                 {
-                    host.Start(listeningOn);
+                    host.Start(ListeningOn);
                     break;
                 }
                 catch (HttpListenerException ex)
@@ -80,7 +80,7 @@ namespace IctBaden.Stonehenge
                     if (((ex.ErrorCode == 32) || (ex.ErrorCode == 183)) && (desiredPort == 0))
                     {
                         UsedPort = new Random().Next(5000, 65500);
-                        listeningOn = string.Format("{0}://*:{1}/", Protocol, UsedPort);
+                        ListeningOn = string.Format("{0}://*:{1}/", Protocol, UsedPort);
                         continue;
                     }
                     if (ex.ErrorCode == 32)
@@ -133,7 +133,7 @@ namespace IctBaden.Stonehenge
             {
                 return false;
             }
-            Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
+            Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, ListeningOn);
             ui.WaitForExit();
             dir.Delete(true);
             return true;
@@ -153,7 +153,7 @@ namespace IctBaden.Stonehenge
             {
                 return false;
             }
-            Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
+            Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, ListeningOn);
             ui.WaitForExit();
             dir.Delete(true);
             return true;
@@ -171,7 +171,7 @@ namespace IctBaden.Stonehenge
             {
                 return false;
             }
-            Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
+            Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, ListeningOn);
             ui.WaitForExit();
             return true;
         }
@@ -188,7 +188,7 @@ namespace IctBaden.Stonehenge
             {
                 return false;
             }
-            Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
+            Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, ListeningOn);
             ui.WaitForExit();
             return true;
         }
@@ -205,7 +205,7 @@ namespace IctBaden.Stonehenge
             {
                 return false;
             }
-            Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
+            Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, ListeningOn);
             ui.WaitForExit();
             return true;
         }

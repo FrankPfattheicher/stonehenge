@@ -11,6 +11,8 @@ namespace IctBaden.Stonehenge.Services
 {
     public class AppViewModelService : AppService
     {
+        private const string ViewModelContentType = "application/json; charset=utf-8";
+
         public object Get(AppViewModel request)
         {
             var sessionId = GetSessionId();
@@ -75,14 +77,14 @@ namespace IctBaden.Stonehenge.Services
             {
                 var compressed = new CompressedResult(Encoding.UTF8.GetBytes(result), RequestContext.CompressionType)
                   {
-                      ContentType = "application/json"
+                      ContentType = ViewModelContentType
                   };
-                httpResult = new HttpResult(compressed.Contents, "application/json");
+                httpResult = new HttpResult(compressed.Contents, ViewModelContentType);
                 httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
             }
             else
             {
-                httpResult = new HttpResult(result, "application/json");
+                httpResult = new HttpResult(Encoding.UTF8.GetBytes(result), ViewModelContentType);
             }
             if (!appSession.CookieSet)
             {
@@ -153,7 +155,7 @@ namespace IctBaden.Stonehenge.Services
                 }
             }
 
-            return returnData ? Get(request) : new HttpResult("{}", "application/json");
+            return returnData ? Get(request) : new HttpResult("{}", ViewModelContentType);
         }
 
         private static IEnumerable<string> SerializeObject(string prefix, object obj)

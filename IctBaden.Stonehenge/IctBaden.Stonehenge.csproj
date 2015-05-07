@@ -192,7 +192,7 @@
     <EmbeddedResource Include="App\lib\flot\js\jquery.flot.threshold.min.js" />
     <EmbeddedResource Include="App\lib\flot\js\jquery.flot.time.js" />
     <EmbeddedResource Include="App\lib\flot\js\jquery.flot.time.min.js" />
-    <EmbeddedResource Include="App\icon.png" />
+    <EmbeddedResource Include="App\transitions\icon.png" />
     <Content Include="App\lib\flot\LICENSE.txt" />
     <EmbeddedResource Include="App\lib\font-awesome\font\fontawesome-webfont.eot" />
     <EmbeddedResource Include="App\lib\font-awesome\font\fontawesome-webfont.ttf" />
