@@ -61,6 +61,7 @@
     <Compile Include="CheckedItem.cs" />
     <Compile Include="Creators\ContentDeliveryNetworkSupport.cs" />
     <Compile Include="Creators\UserIcons.cs" />
+    <Compile Include="Creators\UserPages.cs" />
     <Compile Include="Graph\GraphOptions.cs" />
     <Compile Include="Graph\GraphSeries.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -77,7 +78,7 @@
     <Compile Include="Creators\ModuleCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AppFile.cs" />
-    <Compile Include="Creators\UserPages.cs" />
+    <Compile Include="Creators\UserLibs.cs" />
     <Compile Include="Creators\UserStyleSheets.cs" />
     <Compile Include="Services\PassiveTimer.cs" />
     <Compile Include="Services\ResourceLoader.cs" />

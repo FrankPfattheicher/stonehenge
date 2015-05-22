@@ -29,6 +29,7 @@ namespace IctBaden.Stonehenge
 
         public DateTime ConnectedSince { get; private set; }
         public DateTime LastAccess { get; private set; }
+        public string Context { get; private set; }
         public DateTime LastUserAction { get; private set; }
         public Guid Id { get; private set; }
         public string StackId { get; set; }
@@ -278,6 +279,11 @@ namespace IctBaden.Stonehenge
             }
             CookieSet = cookies.ContainsKey("stonehenge_id");
             NotifyPropertyChanged("CookieSet");
+        }
+
+        public void SetContext(string context)
+        {
+            Context = context;
         }
 
         public void EventsClear(bool forceEnd)

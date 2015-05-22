@@ -187,6 +187,7 @@ namespace IctBaden.Stonehenge.Services
                     {
                         text += userjs;
                     }
+
                 }
 
                 doNotCache = true;
@@ -199,6 +200,7 @@ namespace IctBaden.Stonehenge.Services
                     if (appSession != null)
                     {
                         text = UserStyleSheets.InsertUserCssLinks(RootPath, text, appSession.SubDomain);
+                        text = UserLibs.InsertUserLibs(RootPath, text);
                     }
                     text = UserIcons.InsertUserIconLinks(RootPath, text);
                     if (!Request.IsLocal)
