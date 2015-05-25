@@ -37,6 +37,8 @@ using IctBaden.Stonehenge.Services;
 
 namespace IctBaden.Stonehenge
 {
+    using System.Diagnostics;
+
     public class ActiveViewModel : DynamicObject, ICustomTypeDescriptor, INotifyPropertyChanged
     {
         #region helper classes
@@ -562,6 +564,7 @@ namespace IctBaden.Stonehenge
 
         public void NavigateTo(string route)
         {
+            Debug.WriteLine("NavigateTo: " + route);
             NavigateToRoute = route;
             NotifyPropertyChanged(AppService.PropertyNameNavigate);
         }

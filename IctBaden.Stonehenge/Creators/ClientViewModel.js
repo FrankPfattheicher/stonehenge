@@ -160,7 +160,7 @@ define(["durandal/app", "durandal/system", "knockout", "flot"], function(app, sy
                 if (polling_ViewModelName_active) {
                     polling_ViewModelName_active.abort();
                 }
-                $.getJSON("/viewmodel/_ViewModelType_?ts=" + ts + "&stonehenge_id=" + stonehenge_id, function (data) {
+                $.getJSON("/viewmodel/_ViewModelType_?ts=" + ts + "&stonehenge_ctx=_ViewContext_&stonehenge_id=" + stonehenge_id, function (data) {
                     loading_ViewModelName_active = false;
                     set_ViewModelName_Data(self, true, data);
 // ReSharper disable once PossiblyUnassignedProperty

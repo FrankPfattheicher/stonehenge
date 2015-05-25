@@ -39,9 +39,9 @@ namespace IctBaden.Stonehenge.Creators
       }
     }
 
-    private static readonly Dictionary<Type, string> ViewModels = new Dictionary<Type, string>();
+    private static readonly Dictionary<string, string> ViewModels = new Dictionary<string, string>();
 
-    public static string CreateFromViewModel(object viewModel)
+    public static string CreateFromViewModel(object viewModel, string context)
     {
       if (viewModel == null)
       {
@@ -54,10 +54,11 @@ namespace IctBaden.Stonehenge.Creators
       }
 
       var vmType = viewModel.GetType();
+      var vmKey = vmType.Name + "_" + context;
 
-      if (ViewModels.ContainsKey(vmType))
+      if (ViewModels.ContainsKey(vmKey))
       {
-        return ViewModels[vmType];
+          return ViewModels[vmKey];
       }
 
       // properties
@@ -154,6 +155,7 @@ namespace IctBaden.Stonehenge.Creators
 
       // create
       var text = ClientViewModelTemplate.Replace("_ViewModelType_", vmType.FullName).Replace("_ViewModelName_", vmType.Name);
+      text = text.Replace("_ViewContext_", context);
 
       text = text.Replace("_SetData_();", string.Join(Environment.NewLine, setData));
       text = text.Replace("_GetData_();", string.Join(Environment.NewLine, getData));
@@ -161,7 +163,7 @@ namespace IctBaden.Stonehenge.Creators
       text = text.Replace("_ReturnData_: 0,", string.Join(Environment.NewLine, returnData));
       text = text.Replace("_ActionMethods_: 0,", string.Join(Environment.NewLine, actionMethods));
 
-      ViewModels.Add(vmType, text);
+      ViewModels.Add(vmKey, text);
       return text;
     }
  }

@@ -17,13 +17,14 @@ namespace IctBaden.Stonehenge.Services
         {
             var sessionId = GetSessionId();
             var appSession = GetSession(sessionId);
+            var context = Request.QueryString.Get("stonehenge_ctx");
             if (appSession == null)
             {
                 return new HttpResult("No session for viewmodel request", HttpStatusCode.NotFound);
             }
             appSession.Accessed(Request.Cookies, false);
-
-            Debug.WriteLine("ViewModelService:" + request.ViewModel);
+            appSession.SetContext(context);
+            Debug.WriteLine("ViewModelService:" + request.ViewModel + " " + context);
 
             var vm = appSession.SetViewModelType(request.ViewModel);
             appSession.EventsClear(true);

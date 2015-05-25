@@ -67,6 +67,7 @@ namespace IctBaden.Stonehenge.Services
 
             var fullPath = request.FullPath(RootPath);
             var ext = Path.GetExtension(fullPath) ?? string.Empty;
+            var context = request.FileName.Replace(ext, string.Empty);
 
             if((appSession == null) && (string.Compare(request.FileName, "index.html", StringComparison.OrdinalIgnoreCase) == 0))
             {
@@ -174,7 +175,7 @@ namespace IctBaden.Stonehenge.Services
                         appSession = new AppSession();
                         var vm = appSession.SetViewModelType(vmName);
                         appSession.EventsClear(true);
-                        text = ModuleCreator.CreateFromViewModel(vm);
+                        text = ModuleCreator.CreateFromViewModel(vm, context);
                     }
                     catch (Exception ex)
                     {
