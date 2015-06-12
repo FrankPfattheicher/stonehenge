@@ -81,5 +81,15 @@
             Assert.IsFalse(resource.IsBinary);
             Assert.IsTrue(resource.Text.StartsWith("<!DOCTYPE html>"));
         }
+
+        [TestMethod]
+        public void Load_resource_testscript_js()
+        {
+            var resource = loader.Load("lib/testscript.js");
+            Assert.IsNotNull(resource);
+            Assert.AreEqual(resource.ContentType, "text/javascript");
+            Assert.IsFalse(resource.IsBinary);
+            Assert.IsTrue(resource.Text.Contains("function Test()"));
+        }
     }
 }

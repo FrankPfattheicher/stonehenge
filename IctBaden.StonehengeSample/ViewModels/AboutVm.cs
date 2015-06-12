@@ -1,8 +1,8 @@
-﻿using System.Reflection;
-
-namespace IctBaden.StonehengeSample.ViewModels
+﻿namespace IctBaden.Stonehenge.Sample.ViewModels
 {
-  public class AboutVm
+    using System.Reflection;
+
+    public class AboutVm
   {
     public string Version { get { return Assembly.GetEntryAssembly().GetName().Version.ToString(2); } } 
   }

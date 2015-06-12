@@ -45,23 +45,50 @@
                     var dict = new Dictionary<string, AssemblyResource>();
                     foreach (var assemby in assemblies.Where(a => a != null).Distinct())
                     {
-                        foreach (var resource in assemby.GetManifestResourceNames())
-                        {
-                            const string BaseName = ".App.";
-                            var appBase = resource.IndexOf(BaseName, System.StringComparison.Ordinal);
-                            if (appBase == -1) continue;
-
-                            var shortName = resource.Substring(appBase + BaseName.Length);
-                            dict.Add(shortName, new AssemblyResource(resource, shortName, assemby));
-                        }
+                        AddAssemblyResources(assemby, dict);
                     }
                     return dict;
                 });
         }
-        public Resource Load(string resourceName)
+
+        public void AddAssembly(Assembly assembly)
         {
+            var asmResources = resources.Value;
+            if (asmResources.Values.Any(res => res.Assembly == assembly)) 
+                return;
+
+            AddAssemblyResources(assembly, asmResources);
+        }
+
+        private static void AddAssemblyResources(Assembly assemby, Dictionary<string, AssemblyResource> dict)
+        {
+            foreach (var resource in assemby.GetManifestResourceNames())
+            {
+                const string BaseName = ".App.";
+                var appBase = resource.IndexOf(BaseName, System.StringComparison.Ordinal);
+                if (appBase == -1)
+                {
+                    continue;
+                }
+
+                var shortName = resource.Substring(appBase + BaseName.Length);
+                var asmResource = new AssemblyResource(resource, shortName, assemby);
+                if (dict.ContainsKey(shortName))
+                {
+                    dict[shortName] = asmResource;
+                }
+                else
+                {
+                    dict.Add(shortName, asmResource);
+                }
+            }
+        }
+
+        public Resource Load(string name)
+        {
+            var resourceName = name.Replace("/", ".");
             var asmResource = resources.Value
-                .FirstOrDefault(res => String.Compare(res.Key, resourceName, true, CultureInfo.InvariantCulture) == 0);
+                .FirstOrDefault(res => string.Compare(res.Key, resourceName, true, CultureInfo.InvariantCulture) == 0);
             if (asmResource.Key == null) return null;
 
             var resourceExtension = Path.GetExtension(resourceName);

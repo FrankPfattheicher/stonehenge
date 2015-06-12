@@ -1,4 +1,4 @@
-﻿// DynamicViewModel.cs
+﻿// ActiveViewModel.cs
 //
 // Author:
 //  Frank Pfattheicher <fpf@ict-baden.de>

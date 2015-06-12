@@ -1,9 +1,10 @@
-﻿using IctBaden.Stonehenge.Graph;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace IctBaden.StonehengeTest
+﻿namespace IctBaden.Stonehenge.Test
 {
-  /// <summary>
+    using IctBaden.Stonehenge.Graph;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    /// <summary>
   /// Summary description for UnitTest1
   /// </summary>
   [TestClass]

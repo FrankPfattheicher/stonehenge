@@ -86,6 +86,10 @@
     <EmbeddedResource Include="App\image.jpg" />
     <EmbeddedResource Include="App\test.htm" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App\lib\TestScript.js" />
+  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

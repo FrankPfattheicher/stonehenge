@@ -1,9 +1,9 @@
-﻿using System;
-using System.Text;
-using IctBaden.Stonehenge;
-
-namespace IctBaden.StonehengeSample.ViewModels
+﻿namespace IctBaden.Stonehenge.Sample.ViewModels
 {
+    using System;
+    using System.Text;
+
+    using IctBaden.Stonehenge;
     using IctBaden.Stonehenge.Services;
 
     public class DownloadsVm : ActiveViewModel

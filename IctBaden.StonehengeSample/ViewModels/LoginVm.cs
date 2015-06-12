@@ -1,8 +1,8 @@
-﻿using IctBaden.Stonehenge;
-
-namespace IctBaden.StonehengeSample.ViewModels
+﻿namespace IctBaden.Stonehenge.Sample.ViewModels
 {
-  public class LoginVm : ActiveViewModel
+    using IctBaden.Stonehenge;
+
+    public class LoginVm : ActiveViewModel
   {
     public LoginVm(AppSession session) : base(session)
     {

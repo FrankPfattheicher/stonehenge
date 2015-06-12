@@ -1,7 +1,7 @@
-﻿using IctBaden.Stonehenge;
-
-namespace IctBaden.StonehengeSample.ViewModels
+﻿namespace IctBaden.Stonehenge.Sample.ViewModels
 {
+    using IctBaden.Stonehenge;
+
     public class ImagesVm : ActiveViewModel
     {
         public bool IsOn { get; set; }

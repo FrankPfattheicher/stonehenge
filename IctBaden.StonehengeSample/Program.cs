@@ -1,10 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
-using IctBaden.Stonehenge;
-
-namespace IctBaden.StonehengeSample
+﻿namespace IctBaden.Stonehenge.Sample
 {
+    using System;
+    using System.IO;
+    using System.Windows.Forms;
+
+    using IctBaden.Stonehenge;
+
     static class Program
     {
         public static AppEngine App;

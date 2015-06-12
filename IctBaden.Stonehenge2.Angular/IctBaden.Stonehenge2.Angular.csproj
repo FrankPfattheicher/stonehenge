@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IctBaden.Stonehenge2.Angular</RootNamespace>
+    <AssemblyName>IctBaden.Stonehenge2.Angular</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AngularVmCreator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App\index.html" />
+    <EmbeddedResource Include="App\lib\angular\angular-route.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-route.min.js" />
+    <EmbeddedResource Include="App\lib\angular\angular.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IctBaden.Stonehenge2\IctBaden.Stonehenge2.csproj">
+      <Project>{840EC9F2-7967-4120-9F45-6FF56DF9FADB}</Project>
+      <Name>IctBaden.Stonehenge2</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App\app.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App\lib\angular\angular-animate.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-animate.min.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-aria.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-aria.min.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-cookies.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-cookies.min.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-csp.css" />
+    <EmbeddedResource Include="App\lib\angular\angular-loader.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-loader.min.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-message-format.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-message-format.min.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-messages.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-messages.min.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-mocks.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-resource.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-resource.min.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-sanitize.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-sanitize.min.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-scenario.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-touch.js" />
+    <EmbeddedResource Include="App\lib\angular\angular-touch.min.js" />
+    <EmbeddedResource Include="App\lib\angular\angular.js" />
+    <EmbeddedResource Include="App\lib\angular\version.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App\lib\angular\angular-animate.min.js.map" />
+    <EmbeddedResource Include="App\lib\angular\angular-aria.min.js.map" />
+    <EmbeddedResource Include="App\lib\angular\angular-cookies.min.js.map" />
+    <EmbeddedResource Include="App\lib\angular\angular-loader.min.js.map" />
+    <EmbeddedResource Include="App\lib\angular\angular-message-format.min.js.map" />
+    <EmbeddedResource Include="App\lib\angular\angular-messages.min.js.map" />
+    <EmbeddedResource Include="App\lib\angular\angular-resource.min.js.map" />
+    <EmbeddedResource Include="App\lib\angular\angular-route.min.js.map" />
+    <EmbeddedResource Include="App\lib\angular\angular-sanitize.min.js.map" />
+    <EmbeddedResource Include="App\lib\angular\angular-touch.min.js.map" />
+    <EmbeddedResource Include="App\lib\angular\angular.min.js.map" />
+    <EmbeddedResource Include="App\lib\angular\errors.json" />
+    <EmbeddedResource Include="App\lib\angular\version.json" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

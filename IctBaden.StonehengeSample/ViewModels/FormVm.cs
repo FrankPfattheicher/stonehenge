@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using IctBaden.Stonehenge;
-
-namespace IctBaden.StonehengeSample.ViewModels
+﻿namespace IctBaden.Stonehenge.Sample.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading;
+
+    using IctBaden.Stonehenge;
+
     public class FormVm : ActiveViewModel
     {
         private static int nid = 1;

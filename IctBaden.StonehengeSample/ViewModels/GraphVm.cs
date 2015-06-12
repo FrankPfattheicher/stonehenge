@@ -1,11 +1,12 @@
-﻿using System;
-using System.Threading;
-using IctBaden.Stonehenge;
-using IctBaden.Stonehenge.Graph;
-
-namespace IctBaden.StonehengeSample.ViewModels
+﻿namespace IctBaden.Stonehenge.Sample.ViewModels
 {
-  public class GraphVm : ActiveViewModel, IDisposable
+    using System;
+    using System.Threading;
+
+    using IctBaden.Stonehenge;
+    using IctBaden.Stonehenge.Graph;
+
+    public class GraphVm : ActiveViewModel, IDisposable
   {
     public const int Count = 180;
 

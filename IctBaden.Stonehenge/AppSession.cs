@@ -106,7 +106,7 @@ namespace IctBaden.Stonehenge
                 if (typeof(ActiveViewModel).IsAssignableFrom(vmtype))
                 {
                     var sessionCtor = vmtype.GetConstructors().FirstOrDefault(ctor => ctor.GetParameters().Length == 1);
-                    vm = (sessionCtor != null) ? Activator.CreateInstance(vmtype, new object[] { this }) : Activator.CreateInstance(vmtype);
+                    vm = (sessionCtor != null) ? Activator.CreateInstance(vmtype, this) : Activator.CreateInstance(vmtype);
                 }
                 else
                 {
@@ -130,7 +130,7 @@ namespace IctBaden.Stonehenge
                 if (string.IsNullOrEmpty(HostDomain))
                     return string.Empty;
 
-                var parts = HostDomain.Split(new[] { '.' });
+                var parts = HostDomain.Split('.');
                 int val;
                 var isNumeric = int.TryParse(parts[0], out val);
                 return isNumeric ? HostDomain : parts[0];

@@ -1,9 +1,10 @@
-﻿using IctBaden.Stonehenge.Creators;
-using IctBaden.Stonehenge.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace IctBaden.StonehengeTest
+﻿namespace IctBaden.Stonehenge.Test
 {
+    using IctBaden.Stonehenge.Creators;
+    using IctBaden.Stonehenge.Services;
+
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     [DeploymentItem("CDN.cfg")]
     [TestClass]
     public class CdnTests
@@ -21,11 +22,11 @@ namespace IctBaden.StonehengeTest
         [TestMethod]
         public void HtmlMatchCssReturnsResolvedText()
         {
-            const string page = "  <link type=\"text/css\" media=\"all\" href=\"css/bootstrap.css\" rel=\"stylesheet\">   ";
+            const string Page = "  <link type=\"text/css\" media=\"all\" href=\"css/bootstrap.css\" rel=\"stylesheet\">   ";
             var target = ContentDeliveryNetworkSupport.CdnLookup["bootstrap.css"];
-            var expected = page.Replace("css/bootstrap.css", target).Trim();
+            var expected = Page.Replace("css/bootstrap.css", target).Trim();
 
-            var resolved = ContentDeliveryNetworkSupport.RersolveHostsHtml(page, false).Trim();
+            var resolved = ContentDeliveryNetworkSupport.RersolveHostsHtml(Page, false).Trim();
 
             Assert.AreEqual(expected, resolved);
         }
@@ -33,11 +34,11 @@ namespace IctBaden.StonehengeTest
         [TestMethod]
         public void HtmlMatchScriptReturnsResolvedText()
         {
-            const string page = "  <script type=\"text/javascript\" src=\"scripts/jquery-1.10.2.js\"></script>  ";
-            var target = ContentDeliveryNetworkSupport.CdnLookup["jquery-1.10.2.js"];
-            var expected = page.Replace("scripts/jquery-1.10.2.js", target).Trim();
+            const string Page = "  <script type=\"text/javascript\" src=\"scripts/jquery-2.1.3.js\"></script>  ";
+            var target = ContentDeliveryNetworkSupport.CdnLookup["jquery-2.1.3.js"];
+            var expected = Page.Replace("scripts/jquery-2.1.3.js", target).Trim();
 
-            var resolved = ContentDeliveryNetworkSupport.RersolveHostsHtml(page, false).Trim();
+            var resolved = ContentDeliveryNetworkSupport.RersolveHostsHtml(Page, false).Trim();
 
             Assert.AreEqual(expected, resolved);
         }
@@ -45,11 +46,11 @@ namespace IctBaden.StonehengeTest
         [TestMethod]
         public void JsNoMatchReturnsOriginalText()
         {
-            const string script = "  'none':         '/app/lib/flot/js/nothing',   ";
+            const string Script = "  'none':         '/app/lib/flot/js/nothing',   ";
 
-            var resolved = ContentDeliveryNetworkSupport.RersolveHostsJs(script, false);
+            var resolved = ContentDeliveryNetworkSupport.RersolveHostsJs(Script, false);
 
-            Assert.AreEqual(script, resolved);
+            Assert.AreEqual(Script, resolved);
         }
 
         [TestMethod]

@@ -1,4 +1,4 @@
-﻿namespace IctBaden.StonehengeSample.ViewModels
+﻿namespace IctBaden.Stonehenge.Sample.ViewModels
 {
   public class InvisibleVm
   {

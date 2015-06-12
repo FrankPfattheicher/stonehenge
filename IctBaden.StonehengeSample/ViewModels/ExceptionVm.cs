@@ -1,6 +1,7 @@
-﻿namespace IctBaden.StonehengeSample.ViewModels
+﻿namespace IctBaden.Stonehenge.Sample.ViewModels
 {
     using IctBaden.Stonehenge;
+    using IctBaden.Stonehenge.Sample;
 
     public class ExceptionVm : ActiveViewModel
     {

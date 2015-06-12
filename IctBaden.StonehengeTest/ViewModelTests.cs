@@ -1,4 +1,4 @@
-﻿namespace IctBaden.StonehengeTest
+﻿namespace IctBaden.Stonehenge.Test
 {
     using System;
 

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using IctBaden.Stonehenge;
-using IctBaden.Stonehenge.Tree;
-
-namespace IctBaden.StonehengeSample.ViewModels
+﻿namespace IctBaden.Stonehenge.Sample.ViewModels
 {
-  public class TreeVm : ActiveViewModel
+    using System.Collections.Generic;
+
+    using IctBaden.Stonehenge;
+    using IctBaden.Stonehenge.Tree;
+
+    public class TreeVm : ActiveViewModel
   {
     public List<TreeNode> DemoTreeData { get; private set; }
     public TreeSettings DemoTreeSettings { get; private set; }

@@ -1,13 +1,8 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using IctBaden.Stonehenge;
-
-namespace IctBaden.StonehengeSample.ViewModels
+﻿namespace IctBaden.Stonehenge.Sample.ViewModels
 {
-  class IsDirtyVm : ActiveViewModel
+    using IctBaden.Stonehenge;
+
+    class IsDirtyVm : ActiveViewModel
   {
     public string Name { get; set; }
     public string Address { get; set; }
