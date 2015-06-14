@@ -4,6 +4,7 @@
     using System.Diagnostics;
     using System.Net;
 
+    using IctBaden.Stonehenge2.Katana;
     using IctBaden.Stonehenge2.Test.Tools;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,12 +15,13 @@
     {
 
         [TestMethod]
+        [DeploymentItem("Microsoft.Owin.Host.HttpListener.dll")]
         public void Host_StartupOk_RespondsOnHttpRequest()
         {
             const string content = "<h1>Test</h1>";
 
             var loader = new TestResourceLoader(content);
-            var host = new Katana.KatanaHost(loader);
+            var host = new KatanaHost(loader);
 
             var startOk = host.Start(false, "127.0.0.1", 42001);
             Assert.IsTrue(startOk, "Start failed");
@@ -38,6 +40,7 @@
             }
 
             Assert.AreEqual(content, response);
+            host.Terminate();
         }
 
         [TestMethod]
@@ -47,13 +50,13 @@
             const string content2 = "<h1>Test II</h1>";
 
             var loader1 = new TestResourceLoader(content1);
-            var host1 = new Katana.KatanaHost(loader1);
+            var host1 = new KatanaHost(loader1);
 
             var startOk = host1.Start(false, "127.0.0.1", 42002);
             Assert.IsTrue(startOk, "Start host1 failed");
 
             var loader2 = new TestResourceLoader(content2);
-            var host2 = new Katana.KatanaHost(loader2);
+            var host2 = new KatanaHost(loader2);
 
             startOk = host2.Start(false, "127.0.0.1", 42003);
             Assert.IsTrue(startOk, "Start host2 failed");
@@ -81,6 +84,9 @@
 
             Assert.AreEqual(content1, response1);
             Assert.AreEqual(content2, response2);
+
+            host1.Terminate();
+            host2.Terminate();
         }
     
     }

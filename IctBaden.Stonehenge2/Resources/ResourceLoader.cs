@@ -64,8 +64,8 @@
         {
             foreach (var resource in assemby.GetManifestResourceNames())
             {
-                const string BaseName = ".App.";
-                var appBase = resource.IndexOf(BaseName, System.StringComparison.Ordinal);
+                const string BaseName = ".app.";
+                var appBase = resource.IndexOf(BaseName, StringComparison.InvariantCultureIgnoreCase);
                 if (appBase == -1)
                 {
                     continue;

@@ -1,7 +1,6 @@
 ﻿namespace IctBaden.Stonehenge2.Resources
 {
     using System;
-    using System.IO;
 
     public class Resource
     {
@@ -36,7 +35,7 @@
 
         private Resource(string name, string source, ResourceType type)
         {
-            var ext = Path.GetExtension(name) ?? string.Empty;
+            Name = name;
             Source = source;
             ContentType = type.ContentType;
         }

@@ -30,12 +30,13 @@ namespace IctBaden.Stonehenge2.Katana
                     + (hostAddress ?? "127.0.0.1" )
                     + ":" 
                     + ((hostPort != 0) ? hostPort : (useSsl ? 443 : 80));
+
                 var startup = new Startup(resourceLoader);
                 webApp = WebApp.Start(BaseUrl, startup.Configuration);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Trace.TraceError("KatanaHost.Start: " + ex.Message);
             }
             return webApp != null;
         }

@@ -86,11 +86,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App\images\" />
-    <Folder Include="App\lib\" />
+    <Folder Include="app\images\" />
+    <Folder Include="app\lib\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App\start.html" />
+    <EmbeddedResource Include="app\start.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="app\about.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\file.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

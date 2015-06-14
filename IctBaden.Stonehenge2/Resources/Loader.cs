@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Reflection;
 
-    using IctBaden.Stonehenge2.ClientVm;
+    using IctBaden.Stonehenge2.Client;
 
     public class Loader : IResourceProvider
     {
@@ -37,7 +37,7 @@
             var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? Directory.GetCurrentDirectory();
             var fileLoader = new FileLoader(Path.Combine(path, "App"));
 
-            var viewModelCreator = new ClientVmCreator();
+            var viewModelCreator = new ViewModelProvider();
 
             var loader = new Loader(new List<IResourceProvider> { fileLoader, resLoader, viewModelCreator });
 

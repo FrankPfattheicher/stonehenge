@@ -81,18 +81,6 @@
             Assert.IsTrue(resource.Source.StartsWith("file://"));
         }
 
-        [TestMethod]
-        public void Load_from_resource_over_file_icon_png()
-        {
-            loader = new Loader(new List<IResourceProvider> { resLoader, fileLoader });
-            fileTest.CreateTextFile("index.html");
-            var resource = loader.Load("index.html");
-            Assert.IsNotNull(resource);
-            Assert.AreEqual(resource.ContentType, "text/html");
-            Assert.IsFalse(resource.IsBinary);
-            Assert.IsTrue(resource.Text.StartsWith("<!DOCTYPE html>"));
-            Assert.IsTrue(resource.Source.StartsWith("res://"));
-        }
 
     }
 }

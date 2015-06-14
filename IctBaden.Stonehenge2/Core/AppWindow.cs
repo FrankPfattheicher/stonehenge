@@ -1,4 +1,4 @@
-﻿namespace IctBaden.Stonehenge2
+﻿namespace IctBaden.Stonehenge2.Core
 {
     using IctBaden.Stonehenge2.Hosting;
 

@@ -39,14 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AngularVmCreator.cs" />
+    <Compile Include="AngularResourceProvider.cs" />
+    <Compile Include="Client\ContentDeliveryNetworkSupport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App\index.html" />
-    <EmbeddedResource Include="App\lib\angular\angular-route.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-route.min.js" />
-    <EmbeddedResource Include="App\lib\angular\angular.min.js" />
+    <EmbeddedResource Include="app\index.html" />
+    <EmbeddedResource Include="app\lib\angular\angular-route.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-route.min.js" />
+    <EmbeddedResource Include="app\lib\angular\angular.min.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IctBaden.Stonehenge2\IctBaden.Stonehenge2.csproj">
@@ -55,47 +56,47 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App\app.js" />
+    <EmbeddedResource Include="Client\stonehengeApp.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App\lib\angular\angular-animate.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-animate.min.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-aria.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-aria.min.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-cookies.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-cookies.min.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-csp.css" />
-    <EmbeddedResource Include="App\lib\angular\angular-loader.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-loader.min.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-message-format.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-message-format.min.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-messages.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-messages.min.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-mocks.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-resource.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-resource.min.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-sanitize.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-sanitize.min.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-scenario.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-touch.js" />
-    <EmbeddedResource Include="App\lib\angular\angular-touch.min.js" />
-    <EmbeddedResource Include="App\lib\angular\angular.js" />
-    <EmbeddedResource Include="App\lib\angular\version.txt" />
+    <EmbeddedResource Include="app\lib\angular\angular-animate.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-animate.min.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-aria.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-aria.min.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-cookies.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-cookies.min.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-csp.css" />
+    <EmbeddedResource Include="app\lib\angular\angular-loader.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-loader.min.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-message-format.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-message-format.min.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-messages.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-messages.min.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-mocks.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-resource.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-resource.min.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-sanitize.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-sanitize.min.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-scenario.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-touch.js" />
+    <EmbeddedResource Include="app\lib\angular\angular-touch.min.js" />
+    <EmbeddedResource Include="app\lib\angular\angular.js" />
+    <EmbeddedResource Include="app\lib\angular\version.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="App\lib\angular\angular-animate.min.js.map" />
-    <EmbeddedResource Include="App\lib\angular\angular-aria.min.js.map" />
-    <EmbeddedResource Include="App\lib\angular\angular-cookies.min.js.map" />
-    <EmbeddedResource Include="App\lib\angular\angular-loader.min.js.map" />
-    <EmbeddedResource Include="App\lib\angular\angular-message-format.min.js.map" />
-    <EmbeddedResource Include="App\lib\angular\angular-messages.min.js.map" />
-    <EmbeddedResource Include="App\lib\angular\angular-resource.min.js.map" />
-    <EmbeddedResource Include="App\lib\angular\angular-route.min.js.map" />
-    <EmbeddedResource Include="App\lib\angular\angular-sanitize.min.js.map" />
-    <EmbeddedResource Include="App\lib\angular\angular-touch.min.js.map" />
-    <EmbeddedResource Include="App\lib\angular\angular.min.js.map" />
-    <EmbeddedResource Include="App\lib\angular\errors.json" />
-    <EmbeddedResource Include="App\lib\angular\version.json" />
+    <EmbeddedResource Include="app\lib\angular\angular-animate.min.js.map" />
+    <EmbeddedResource Include="app\lib\angular\angular-aria.min.js.map" />
+    <EmbeddedResource Include="app\lib\angular\angular-cookies.min.js.map" />
+    <EmbeddedResource Include="app\lib\angular\angular-loader.min.js.map" />
+    <EmbeddedResource Include="app\lib\angular\angular-message-format.min.js.map" />
+    <EmbeddedResource Include="app\lib\angular\angular-messages.min.js.map" />
+    <EmbeddedResource Include="app\lib\angular\angular-resource.min.js.map" />
+    <EmbeddedResource Include="app\lib\angular\angular-route.min.js.map" />
+    <EmbeddedResource Include="app\lib\angular\angular-sanitize.min.js.map" />
+    <EmbeddedResource Include="app\lib\angular\angular-touch.min.js.map" />
+    <EmbeddedResource Include="app\lib\angular\angular.min.js.map" />
+    <EmbeddedResource Include="app\lib\angular\errors.json" />
+    <EmbeddedResource Include="app\lib\angular\version.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

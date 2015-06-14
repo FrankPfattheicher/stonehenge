@@ -1,8 +1,6 @@
 ﻿namespace IctBaden.Stonehenge2.Katana
 {
-    using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
 
     using IctBaden.Stonehenge2.Katana.Middleware;
     using IctBaden.Stonehenge2.Resources;

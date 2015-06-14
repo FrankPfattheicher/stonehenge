@@ -53,16 +53,6 @@
         }
 
         [TestMethod]
-        public void Load_resource_index_html()
-        {
-            var resource = loader.Load("index.html");
-            Assert.IsNotNull(resource);
-            Assert.AreEqual(resource.ContentType, "text/html");
-            Assert.IsFalse(resource.IsBinary);
-            Assert.IsTrue(resource.Text.StartsWith("<!DOCTYPE html>"));
-        }
-
-        [TestMethod]
         public void Load_resource_image_png()
         {
             var resource = loader.Load("image.jpg");
@@ -75,7 +65,13 @@
         [TestMethod]
         public void Load_resource_test_html()
         {
-            var resource = loader.Load("test.htm");
+            var resource = loader.Load("test.html");
+            Assert.IsNotNull(resource);
+            Assert.AreEqual(resource.ContentType, "text/html");
+            Assert.IsFalse(resource.IsBinary);
+            Assert.IsTrue(resource.Text.StartsWith("<!DOCTYPE html>"));
+
+            resource = loader.Load("TesT.HTML");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "text/html");
             Assert.IsFalse(resource.IsBinary);

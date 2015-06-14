@@ -17,22 +17,32 @@
             IsBinary = isBinary;
         }
 
-        private readonly static List<ResourceType> KnownTypes = new List<ResourceType>
+        public static readonly ResourceType Htm = new ResourceType("htm", "text/html", false);
+        public static readonly ResourceType Html = new ResourceType("html", "text/html" , false);
+        public static readonly ResourceType Css = new ResourceType("css", "text/css", false);
+        public static readonly ResourceType Js = new ResourceType("js", "text/javascript", false);
+        public static readonly ResourceType Json = new ResourceType("json", "application/json", false);
+        public static readonly ResourceType Png = new ResourceType("png", "image/png", true);
+        public static readonly ResourceType Gif = new ResourceType("gif", "image/gif", true);
+        public static readonly ResourceType Jpg = new ResourceType("jpg", "image/jpeg", true);
+        public static readonly ResourceType Jpeg = new ResourceType("jpeg", "image/jpeg", true);
+        public static readonly ResourceType Wav = new ResourceType("wav", "audio/x-wav", true);
+        public static readonly ResourceType Ico = new ResourceType("ico", "image/x-icon", true);
+
+        public readonly static List<ResourceType> KnownTypes = new List<ResourceType>
                 {
-                    new ResourceType( ".htm", "text/html", false),
-                    new ResourceType( ".html", "text/html" , false),
-                    new ResourceType( ".css", "text/css" , false),
-                    new ResourceType( ".js", "text/javascript" , false),
-                    new ResourceType( ".png", "image/png" , true),
-                    new ResourceType( ".gif", "image/gif" , true),
-                    new ResourceType( ".jpg", "image/jpeg" , true),
-                    new ResourceType( ".jpeg", "image/jpeg" , true),
-                    new ResourceType( ".wav", "audio/x-wav" , true),
-                    new ResourceType( ".ico", "image/x-icon" , true),
+                    Htm, Html,
+                    Css,
+                    Js,
+                    Json,
+                    Png, Gif, Jpg, Jpeg,
+                    Wav,
+                    Ico
                 };
 
         public static ResourceType GetByExtension(string extension)
         {
+            extension = extension.Replace(".", "").ToLower();
             return KnownTypes.FirstOrDefault(rt => rt.Extension == extension) ??
                 new ResourceType(extension, "application/octet-stream", true);
         }
