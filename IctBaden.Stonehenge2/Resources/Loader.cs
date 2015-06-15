@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Reflection;
 
-    using IctBaden.Stonehenge2.Client;
+    using IctBaden.Stonehenge2.ViewModel;
 
     public class Loader : IResourceProvider
     {

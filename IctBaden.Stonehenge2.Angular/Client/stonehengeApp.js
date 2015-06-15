@@ -27,6 +27,11 @@ stonehengeApp.controller('SampleCtrl', ['$scope', '$http',
 
 stonehengeApp.controller('AboutVm', ['$scope', '$http',
   function ($scope, $http) {
+
+      $scope.OnTest = function () {
+          alert('OnTest()');
+      }
+
       $http.get('ViewModels/AboutVm.json').
         success(function (data, status, headers, config) {
             angular.extend($scope, data);

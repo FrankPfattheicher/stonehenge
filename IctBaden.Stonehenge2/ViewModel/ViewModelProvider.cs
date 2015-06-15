@@ -1,4 +1,4 @@
-﻿namespace IctBaden.Stonehenge2.Client
+﻿namespace IctBaden.Stonehenge2.ViewModel
 {
     using IctBaden.Stonehenge2.Resources;
 
