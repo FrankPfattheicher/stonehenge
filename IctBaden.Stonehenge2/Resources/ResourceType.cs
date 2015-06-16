@@ -21,7 +21,7 @@
         public static readonly ResourceType Html = new ResourceType("html", "text/html" , false);
         public static readonly ResourceType Css = new ResourceType("css", "text/css", false);
         public static readonly ResourceType Js = new ResourceType("js", "text/javascript", false);
-        public static readonly ResourceType Json = new ResourceType("json", "application/json", false);
+        public static readonly ResourceType Json = new ResourceType("json", "application/json; charset=utf-8", false);
         public static readonly ResourceType Png = new ResourceType("png", "image/png", true);
         public static readonly ResourceType Gif = new ResourceType("gif", "image/gif", true);
         public static readonly ResourceType Jpg = new ResourceType("jpg", "image/jpeg", true);

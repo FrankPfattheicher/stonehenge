@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Reflection;
 
+    using IctBaden.Stonehenge2.Core;
     using IctBaden.Stonehenge2.ViewModel;
 
     public class Loader : IResourceProvider
@@ -17,9 +18,9 @@
             Loaders = loaders ?? new List<IResourceProvider>();
         }
 
-        public Resource Load(string resourceName)
+        public Resource Load(AppSession session, string resourceName)
         {
-            return Loaders.Select(loader => loader.Load(resourceName))
+            return Loaders.Select(loader => loader.Load(session, resourceName))
                 .FirstOrDefault(resource => resource != null);
         }
 

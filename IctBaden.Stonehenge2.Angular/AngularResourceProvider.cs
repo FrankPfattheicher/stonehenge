@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Reflection;
 
+    using IctBaden.Stonehenge2.Core;
     using IctBaden.Stonehenge2.Resources;
 
     public class AngularResourceProvider : IResourceProvider
@@ -107,7 +108,7 @@
             angularContent.Add("stonehengeApp.js", resource);
         }
 
-        public Resource Load(string resourceName)
+        public Resource Load(AppSession session, string resourceName)
         {
             if (angularContent.ContainsKey(resourceName))
             {

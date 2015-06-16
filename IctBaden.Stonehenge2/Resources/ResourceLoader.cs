@@ -7,6 +7,8 @@
     using System.Linq;
     using System.Reflection;
 
+    using IctBaden.Stonehenge2.Core;
+
     public class ResourceLoader : IResourceProvider
     {
         internal class AssemblyResource
@@ -84,7 +86,7 @@
             }
         }
 
-        public Resource Load(string name)
+        public Resource Load(AppSession session, string name)
         {
             var resourceName = name.Replace("/", ".");
             var asmResource = resources.Value

@@ -5,6 +5,7 @@
     using System.IO;
     using System.Threading.Tasks;
 
+    using IctBaden.Stonehenge2.Core;
     using IctBaden.Stonehenge2.Resources;
 
     using Microsoft.Owin;
@@ -31,7 +32,9 @@
 
             var response = context.Get<Stream>("owin.ResponseBody");
             var resourceLoader = context.Get<IResourceProvider>("stonehenge.ResourceLoader");
-            var content = resourceLoader.Load(path.ToString().Substring(1));
+            var resourceName = path.Substring(1);
+            var appSession = context.Get<AppSession>("stonehenge.AppSession");
+            var content = resourceLoader.Load(appSession, resourceName);
 
             if (content == null)
             {

@@ -30,7 +30,7 @@
         public string Context { get; private set; }
         public DateTime LastUserAction { get; private set; }
         public Guid Id { get; private set; }
-        public string StackId { get; set; }
+        public string PermanentSessionId { get; private set; }
 
         internal List<string> Events = new List<string>();
         internal AutoResetEvent EventRelease = new AutoResetEvent(false);
@@ -219,15 +219,15 @@
             terminator = disposable;
         }
 
-        internal AppSession()
+        public AppSession()
         {
             userData = new Dictionary<string, object>();
             Id = Guid.NewGuid();
         }
 
-        internal bool IsInitialized { get { return UserAgent != null; } }
+        public bool IsInitialized { get { return UserAgent != null; } }
 
-        internal void Initialize(string hostDomain, string hostUrl, string clientAddress, string userAgent)
+        public void Initialize(string ssPid, string hostDomain, string hostUrl, string clientAddress, string userAgent)
         {
             if (!string.IsNullOrEmpty(hostUrl))
             {
@@ -238,6 +238,8 @@
             {
                 HostDomain = hostDomain;
             }
+
+            PermanentSessionId = ssPid;
             ClientAddress = clientAddress;
             UserAgent = userAgent;
             ConnectedSince = DateTime.Now;
@@ -264,9 +266,9 @@
 
         internal void Accessed(IDictionary<string, Cookie> cookies, bool userAction)
         {
-            if ((StackId == null) && cookies.ContainsKey("ss-pid"))
+            if ((PermanentSessionId == null) && cookies.ContainsKey("ss-pid"))
             {
-                StackId = cookies["ss-pid"].Value;
+                PermanentSessionId = cookies["ss-pid"].Value;
             }
             LastAccess = DateTime.Now;
             NotifyPropertyChanged("LastAccess");

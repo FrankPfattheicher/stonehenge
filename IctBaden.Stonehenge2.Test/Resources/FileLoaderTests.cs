@@ -4,6 +4,7 @@
     using System.Diagnostics;
     using System.IO;
 
+    using IctBaden.Stonehenge2.Core;
     using IctBaden.Stonehenge2.Resources;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,6 +13,7 @@
     public class FileLoaderTests
     {
         private FileLoader loader;
+        private readonly AppSession session = new AppSession();
         private string fullFileName;
 
         [TestInitialize]
@@ -66,7 +68,7 @@
         [TestMethod]
         public void Load_file_unknown_txt()
         {
-            var resource = loader.Load("unknown.txt");
+            var resource = loader.Load(session, "unknown.txt");
             Assert.IsNull(resource);
         }
 
@@ -74,7 +76,7 @@
         public void Load_file_icon_png()
         {
             CreateBinaryFile("icon.png");
-            var resource = loader.Load("icon.png");
+            var resource = loader.Load(session, "icon.png");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "image/png");
             Assert.IsTrue(resource.IsBinary);
@@ -85,7 +87,7 @@
         public void Load_file_index_html()
         {
             CreateTextFile("index.html");
-            var resource = loader.Load("index.html");
+            var resource = loader.Load(session, "index.html");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "text/html");
             Assert.IsFalse(resource.IsBinary);
@@ -96,7 +98,7 @@
         public void Load_file_image_png()
         {
             CreateBinaryFile("image.jpg");
-            var resource = loader.Load("image.jpg");
+            var resource = loader.Load(session, "image.jpg");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "image/jpeg");
             Assert.IsTrue(resource.IsBinary);
@@ -107,7 +109,7 @@
         public void Load_file_test_html()
         {
             CreateTextFile("test.htm");
-            var resource = loader.Load("test.htm");
+            var resource = loader.Load(session, "test.htm");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "text/html");
             Assert.IsFalse(resource.IsBinary);

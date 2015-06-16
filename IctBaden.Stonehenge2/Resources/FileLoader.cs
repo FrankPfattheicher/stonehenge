@@ -3,6 +3,8 @@
     using System;
     using System.IO;
 
+    using IctBaden.Stonehenge2.Core;
+
     public class FileLoader : IResourceProvider
     {
         public string RootPath { get; private set; }
@@ -12,7 +14,7 @@
             RootPath = path;
         }
 
-        public Resource Load(string resourceName)
+        public Resource Load(AppSession session, string resourceName)
         {
             var fullFileName = Path.Combine(RootPath, resourceName);
             if(!File.Exists(fullFileName)) return null;
