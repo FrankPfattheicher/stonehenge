@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\IctBaden.Stonehenge2\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="KatanaHost.cs" />
     <Compile Include="Middleware\StonehengeContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

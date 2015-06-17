@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text.RegularExpressions;
 
     using IctBaden.Stonehenge2.Core;
     using IctBaden.Stonehenge2.Resources;
@@ -23,6 +24,20 @@
             AddAppJs(rootPage);
         }
 
+        private static string GetViewModelName(string route, string pageText)
+        {
+            var name = route.Substring(0, 1).ToUpper() + route.Substring(1) + "Vm";
+
+            var extractName = new Regex("ng-controller=\\\"(\\w+)\\\"");
+            var match = extractName.Match(pageText);
+            if (match.Success)
+            {
+                name = match.Groups[1].Value;
+            }
+
+            return name;
+        }
+
         private void AddFileSystemContent(string appFilesPath)
         {
             if (Directory.Exists(appFilesPath))
@@ -37,7 +52,7 @@
                     var route = resourceId.Replace(".html", string.Empty);
                     var pageText = File.ReadAllText(appFile);
 
-                    var resource = new Resource(route, appFile, ResourceType.Html, pageText);
+                    var resource = new Resource(route, appFile, ResourceType.Html, pageText) { ExtProperty = GetViewModelName(route, pageText) };
                     angularContent.Add(resourceId, resource);
                 }
             }
@@ -71,42 +86,19 @@
                     }
                 }
 
-                var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText);
+                var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText) { ExtProperty = GetViewModelName(route, pageText) };
                 angularContent.Add(resourceId, resource);
             }
         }
 
         private void AddAppJs(string rootPage)
         {
-            var routesInsertPoint = "//stonehengeAppRoutes";
-
-            var rootTemplate = "when('/', {{ templateUrl: '{0}.html', controller: 'AboutVm' }}).";
-            var pageTemplate = "when('/{0}', {{ templateUrl: '{0}.html', controller: 'AboutVm' }}).";
-
-            var appJsResourceName = "IctBaden.Stonehenge2.Angular.Client.stonehengeApp.js";
-            var assembly = Assembly.GetAssembly(GetType());
-            var pageText = string.Empty;
-
-            using (var stream = assembly.GetManifestResourceStream(appJsResourceName))
-            {
-                if (stream != null)
-                {
-                    using (var reader = new StreamReader(stream))
-                    {
-                        pageText = reader.ReadToEnd();
-                    }
-                }
-            }
-
-            var pages = angularContent
-                .Select(res => string.Format((res.Value.Name == rootPage) ? rootTemplate : pageTemplate, res.Value.Name));
-
-            var routes = string.Join(Environment.NewLine, pages);
-            pageText = pageText.Replace(routesInsertPoint, routes);
-
-            var resource = new Resource("stonehengeApp.js", "AngularResourceProvider", ResourceType.Html, pageText);
+            var appCreator = new AngularAppCreator(rootPage, angularContent);
+            var resource = new Resource("stonehengeApp.js", "AngularResourceProvider", ResourceType.Html,
+                appCreator.CreateApplicationJs());
             angularContent.Add("stonehengeApp.js", resource);
         }
+
 
         public Resource Load(AppSession session, string resourceName)
         {

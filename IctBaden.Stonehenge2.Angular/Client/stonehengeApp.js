@@ -10,37 +10,5 @@ stonehengeApp.config(['$routeProvider',
         });
   }]);
 
-
-stonehengeApp.controller('SampleCtrl', ['$scope', '$http',
-  function ($scope, $http) {
-      $http.get('ViewModels/SampleVm.json').
-        success(function (data, status, headers, config) {
-            angular.extend($scope, data);
-        }).
-        error(function (data, status, headers, config) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-            debugger;
-        });
-
-  }]);
-
-stonehengeApp.controller('AboutVm', ['$scope', '$http',
-  function ($scope, $http) {
-
-      $scope.OnTest = function () {
-          alert('OnTest()');
-      }
-
-      $http.get('ViewModels/AboutVm.json').
-        success(function (data, status, headers, config) {
-            angular.extend($scope, data);
-        }).
-        error(function (data, status, headers, config) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-            debugger;
-        });
-
-  }]);
+//stonehengeControllers
 

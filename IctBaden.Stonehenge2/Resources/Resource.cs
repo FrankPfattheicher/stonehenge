@@ -6,6 +6,7 @@
     {
         public string ContentType { get; private set; }
         public string Name { get; private set; }
+        public string Source { get; private set; }
 
         public bool IsBinary
         {
@@ -16,7 +17,7 @@
         }
         public byte[] Data { get; private set; }
         public string Text { get; private set; }
-        public string Source { get; private set; }
+        public string ExtProperty { get; set; }
 
         public Resource(string name, string source, ResourceType type, string text)
             : this(name, source, type)
