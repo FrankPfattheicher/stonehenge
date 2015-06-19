@@ -86,7 +86,12 @@
             }
         }
 
-        public Resource Load(AppSession session, string name)
+        public Resource Post(AppSession session, string resourceName, object[] postParams)
+        {
+            return null;
+        }
+
+        public Resource Get(AppSession session, string name)
         {
             var resourceName = name.Replace("/", ".");
             var asmResource = resources.Value

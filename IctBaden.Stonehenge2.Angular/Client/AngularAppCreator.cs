@@ -1,4 +1,4 @@
-﻿namespace IctBaden.Stonehenge2.Angular
+﻿namespace IctBaden.Stonehenge2.Angular.Client
 {
     using System;
     using System.Collections.Generic;
@@ -82,7 +82,7 @@
                 .FirstOrDefault(type => type.Name == name);
         }
 
-        private static string GetController(string name)
+        private static string GetController(string vmName)
         {
             const string ControllerTemplate =
 @"stonehengeApp.controller('{0}', ['$scope', '$http',
@@ -90,7 +90,7 @@
 
       /*commands*/
 
-      $http.get('ViewModels/{0}.json').
+      $http.get('ViewModel/{0}.json').
         success(function (data, status, headers, config) {
             angular.extend($scope, data);
         }).
@@ -101,15 +101,22 @@
   }]);
 ";
 
-            var text = ControllerTemplate.Replace("{0}", name);
+            var text = ControllerTemplate.Replace("{0}", vmName);
 
-            var vmType = GetVmType(name);
+            var vmType = GetVmType(vmName);
 
             const string MethodTemplate =
-@"$scope.{0} = function() {
-    alert('{0}')
+@"$scope.{1} = function(p1, p2, p3) {
+    $http.post('/ViewModel/{0}/{1}?p1=' + encodeURIComponent(p1) + '&p2=' + encodeURIComponent(p2) + '&p3=' + encodeURIComponent(p3), {2}).
+  success(function(data, status, headers, config) {
+    angular.extend($scope, data);
+  }).
+  error(function(data, status, headers, config) {
+    debugger;
+  });
 }
 ";
+            var postData = "{}";
 
             // supply functions for action methods
             var actionMethods = new StringBuilder();
@@ -119,7 +126,10 @@
                 //  ? "%method%: function (data, event, param) { if(!IsLoading()) post_ViewModelName_Data(self, event.currentTarget, '%method%', param); },".Replace("%method%", methodInfo.Name)
                 //  : "%method%: function (data, event) { if(!IsLoading()) post_ViewModelName_Data(self, event.currentTarget, '%method%', null); },".Replace("%method%", methodInfo.Name);
 
-                var method = MethodTemplate.Replace("{0}", methodInfo.Name);
+                var method = MethodTemplate
+                    .Replace("{0}", vmName)
+                    .Replace("{1}", methodInfo.Name)
+                    .Replace("{2}", postData);
 
                 actionMethods.AppendLine(method);
             }

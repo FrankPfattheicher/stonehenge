@@ -1,6 +1,5 @@
 ﻿namespace IctBaden.Stonehenge2.Resources
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -18,9 +17,14 @@
             Loaders = loaders ?? new List<IResourceProvider>();
         }
 
-        public Resource Load(AppSession session, string resourceName)
+        public Resource Post(AppSession session, string resourceName, object[] postParams)
         {
-            return Loaders.Select(loader => loader.Load(session, resourceName))
+            return Loaders.Select(loader => loader.Post(session, resourceName, postParams))
+                .FirstOrDefault(resource => resource != null);
+        }
+        public Resource Get(AppSession session, string resourceName)
+        {
+            return Loaders.Select(loader => loader.Get(session, resourceName))
                 .FirstOrDefault(resource => resource != null);
         }
 

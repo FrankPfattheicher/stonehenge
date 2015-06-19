@@ -8,6 +8,7 @@
     using System.Reflection;
     using System.Text.RegularExpressions;
 
+    using IctBaden.Stonehenge2.Angular.Client;
     using IctBaden.Stonehenge2.Core;
     using IctBaden.Stonehenge2.Resources;
 
@@ -100,7 +101,11 @@
         }
 
 
-        public Resource Load(AppSession session, string resourceName)
+        public Resource Post(AppSession session, string resourceName, object[] postParams)
+        {
+            return null;
+        }
+        public Resource Get(AppSession session, string resourceName)
         {
             if (angularContent.ContainsKey(resourceName))
             {

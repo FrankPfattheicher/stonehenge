@@ -30,14 +30,14 @@
         [TestMethod]
         public void Load_resource_unknown_txt()
         {
-            var resource = loader.Load(session, "unknown.txt");
+            var resource = loader.Get(session, "unknown.txt");
             Assert.IsNull(resource);
         }
 
         [TestMethod]
         public void Load_resource_icon_png()
         {
-            var resource = loader.Load(session, "icon.png");
+            var resource = loader.Get(session, "icon.png");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "image/png");
             Assert.IsTrue(resource.IsBinary);
@@ -47,7 +47,7 @@
         [TestMethod]
         public void Load_resource_icon32_png()
         {
-            var resource = loader.Load(session, "icon32.png");
+            var resource = loader.Get(session, "icon32.png");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "image/png");
             Assert.IsTrue(resource.IsBinary);
@@ -57,7 +57,7 @@
         [TestMethod]
         public void Load_resource_image_png()
         {
-            var resource = loader.Load(session, "image.jpg");
+            var resource = loader.Get(session, "image.jpg");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "image/jpeg");
             Assert.IsTrue(resource.IsBinary);
@@ -67,13 +67,13 @@
         [TestMethod]
         public void Load_resource_test_html()
         {
-            var resource = loader.Load(session, "test.html");
+            var resource = loader.Get(session, "test.html");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "text/html");
             Assert.IsFalse(resource.IsBinary);
             Assert.IsTrue(resource.Text.StartsWith("<!DOCTYPE html>"));
 
-            resource = loader.Load(session, "TesT.HTML");
+            resource = loader.Get(session, "TesT.HTML");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "text/html");
             Assert.IsFalse(resource.IsBinary);
@@ -83,7 +83,7 @@
         [TestMethod]
         public void Load_resource_testscript_js()
         {
-            var resource = loader.Load(session, "lib/testscript.js");
+            var resource = loader.Get(session, "lib/testscript.js");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "text/javascript");
             Assert.IsFalse(resource.IsBinary);

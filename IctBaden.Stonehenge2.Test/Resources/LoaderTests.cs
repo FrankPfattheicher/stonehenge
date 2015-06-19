@@ -52,7 +52,7 @@
         public void Load_from_file_icon_png()
         {
             fileTest.CreateBinaryFile("icon.png");
-            var resource = loader.Load(session, "icon.png");
+            var resource = loader.Get(session, "icon.png");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "image/png");
             Assert.IsTrue(resource.IsBinary);
@@ -63,7 +63,7 @@
         [TestMethod]
         public void Load_from_resource_icon_png()
         {
-            var resource = loader.Load(session, "image.jpg");
+            var resource = loader.Get(session, "image.jpg");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "image/jpeg");
             Assert.IsTrue(resource.IsBinary);
@@ -75,7 +75,7 @@
         public void Load_from_file_over_resource_icon_png()
         {
             fileTest.CreateTextFile("index.html");
-            var resource = loader.Load(session, "index.html");
+            var resource = loader.Get(session, "index.html");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "text/html");
             Assert.IsFalse(resource.IsBinary);

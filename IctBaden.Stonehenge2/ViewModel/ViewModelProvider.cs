@@ -1,9 +1,12 @@
 ﻿namespace IctBaden.Stonehenge2.ViewModel
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
+    using System.Reflection;
 
     using IctBaden.Stonehenge2.Core;
     using IctBaden.Stonehenge2.Resources;
@@ -12,9 +15,43 @@
 
     public class ViewModelProvider : IResourceProvider
     {
-        public Resource Load(AppSession session, string resourceName)
+        public Resource Post(AppSession session, string resourceName, object[] postParams)
         {
-            if (!resourceName.StartsWith("ViewModels/")) return null;
+            if (!resourceName.StartsWith("ViewModel/")) return null;
+
+            var methodName = Path.GetFileNameWithoutExtension(resourceName);
+            var vmTypeName = Path.GetFileNameWithoutExtension(resourceName.Replace("/" + methodName, string.Empty));
+
+
+            var vmType = session.ViewModel.GetType();
+            if (vmType.Name != vmTypeName) return null;
+
+            var method = vmType.GetMethod(methodName);
+            if (method == null) return null;
+
+            try
+            {
+                var methodParams =
+                    method.GetParameters()
+                        .Zip(
+                            postParams,
+                            (parameterInfo, postParam) =>
+                            new KeyValuePair<Type, object>(parameterInfo.ParameterType, postParam))
+                        .Select(parameterPair => Convert.ChangeType(parameterPair.Value, parameterPair.Key))
+                        .ToArray();
+                method.Invoke(session.ViewModel, methodParams);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError(ex.Message);
+                throw;
+            }
+            return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel));
+        }
+
+        public Resource Get(AppSession session, string resourceName)
+        {
+            if (!resourceName.StartsWith("ViewModel/")) return null;
             if (session.ViewModel == null)
             {
                 var vmTypeName = Path.GetFileNameWithoutExtension(resourceName);

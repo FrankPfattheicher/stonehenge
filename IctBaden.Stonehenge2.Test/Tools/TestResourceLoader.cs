@@ -14,7 +14,11 @@
             this.content = content;
         }
 
-        public Resource Load(AppSession session, string resourceName)
+        public Resource Post(AppSession session, string resourceName, object[] postParams)
+        {
+            return null;
+        }
+        public Resource Get(AppSession session, string resourceName)
         {
             var resourceExtension = Path.GetExtension(resourceName);
             return new Resource(resourceName, "test://TestResourceLoader.content", ResourceType.GetByExtension(resourceExtension), content);

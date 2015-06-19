@@ -68,7 +68,7 @@
         [TestMethod]
         public void Load_file_unknown_txt()
         {
-            var resource = loader.Load(session, "unknown.txt");
+            var resource = loader.Get(session, "unknown.txt");
             Assert.IsNull(resource);
         }
 
@@ -76,7 +76,7 @@
         public void Load_file_icon_png()
         {
             CreateBinaryFile("icon.png");
-            var resource = loader.Load(session, "icon.png");
+            var resource = loader.Get(session, "icon.png");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "image/png");
             Assert.IsTrue(resource.IsBinary);
@@ -87,7 +87,7 @@
         public void Load_file_index_html()
         {
             CreateTextFile("index.html");
-            var resource = loader.Load(session, "index.html");
+            var resource = loader.Get(session, "index.html");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "text/html");
             Assert.IsFalse(resource.IsBinary);
@@ -98,7 +98,7 @@
         public void Load_file_image_png()
         {
             CreateBinaryFile("image.jpg");
-            var resource = loader.Load(session, "image.jpg");
+            var resource = loader.Get(session, "image.jpg");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "image/jpeg");
             Assert.IsTrue(resource.IsBinary);
@@ -109,7 +109,7 @@
         public void Load_file_test_html()
         {
             CreateTextFile("test.htm");
-            var resource = loader.Load(session, "test.htm");
+            var resource = loader.Get(session, "test.htm");
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "text/html");
             Assert.IsFalse(resource.IsBinary);

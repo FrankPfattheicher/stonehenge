@@ -4,6 +4,9 @@
 
     public interface IResourceProvider
     {
-        Resource Load(AppSession session, string resourceName);
+        Resource Get(AppSession session, string resourceName);
+
+        Resource Post(AppSession session, string resourceName, object[] postParams);
+
     }
 }

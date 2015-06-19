@@ -3,7 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
+    using System.Web;
 
     using IctBaden.Stonehenge2.Core;
     using IctBaden.Stonehenge2.Resources;
@@ -34,7 +36,20 @@
             var resourceLoader = context.Get<IResourceProvider>("stonehenge.ResourceLoader");
             var resourceName = path.Substring(1);
             var appSession = context.Get<AppSession>("stonehenge.AppSession");
-            var content = resourceLoader.Load(appSession, resourceName);
+            var requestVerb = context.Get<string>("owin.RequestMethod");
+
+            Resource content = null;
+            switch (requestVerb)
+            {
+                case "GET":
+                    content = resourceLoader.Get(appSession, resourceName);
+                    break;
+                case "POST":
+                    var queryString = HttpUtility.ParseQueryString(context.Get<string>("owin.RequestQueryString"));
+                    var paramObjects = queryString.AllKeys.Select(key => queryString[key]).ToArray();
+                    content = resourceLoader.Post(appSession, resourceName, paramObjects);
+                    break;
+            }
 
             if (content == null)
             {
