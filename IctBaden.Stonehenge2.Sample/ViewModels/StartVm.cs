@@ -16,9 +16,9 @@
         }
 
         [ActionMethod]
-        public void Save(int a, string b)
+        public void Save(int number, string text)
         {
-            Test = DateTime.UtcNow.Ticks.ToString() + a + b;
+            Test = DateTime.UtcNow.Ticks.ToString() + number + text;
         }
     }
 }

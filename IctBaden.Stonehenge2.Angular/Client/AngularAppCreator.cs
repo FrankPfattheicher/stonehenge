@@ -87,9 +87,7 @@
             const string ControllerTemplate =
 @"stonehengeApp.controller('{0}', ['$scope', '$http',
   function ($scope, $http) {
-
       /*commands*/
-
       $http.get('ViewModel/{0}.json').
         success(function (data, status, headers, config) {
             angular.extend($scope, data);
@@ -106,8 +104,9 @@
             var vmType = GetVmType(vmName);
 
             const string MethodTemplate =
-@"$scope.{1} = function(p1, p2, p3) {
-    $http.post('/ViewModel/{0}/{1}?p1=' + encodeURIComponent(p1) + '&p2=' + encodeURIComponent(p2) + '&p3=' + encodeURIComponent(p3), {2}).
+@"$scope.{1} = function({paramNames}) {
+    /*postProperties*/
+    $http.post('/ViewModel/{0}/{1}{paramValues}', {2}).
   success(function(data, status, headers, config) {
     angular.extend($scope, data);
   }).
@@ -126,13 +125,22 @@
                 //  ? "%method%: function (data, event, param) { if(!IsLoading()) post_ViewModelName_Data(self, event.currentTarget, '%method%', param); },".Replace("%method%", methodInfo.Name)
                 //  : "%method%: function (data, event) { if(!IsLoading()) post_ViewModelName_Data(self, event.currentTarget, '%method%', null); },".Replace("%method%", methodInfo.Name);
 
+                var paramNames = methodInfo.GetParameters().Select(p => p.Name).ToArray();
+                var paramValues = paramNames.Any()
+                ? "?" + string.Join("&", paramNames.Select(n => string.Format("{0}='+encodeURIComponent({0})+'", n)))
+                : string.Empty;
+
                 var method = MethodTemplate
                     .Replace("{0}", vmName)
                     .Replace("{1}", methodInfo.Name)
-                    .Replace("{2}", postData);
+                    .Replace("{2}", postData)
+                    .Replace("{paramNames}", string.Join(",", paramNames))
+                    .Replace("{paramValues}", paramValues)
+                    .Replace("+''", string.Empty);
 
                 actionMethods.AppendLine(method);
             }
+            
 
             return text.Replace("/*commands*/", actionMethods.ToString());
         }
