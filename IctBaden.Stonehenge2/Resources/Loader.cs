@@ -17,9 +17,9 @@
             Loaders = loaders ?? new List<IResourceProvider>();
         }
 
-        public Resource Post(AppSession session, string resourceName, object[] postParams)
+        public Resource Post(AppSession session, string resourceName, object[] postParams, Dictionary<string, string> formData)
         {
-            return Loaders.Select(loader => loader.Post(session, resourceName, postParams))
+            return Loaders.Select(loader => loader.Post(session, resourceName, postParams, formData))
                 .FirstOrDefault(resource => resource != null);
         }
         public Resource Get(AppSession session, string resourceName)

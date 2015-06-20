@@ -6,7 +6,7 @@ stonehengeApp.config(['$routeProvider',
       $routeProvider.
         //stonehengeAppRoutes
         otherwise({
-            redirectTo: '/'
+            redirectTo: '/stonehengeRootPage'
         });
   }]);
 

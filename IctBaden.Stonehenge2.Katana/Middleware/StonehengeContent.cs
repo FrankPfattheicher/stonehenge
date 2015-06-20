@@ -45,9 +45,11 @@
                     content = resourceLoader.Get(appSession, resourceName);
                     break;
                 case "POST":
+                    var formData = context.Request.ReadFormAsync()
+                        .Result.ToDictionary(data => data.Key, data => data.Value.FirstOrDefault());
                     var queryString = HttpUtility.ParseQueryString(context.Get<string>("owin.RequestQueryString"));
-                    var paramObjects = queryString.AllKeys.Select(key => queryString[key]).ToArray();
-                    content = resourceLoader.Post(appSession, resourceName, paramObjects);
+                    var paramObjects = queryString.AllKeys.Select(key => queryString[key]).Cast<object>().ToArray();
+                    content = resourceLoader.Post(appSession, resourceName, paramObjects, formData);
                     break;
             }
 

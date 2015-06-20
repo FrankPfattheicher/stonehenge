@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -47,20 +48,16 @@
         private string InsertRoutes(string pageText)
         {
             const string RoutesInsertPoint = "//stonehengeAppRoutes";
-
-            const string RootTemplate = "when('/', {{ templateUrl: '{0}.html', controller: '{1}' }}).";
+            const string RootPageInsertPoint = "stonehengeRootPage";
             const string PageTemplate = "when('/{0}', {{ templateUrl: '{0}.html', controller: '{1}' }}).";
 
-            var pages =
-                angularContent.Select(
-                    res =>
-                    string.Format(
-                        (res.Value.Name == rootPage) ? RootTemplate : PageTemplate,
-                        res.Value.Name,
-                        res.Value.ExtProperty));
+            var pages = angularContent
+                .Select(res => string.Format(PageTemplate, res.Value.Name, res.Value.ExtProperty));
 
             var routes = string.Join(Environment.NewLine, pages);
-            pageText = pageText.Replace(RoutesInsertPoint, routes);
+            pageText = pageText
+                .Replace(RoutesInsertPoint, routes)
+                .Replace(RootPageInsertPoint, rootPage);
             return pageText;
         }
 
@@ -105,17 +102,26 @@
 
             const string MethodTemplate =
 @"$scope.{1} = function({paramNames}) {
-    /*postProperties*/
-    $http.post('/ViewModel/{0}/{1}{paramValues}', {2}).
-  success(function(data, status, headers, config) {
-    angular.extend($scope, data);
-  }).
-  error(function(data, status, headers, config) {
-    debugger;
-  });
-}
+    /*postData*/
+    $http.post('/ViewModel/{0}/{1}{paramValues}', $scope.GetStonehengePostData($scope)).
+    success(function(data, status, headers, config) {
+      angular.extend($scope, data);
+    }).
+    error(function(data, status, headers, config) {
+      debugger;
+    });
+  }
 ";
-            var postData = "{}";
+            var postbackPropNames = GetPostbackPropNames(vmType).Select(name => "'" + name + "'");
+
+            var postData = @"$scope.GetStonehengePostData = function(scope) {" + Environment.NewLine;
+            postData += "  var props = [" + string.Join(",", postbackPropNames) + "];" + Environment.NewLine;
+            postData += "  var formData = '';" + Environment.NewLine;
+            postData += "  props.forEach(function (prop) {" + Environment.NewLine;
+            postData += "    formData += prop+'='+encodeURIComponent(JSON.stringify(scope[prop]))+'&';" + Environment.NewLine;
+            postData += "  });" + Environment.NewLine;
+            postData += "  return formData;" + Environment.NewLine;
+            postData += "}" + Environment.NewLine;
 
             // supply functions for action methods
             var actionMethods = new StringBuilder();
@@ -133,7 +139,7 @@
                 var method = MethodTemplate
                     .Replace("{0}", vmName)
                     .Replace("{1}", methodInfo.Name)
-                    .Replace("{2}", postData)
+                    .Replace("/*postData*/", postData)
                     .Replace("{paramNames}", string.Join(",", paramNames))
                     .Replace("{paramValues}", paramValues)
                     .Replace("+''", string.Empty);
@@ -145,5 +151,49 @@
             return text.Replace("/*commands*/", actionMethods.ToString());
         }
 
+        private static List<string> GetPostbackPropNames(Type vmType)
+        {
+            // properties
+            var vmProps = new List<PropertyDescriptor>();
+            var viewModel = Activator.CreateInstance(vmType);
+            var activeVm = viewModel as ActiveViewModel;
+            if (activeVm != null)
+            {
+                vmProps.AddRange(from PropertyDescriptor prop in activeVm.GetProperties() select prop);
+            }
+            else
+            {
+                vmProps.AddRange(TypeDescriptor.GetProperties(viewModel, true).Cast<PropertyDescriptor>());
+            }
+
+            var assignPropNames = (from prop in vmProps
+                                   let bindable = prop.Attributes.OfType<BindableAttribute>().ToArray()
+                                   where (bindable.Length <= 0) || bindable[0].Bindable
+                                   select prop.Name).ToList();
+
+            // do not send ReadOnly or OneWay bound properties back
+            var postbackPropNames = new List<string>();
+            foreach (var propName in assignPropNames)
+            {
+                var prop = vmType.GetProperty(propName);
+                if (prop == null)
+                {
+                    if (activeVm == null)
+                        continue;
+                    prop = activeVm.GetPropertyInfo(propName);
+                    if ((prop != null) && activeVm.IsPropertyReadOnly(propName))
+                        continue;
+                }
+
+                if ((prop == null) || (prop.GetSetMethod(false) == null)) // not public writable
+                    continue;
+                var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
+                if ((bindable.Length > 0) && ((BindableAttribute)bindable[0]).Direction == BindingDirection.OneWay)
+                    continue;
+                postbackPropNames.Add(propName);
+            }
+
+            return postbackPropNames;
+        }
     }
 }

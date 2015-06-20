@@ -1,5 +1,6 @@
 ﻿namespace IctBaden.Stonehenge2.Test.Tools
 {
+    using System.Collections.Generic;
     using System.IO;
 
     using IctBaden.Stonehenge2.Core;
@@ -14,7 +15,7 @@
             this.content = content;
         }
 
-        public Resource Post(AppSession session, string resourceName, object[] postParams)
+        public Resource Post(AppSession session, string resourceName, object[] postParams, Dictionary<string, string> formData)
         {
             return null;
         }

@@ -2,6 +2,25 @@ stonehenge
 ==========
 An open source .NET Framework to use Web UI technologies for desktop and/or web applications.
 
+Upcomming version V2.0 !
+------------------------
+What's new?
+This version has an architecture and is no longer a proof of concept hack.
+
+* Katana - the Microsoft Owin stack for self hosting replaces ServiceStack 3.x
+
+* AngularJS replaces Durandal (Knockout, JQuery)
+
+* Newtonsoft.JSON replaces ServiceStack JSON serializer
+
+* Modularization and interfaces allow to replace this function modules using upcomming technologies
+
+
+Still supported V1.x
+--------------------
+Due to more than one active project using the older stack
+this will be continously supported.
+
 New in version 1.30: Update to Knockout 3.3.0, simple struct support
 
 New in version 1.20: Update to Durandal 2.1 and jQuery 2.1.3

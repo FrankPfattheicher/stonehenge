@@ -86,7 +86,7 @@
             }
         }
 
-        public Resource Post(AppSession session, string resourceName, object[] postParams)
+        public Resource Post(AppSession session, string resourceName, object[] postParams, Dictionary<string, string> formData)
         {
             return null;
         }

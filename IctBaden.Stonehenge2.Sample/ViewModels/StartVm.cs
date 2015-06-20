@@ -1,6 +1,5 @@
 ﻿namespace IctBaden.Stonehenge2.Sample.ViewModels
 {
-    using System;
     using System.Reflection;
 
     using IctBaden.Stonehenge2.ViewModel;
@@ -18,7 +17,7 @@
         [ActionMethod]
         public void Save(int number, string text)
         {
-            Test = DateTime.UtcNow.Ticks.ToString() + number + text;
+            Test = number + Test + text;
         }
     }
 }
