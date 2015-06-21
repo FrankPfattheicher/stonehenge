@@ -1,7 +1,9 @@
 ﻿namespace IctBaden.Stonehenge2.Sample
 {
     using System;
+    using System.Diagnostics;
     using System.IO;
+    using System.IO.Pipes;
     using System.Linq;
     using System.Reflection;
     using System.Threading;

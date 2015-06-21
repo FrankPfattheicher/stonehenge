@@ -29,6 +29,7 @@
             app.Use(async (context, next) =>
             {
                 var path = context.Request.Path;
+                Trace.TraceInformation("Stonehenge2.Katana Begin request {0} {1}", context.Request.Method, path);
 
                 var ssPid = context.Request.Cookies["ss-pid"];
                 var session = sessions.FirstOrDefault(s => s.PermanentSessionId == ssPid);
@@ -39,11 +40,11 @@
                     sessions.Add(session);
                 }
 
-                Debug.WriteLine("Begin Request: " + path);
                 context.Environment.Add("stonehenge.ResourceLoader", resourceLoader);
                 context.Environment.Add("stonehenge.AppSession", session);
                 await next.Invoke();
-                Debug.WriteLine("End Request: " + path);
+
+                Trace.TraceInformation("Stonehenge2.Katana End request {0} {1}", context.Request.Method, path);
             });
 
             app.Use<StonehengeContent>();

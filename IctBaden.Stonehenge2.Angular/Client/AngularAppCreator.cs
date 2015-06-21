@@ -22,22 +22,28 @@
             this.angularContent = angularContent;
         }
 
-        public string CreateApplicationJs()
+        private static string LoadResourceText(string resourceName)
         {
-            const string AppJsResourceName = "IctBaden.Stonehenge2.Angular.Client.stonehengeApp.js";
-            var assembly = Assembly.GetAssembly(GetType());
-            var applicationJs = string.Empty;
+            var assembly = Assembly.GetAssembly(typeof(AngularAppCreator));
+            var resourceText = string.Empty;
 
-            using (var stream = assembly.GetManifestResourceStream(AppJsResourceName))
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if (stream != null)
                 {
                     using (var reader = new StreamReader(stream))
                     {
-                        applicationJs = reader.ReadToEnd();
+                        resourceText = reader.ReadToEnd();
                     }
                 }
             }
+
+            return resourceText;
+        }
+
+        public string CreateApplicationJs()
+        {
+            var applicationJs = LoadResourceText("IctBaden.Stonehenge2.Angular.Client.stonehengeApp.js");
 
             applicationJs = InsertRoutes(applicationJs);
             applicationJs += GetControllers();
@@ -81,48 +87,24 @@
 
         private static string GetController(string vmName)
         {
-            const string ControllerTemplate =
-@"stonehengeApp.controller('{0}', ['$scope', '$http',
-  function ($scope, $http) {
-      /*commands*/
-      $http.get('ViewModel/{0}.json').
-        success(function (data, status, headers, config) {
-            angular.extend($scope, data);
-        }).
-        error(function (data, status, headers, config) {
-            debugger;
-        });
-
-  }]);
-";
-
-            var text = ControllerTemplate.Replace("{0}", vmName);
-
             var vmType = GetVmType(vmName);
+
+            var controllerTemplate = LoadResourceText("IctBaden.Stonehenge2.Angular.Client.stonehengeController.js");
+  
+            var text = controllerTemplate.Replace("{0}", vmName);
+
+            var postbackPropNames = GetPostbackPropNames(vmType).Select(name => "'" + name + "'");
+            text = text.Replace("'propNames'", string.Join(",", postbackPropNames));
+
+
+
+
 
             const string MethodTemplate =
 @"$scope.{1} = function({paramNames}) {
-    /*postData*/
-    $http.post('/ViewModel/{0}/{1}{paramValues}', $scope.GetStonehengePostData($scope)).
-    success(function(data, status, headers, config) {
-      angular.extend($scope, data);
-    }).
-    error(function(data, status, headers, config) {
-      debugger;
-    });
+    $scope.StonehengePost($scope, '/ViewModel/{0}/{1}{paramValues}');
   }
 ";
-            var postbackPropNames = GetPostbackPropNames(vmType).Select(name => "'" + name + "'");
-
-            var postData = @"$scope.GetStonehengePostData = function(scope) {" + Environment.NewLine;
-            postData += "  var props = [" + string.Join(",", postbackPropNames) + "];" + Environment.NewLine;
-            postData += "  var formData = '';" + Environment.NewLine;
-            postData += "  props.forEach(function (prop) {" + Environment.NewLine;
-            postData += "    formData += prop+'='+encodeURIComponent(JSON.stringify(scope[prop]))+'&';" + Environment.NewLine;
-            postData += "  });" + Environment.NewLine;
-            postData += "  return formData;" + Environment.NewLine;
-            postData += "}" + Environment.NewLine;
-
             // supply functions for action methods
             var actionMethods = new StringBuilder();
             foreach (var methodInfo in vmType.GetMethods().Where(methodInfo => methodInfo.GetCustomAttributes(false).OfType<ActionMethodAttribute>().Any()))
@@ -139,7 +121,6 @@
                 var method = MethodTemplate
                     .Replace("{0}", vmName)
                     .Replace("{1}", methodInfo.Name)
-                    .Replace("/*postData*/", postData)
                     .Replace("{paramNames}", string.Join(",", paramNames))
                     .Replace("{paramValues}", paramValues)
                     .Replace("+''", string.Empty);

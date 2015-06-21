@@ -6,6 +6,7 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Threading;
 
     using IctBaden.Stonehenge2.Core;
     using IctBaden.Stonehenge2.Resources;
@@ -56,19 +57,29 @@
 
         public Resource Get(AppSession session, string resourceName)
         {
-            if (!resourceName.StartsWith("ViewModel/")) return null;
-            if (session.ViewModel == null)
+            if (resourceName.StartsWith("ViewModel/"))
             {
-                var vmTypeName = Path.GetFileNameWithoutExtension(resourceName);
-                if (session.SetViewModelType(vmTypeName) == null)
+                if (session.ViewModel == null)
                 {
-                    Trace.TraceError("Could not set ViewModel type to " + vmTypeName);
-                    return null;
+                    var vmTypeName = Path.GetFileNameWithoutExtension(resourceName);
+                    if (session.SetViewModelType(vmTypeName) == null)
+                    {
+                        Trace.TraceError("Could not set ViewModel type to " + vmTypeName);
+                        return null;
+                    }
                 }
-            }
-            session.EventsClear(true);
+                session.EventsClear(true);
 
-            return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel));
+                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel));
+            }
+            else if (resourceName.StartsWith("Events/"))
+            {
+                Thread.Sleep(TimeSpan.FromSeconds(10));
+                var json = string.Format("{{ \"StonehengeContinuePolling\": true, \"Test\":{0} }}", DateTime.Now.Second);
+                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, json);
+            }
+
+            return null;
         }
 
         private static void SetPropertyValue(object vm, string propName, string newval)
@@ -130,7 +141,7 @@
         private string GetViewModelJson(object viewModel)
         {
             var ty = viewModel.GetType();
-            Debug.WriteLine("ViewModelProvider: viewModel=" + ty.Name);
+            Trace.TraceInformation("Stonehenge2.ViewModelProvider: viewModel=" + ty.Name);
 
             var data = new List<string>();
             var activeVm = viewModel as ActiveViewModel;
