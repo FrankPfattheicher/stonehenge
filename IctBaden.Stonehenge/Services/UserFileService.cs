@@ -23,7 +23,17 @@ namespace IctBaden.Stonehenge.Services
                     {
                         if (method.ReturnType == typeof(UserData))
                         {
-                            var data = (UserData)method.Invoke(vm, new object[] { request.FileName });
+                            UserData data = null;
+                            if (method.GetParameters().Count() == 2)
+                            {
+                                var parameters = Request.QueryString.AllKeys
+                                    .ToDictionary(n => n, n => Request.QueryString[n]);
+                                    data = (UserData)method.Invoke(vm, new object[] { request.FileName, parameters });
+                            }
+                            else
+                            {
+                                data = (UserData)method.Invoke(vm, new object[] { request.FileName });
+                            }
                             if (data != null)
                             {
                                 var httpResult = new HttpResult(data.Bytes, data.ContentType);
