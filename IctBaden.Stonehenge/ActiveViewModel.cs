@@ -163,6 +163,11 @@ namespace IctBaden.Stonehenge
                 Obj = obj;
                 ReadOnly = readOnly;
             }
+
+            public override string ToString()
+            {
+                return Info.PropertyType + " " + Info.Name;
+            }
         }
 
         #endregion
