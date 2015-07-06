@@ -172,7 +172,10 @@ namespace IctBaden.Stonehenge.Services
                 {
                     try
                     {
-                        appSession = new AppSession();
+                        if (appSession == null)
+                        {
+                            appSession = AppSessionCache.NewSession();
+                        }
                         var vm = appSession.SetViewModelType(vmName);
                         appSession.EventsClear(true);
                         text = ModuleCreator.CreateFromViewModel(vm, context);

@@ -111,11 +111,14 @@ namespace IctBaden.Stonehenge
 
         public void Terminate()
         {
-            if (host == null)
-                return;
-
-            host.Dispose();
+            var h = host;
             host = null;
+            if (h != null)
+            {
+                h.Dispose();
+            }
+
+            AppSessionCache.Terminate();
         }
 
         private bool ShowWindowChrome()

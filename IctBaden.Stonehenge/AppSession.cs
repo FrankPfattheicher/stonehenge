@@ -328,5 +328,15 @@ namespace IctBaden.Stonehenge
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        public void Terminate()
+        {
+            var vm = ViewModel as IDisposable;
+            ViewModel = null;
+            if (vm != null)
+            {
+                vm.Dispose();
+            }
+        }
     }
 }

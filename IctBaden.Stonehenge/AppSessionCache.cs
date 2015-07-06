@@ -66,5 +66,17 @@ namespace IctBaden.Stonehenge
                 }
             }
         }
+
+        public static void Terminate()
+        {
+            lock (Cache)
+            {
+                foreach (var cachedSession in Cache)
+                {
+                    cachedSession.Value.Terminate();
+                }
+                Cache.Clear();
+            }
+        }
     }
 }
