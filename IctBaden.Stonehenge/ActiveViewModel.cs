@@ -309,13 +309,14 @@ namespace IctBaden.Stonehenge
             }
             foreach (var model in ActiveModels)
             {
+                var propName = name;
                 if (!string.IsNullOrEmpty(model.Prefix))
                 {
                     if (!name.StartsWith(model.Prefix))
                         continue;
-                    name = name.Substring(model.Prefix.Length);
+                    propName = name.Substring(model.Prefix.Length);
                 }
-                pi = model.Model.GetType().GetProperty(name);
+                pi = model.Model.GetType().GetProperty(propName);
                 if (pi == null)
                     continue;
 
@@ -521,6 +522,10 @@ namespace IctBaden.Stonehenge
 
         protected void NotifyPropertyChanged(string name)
         {
+#if DEBUG
+            Debug.Assert(name.StartsWith(AppService.PropertyNameId) || (GetPropertyInfo(name) != null), 
+                "NotifyPropertyChanged for unknown property " + name);
+#endif
             var handler = PropertyChanged;
             if (handler != null)
             {
