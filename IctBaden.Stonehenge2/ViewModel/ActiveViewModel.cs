@@ -516,6 +516,11 @@ namespace IctBaden.Stonehenge2.ViewModel
 
         protected void NotifyPropertyChanged(string name)
         {
+#if DEBUG
+            //TODO: AppService.PropertyNameId
+            Debug.Assert(name.StartsWith("_stonehenge_") || (GetPropertyInfo(name) != null),
+                "NotifyPropertyChanged for unknown property " + name);
+#endif
             var handler = PropertyChanged;
             if (handler != null)
             {
