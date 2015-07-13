@@ -1,14 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge", "IctBaden.Stonehenge\IctBaden.Stonehenge.csproj", "{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge.Sample", "IctBaden.StonehengeSample\IctBaden.Stonehenge.Sample.csproj", "{572CE674-DB53-42AE-B740-6C20C72703F6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge.Test", "IctBaden.StonehengeTest\IctBaden.Stonehenge.Test.csproj", "{CF1DF911-3C8C-479B-A691-450F5E8CC0DB}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65F46581-B6AB-4878-8174-BA207D491B06}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
@@ -17,6 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6B2E7F6F-BC0B-4A4D-B72F-EA91F42C3F29}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge", "IctBaden.Stonehenge\IctBaden.Stonehenge.csproj", "{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge.Sample", "IctBaden.StonehengeSample\IctBaden.Stonehenge.Sample.csproj", "{572CE674-DB53-42AE-B740-6C20C72703F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge.Test", "IctBaden.StonehengeTest\IctBaden.Stonehenge.Test.csproj", "{CF1DF911-3C8C-479B-A691-450F5E8CC0DB}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StonehengeApp", "StonehengeAppTemplate\StonehengeApp.csproj", "{76DFAB48-3421-4254-AF71-7677F0A180E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudioInstaller", "VisualStudioInstaller\VisualStudioInstaller.csproj", "{8CA39996-5187-4BC1-BE7D-D26C282674FA}"
@@ -24,11 +29,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2", "IctBaden.Stonehenge2\IctBaden.Stonehenge2.csproj", "{840EC9F2-7967-4120-9F45-6FF56DF9FADB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Katana", "IctBaden.Stonehenge2.Katana\IctBaden.Stonehenge2.Katana.csproj", "{FA4C06C4-E32C-4C41-BE4B-712C963E36FC}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6B2E7F6F-BC0B-4A4D-B72F-EA91F42C3F29}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Test", "IctBaden.Stonehenge2.Test\IctBaden.Stonehenge2.Test.csproj", "{9E387A93-EA2F-4989-AE47-9228DF685B5B}"
 EndProject
