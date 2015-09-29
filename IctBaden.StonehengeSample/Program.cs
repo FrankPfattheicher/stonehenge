@@ -4,7 +4,7 @@
     using System.IO;
     using System.Windows.Forms;
 
-    using IctBaden.Stonehenge;
+    using Stonehenge;
 
     static class Program
     {
@@ -14,7 +14,9 @@
         static void Main()
         {
             var options = Environment.CommandLine.ToUpper();
-            var asApp = options.Contains("/APP") || options.Contains("-APP") || File.Exists("IctBaden.StonehengeSample.app");
+            // ReSharper disable once AssignNullToNotNullAttribute
+            var asApp = options.Contains("/APP") || options.Contains("-APP") || 
+                File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "IctBaden.Stonehenge.Sample.app"));
 
             App = new AppEngine(asApp ? 0 : 42000, false, "Stonehenge Sample", "about");
 
