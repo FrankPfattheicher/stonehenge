@@ -34,12 +34,12 @@ stonehengeApp.controller('{0}', ['$scope', '$http', '$q',
               poll.resolve();
           }
           var props = ['propNames'];
-          var formData = '';
+          var formData = new Object();
           props.forEach(function (prop) {
-              formData += prop + '=' + encodeURIComponent(JSON.stringify($scope[prop])) + '&';
+              formData[prop] = $scope[prop];
           });
           $scope.StonehengePostActive = true;
-          $http.post(urlWithParams).
+          $http.post(urlWithParams, formData).
             success(function (data, status, headers, config) {
                 $scope.StonehengeInitialLoading = false;
                 $scope.StonehengeIsLoading = false;

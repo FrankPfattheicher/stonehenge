@@ -35,14 +35,20 @@
             resLoader.AddAssembly(typeof(AngularResourceProvider).Assembly);
             loader.Loaders.Add(angular);
 
+            Console.WriteLine(@"Starting server");
             server = new KatanaHost(loader);
 
-            
-            server.Start(false, "localhost", 42000);
-
-            while (true)
+            if (server.Start(false, "localhost", 42000))
             {
-                Thread.Sleep(1000);
+                Console.WriteLine(@"Started server on: " + server.BaseUrl);
+                while (true)
+                {
+                    Thread.Sleep(1000);
+                }
+            }
+            else
+            {
+                Console.WriteLine(@"Failed to start server on: " + server.BaseUrl);
             }
 
 #pragma warning disable 0162

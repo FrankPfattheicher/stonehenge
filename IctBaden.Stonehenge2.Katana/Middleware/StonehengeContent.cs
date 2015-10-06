@@ -1,4 +1,10 @@
-﻿namespace IctBaden.Stonehenge2.Katana.Middleware
+﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+namespace IctBaden.Stonehenge2.Katana.Middleware
 {
     using System;
     using System.Collections.Generic;
@@ -7,8 +13,8 @@
     using System.Threading.Tasks;
     using System.Web;
 
-    using IctBaden.Stonehenge2.Core;
-    using IctBaden.Stonehenge2.Resources;
+    using Core;
+    using Resources;
 
     using Microsoft.Owin;
 
@@ -45,8 +51,13 @@
                     content = resourceLoader.Get(appSession, resourceName);
                     break;
                 case "POST":
-                    var formData = context.Request.ReadFormAsync()
-                        .Result.ToDictionary(data => data.Key, data => data.Value.FirstOrDefault());
+                    var body = new StreamReader(context.Request.Body).ReadToEndAsync().Result;
+                    var formData = JsonConvert.DeserializeObject<JObject>(body).AsJEnumerable().Cast<JProperty>()
+                        .ToDictionary(data => data.Name, data => Convert.ToString(data.Value, CultureInfo.InvariantCulture));
+
+                    //var formData = context.Request.ReadFormAsync().Result
+                    //    .ToDictionary(data => data.Key, data => data.Value.FirstOrDefault());
+
                     var queryString = HttpUtility.ParseQueryString(context.Get<string>("owin.RequestQueryString"));
                     var paramObjects = queryString.AllKeys.Select(key => queryString[key]).Cast<object>().ToArray();
                     content = resourceLoader.Post(appSession, resourceName, paramObjects, formData);
@@ -59,18 +70,30 @@
                 return;
             }
             context.Response.ContentType = content.ContentType;
-            if (content.IsBinary)
+            try
             {
-                using (var writer = new BinaryWriter(response))
+                if (content.IsBinary)
                 {
-                    writer.Write(content.Data);
+                    using (var writer = new BinaryWriter(response))
+                    {
+                        writer.Write(content.Data);
+                    }
+                }
+                else
+                {
+                    using (var writer = new StreamWriter(response))
+                    {
+                        writer.Write(content.Text);
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                using (var writer = new StreamWriter(response))
+                Trace.TraceError("StonehengeContent write response: " + ex.Message);
+                while (ex.InnerException != null)
                 {
-                    writer.Write(content.Text);
+                    ex = ex.InnerException;
+                    Trace.TraceError(" + " + ex.Message);
                 }
             }
 

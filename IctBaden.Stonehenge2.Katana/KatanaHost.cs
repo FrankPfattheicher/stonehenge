@@ -37,6 +37,11 @@ namespace IctBaden.Stonehenge2.Katana
             catch (Exception ex)
             {
                 Trace.TraceError("KatanaHost.Start: " + ex.Message);
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                    Trace.TraceError(" + " + ex.Message);
+                }
             }
             return webApp != null;
         }

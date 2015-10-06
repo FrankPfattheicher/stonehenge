@@ -6,11 +6,13 @@
 
     public class StartVm
     {
+        public double Numeric { get; set; }
         public string Test { get; set; }
-        public string Version { get { return Assembly.GetEntryAssembly().GetName().Version.ToString(2); } }
+        public string Version => Assembly.GetEntryAssembly().GetName().Version.ToString(2);
 
         public StartVm()
         {
+            Numeric = 123.456;
             Test = "54321";
         }
 

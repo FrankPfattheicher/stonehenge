@@ -1,4 +1,6 @@
-﻿namespace IctBaden.Stonehenge2.ViewModel
+﻿using System.Resources;
+
+namespace IctBaden.Stonehenge2.ViewModel
 {
     using System;
     using System.Collections.Generic;
@@ -82,7 +84,23 @@
             return null;
         }
 
-        private static void SetPropertyValue(object vm, string propName, string newval)
+        private static object DeserializePropertyValue(string propValue, Type propType)
+        {
+            if(propType == typeof(string))
+                return propValue;
+
+            try
+            {
+                return JsonConvert.DeserializeObject(propValue, propType);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return null;
+        }
+
+        private static void SetPropertyValue(object vm, string propName, string newValue)
         {
             try
             {
@@ -98,7 +116,7 @@
                         object structObj = activeVm.TryGetMember(propName);
                         if (structObj != null)
                         {
-                            var members = JsonConvert.DeserializeObject(newval, typeof(Dictionary<string, string>)) as Dictionary<string, string>;
+                            var members = JsonConvert.DeserializeObject(newValue, typeof(Dictionary<string, string>)) as Dictionary<string, string>;
                             if (members != null)
                             {
                                 foreach (var member in members)
@@ -106,7 +124,7 @@
                                     var mProp = pi.PropertyType.GetProperty(member.Key);
                                     if (mProp != null)
                                     {
-                                        var val = JsonConvert.DeserializeObject(member.Value, mProp.PropertyType);
+                                        var val = DeserializePropertyValue(member.Value, mProp.PropertyType);
                                         mProp.SetValue(structObj, val, null);
                                     }
                                 }
@@ -116,7 +134,7 @@
                     }
                     else
                     {
-                        var val = JsonConvert.DeserializeObject(newval, pi.PropertyType);
+                        var val = DeserializePropertyValue(newValue, pi.PropertyType);
                         activeVm.TrySetMember(propName, val);
                     }
                 }
@@ -126,7 +144,7 @@
                     if ((pi == null) || !pi.CanWrite)
                         return;
 
-                    var val = JsonConvert.DeserializeObject(newval, pi.PropertyType);
+                    var val = DeserializePropertyValue(newValue, pi.PropertyType);
                     pi.SetValue(vm, val, null);
                 }
             }
