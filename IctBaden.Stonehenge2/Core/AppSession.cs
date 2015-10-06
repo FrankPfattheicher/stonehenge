@@ -50,6 +50,8 @@
             get { return viewModel; }
             set
             {
+                (viewModel as IDisposable)?.Dispose();
+
                 viewModel = value;
                 var npc = value as INotifyPropertyChanged;
                 if (npc != null)

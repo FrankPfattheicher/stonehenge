@@ -8,6 +8,7 @@
     using System.Reflection;
     using System.Text;
 
+    using IctBaden.Stonehenge2.Core;
     using IctBaden.Stonehenge2.Resources;
     using IctBaden.Stonehenge2.ViewModel;
 
@@ -136,7 +137,8 @@
         {
             // properties
             var vmProps = new List<PropertyDescriptor>();
-            var viewModel = Activator.CreateInstance(vmType);
+            var sessionCtor = vmType.GetConstructors().FirstOrDefault(ctor => ctor.GetParameters().Length == 1);
+            var viewModel = (sessionCtor != null) ? Activator.CreateInstance(vmType, new AppSession()) : Activator.CreateInstance(vmType);
             var activeVm = viewModel as ActiveViewModel;
             if (activeVm != null)
             {

@@ -1,19 +1,42 @@
 ﻿namespace IctBaden.Stonehenge2.Sample.ViewModels
 {
+    using System;
     using System.Reflection;
+    using System.Threading;
+    using System.Threading.Tasks;
 
+    using IctBaden.Stonehenge2.Core;
     using IctBaden.Stonehenge2.ViewModel;
 
-    public class StartVm
+    public class StartVm : ActiveViewModel, IDisposable
     {
+        public string TimeStamp => DateTime.Now.ToLongTimeString();
         public double Numeric { get; set; }
         public string Test { get; set; }
         public string Version => Assembly.GetEntryAssembly().GetName().Version.ToString(2);
 
-        public StartVm()
+        private readonly Thread updater;
+
+        public StartVm(AppSession session) : base (session)
         {
             Numeric = 123.456;
             Test = "54321";
+            updater = new Thread(
+                () =>
+                    {
+                        while (true)
+                        {
+                            Thread.Sleep(10000);
+                            NotifyPropertyChanged(nameof(TimeStamp));
+                        }
+                        // ReSharper disable once FunctionNeverReturns
+                    });
+            updater.Start();
+        }
+
+        public void Dispose()
+        {
+            updater.Abort();
         }
 
         [ActionMethod]
@@ -21,5 +44,6 @@
         {
             Test = number + Test + text;
         }
+
     }
 }

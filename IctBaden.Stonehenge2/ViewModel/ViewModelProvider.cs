@@ -14,6 +14,7 @@ namespace IctBaden.Stonehenge2.ViewModel
     using IctBaden.Stonehenge2.Resources;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     public class ViewModelProvider : IResourceProvider
     {
@@ -61,9 +62,9 @@ namespace IctBaden.Stonehenge2.ViewModel
         {
             if (resourceName.StartsWith("ViewModel/"))
             {
-                if (session.ViewModel == null)
+                var vmTypeName = Path.GetFileNameWithoutExtension(resourceName);
+                if ((session.ViewModel == null) || (session.ViewModel.GetType().Name != vmTypeName))
                 {
-                    var vmTypeName = Path.GetFileNameWithoutExtension(resourceName);
                     if (session.SetViewModelType(vmTypeName) == null)
                     {
                         Trace.TraceError("Could not set ViewModel type to " + vmTypeName);
@@ -77,8 +78,15 @@ namespace IctBaden.Stonehenge2.ViewModel
             else if (resourceName.StartsWith("Events/"))
             {
                 Thread.Sleep(TimeSpan.FromSeconds(10));
-                var json = string.Format("{{ \"StonehengeContinuePolling\": true, \"Test\":{0} }}", DateTime.Now.Second);
-                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, json);
+                var json = new JObject { ["StonehengeContinuePolling"] = true };
+                var vm = session.ViewModel as ActiveViewModel;
+                foreach (var property in session.Events)
+                {
+                    json[property] = JToken.FromObject(vm.TryGetMember(property));
+                }
+
+                var text = JsonConvert.SerializeObject(json);
+                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, text);
             }
 
             return null;
