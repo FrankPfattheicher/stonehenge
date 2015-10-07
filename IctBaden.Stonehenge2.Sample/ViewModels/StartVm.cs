@@ -3,10 +3,8 @@
     using System;
     using System.Reflection;
     using System.Threading;
-    using System.Threading.Tasks;
-
-    using IctBaden.Stonehenge2.Core;
-    using IctBaden.Stonehenge2.ViewModel;
+    using Core;
+    using ViewModel;
 
     public class StartVm : ActiveViewModel, IDisposable
     {

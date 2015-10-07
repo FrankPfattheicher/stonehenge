@@ -13,7 +13,7 @@
     using System.Web;
     using System.Web.Configuration;
 
-    using IctBaden.Stonehenge2.ViewModel;
+    using ViewModel;
 
     public class AppSession : INotifyPropertyChanged
     {
@@ -29,19 +29,26 @@
         public DateTime LastAccess { get; private set; }
         public string Context { get; private set; }
         public DateTime LastUserAction { get; private set; }
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
         public string PermanentSessionId { get; private set; }
 
-        internal List<string> Events = new List<string>();
-        internal AutoResetEvent EventRelease = new AutoResetEvent(false);
-        internal readonly PassiveTimer EventPollingActive = new PassiveTimer();
+        private const int EventTimeoutSeconds = 30;
+        private readonly List<string> events = new List<string>();
+        private readonly AutoResetEvent eventRelease = new AutoResetEvent(false);
 
-        public bool IsWaitingForEvents
+        public bool IsWaitingForEvents { get; private set; }
+        public List<string> CollectEvents()
         {
-            get
+            IsWaitingForEvents = true;
+            eventRelease.WaitOne(TimeSpan.FromSeconds(EventTimeoutSeconds));
+            // wait for maximum 500ms for more events - if there is none within 100ms - continue
+            var max = 5;
+            while (eventRelease.WaitOne(100) && (max > 0))
             {
-                return EventPollingActive.Running && !EventPollingActive.Timeout;
+                max--;
             }
+            IsWaitingForEvents = false;
+            return events;
         }
 
         private object viewModel;
@@ -61,7 +68,7 @@
                         var avm = sender as ActiveViewModel;
                         if (avm == null)
                             return;
-                        lock (avm.Session.Events)
+                        lock (avm.Session.events)
                         {
                             avm.Session.EventAdd(args.PropertyName);
                         }
@@ -85,10 +92,7 @@
                     return vm;
 
                 var disposable = vm as IDisposable;
-                if (disposable != null)
-                {
-                    disposable.Dispose();
-                }
+                disposable?.Dispose();
             }
 
 
@@ -169,29 +173,19 @@
             userData.Remove(key);
         }
 
-        public TimeSpan ConnectedDuration
-        {
-            get { return DateTime.Now - ConnectedSince; }
-        }
-        public TimeSpan LastAccessDuration
-        {
-            get { return DateTime.Now - LastAccess; }
-        }
-        public TimeSpan LastUserActionDuration
-        {
-            get { return DateTime.Now - LastUserAction; }
-        }
-        
+        public TimeSpan ConnectedDuration => DateTime.Now - ConnectedSince;
+
+        public TimeSpan LastAccessDuration => DateTime.Now - LastAccess;
+
+        public TimeSpan LastUserActionDuration => DateTime.Now - LastUserAction;
+
         public event Action TimedOut;
         private Timer pollSessionTimeout;
         public TimeSpan SessionTimeout { get; private set; }
 
         public void SetTimeout(TimeSpan timeout)
         {
-            if (pollSessionTimeout != null)
-            {
-                pollSessionTimeout.Dispose();
-            }
+            pollSessionTimeout?.Dispose();
             SessionTimeout = timeout;
             if (Math.Abs(timeout.TotalMilliseconds) > 0.1)
             {
@@ -205,10 +199,7 @@
             {
                 pollSessionTimeout.Dispose();
                 terminator.Dispose();
-                if (TimedOut != null)
-                {
-                    TimedOut();
-                }
+                TimedOut?.Invoke();
             }
             NotifyPropertyChanged("ConnectedDuration");
             NotifyPropertyChanged("LastAccessDuration");
@@ -227,7 +218,7 @@
             Id = Guid.NewGuid();
         }
 
-        public bool IsInitialized { get { return UserAgent != null; } }
+        public bool IsInitialized => UserAgent != null;
 
         public void Initialize(string ssPid, string hostDomain, string hostUrl, string clientAddress, string userAgent)
         {
@@ -290,32 +281,32 @@
 
         public void EventsClear(bool forceEnd)
         {
-            lock (Events)
+            lock (events)
             {
                 //var privateEvents = Events.Where(e => e.StartsWith(AppService.PropertyNameId)).ToList();
-                Events.Clear();
+                events.Clear();
                 //Events.AddRange(privateEvents);
                 if (forceEnd)
                 {
-                    EventRelease.Set();
-                    EventRelease.Set();
+                    eventRelease.Set();
+                    eventRelease.Set();
                 }
             }
         }
 
         public void EventAdd(string name)
         {
-            lock (Events)
+            lock (events)
             {
-                if (Events.Contains(name))
-                    return;
-                Events.Add(name);
-                EventRelease.Set();
+                if (!events.Contains(name))
+                    events.Add(name);
+                eventRelease.Set();
             }
         }
 
         public override string ToString()
         {
+            // ReSharper disable once UseStringInterpolation
             return string.Format("[{0}] {1} {2}", Id, ConnectedSince.ToShortDateString() + " " + ConnectedSince.ToShortTimeString(), SubDomain);
         }
 
@@ -324,11 +315,7 @@
 
         protected virtual void NotifyPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

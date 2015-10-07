@@ -1,6 +1,4 @@
-﻿using System.Resources;
-
-namespace IctBaden.Stonehenge2.ViewModel
+﻿namespace IctBaden.Stonehenge2.ViewModel
 {
     using System;
     using System.Collections.Generic;
@@ -8,10 +6,8 @@ namespace IctBaden.Stonehenge2.ViewModel
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-    using System.Threading;
-
-    using IctBaden.Stonehenge2.Core;
-    using IctBaden.Stonehenge2.Resources;
+    using Core;
+    using Resources;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
@@ -77,12 +73,18 @@ namespace IctBaden.Stonehenge2.ViewModel
             }
             else if (resourceName.StartsWith("Events/"))
             {
-                Thread.Sleep(TimeSpan.FromSeconds(10));
-                var json = new JObject { ["StonehengeContinuePolling"] = true };
-                var vm = session.ViewModel as ActiveViewModel;
-                foreach (var property in session.Events)
+                var json = new JObject {["StonehengeContinuePolling"] = true };
+                var events = session.CollectEvents();
+                if (events.Count > 0)
                 {
-                    json[property] = JToken.FromObject(vm.TryGetMember(property));
+                    var vm = session.ViewModel as ActiveViewModel;
+                    if (vm != null)
+                    {
+                        foreach (var property in events)
+                        {
+                            json[property] = JToken.FromObject(vm.TryGetMember(property));
+                        }
+                    }
                 }
 
                 var text = JsonConvert.SerializeObject(json);
@@ -94,7 +96,7 @@ namespace IctBaden.Stonehenge2.ViewModel
 
         private static object DeserializePropertyValue(string propValue, Type propType)
         {
-            if(propType == typeof(string))
+            if (propType == typeof(string))
                 return propValue;
 
             try
@@ -186,6 +188,7 @@ namespace IctBaden.Stonehenge2.ViewModel
                 // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var name in activeVm.GetDictionaryNames())
                 {
+                    // ReSharper disable once UseStringInterpolation
                     data.Add(string.Format("\"{0}\":{1}", name, JsonConvert.SerializeObject(activeVm.TryGetMember(name))));
                 }
             }

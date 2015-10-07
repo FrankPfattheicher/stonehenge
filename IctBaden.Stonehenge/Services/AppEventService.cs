@@ -18,7 +18,7 @@ namespace IctBaden.Stonehenge.Services
             get
             {
                 var host = GetResolver() as AppHost;
-                return (host != null) ? host.EventTimeout : TimeSpan.FromSeconds(10);
+                return host?.EventTimeout ?? TimeSpan.FromSeconds(10);
             }
         }
 
@@ -63,6 +63,7 @@ namespace IctBaden.Stonehenge.Services
                     {
                         var title = vm.MessageBoxTitle;
                         var text = vm.MessageBoxText;
+                        // ReSharper disable once UseStringInterpolation
                         values.Add("stonehenge_eval", string.Format("app.showMessage('{0}','{1}');", HttpUtility.JavaScriptStringEncode(text), HttpUtility.JavaScriptStringEncode(title)));
                     }
                     else if (name == PropertyNameNavigate)

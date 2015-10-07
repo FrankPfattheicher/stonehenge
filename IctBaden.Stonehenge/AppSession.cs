@@ -31,20 +31,14 @@ namespace IctBaden.Stonehenge
         public DateTime LastAccess { get; private set; }
         public string Context { get; private set; }
         public DateTime LastUserAction { get; private set; }
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
         public string StackId { get; set; }
 
         internal List<string> Events = new List<string>();
         internal AutoResetEvent EventRelease = new AutoResetEvent(false);
         internal readonly PassiveTimer EventPollingActive = new PassiveTimer();
 
-        public bool IsWaitingForEvents
-        {
-            get
-            {
-                return EventPollingActive.Running && !EventPollingActive.Timeout;
-            }
-        }
+        public bool IsWaitingForEvents => EventPollingActive.Running && !EventPollingActive.Timeout;
 
         private object viewModel;
         public object ViewModel
@@ -85,10 +79,7 @@ namespace IctBaden.Stonehenge
                     return vm;
 
                 var disposable = vm as IDisposable;
-                if (disposable != null)
-                {
-                    disposable.Dispose();
-                }
+                disposable?.Dispose();
             }
 
 
@@ -169,29 +160,19 @@ namespace IctBaden.Stonehenge
             userData.Remove(key);
         }
 
-        public TimeSpan ConnectedDuration
-        {
-            get { return DateTime.Now - ConnectedSince; }
-        }
-        public TimeSpan LastAccessDuration
-        {
-            get { return DateTime.Now - LastAccess; }
-        }
-        public TimeSpan LastUserActionDuration
-        {
-            get { return DateTime.Now - LastUserAction; }
-        }
-        
+        public TimeSpan ConnectedDuration => DateTime.Now - ConnectedSince;
+
+        public TimeSpan LastAccessDuration => DateTime.Now - LastAccess;
+
+        public TimeSpan LastUserActionDuration => DateTime.Now - LastUserAction;
+
         public event Action TimedOut;
         private Timer pollSessionTimeout;
         public TimeSpan SessionTimeout { get; private set; }
 
         public void SetTimeout(TimeSpan timeout)
         {
-            if (pollSessionTimeout != null)
-            {
-                pollSessionTimeout.Dispose();
-            }
+            pollSessionTimeout?.Dispose();
             SessionTimeout = timeout;
             if (Math.Abs(timeout.TotalMilliseconds) > 0.1)
             {
@@ -205,10 +186,7 @@ namespace IctBaden.Stonehenge
             {
                 pollSessionTimeout.Dispose();
                 terminator.Dispose();
-                if (TimedOut != null)
-                {
-                    TimedOut();
-                }
+                TimedOut?.Invoke();
             }
             NotifyPropertyChanged("ConnectedDuration");
             NotifyPropertyChanged("LastAccessDuration");
@@ -227,7 +205,7 @@ namespace IctBaden.Stonehenge
             Id = Guid.NewGuid();
         }
 
-        internal bool IsInitialized { get { return UserAgent != null; } }
+        internal bool IsInitialized => UserAgent != null;
 
         internal void Initialize(string hostDomain, string hostUrl, string clientAddress, string userAgent)
         {
@@ -314,7 +292,7 @@ namespace IctBaden.Stonehenge
 
         public override string ToString()
         {
-            return string.Format("[{0}] {1} {2}", Id, ConnectedSince.ToShortDateString() + " " + ConnectedSince.ToShortTimeString(), SubDomain);
+            return $"[{Id}] {ConnectedSince.ToShortDateString() + " " + ConnectedSince.ToShortTimeString()} {SubDomain}";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -322,21 +300,14 @@ namespace IctBaden.Stonehenge
         [NotifyPropertyChangedInvocator]
         protected virtual void NotifyPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public void Terminate()
         {
             var vm = ViewModel as IDisposable;
             ViewModel = null;
-            if (vm != null)
-            {
-                vm.Dispose();
-            }
+            vm?.Dispose();
         }
     }
 }

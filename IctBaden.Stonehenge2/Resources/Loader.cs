@@ -5,12 +5,12 @@
     using System.Linq;
     using System.Reflection;
 
-    using IctBaden.Stonehenge2.Core;
-    using IctBaden.Stonehenge2.ViewModel;
+    using Core;
+    using ViewModel;
 
     public class Loader : IResourceProvider
     {
-        public List<IResourceProvider> Loaders { get; private set; }
+        public List<IResourceProvider> Loaders { get; }
 
         public Loader(List<IResourceProvider> loaders = null)
         {
