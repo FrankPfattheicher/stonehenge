@@ -1,0 +1,16 @@
+﻿<div>
+
+    <audio id="on" preload="auto" src="/app/switch_on.wav"></audio>
+    <audio id="off" preload="auto" src="/app/switch_off.wav"></audio>
+
+    <h1>Image animations</h1>
+    <p>
+        Use switch to control lamp.
+    </p>
+    <div style="display: inline-block;">
+        <img style="cursor: pointer;" title="click to toggle switch"
+            data-bind="click: Switch, attr: { src: '/app/images/' + SwitchImg() + '.png', onclick: IsOn() ? '$(\'#off\')[0].play()' : '$(\'#on\')[0].play()' }" />
+        <div style="display: inline-block;" data-bind="style: { color: IsOn() ? 'red' : 'black' }" >▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬</div>
+        <img data-bind="attr: { src: '/app/images/' + LampImg() + '.png' }" title="see swich result" />
+    </div>
+</div>
