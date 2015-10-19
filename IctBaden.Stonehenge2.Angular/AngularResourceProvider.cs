@@ -25,6 +25,11 @@
             AddAppJs(rootPage);
         }
 
+        public void Dispose()
+        {
+            angularContent.Clear();
+        }
+
         private static string GetViewModelName(string route, string pageText)
         {
             var name = route.Substring(0, 1).ToUpper() + route.Substring(1) + "Vm";

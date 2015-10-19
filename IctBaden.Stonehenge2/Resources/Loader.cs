@@ -17,6 +17,12 @@
             Loaders = loaders ?? new List<IResourceProvider>();
         }
 
+        public void Dispose()
+        {
+            Loaders.ForEach(l => l.Dispose());
+            Loaders.Clear();
+        }
+
         public Resource Post(AppSession session, string resourceName, object[] postParams, Dictionary<string, string> formData)
         {
             return Loaders.Select(loader => loader.Post(session, resourceName, postParams, formData))

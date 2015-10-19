@@ -138,7 +138,8 @@
             // properties
             var vmProps = new List<PropertyDescriptor>();
             var sessionCtor = vmType.GetConstructors().FirstOrDefault(ctor => ctor.GetParameters().Length == 1);
-            var viewModel = (sessionCtor != null) ? Activator.CreateInstance(vmType, new AppSession()) : Activator.CreateInstance(vmType);
+            var session = new AppSession();
+            var viewModel = (sessionCtor != null) ? Activator.CreateInstance(vmType, session) : Activator.CreateInstance(vmType);
             var activeVm = viewModel as ActiveViewModel;
             if (activeVm != null)
             {
@@ -148,6 +149,8 @@
             {
                 vmProps.AddRange(TypeDescriptor.GetProperties(viewModel, true).Cast<PropertyDescriptor>());
             }
+            var disposeVm = viewModel as IDisposable;
+            disposeVm?.Dispose();
 
             var assignPropNames = (from prop in vmProps
                                    let bindable = prop.Attributes.OfType<BindableAttribute>().ToArray()

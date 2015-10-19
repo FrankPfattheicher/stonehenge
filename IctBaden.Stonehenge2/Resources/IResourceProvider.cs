@@ -1,10 +1,11 @@
 ﻿namespace IctBaden.Stonehenge2.Resources
 {
+    using System;
     using System.Collections.Generic;
 
     using IctBaden.Stonehenge2.Core;
 
-    public interface IResourceProvider
+    public interface IResourceProvider : IDisposable
     {
         Resource Get(AppSession session, string resourceName);
 

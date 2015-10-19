@@ -54,7 +54,7 @@ stonehengeApp.controller('{0}', ['$scope', '$http', '$q',
                 debugger;
             });
       }
-      $http.get('ViewModel/{0}.json').
+      $http.get('ViewModel/{0}').
         success(function (data, status, headers, config) {
             $scope.StonehengeInitialLoading = false;
             $scope.StonehengeIsLoading = false;

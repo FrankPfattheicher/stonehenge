@@ -14,6 +14,11 @@
 
     public class ViewModelProvider : IResourceProvider
     {
+        public void Dispose()
+        {
+            
+        }
+
         public Resource Post(AppSession session, string resourceName, object[] postParams, Dictionary<string, string> formData)
         {
             if (!resourceName.StartsWith("ViewModel/")) return null;

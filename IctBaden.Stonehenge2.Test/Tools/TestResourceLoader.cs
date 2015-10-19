@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.IO;
 
-    using IctBaden.Stonehenge2.Core;
-    using IctBaden.Stonehenge2.Resources;
+    using Core;
+    using Stonehenge2.Resources;
 
     public class TestResourceLoader : IResourceProvider
     {
@@ -13,6 +13,10 @@
         public TestResourceLoader(string content)
         {
             this.content = content;
+        }
+
+        public void Dispose()
+        {
         }
 
         public Resource Post(AppSession session, string resourceName, object[] postParams, Dictionary<string, string> formData)
