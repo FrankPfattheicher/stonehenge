@@ -12,6 +12,7 @@
     using IctBaden.Stonehenge2.Hosting;
     using IctBaden.Stonehenge2.Katana;
     using IctBaden.Stonehenge2.Resources;
+    using IctBaden.Stonehenge2.SimpleHttp;
 
     static class Program
     {
@@ -36,7 +37,8 @@
             loader.Loaders.Add(angular);
 
             Console.WriteLine(@"Starting server");
-            server = new KatanaHost(loader);
+            //server = new KatanaHost(loader);
+            server = new SimpleHttpHost(loader);
 
             if (server.Start(false, "localhost", 42000))
             {

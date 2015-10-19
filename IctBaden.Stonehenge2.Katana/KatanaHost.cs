@@ -4,8 +4,8 @@ namespace IctBaden.Stonehenge2.Katana
 {
     using System.Diagnostics;
 
-    using IctBaden.Stonehenge2.Hosting;
-    using IctBaden.Stonehenge2.Resources;
+    using Hosting;
+    using Resources;
 
     using Microsoft.Owin.Hosting;
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65F46581-B6AB-4878-8174-BA207D491B06}"
 	ProjectSection(SolutionItems) = preProject
@@ -35,6 +35,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Sample", "IctBaden.Stonehenge2.Sample\IctBaden.Stonehenge2.Sample.csproj", "{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Angular", "IctBaden.Stonehenge2.Angular\IctBaden.Stonehenge2.Angular.csproj", "{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.SimpleHttp", "IctBaden.Stonehenge2.SimpleHttp\IctBaden.Stonehenge2.SimpleHttp.csproj", "{38174EB5-27F9-403D-A2EB-2D5230091F3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,10 @@ Global
 		{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38174EB5-27F9-403D-A2EB-2D5230091F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38174EB5-27F9-403D-A2EB-2D5230091F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38174EB5-27F9-403D-A2EB-2D5230091F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38174EB5-27F9-403D-A2EB-2D5230091F3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

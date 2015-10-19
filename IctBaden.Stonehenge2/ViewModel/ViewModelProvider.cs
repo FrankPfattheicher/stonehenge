@@ -23,11 +23,15 @@
         {
             if (!resourceName.StartsWith("ViewModel/")) return null;
 
+            if(session.ViewModel == null)
+            {
+                return null;
+            }
+
             foreach (var data in formData)
             {
                 SetPropertyValue(session.ViewModel, data.Key, data.Value);
             }
-
 
             var methodName = Path.GetFileNameWithoutExtension(resourceName);
             var vmTypeName = Path.GetFileNameWithoutExtension(resourceName.Replace("/" + methodName, string.Empty));
