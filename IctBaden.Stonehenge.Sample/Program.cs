@@ -9,7 +9,6 @@
     static class Program
     {
         public static AppEngine App;
-        public static string ClientException { get; set; }
 
         static void Main()
         {
@@ -18,13 +17,12 @@
             var asApp = options.Contains("/APP") || options.Contains("-APP") || 
                 File.Exists(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "IctBaden.Stonehenge.Sample.app"));
 
-            App = new AppEngine(asApp ? 0 : 42000, false, "Stonehenge Sample", "about");
-
-            App.ClientException += exception =>
+            var port = 42000;
+            if (options.Contains("/P:"))
             {
-                ClientException = DateTime.Now.ToLongTimeString() + " - " + exception.Message;
-            };
-
+                int.TryParse(options.Substring(options.IndexOf("/P:", StringComparison.CurrentCultureIgnoreCase) + 3), out port);
+            }
+            App = new AppEngine(asApp ? 0 : port, false, "Stonehenge Sample", "about");
             App.Run(asApp);
 
             if (!asApp)

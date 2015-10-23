@@ -1,16 +1,23 @@
-﻿namespace IctBaden.Stonehenge.Sample.ViewModels
+﻿using System.Threading;
+
+namespace IctBaden.Stonehenge.Sample.ViewModels
 {
-    using IctBaden.Stonehenge;
-    using IctBaden.Stonehenge.Sample;
+    using Stonehenge;
+    using Sample;
 
     public class ExceptionVm : ActiveViewModel
     {
-        public string ClientException
+        public string ClientException { get; private set; }
+
+        public ExceptionVm(AppSession session)
+            :base(session)
         {
-            get
+            Program.App.ClientException += exception =>
             {
-                return Program.ClientException;
-            }
+                ClientException = exception.Message;
+                Thread.Sleep(100);
+                NotifyPropertyChanged("ClientException");
+            };
         }
     }
 }

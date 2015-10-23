@@ -1,27 +1,18 @@
 ﻿<div>
-  
-    <h1>Stonehenge V<span data-bind="text: Version"></span></h1>
-  
-  <p>This is an initial view of the things.</p>
-  <p>Simply data-bind HTML elements on the page.</p>
-  <pre style="font-family: Consolas; font-size: 13; color: black; background: white; "><span 
-    style="color:blue;">&lt;</span><span style="color:maroon;">h1</span><span 
-    style="color:blue;">&gt;</span>Stonehenge&nbsp;V<span style="color:blue;">&lt;</span><span 
-    style="color:maroon;">span</span>&nbsp;<span style="color:red;">data-bind</span><span 
-    style="color:blue;">=&quot;text:&nbsp;Version&quot;&gt;&lt;/</span><span style="color:maroon;">span</span><span 
-    style="color:blue;">&gt;&lt;/</span><span style="color:maroon;">h1</span><span 
-    style="color:blue;">&gt;</span></pre>
-  <p>Tell the framework about the C# ViewModel to use.</p>
-  <pre style="font-family: Consolas; font-size: 13; color: black; background: white; "><span 
-    style="color:darkgreen;">&lt;!--ViewModel:IctBaden.StonehengeSample.AboutVm--&gt;</span></pre>
-  <p>No magic needed in the ViewModel!</p>
-  <pre style="font-family: Consolas; font-size: 13; color: black; background: white;"><span 
-    style="color:blue;">public</span>&nbsp;<span style="color:blue;">class</span>&nbsp;<span 
-    style="color:#2b91af;">AboutVm</span>
+
+    <h1>Stonehenge V<span data-bind="text: Version"></span> - <span data-bind="text: Machine"></span></h1>
+
+    <p>This is an initial view of the things.</p>
+    <p>Simply data-bind HTML elements on the page.</p>
+    <pre style="font-family: Consolas; font-size: 13; color: black; background: white; "><span style="color:blue;">&lt;</span><span style="color:maroon;">h1</span><span style="color:blue;">&gt;</span>Stonehenge&nbsp;V<span style="color:blue;">&lt;</span><span style="color:maroon;">span</span>&nbsp;<span style="color:red;">data-bind</span><span style="color:blue;">=&quot;text:&nbsp;Version&quot;&gt;&lt;/</span><span style="color:maroon;">span</span><span style="color: blue;">&gt;&lt;/</span><span style="color: maroon;">h1</span><span style="color: blue;">&gt;</span>
+</pre>
+    <p>Tell the framework about the C# ViewModel to use.</p>
+    <pre style="font-family: Consolas; font-size: 13; color: black; background: white;"><span style="color: darkgreen;">&lt;!--ViewModel:IctBaden.StonehengeSample.AboutVm--&gt;</span>
+</pre>
+    <p>No magic needed in the ViewModel!</p>
+    <pre style="font-family: Consolas; font-size: 13; color: black; background: white;"><span style="color:blue;">public</span>&nbsp;<span style="color:blue;">class</span>&nbsp;<span style="color:#2b91af;">AboutVm</span>
 {
-&nbsp;&nbsp;<span style="color:blue;">public</span>&nbsp;<span style="color:blue;">string</span>&nbsp;Version&nbsp;{&nbsp;<span 
-    style="color:blue;">get</span>&nbsp;{&nbsp;<span style="color:blue;">return</span>&nbsp;<span 
-    style="color:#2b91af;">Assembly</span>.GetEntryAssembly().GetName().Version.ToString(2);&nbsp;}&nbsp;}&nbsp;
+&nbsp;&nbsp;<span style="color:blue;">public</span>&nbsp;<span style="color:blue;">string</span>&nbsp;Version&nbsp;{&nbsp;<span style="color:blue;">get</span>&nbsp;{&nbsp;<span style="color:blue;">return</span>&nbsp;<span style="color:#2b91af;">Assembly</span>.GetEntryAssembly().GetName().Version.ToString(2);&nbsp;}&nbsp;}&nbsp;
 }
-  
+  </pre>
 </div>
