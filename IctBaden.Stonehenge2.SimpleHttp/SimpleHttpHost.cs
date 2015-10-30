@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace IctBaden.Stonehenge2.SimpleHttp
 {
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Text;
     using System.Web;
 
-    using IctBaden.Stonehenge2.Core;
-    using IctBaden.Stonehenge2.Hosting;
-    using IctBaden.Stonehenge2.Resources;
+    using Core;
+    using Hosting;
+    using Resources;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
@@ -51,8 +51,11 @@ namespace IctBaden.Stonehenge2.SimpleHttp
             server?.Terminate();
         }
 
-        private void ServerOnHandleGet(HttpProcessor httpProcessor)
+        private void ServerOnHandleGet(SimpleHttpProcessor httpProcessor)
         {
+            // get session
+Debug.Assert(false, "implement session cache");
+
             if (httpProcessor.HttpUrl == "/")
             {
                 httpProcessor.WriteRedirect("/Index.html");
@@ -77,7 +80,7 @@ namespace IctBaden.Stonehenge2.SimpleHttp
             }
         }
 
-        private void ServerOnHandlePost(HttpProcessor httpProcessor, StreamReader streamReader)
+        private void ServerOnHandlePost(SimpleHttpProcessor httpProcessor, StreamReader streamReader)
         {
             var resourceName = httpProcessor.HttpUrl.Substring(1);
             var queryPart = "";

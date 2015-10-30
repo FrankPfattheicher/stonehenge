@@ -23,19 +23,21 @@
         {
             if (!resourceName.StartsWith("ViewModel/")) return null;
 
-            if(session.ViewModel == null)
+            var parts = resourceName.Split('/');
+            if (parts.Length != 3) return null;
+                
+            var vmTypeName = parts[1];
+            var methodName = parts[2];
+
+            if (session.ViewModel == null)
             {
-                return null;
+                session.SetViewModelType(vmTypeName);
             }
 
             foreach (var data in formData)
             {
                 SetPropertyValue(session.ViewModel, data.Key, data.Value);
             }
-
-            var methodName = Path.GetFileNameWithoutExtension(resourceName);
-            var vmTypeName = Path.GetFileNameWithoutExtension(resourceName.Replace("/" + methodName, string.Empty));
-
 
             var vmType = session.ViewModel.GetType();
             if (vmType.Name != vmTypeName) return null;
