@@ -8,44 +8,49 @@ using System.Threading;
 
 namespace IctBaden.Stonehenge2.SimpleHttp
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+
     internal class SimpleHttpProcessor
     {
-        public TcpClient Socket;
-        public SimpleHttpServer Server;
+        private readonly TcpClient socket;
+        private readonly SimpleHttpServer server;
 
         private Stream inputStream;
-        public StreamWriter OutputStream;
+        private StreamWriter outputStream;
 
-        public string HttpMethod;
-        public string HttpUrl;
-        public string HttpProtocolVersionstring;
-        public Hashtable HttpHeaders = new Hashtable();
+        public string Method { get; private set; }
+        public string Url { get; private set; }
+        public string ProtocolVersion { get; private set; }
+        public Dictionary<string, string> Headers { get; } = new Dictionary<string, string>();
+
 
         private const int MaxPostSize = 10 * 1024 * 1024; // 10MB
 
-        public SimpleHttpProcessor(TcpClient socket, SimpleHttpServer server)
+        public SimpleHttpProcessor(TcpClient clientSocket, SimpleHttpServer httpServer)
         {
-            Socket = socket;
-            Server = server;
+            socket = clientSocket;
+            server = httpServer;
         }
 
         public void Process()
         {
             // we can't use a StreamReader for input, because it buffers up extra data on us inside it's
             // "processed" view of the world, and we want the data raw after the headers
-            inputStream = new BufferedStream(Socket.GetStream());
+            inputStream = new BufferedStream(socket.GetStream());
 
             // we probably shouldn't be using a streamwriter for all output from handlers either
-            OutputStream = new StreamWriter(new BufferedStream(Socket.GetStream()), new UTF8Encoding(false)) { NewLine = "\r\n" };
+            outputStream = new StreamWriter(new BufferedStream(socket.GetStream()), new UTF8Encoding(false)) { NewLine = "\r\n" };
             try
             {
                 ParseRequest();
                 ReadHeaders();
-                if (HttpMethod.Equals("GET"))
+                if (Method.Equals("GET"))
                 {
                     HandleGetRequest();
                 }
-                else if (HttpMethod.Equals("POST"))
+                else if (Method.Equals("POST"))
                 {
                     HandlePostRequest();
                 }
@@ -57,33 +62,44 @@ namespace IctBaden.Stonehenge2.SimpleHttp
             }
             try
             {
-                OutputStream.Flush();
-                Socket.Close();
+                outputStream.Flush();
+                socket.Close();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
-            inputStream = null; 
-            OutputStream = null;
+            inputStream.Dispose();
+            inputStream = null;
+            outputStream = null;
         }
 
-        private string StreamReadLine(Stream inputStream)
+        private string ReadInputLine()
         {
-            var line = "";
-            while (true)
+            var line = string.Empty;
+            for(var wait = 0; wait < 1000; wait++)
             {
                 var nextChar = inputStream.ReadByte();
-                if (nextChar == '\n') { break; }
-                if (nextChar == '\r') { continue; }
-                if (nextChar == -1) { Thread.Sleep(1); continue; };
-                line += Convert.ToChar(nextChar);
+                switch (nextChar)
+                {
+                    case '\n':
+                        return line;
+                    case '\r':
+                        break;
+                    case -1:
+                        Thread.Sleep(1);
+                        break;
+                    default:
+                        line += Convert.ToChar(nextChar);
+                        break;
+                }
             }
             return line;
         }
-        public void ParseRequest()
+
+        private void ParseRequest()
         {
-            var request = StreamReadLine(inputStream);
+            var request = ReadInputLine();
             if (request == null)
             {
                 throw new Exception("invalid http request line");
@@ -94,18 +110,18 @@ namespace IctBaden.Stonehenge2.SimpleHttp
             {
                 throw new Exception("invalid http request line");
             }
-            HttpMethod = tokens[0].ToUpper();
-            HttpUrl = tokens[1];
-            HttpProtocolVersionstring = tokens[2];
+            Method = tokens[0].ToUpper();
+            Url = tokens[1];
+            ProtocolVersion = tokens[2];
 
             Debug.WriteLine("starting: " + request);
         }
 
-        public void ReadHeaders()
+        private void ReadHeaders()
         {
             Debug.WriteLine("ReadHeaders()");
             string line;
-            while ((line = StreamReadLine(inputStream)) != null)
+            while ((line = ReadInputLine()) != null)
             {
                 Debug.WriteLine("header line=" + line);
                 if (line.Equals(""))
@@ -128,13 +144,13 @@ namespace IctBaden.Stonehenge2.SimpleHttp
 
                 string value = line.Substring(pos, line.Length - pos);
                 Debug.WriteLine("header: {0}:{1}", name, value);
-                HttpHeaders[name] = value;
+                Headers[name] = value;
             }
         }
 
         public void HandleGetRequest()
         {
-            Server.HandleGetRequest(this);
+            server.HandleGetRequest(this);
         }
 
         private const int BufSize = 4096;
@@ -147,15 +163,13 @@ namespace IctBaden.Stonehenge2.SimpleHttp
             // length, because otherwise he won't know when he's seen it all! 
 
             Debug.WriteLine("get post data start");
-            var ms = new MemoryStream();
-            if (HttpHeaders.ContainsKey("Content-Length"))
+            var contentStream = new MemoryStream();
+            if (Headers.ContainsKey("Content-Length"))
             {
-                var contentLen = Convert.ToInt32(HttpHeaders["Content-Length"]);
+                var contentLen = Convert.ToInt32(Headers["Content-Length"]);
                 if (contentLen > MaxPostSize)
                 {
-                    throw new Exception(
-                        string.Format("POST Content-Length({0}) too big for this simple server",
-                            contentLen));
+                    throw new Exception($"POST Content-Length({contentLen}) too big for this simple server");
                 }
                 var buf = new byte[BufSize];
                 var toRead = contentLen;
@@ -176,47 +190,63 @@ namespace IctBaden.Stonehenge2.SimpleHttp
                         }
                     }
                     toRead -= numread;
-                    ms.Write(buf, 0, numread);
+                    contentStream.Write(buf, 0, numread);
                 }
-                ms.Seek(0, SeekOrigin.Begin);
+                contentStream.Seek(0, SeekOrigin.Begin);
             }
             Debug.WriteLine("get post data end");
-            Server.HandlePostRequest(this, new StreamReader(ms));
+            server.HandlePostRequest(this, new StreamReader(contentStream));
         }
 
-        public void WriteSuccess(string contentType = "text/html")
+        public void WriteSuccess(string contentType = "text/html", Dictionary<string,string> header = null)
         {
-            // this is the successful HTTP response line
-            OutputStream.WriteLine("HTTP/1.0 200 OK");
-            // these are the HTTP headers...          
-            OutputStream.WriteLine("Content-Type: " + contentType);
-            OutputStream.WriteLine("Connection: close");
-            // ..add your own headers here if you like
+            if (header == null)
+                header = new Dictionary<string, string>();
+            if (!header.ContainsKey("Content-Type"))
+                header.Add("Content-Type", contentType);
+            if (!header.ContainsKey("Connection"))
+                header.Add("Connection", "close");
 
-            OutputStream.WriteLine(""); // this terminates the HTTP headers.. everything after this is HTTP body..
+            WriteHeader(HttpStatusCode.OK, header);
         }
 
         public void WriteNotFound()
         {
-            // this is an http 404 failure response
-            OutputStream.WriteLine("HTTP/1.0 404 File not found");
-            // these are the HTTP headers
-            OutputStream.WriteLine("Connection: close");
-            // ..add your own headers here
-
-            OutputStream.WriteLine(""); // this terminates the HTTP headers.
+            var header = new Dictionary<string, string> { { "Connection", "close" } };
+            WriteHeader(HttpStatusCode.NotFound, header);
         }
 
-        public void WriteRedirect(string redirectionUrl)
+        public void WriteRedirect(string redirectionUrl, Dictionary<string, string> header = null)
         {
-            // this is an http 404 failure response
-            OutputStream.WriteLine("HTTP/1.0 302 Found");
-            // these are the HTTP headers
-            OutputStream.WriteLine("Location: " + redirectionUrl);
-            // ..add your own headers here
+            if (header == null)
+                header = new Dictionary<string, string>();
 
-            OutputStream.WriteLine(""); // this terminates the HTTP headers.
+            if (!header.ContainsKey("Location"))
+                header.Add("Location", redirectionUrl);
+            if (!header.ContainsKey("Connection"))
+                header.Add("Connection", "close");
+
+            WriteHeader(HttpStatusCode.Redirect, header);
         }
 
+        public void WriteHeader(HttpStatusCode code, Dictionary<string, string> header)
+        {
+            outputStream.WriteLine($"HTTP/1.0 {(int)code} {code}");
+
+            var headers = header.Select(h => $"{h.Key}: {h.Value}");
+            outputStream.WriteLine(string.Join(Environment.NewLine, headers));
+
+            outputStream.WriteLine(""); // this terminates the HTTP headers.
+        }
+
+        public void WriteContent(byte[] data)
+        {
+            outputStream.BaseStream.Write(data, 0, data.Length);
+        }
+
+        public void WriteContent(string text)
+        {
+            outputStream.Write(text);
+        }
     }
 }

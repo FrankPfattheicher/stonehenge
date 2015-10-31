@@ -10,7 +10,7 @@
 
     using IctBaden.Stonehenge2.Core;
 
-    public class ResourceLoader : IResourceProvider
+    public class ResourceLoader : IStonehengeResourceProvider
     {
         internal class AssemblyResource
         {

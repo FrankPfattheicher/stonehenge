@@ -13,9 +13,9 @@ namespace IctBaden.Stonehenge2.Katana
     {
         private IDisposable webApp;
 
-        private readonly IResourceProvider resourceLoader;
+        private readonly IStonehengeResourceProvider resourceLoader;
 
-        public KatanaHost(IResourceProvider loader)
+        public KatanaHost(IStonehengeResourceProvider loader)
         {
             resourceLoader = loader;
         }

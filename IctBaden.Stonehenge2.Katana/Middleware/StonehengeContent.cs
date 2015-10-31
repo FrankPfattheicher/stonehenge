@@ -38,7 +38,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             }
 
             var response = context.Get<Stream>("owin.ResponseBody");
-            var resourceLoader = context.Get<IResourceProvider>("stonehenge.ResourceLoader");
+            var resourceLoader = context.Get<IStonehengeResourceProvider>("stonehenge.ResourceLoader");
             var resourceName = path.Substring(1);
             var appSession = context.Get<AppSession>("stonehenge.AppSession");
             var requestVerb = context.Get<string>("owin.RequestMethod");

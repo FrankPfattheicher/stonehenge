@@ -9,6 +9,7 @@
     using System.Threading;
 
     using IctBaden.Stonehenge2.Angular;
+    using IctBaden.Stonehenge2.Caching;
     using IctBaden.Stonehenge2.Hosting;
     using IctBaden.Stonehenge2.Katana;
     using IctBaden.Stonehenge2.Resources;
@@ -36,9 +37,11 @@
             resLoader.AddAssembly(typeof(AngularResourceProvider).Assembly);
             loader.Loaders.Add(angular);
 
+            var cache = new MemoryCache();
+
             Console.WriteLine(@"Starting server");
             //server = new KatanaHost(loader);
-            server = new SimpleHttpHost(loader);
+            server = new SimpleHttpHost(loader, cache);
 
             if (server.Start(false, "localhost", 42000))
             {

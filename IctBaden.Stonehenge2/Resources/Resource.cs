@@ -8,14 +8,9 @@
         public string Name { get; private set; }
         public string Source { get; private set; }
 
-        public bool IsBinary
-        {
-            get
-            {
-                return Data != null;
-            }
-        }
-        public byte[] Data { get; private set; }
+        public bool IsBinary => Data != null;
+
+        public byte[] Data { get; }
         public string Text { get; private set; }
         public string ExtProperty { get; set; }
 

@@ -31,7 +31,7 @@
 
             fileLoader = new FileLoader(Path.GetTempPath());
 
-            loader = new Loader(new List<IResourceProvider>{ fileLoader, resLoader });
+            loader = new Loader(new List<IStonehengeResourceProvider>{ fileLoader, resLoader });
 
             fileTest = new FileLoaderTests();
             fileTest.Init();

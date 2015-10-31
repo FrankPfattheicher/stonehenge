@@ -6,7 +6,7 @@
 
     using IctBaden.Stonehenge2.Core;
 
-    public class FileLoader : IResourceProvider
+    public class FileLoader : IStonehengeResourceProvider
     {
         public string RootPath { get; }
 

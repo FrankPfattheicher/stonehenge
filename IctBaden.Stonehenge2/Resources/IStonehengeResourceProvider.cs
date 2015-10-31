@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
 
-    using IctBaden.Stonehenge2.Core;
+    using Core;
 
-    public interface IResourceProvider : IDisposable
+    public interface IStonehengeResourceProvider : IDisposable
     {
         Resource Get(AppSession session, string resourceName);
 

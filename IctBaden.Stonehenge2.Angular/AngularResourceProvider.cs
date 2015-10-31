@@ -12,7 +12,7 @@
     using IctBaden.Stonehenge2.Core;
     using IctBaden.Stonehenge2.Resources;
 
-    public class AngularResourceProvider : IResourceProvider
+    public class AngularResourceProvider : IStonehengeResourceProvider
     {
         private Dictionary<string, Resource> angularContent;
 

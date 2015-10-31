@@ -77,9 +77,9 @@
             HandleGet?.Invoke(processor);
         }
 
-        internal void HandlePostRequest(SimpleHttpProcessor processor, StreamReader inputData)
+        internal void HandlePostRequest(SimpleHttpProcessor processor, StreamReader contentStream)
         {
-            HandlePost?.Invoke(processor, inputData);
+            HandlePost?.Invoke(processor, contentStream);
         }
     }
 

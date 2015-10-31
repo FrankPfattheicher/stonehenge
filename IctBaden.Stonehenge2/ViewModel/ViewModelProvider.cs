@@ -12,7 +12,7 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
 
-    public class ViewModelProvider : IResourceProvider
+    public class ViewModelProvider : IStonehengeResourceProvider
     {
         public void Dispose()
         {

@@ -8,13 +8,13 @@
     using Core;
     using ViewModel;
 
-    public class Loader : IResourceProvider
+    public class Loader : IStonehengeResourceProvider
     {
-        public List<IResourceProvider> Loaders { get; }
+        public List<IStonehengeResourceProvider> Loaders { get; }
 
-        public Loader(List<IResourceProvider> loaders = null)
+        public Loader(List<IStonehengeResourceProvider> loaders = null)
         {
-            Loaders = loaders ?? new List<IResourceProvider>();
+            Loaders = loaders ?? new List<IStonehengeResourceProvider>();
         }
 
         public void Dispose()
@@ -50,7 +50,7 @@
 
             var viewModelCreator = new ViewModelProvider();
 
-            var loader = new Loader(new List<IResourceProvider> { fileLoader, resLoader, viewModelCreator });
+            var loader = new Loader(new List<IStonehengeResourceProvider> { fileLoader, resLoader, viewModelCreator });
 
             return loader;
         }

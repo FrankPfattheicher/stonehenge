@@ -1,15 +1,19 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace IctBaden.Stonehenge2.SimpleHttp
 {
+    using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Web;
 
     using Core;
     using Hosting;
+
+    using IctBaden.Stonehenge2.Caching;
+
     using Resources;
 
     using Newtonsoft.Json;
@@ -21,11 +25,13 @@ namespace IctBaden.Stonehenge2.SimpleHttp
 
         public string BaseUrl { get; private set; }
 
-        private readonly IResourceProvider resourceLoader;
+        private readonly IStonehengeResourceProvider resourceLoader;
+        private readonly IStonehengeSessionCache sessionCache;
 
-        public SimpleHttpHost(IResourceProvider loader)
+        public SimpleHttpHost(IStonehengeResourceProvider loader, IStonehengeSessionCache cache)
         {
             resourceLoader = loader;
+            sessionCache = cache;
         }
 
         public bool Start(bool useSsl = false, string hostAddress = null, int hostPort = 0)
@@ -54,35 +60,54 @@ namespace IctBaden.Stonehenge2.SimpleHttp
         private void ServerOnHandleGet(SimpleHttpProcessor httpProcessor)
         {
             // get session
-Debug.Assert(false, "implement session cache");
-
-            if (httpProcessor.HttpUrl == "/")
+            var sessionId = string.Empty;
+            AppSession session = null;
+            var cookie = httpProcessor.Headers.FirstOrDefault(h => h.Key == "Cookie" && h.Value.Contains("StonehengeSession="));
+            if(!string.IsNullOrEmpty(cookie.Value))
             {
-                httpProcessor.WriteRedirect("/Index.html");
+                var extract = new Regex("StonehengeSession=([0-9a-fA-F]+)");
+                var match = extract.Match(cookie.Value);
+                sessionId = match.Groups[1].Value;
+                if (sessionCache.ContainsKey(sessionId))
+                    session = sessionCache[sessionId] as AppSession;
+            }
+
+            if (session == null)
+            {
+                session = new AppSession();
+                sessionId = session.Id;
+                sessionCache.Add(sessionId, session);
+            }
+
+            var header = new Dictionary<string, string> { { "Cookie", "StonehengeSession=" + sessionId } };
+
+            if (httpProcessor.Url == "/")
+            {
+                httpProcessor.WriteRedirect("/Index.html", header);
                 return;
             }
 
-            var resourceName = httpProcessor.HttpUrl.Substring(1);
-            var content = resourceLoader.Get(new AppSession(), resourceName);
+            var resourceName = httpProcessor.Url.Substring(1);
+            var content = resourceLoader.Get(session, resourceName);
             if (content == null)
             {
                 httpProcessor.WriteNotFound();
                 return;
             }
-            httpProcessor.WriteSuccess(content.ContentType);
+            httpProcessor.WriteSuccess(content.ContentType, header);
             if (content.IsBinary)
             {
-                httpProcessor.OutputStream.BaseStream.Write(content.Data, 0, content.Data.Length);
+                httpProcessor.WriteContent(content.Data);
             }
             else
             {
-                httpProcessor.OutputStream.Write(content.Text);
+                httpProcessor.WriteContent(content.Text);
             }
         }
 
         private void ServerOnHandlePost(SimpleHttpProcessor httpProcessor, StreamReader streamReader)
         {
-            var resourceName = httpProcessor.HttpUrl.Substring(1);
+            var resourceName = httpProcessor.Url.Substring(1);
             var queryPart = "";
             var queryIndex = resourceName.IndexOf("?", 0, StringComparison.InvariantCulture);
             if (queryIndex != -1)
@@ -105,11 +130,11 @@ Debug.Assert(false, "implement session cache");
             httpProcessor.WriteSuccess(content.ContentType);
             if (content.IsBinary)
             {
-                httpProcessor.OutputStream.BaseStream.Write(content.Data, 0, content.Data.Length);
+                httpProcessor.WriteContent(content.Data);
             }
             else
             {
-                httpProcessor.OutputStream.Write(content.Text);
+                httpProcessor.WriteContent(content.Text);
             }
         }
 

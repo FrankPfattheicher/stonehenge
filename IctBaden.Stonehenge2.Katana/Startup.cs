@@ -12,11 +12,11 @@
 
     internal class Startup
     {
-        private readonly IResourceProvider resourceLoader;
+        private readonly IStonehengeResourceProvider resourceLoader;
 
         private readonly List<AppSession> sessions = new List<AppSession>();
 
-        public Startup(IResourceProvider loader)
+        public Startup(IStonehengeResourceProvider loader)
         {
             resourceLoader = loader;
         }

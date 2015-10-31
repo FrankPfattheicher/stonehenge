@@ -29,7 +29,10 @@
         public DateTime LastAccess { get; private set; }
         public string Context { get; private set; }
         public DateTime LastUserAction { get; private set; }
-        public Guid Id { get; }
+
+        private readonly Guid id;
+        public string Id => id.ToString("N");
+
         public string PermanentSessionId { get; private set; }
 
         private const int EventTimeoutSeconds = 30;
@@ -207,6 +210,7 @@
 
         private IDisposable terminator;
 
+
         public void SetTerminator(IDisposable disposable)
         {
             terminator = disposable;
@@ -215,7 +219,7 @@
         public AppSession()
         {
             userData = new Dictionary<string, object>();
-            Id = Guid.NewGuid();
+            id = Guid.NewGuid();
         }
 
         public bool IsInitialized => UserAgent != null;

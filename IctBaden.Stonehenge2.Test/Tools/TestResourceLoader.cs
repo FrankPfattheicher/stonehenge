@@ -6,7 +6,7 @@
     using Core;
     using Stonehenge2.Resources;
 
-    public class TestResourceLoader : IResourceProvider
+    public class TestResourceLoader : IStonehengeResourceProvider
     {
         private readonly string content;
 

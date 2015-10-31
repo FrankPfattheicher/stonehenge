@@ -58,6 +58,15 @@ stonehengeApp.controller('{0}', ['$scope', '$http', '$q',
         success(function (data, status, headers, config) {
             $scope.StonehengeInitialLoading = false;
             $scope.StonehengeIsLoading = false;
+            var cookie = headers("cookie");
+            var match = (/StonehengeSession=([0-9a-fA-F]+)/).exec(cookie);
+              if (match == null) {
+                  $scope.StonehengeSession = "";
+              }
+              else {
+                  $scope.StonehengeSession = match[1];
+                  document.cookie = "StonehengeSession=" + $scope.StonehengeSession;
+              }
             angular.extend($scope, data);
             if (!$scope.StonehengePollEventsActive) {
                 setTimeout(function () { $scope.StonehengePollEvents($scope, true); }, 200);
