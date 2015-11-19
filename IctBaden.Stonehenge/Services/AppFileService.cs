@@ -279,6 +279,11 @@ namespace IctBaden.Stonehenge.Services
                 httpResult.Headers.Add("Cache-Control", "no-cache");
                 httpResult.Headers.Add("Expires", "0");
             }
+            else
+            {
+                httpResult.Headers.Add("Cache-Control", "max-age=86400");
+                httpResult.Headers.Add("Expires", "86400");
+            }
             if ((appSession != null) && !appSession.CookieSet)
             {
                 httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
