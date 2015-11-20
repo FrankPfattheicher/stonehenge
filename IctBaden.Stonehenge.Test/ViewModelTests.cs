@@ -2,22 +2,24 @@
 {
     using System;
 
-    using IctBaden.Stonehenge;
+    using Stonehenge;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class ViewModelTests
     {
-        class TestModel1
+        private class TestModel1
         {
             public string Text { get; set; }
         }
-        class TestModel2
+
+        private class TestModel2
         {
             public string Test { get; set; }
         }
-        class TestViewModel : ActiveViewModel
+
+        private class TestViewModel : ActiveViewModel
         {
             public string First { get; set; }
             public string Test { get; set; }

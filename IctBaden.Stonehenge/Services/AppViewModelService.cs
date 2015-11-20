@@ -89,6 +89,7 @@ namespace IctBaden.Stonehenge.Services
             {
                 httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
             }
+
             return httpResult;
         }
 

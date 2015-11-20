@@ -18,7 +18,9 @@
     'bootstrap': {
       deps: ['jquery'],
       exports: 'jQuery'
-    }
+    },
+    baseUrl: 'app/',
+    urlArgs: "bust=" + (new Date()).getTime()
   },
   waitSeconds: 30
 });
