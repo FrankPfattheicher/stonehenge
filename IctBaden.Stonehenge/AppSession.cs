@@ -33,7 +33,8 @@ namespace IctBaden.Stonehenge
         public DateTime LastAccess { get; private set; }
         public string Context { get; private set; }
         public DateTime LastUserAction { get; private set; }
-        public Guid Id { get; }
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
+        public Guid Id { get; private set; }
         public string StackId { get; set; }
 
         internal List<string> Events = new List<string>();
