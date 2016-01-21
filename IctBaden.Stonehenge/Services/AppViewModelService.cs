@@ -62,7 +62,7 @@ namespace IctBaden.Stonehenge.Services
                 // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var name in activeVm.GetDictionaryNames())
                 {
-                    data.Add(string.Format("\"{0}\":{1}", name, JsonSerializer.SerializeToString(activeVm.TryGetMember(name))));
+                    data.Add($"\"{name}\":{JsonSerializer.SerializeToString(activeVm.TryGetMember(name))}");
                 }
             }
 
@@ -144,18 +144,15 @@ namespace IctBaden.Stonehenge.Services
             }
 
             var host = GetResolver() as AppHost;
-            if (host != null)
+            if (host?.Redirect == null)
             {
-                if (host.Redirect != null)
-                {
-                    var redirect = new HttpResult { StatusCode = HttpStatusCode.Redirect };
-                    redirect.Headers.Add("Location", Request.Headers["Referer"] + "#/" + host.Redirect);
-                    host.Redirect = null;
-                    return redirect;
-                }
+                return returnData ? Get(request) : new HttpResult("{}", ViewModelContentType);
             }
 
-            return returnData ? Get(request) : new HttpResult("{}", ViewModelContentType);
+            var redirect = new HttpResult { StatusCode = HttpStatusCode.Redirect };
+            redirect.Headers.Add("Location", Request.Headers["Referer"] + "#/" + host.Redirect);
+            host.Redirect = null;
+            return redirect;
         }
 
         private static IEnumerable<string> SerializeObject(string prefix, object obj)
