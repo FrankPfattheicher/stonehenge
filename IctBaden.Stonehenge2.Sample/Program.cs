@@ -1,19 +1,19 @@
-﻿namespace IctBaden.Stonehenge2.Sample
+﻿using IctBaden.Stonehenge2.Aurelia;
+
+namespace IctBaden.Stonehenge2.Sample
 {
     using System;
-    using System.Diagnostics;
     using System.IO;
-    using System.IO.Pipes;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
 
-    using IctBaden.Stonehenge2.Angular;
-    using IctBaden.Stonehenge2.Caching;
-    using IctBaden.Stonehenge2.Hosting;
-    using IctBaden.Stonehenge2.Katana;
-    using IctBaden.Stonehenge2.Resources;
-    using IctBaden.Stonehenge2.SimpleHttp;
+    using Angular;
+    using Caching;
+    using Hosting;
+    using Katana;
+    using Resources;
+    using SimpleHttp;
 
     static class Program
     {
@@ -26,34 +26,70 @@
         [STAThread]
         static void Main()
         {
+            Console.WriteLine(@"");
+            Console.WriteLine(@"Stonehenge 2 sample");
+            Console.WriteLine(@"");
+
+
             var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? ".";
             var appFilesPath = Path.Combine(appPath, "app");
 
-            var angular = new AngularResourceProvider();
-            angular.Init(appFilesPath, "start");
-
             var loader = Loader.CreateDefaultLoader();
             var resLoader = (ResourceLoader)loader.Loaders.First(ld => ld.GetType() == typeof(ResourceLoader));
-            resLoader.AddAssembly(typeof(AngularResourceProvider).Assembly);
-            loader.Loaders.Add(angular);
 
             var cache = new MemoryCache();
 
-            Console.WriteLine(@"Starting server");
-            //server = new KatanaHost(loader);
-            server = new SimpleHttpHost(loader, cache);
+            var framework = "angular";
+            if(Environment.CommandLine.Contains("/Aurelia")) { framework = "aurelia"; }
 
-            if (server.Start(false, "localhost", 42000))
+            var hosting = "owin";
+            if (Environment.CommandLine.Contains("/Simple")) { hosting = "simple"; }
+
+            // Select client framework
+            switch (framework)
+            {
+                case "angular":
+                    Console.WriteLine(@"Using client framework AngularJS");
+                    var angular = new AngularResourceProvider();
+                    angular.Init(appFilesPath, "angular");
+                    resLoader.AddAssembly(typeof(AngularResourceProvider).Assembly);    // TODO: remove this (see Aurelia)
+                    loader.Loaders.Add(angular);
+                    break;
+                case "aurelia":
+                    Console.WriteLine(@"Using client framework aurelia");
+                    var aurelia = new AureliaResourceProvider();
+                    aurelia.Init(appFilesPath, "aurelia");
+                    resLoader.AddAssembly(typeof(AureliaResourceProvider).Assembly);
+                    loader.Loaders.Add(aurelia);
+                    break;
+            }
+
+            // Select hosting technology
+            switch (hosting)
+            {
+                case "owin":
+                    Console.WriteLine(@"Using Katana OWIN hosting");
+                    server = new KatanaHost(loader);
+                    break;
+                case "simple":
+                    Console.WriteLine(@"Using simple http hosting");
+                    server = new SimpleHttpHost(loader, cache);
+                    break;
+            }
+
+            Console.WriteLine(@"Starting server");
+            var terminate = new AutoResetEvent(false);
+            Console.CancelKeyPress += (sender, eventArgs) => { terminate.Set(); };
+
+            if (server.Start(false, "localhost", 32000))
             {
                 Console.WriteLine(@"Started server on: " + server.BaseUrl);
-                while (true)
-                {
-                    Thread.Sleep(1000);
-                }
+                terminate.WaitOne();
+                Console.WriteLine(@"Server terminated.");
             }
             else
             {
-                Console.WriteLine(@"Failed to start server on: " + server.BaseUrl);
+                Console.WriteLine("Failed to start server on: " + server.BaseUrl);
             }
 
 #pragma warning disable 0162

@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IctBaden.Stonehenge2.Sample</RootNamespace>
     <AssemblyName>IctBaden.Stonehenge2.Sample</AssemblyName>
@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Owin.Host.HttpListener">
       <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.3.0.0\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
@@ -52,7 +55,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\StartVm.cs" />
-    <Compile Include="ViewModels\AboutVm.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -80,6 +82,10 @@
       <Project>{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}</Project>
       <Name>IctBaden.Stonehenge2.Angular</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IctBaden.Stonehenge2.Aurelia\IctBaden.Stonehenge2.Aurelia.csproj">
+      <Project>{605348da-62bf-4c8e-af3e-d7a4790a1899}</Project>
+      <Name>IctBaden.Stonehenge2.Aurelia</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IctBaden.Stonehenge2.Katana\IctBaden.Stonehenge2.Katana.csproj">
       <Project>{fa4c06c4-e32c-4c41-be4b-712c963e36fc}</Project>
       <Name>IctBaden.Stonehenge2.Katana</Name>
@@ -98,16 +104,10 @@
     <Folder Include="app\lib\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="app\start.html" />
+    <EmbeddedResource Include="app\angular.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="app\about.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="app\file.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EmbeddedResource Include="app\index.html" />
+    <EmbeddedResource Include="app\aurelia.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

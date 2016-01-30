@@ -1,4 +1,6 @@
-﻿namespace IctBaden.Stonehenge2.Angular.Client
+﻿using System.Diagnostics;
+
+namespace IctBaden.Stonehenge2.Angular.Client
 {
     using System;
     using System.Collections.Generic;
@@ -89,6 +91,11 @@
         private static string GetController(string vmName)
         {
             var vmType = GetVmType(vmName);
+            if (vmType == null)
+            {
+                Debug.Assert(false, "No VM for type " + vmName + " defined.");
+                return null;
+            }
 
             var controllerTemplate = LoadResourceText("IctBaden.Stonehenge2.Angular.Client.stonehengeController.js");
   

@@ -47,7 +47,6 @@
     </Compile>
     <Compile Include="Client\AngularAppCreator.cs" />
     <Compile Include="AngularResourceProvider.cs" />
-    <Compile Include="Client\ContentDeliveryNetworkSupport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

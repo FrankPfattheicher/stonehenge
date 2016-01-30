@@ -8,9 +8,9 @@
     using System.Reflection;
     using System.Text.RegularExpressions;
 
-    using IctBaden.Stonehenge2.Angular.Client;
-    using IctBaden.Stonehenge2.Core;
-    using IctBaden.Stonehenge2.Resources;
+    using Angular.Client;
+    using Core;
+    using Resources;
 
     public class AngularResourceProvider : IStonehengeResourceProvider
     {

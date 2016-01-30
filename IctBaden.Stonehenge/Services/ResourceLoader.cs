@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -23,9 +22,12 @@ namespace IctBaden.Stonehenge.Services
             resourcePath = resourcePath.Replace('-', '_');
             var resourceName1 = (resourcePath.Replace(Path.DirectorySeparatorChar, '.') + "." + name).Replace("..", ".");
 
-            if (Texts.ContainsKey(resourceName1))
+            lock (Texts)
             {
-                return Texts[resourceName1];
+                if (Texts.ContainsKey(resourceName1))
+                {
+                    return Texts[resourceName1];
+                }
             }
 
             var resourceName2 = string.Empty;
@@ -46,9 +48,12 @@ namespace IctBaden.Stonehenge.Services
                 resourceName2 = (resourcePath.Replace(Path.DirectorySeparatorChar, '.') + "." + name).Replace("..", ".");
             }
 
-            if (!string.IsNullOrEmpty(resourceName2) && Texts.ContainsKey(resourceName2))
+            lock (Texts)
             {
-                return Texts[resourceName2];
+                if (!string.IsNullOrEmpty(resourceName2) && Texts.ContainsKey(resourceName2))
+                {
+                    return Texts[resourceName2];
+                }
             }
 
             lock (Texts)
@@ -119,12 +124,15 @@ namespace IctBaden.Stonehenge.Services
             var resourceName = (resourcePath.Replace(Path.DirectorySeparatorChar, '.') + "." + name).Replace("..", ".");
             if (!resourceName.StartsWith("app."))
             {
-                resourceName = ("app." + resourceName).Replace("..", "."); ;
+                resourceName = ("app." + resourceName).Replace("..", ".");
             }
 
-            if (Binaries.ContainsKey(resourceName))
+            lock (Binaries)
             {
-                return Binaries[resourceName];
+                if (Binaries.ContainsKey(resourceName))
+                {
+                    return Binaries[resourceName];
+                }
             }
 
             lock (Binaries)

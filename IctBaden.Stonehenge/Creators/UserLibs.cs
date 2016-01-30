@@ -17,7 +17,7 @@ namespace IctBaden.Stonehenge.Creators
         {
             userLibs = string.Empty;
 
-            // froim files
+            // from files
             var libFilesPath = Path.Combine(rootPath, LibPath);
             if (Directory.Exists(libFilesPath))
             {
