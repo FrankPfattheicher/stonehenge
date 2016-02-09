@@ -1,4 +1,5 @@
-﻿namespace IctBaden.Stonehenge2.Resources
+﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+namespace IctBaden.Stonehenge2.Resources
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +9,7 @@
     using System.Linq;
     using System.Reflection;
 
-    using IctBaden.Stonehenge2.Core;
+    using Core;
 
     public class ResourceLoader : IStonehengeResourceProvider
     {
@@ -73,18 +74,31 @@
         {
             foreach (var resource in assemby.GetManifestResourceNames())
             {
-                const string BaseName = ".app.";
-                var appBase = resource.IndexOf(BaseName, StringComparison.InvariantCultureIgnoreCase);
+                const string baseName = ".app.";
+                var appBase = resource.IndexOf(baseName, StringComparison.InvariantCultureIgnoreCase);
                 if (appBase == -1)
                 {
                     continue;
                 }
 
-                var shortName = resource.Substring(appBase + BaseName.Length);
+                var shortName = resource.Substring(appBase + baseName.Length);
+                var resourceId = shortName
+                        .Replace("@", "_")
+                        .Replace("-", "_")
+                        .Replace("._0", ".0")
+                        .Replace("._1", ".1")
+                        .Replace("._2", ".2")
+                        .Replace("._3", ".3")
+                        .Replace("._4", ".4")
+                        .Replace("._5", ".5")
+                        .Replace("._6", ".6")
+                        .Replace("._7", ".7")
+                        .Replace("._8", ".8")
+                        .Replace("._9", ".9");
                 var asmResource = new AssemblyResource(resource, shortName, assemby);
-                if (!dict.ContainsKey(shortName))
+                if (!dict.ContainsKey(resourceId))
                 {
-                    dict.Add(shortName, asmResource);
+                    dict.Add(resourceId, asmResource);
                 }
             }
         }
@@ -96,7 +110,10 @@
 
         public Resource Get(AppSession session, string name)
         {
-            var resourceName = name.Replace("/", ".");
+            var resourceName = name
+                        .Replace("@", "_")
+                        .Replace("-", "_")
+                        .Replace("/", ".");
             var asmResource = resources.Value
                 .FirstOrDefault(res => string.Compare(res.Key, resourceName, true, CultureInfo.InvariantCulture) == 0);
             if (asmResource.Key == null)
