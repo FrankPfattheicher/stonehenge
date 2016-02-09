@@ -52,7 +52,7 @@ namespace IctBaden.Stonehenge2.Sample
                     Console.WriteLine(@"Using client framework AngularJS");
                     var angular = new AngularResourceProvider();
                     angular.Init(appFilesPath, "angular");
-                    resLoader.AddAssembly(typeof(AngularResourceProvider).Assembly);    // TODO: remove this (see Aurelia)
+                    resLoader.AddAssembly(typeof(AngularResourceProvider).Assembly);
                     loader.Loaders.Add(angular);
                     break;
                 case "aurelia":

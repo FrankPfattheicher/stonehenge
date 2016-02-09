@@ -8,7 +8,7 @@
     using System.Reflection;
     using System.Text.RegularExpressions;
 
-    using Angular.Client;
+    using Client;
     using Core;
     using Resources;
 

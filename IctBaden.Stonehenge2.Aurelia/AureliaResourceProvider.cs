@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using IctBaden.Stonehenge2.Aurelia.Client;
 using IctBaden.Stonehenge2.Core;
 using IctBaden.Stonehenge2.Resources;
 
@@ -71,7 +72,7 @@ namespace IctBaden.Stonehenge2.Aurelia
                 var baseName = assembly.GetName().Name + ".app.";
 
                 foreach (var resourceName in assembly.GetManifestResourceNames()
-                  .Where(name => (name.EndsWith(".html") || name.EndsWith(".css") || name.EndsWith(".js")) && (!name.Contains("index.html")))
+                  .Where(name => (name.EndsWith(".html")) && !name.Contains("index.html") && !name.Contains("src.app.html"))
                   .OrderBy(name => name))
                 {
                     var resourceId = resourceName
@@ -94,7 +95,7 @@ namespace IctBaden.Stonehenge2.Aurelia
                         continue;
                     }
 
-                    var route = resourceId .Replace(".html", string.Empty);
+                    var route = resourceId.Replace(".html", string.Empty);
                     var pageText = "";
                     using (var stream = assembly.GetManifestResourceStream(resourceName))
                     {
@@ -115,10 +116,10 @@ namespace IctBaden.Stonehenge2.Aurelia
 
         private void AddAppJs(string rootPage)
         {
-            //var appCreator = new AureliaAppCreator(rootPage, aureliaContent);
-            //var resource = new Resource("stonehengeApp.js", "AureliaResourceProvider", ResourceType.Html,
-            //    appCreator.CreateApplicationJs());
-            //aureliaContent.Add("stonehengeApp.js", resource);
+            var appCreator = new AureliaAppCreator(rootPage, aureliaContent);
+            var resource = new Resource("src.app.js", "AureliaResourceProvider", ResourceType.Html,
+                appCreator.CreateApplicationJs());
+            aureliaContent.Add("src.app.js", resource);
         }
 
 

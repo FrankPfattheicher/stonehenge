@@ -10,9 +10,9 @@ namespace IctBaden.Stonehenge2.Angular.Client
     using System.Reflection;
     using System.Text;
 
-    using IctBaden.Stonehenge2.Core;
-    using IctBaden.Stonehenge2.Resources;
-    using IctBaden.Stonehenge2.ViewModel;
+    using Core;
+    using Resources;
+    using ViewModel;
 
     public class AngularAppCreator
     {
@@ -56,17 +56,17 @@ namespace IctBaden.Stonehenge2.Angular.Client
 
         private string InsertRoutes(string pageText)
         {
-            const string RoutesInsertPoint = "//stonehengeAppRoutes";
-            const string RootPageInsertPoint = "stonehengeRootPage";
-            const string PageTemplate = "when('/{0}', {{ templateUrl: '{0}.html', controller: '{1}' }}).";
+            const string routesInsertPoint = "//stonehengeAppRoutes";
+            const string rootPageInsertPoint = "stonehengeRootPage";
+            const string pageTemplate = "when('/{0}', {{ templateUrl: '{0}.html', controller: '{1}' }}).";
 
             var pages = angularContent
-                .Select(res => string.Format(PageTemplate, res.Value.Name, res.Value.ExtProperty));
+                .Select(res => string.Format(pageTemplate, res.Value.Name, res.Value.ExtProperty));
 
             var routes = string.Join(Environment.NewLine, pages);
             pageText = pageText
-                .Replace(RoutesInsertPoint, routes)
-                .Replace(RootPageInsertPoint, rootPage);
+                .Replace(routesInsertPoint, routes)
+                .Replace(rootPageInsertPoint, rootPage);
             return pageText;
         }
 
@@ -94,6 +94,7 @@ namespace IctBaden.Stonehenge2.Angular.Client
             if (vmType == null)
             {
                 Debug.Assert(false, "No VM for type " + vmName + " defined.");
+                // ReSharper disable once HeuristicUnreachableCode
                 return null;
             }
 
@@ -108,7 +109,7 @@ namespace IctBaden.Stonehenge2.Angular.Client
 
 
 
-            const string MethodTemplate =
+            const string methodTemplate =
 @"$scope.{1} = function({paramNames}) {
     $scope.StonehengePost($scope, '/ViewModel/{0}/{1}{paramValues}');
   }
@@ -126,7 +127,7 @@ namespace IctBaden.Stonehenge2.Angular.Client
                 ? "?" + string.Join("&", paramNames.Select(n => string.Format("{0}='+encodeURIComponent({0})+'", n)))
                 : string.Empty;
 
-                var method = MethodTemplate
+                var method = methodTemplate
                     .Replace("{0}", vmName)
                     .Replace("{1}", methodInfo.Name)
                     .Replace("{paramNames}", string.Join(",", paramNames))
@@ -178,7 +179,7 @@ namespace IctBaden.Stonehenge2.Angular.Client
                         continue;
                 }
 
-                if ((prop == null) || (prop.GetSetMethod(false) == null)) // not public writable
+                if (prop?.GetSetMethod(false) == null) // not public writable
                     continue;
                 var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
                 if ((bindable.Length > 0) && ((BindableAttribute)bindable[0]).Direction == BindingDirection.OneWay)

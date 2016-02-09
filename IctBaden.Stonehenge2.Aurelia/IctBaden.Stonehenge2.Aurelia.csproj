@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AureliaResourceProvider.cs" />
+    <Compile Include="Client\AureliaAppCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -50,9 +51,7 @@
       <Name>IctBaden.Stonehenge2</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Client\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="app\index.html" />
   </ItemGroup>
@@ -192,9 +191,9 @@
     <None Include="app\jspm_packages\npm\font-awesome%404.5.0\.npmignore" />
     <None Include="app\jspm_packages\npm\font-awesome%404.5.0\css\font-awesome.css.map" />
     <None Include="app\jspm_packages\npm\font-awesome%404.5.0\fonts\fontawesome-webfont.eot" />
-    <None Include="app\jspm_packages\npm\font-awesome%404.5.0\fonts\fontawesome-webfont.ttf" />
-    <None Include="app\jspm_packages\npm\font-awesome%404.5.0\fonts\fontawesome-webfont.woff" />
-    <None Include="app\jspm_packages\npm\font-awesome%404.5.0\fonts\fontawesome-webfont.woff2" />
+    <EmbeddedResource Include="app\jspm_packages\npm\font-awesome%404.5.0\fonts\fontawesome-webfont.ttf" />
+    <EmbeddedResource Include="app\jspm_packages\npm\font-awesome%404.5.0\fonts\fontawesome-webfont.woff" />
+    <EmbeddedResource Include="app\jspm_packages\npm\font-awesome%404.5.0\fonts\fontawesome-webfont.woff2" />
     <None Include="app\jspm_packages\npm\font-awesome%404.5.0\fonts\FontAwesome.otf" />
     <None Include="app\jspm_packages\npm\font-awesome%404.5.0\less\animated.less" />
     <None Include="app\jspm_packages\npm\font-awesome%404.5.0\less\bordered-pulled.less" />
@@ -249,6 +248,7 @@
     <EmbeddedResource Include="app\package.json" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Client\stonehengeApp.js" />
     <EmbeddedResource Include="app\config.js" />
     <EmbeddedResource Include="app\favicon.ico" />
     <Content Include="app\jspm_packages\github\components\jquery%402.2.0.js" />
@@ -291,9 +291,9 @@
     <EmbeddedResource Include="app\jspm_packages\github\systemjs\plugin-text%400.0.4\text.js" />
     <Content Include="app\jspm_packages\github\systemjs\plugin-text%400.0.4\text.txt" />
     <Content Include="app\jspm_packages\github\twbs\bootstrap%403.3.6.js" />
-    <Content Include="app\jspm_packages\github\twbs\bootstrap%403.3.6\css\bootstrap-theme.css" />
+    <EmbeddedResource Include="app\jspm_packages\github\twbs\bootstrap%403.3.6\css\bootstrap-theme.css" />
     <Content Include="app\jspm_packages\github\twbs\bootstrap%403.3.6\css\bootstrap-theme.min.css" />
-    <Content Include="app\jspm_packages\github\twbs\bootstrap%403.3.6\css\bootstrap.css" />
+    <EmbeddedResource Include="app\jspm_packages\github\twbs\bootstrap%403.3.6\css\bootstrap.css" />
     <Content Include="app\jspm_packages\github\twbs\bootstrap%403.3.6\css\bootstrap.min.css" />
     <Content Include="app\jspm_packages\github\twbs\bootstrap%403.3.6\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="app\jspm_packages\github\twbs\bootstrap%403.3.6\js\bootstrap.js" />
@@ -1920,9 +1920,9 @@
     <Content Include="app\jspm_packages\npm\core-js%402.0.3\web\index.js" />
     <Content Include="app\jspm_packages\npm\core-js%402.0.3\web\timers.js" />
     <EmbeddedResource Include="app\jspm_packages\npm\font-awesome%404.5.0.js" />
-    <Content Include="app\jspm_packages\npm\font-awesome%404.5.0\css\font-awesome.css" />
+    <EmbeddedResource Include="app\jspm_packages\npm\font-awesome%404.5.0\css\font-awesome.css" />
     <Content Include="app\jspm_packages\npm\font-awesome%404.5.0\css\font-awesome.min.css" />
-    <Content Include="app\jspm_packages\npm\font-awesome%404.5.0\fonts\fontawesome-webfont.svg" />
+    <EmbeddedResource Include="app\jspm_packages\npm\font-awesome%404.5.0\fonts\fontawesome-webfont.svg" />
     <Content Include="app\jspm_packages\npm\font-awesome%404.5.0\HELP-US-OUT.txt" />
     <EmbeddedResource Include="app\jspm_packages\npm\inherits%402.0.1.js" />
     <Content Include="app\jspm_packages\npm\inherits%402.0.1\inherits.js" />
@@ -1951,7 +1951,7 @@
     <EmbeddedResource Include="app\jspm_packages\system.js" />
     <EmbeddedResource Include="app\jspm_packages\system.src.js" />
     <EmbeddedResource Include="app\src\app.html" />
-    <EmbeddedResource Include="app\src\app.js" />
+    <None Include="app\src\app.js" />
     <EmbeddedResource Include="app\styles\styles.css" />
   </ItemGroup>
   <ItemGroup>
