@@ -9,7 +9,7 @@ This version has an architecture and is no longer a proof of concept hack.
 
 * Katana - the Microsoft Owin stack for self hosting replaces ServiceStack 3.x
 
-* AngularJS replaces Durandal (Knockout, JQuery)
+* AngularJS or Aurelia replaces Durandal (Knockout, JQuery)
 
 * Newtonsoft.JSON replaces ServiceStack JSON serializer
 
