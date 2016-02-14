@@ -70,7 +70,7 @@ namespace IctBaden.Stonehenge
         public void ClientAddressChanged(string address)
         {
             ClientAddress = address;
-            NotifyPropertyChanged("ClientAddress");
+            NotifyPropertyChanged(nameof(ClientAddress));
         }
 
         public object SetViewModelType(string typeName)
@@ -99,8 +99,11 @@ namespace IctBaden.Stonehenge
             {
                 if (typeof(ActiveViewModel).IsAssignableFrom(vmtype))
                 {
-                    var sessionCtor = vmtype.GetConstructors().FirstOrDefault(ctor => ctor.GetParameters().Length == 1);
-                    vm = (sessionCtor != null) ? Activator.CreateInstance(vmtype, this) : Activator.CreateInstance(vmtype);
+                    var sessionCtor = vmtype.GetConstructors()
+                        .FirstOrDefault(ctor => (ctor.GetParameters().Length == 1) && (ctor.GetParameters()[0].ParameterType == GetType()));
+                    vm = sessionCtor != null 
+                        ? Activator.CreateInstance(vmtype, this) 
+                        : Activator.CreateInstance(vmtype);
                 }
                 else
                 {
@@ -109,7 +112,20 @@ namespace IctBaden.Stonehenge
             }
             catch (Exception ex)
             {
-                Trace.TraceError(ex.Message);
+                var message = $"AppSession.SetViewModelType({typeName})" + Environment.NewLine;
+                message += ex.Message;
+                if (ex.InnerException != null)
+                {
+                    message += Environment.NewLine + ex.InnerException.Message;
+                    message += Environment.NewLine + ex.InnerException.StackTrace;
+                }
+                else
+                {
+                    message += Environment.NewLine + ex.StackTrace;
+                }
+                message += Environment.NewLine;
+                
+                Trace.TraceError(message);
                 vm = null;
             }
 
@@ -191,8 +207,8 @@ namespace IctBaden.Stonehenge
                 terminator.Dispose();
                 TimedOut?.Invoke();
             }
-            NotifyPropertyChanged("ConnectedDuration");
-            NotifyPropertyChanged("LastAccessDuration");
+            NotifyPropertyChanged(nameof(ConnectedDuration));
+            NotifyPropertyChanged(nameof(LastAccessDuration));
         }
 
         private IDisposable terminator;
@@ -254,14 +270,14 @@ namespace IctBaden.Stonehenge
                 StackId = cookies["ss-pid"].Value;
             }
             LastAccess = DateTime.Now;
-            NotifyPropertyChanged("LastAccess");
+            NotifyPropertyChanged(nameof(LastAccess));
             if (userAction)
             {
                 LastUserAction = DateTime.Now;
-                NotifyPropertyChanged("LastUserAction");
+                NotifyPropertyChanged(nameof(LastUserAction));
             }
             CookieSet = cookies.ContainsKey("stonehenge_id");
-            NotifyPropertyChanged("CookieSet");
+            NotifyPropertyChanged(nameof(CookieSet));
         }
 
         public void SetContext(string context)
