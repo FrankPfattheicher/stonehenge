@@ -61,7 +61,7 @@ namespace IctBaden.Stonehenge2.Angular.Client
             const string pageTemplate = "when('/{0}', {{ templateUrl: '{0}.html', controller: '{1}' }}).";
 
             var pages = angularContent
-                .Select(res => string.Format(pageTemplate, res.Value.Name, res.Value.ExtProperty));
+                .Select(res => string.Format(pageTemplate, res.Value.Name, res.Value.ViewModelName));
 
             var routes = string.Join(Environment.NewLine, pages);
             pageText = pageText
@@ -73,7 +73,7 @@ namespace IctBaden.Stonehenge2.Angular.Client
         private string GetControllers()
         {
             var controllerTexts = angularContent
-                .Select(res => res.Value.ExtProperty)
+                .Select(res => res.Value.ViewModelName)
                 .Distinct()
                 .Select(GetController);
 

@@ -19,9 +19,12 @@ namespace IctBaden.Stonehenge2.Aurelia
         {
             aureliaContent = new Dictionary<string, Resource>();
 
+            var appCreator = new AureliaAppCreator(rootPage, aureliaContent);
+
             AddFileSystemContent(appFilesPath);
             AddResourceContent();
-            AddAppJs(rootPage);
+            appCreator.CreateApplication(rootPage);
+            appCreator.CreateControllers();
         }
 
         public void Dispose()
@@ -57,7 +60,7 @@ namespace IctBaden.Stonehenge2.Aurelia
                     var route = resourceId.Replace(".html", string.Empty);
                     var pageText = File.ReadAllText(appFile);
 
-                    var resource = new Resource(route, appFile, ResourceType.Html, pageText) { ExtProperty = GetViewModelName(route, pageText) };
+                    var resource = new Resource(route, appFile, ResourceType.Html, pageText) { ViewModelName = GetViewModelName(route, pageText) };
                     aureliaContent.Add(resourceId, resource);
                 }
             }
@@ -108,19 +111,14 @@ namespace IctBaden.Stonehenge2.Aurelia
                         }
                     }
 
-                    var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText) { ExtProperty = GetViewModelName(route, pageText) };
-                    aureliaContent.Add(resourceId, resource);
+                    var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText) { ViewModelName = GetViewModelName(route, pageText) };
+                    aureliaContent.Add("src." + resourceId, resource);
                 }
             }
         }
 
-        private void AddAppJs(string rootPage)
-        {
-            var appCreator = new AureliaAppCreator(rootPage, aureliaContent);
-            var resource = new Resource("src.app.js", "AureliaResourceProvider", ResourceType.Html,
-                appCreator.CreateApplicationJs());
-            aureliaContent.Add("src.app.js", resource);
-        }
+
+
 
 
         public Resource Post(AppSession session, string resourceName, object[] postParams, Dictionary<string, string> formData)

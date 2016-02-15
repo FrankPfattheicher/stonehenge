@@ -1,11 +1,11 @@
-﻿namespace IctBaden.Stonehenge2.Sample.ViewModels
-{
-    using System;
-    using System.Reflection;
-    using System.Threading;
-    using Core;
-    using ViewModel;
+﻿using System;
+using System.Reflection;
+using System.Threading;
+using IctBaden.Stonehenge2.Core;
+using IctBaden.Stonehenge2.ViewModel;
 
+namespace IctBaden.Stonehenge2.AureliaSample.ViewModels
+{
     public class StartVm : ActiveViewModel, IDisposable
     {
         public string TimeStamp => DateTime.Now.ToLongTimeString();

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}</ProjectGuid>
+    <ProjectGuid>{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IctBaden.Stonehenge2.Sample</RootNamespace>
-    <AssemblyName>IctBaden.Stonehenge2.Sample</AssemblyName>
+    <RootNamespace>IctBaden.Stonehenge2.AureliaSample</RootNamespace>
+    <AssemblyName>IctBaden.Stonehenge2.AureliaSample</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -63,6 +63,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -78,10 +79,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IctBaden.Stonehenge2.Angular\IctBaden.Stonehenge2.Angular.csproj">
-      <Project>{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}</Project>
-      <Name>IctBaden.Stonehenge2.Angular</Name>
-    </ProjectReference>
     <ProjectReference Include="..\IctBaden.Stonehenge2.Aurelia\IctBaden.Stonehenge2.Aurelia.csproj">
       <Project>{605348da-62bf-4c8e-af3e-d7a4790a1899}</Project>
       <Name>IctBaden.Stonehenge2.Aurelia</Name>
@@ -104,10 +101,7 @@
     <Folder Include="app\lib\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="app\angular.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="app\aurelia.html" />
+    <EmbeddedResource Include="app\start.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,20 +1,17 @@
-﻿using IctBaden.Stonehenge2.Aurelia;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using IctBaden.Stonehenge2.Aurelia;
+using IctBaden.Stonehenge2.Caching;
+using IctBaden.Stonehenge2.Hosting;
+using IctBaden.Stonehenge2.Katana;
+using IctBaden.Stonehenge2.Resources;
+using IctBaden.Stonehenge2.SimpleHttp;
 
-namespace IctBaden.Stonehenge2.Sample
+namespace IctBaden.Stonehenge2.AureliaSample
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading;
-
-    using Angular;
-    using Caching;
-    using Hosting;
-    using Katana;
-    using Resources;
-    using SimpleHttp;
-
     static class Program
     {
         //private static AppHost app;
@@ -39,30 +36,15 @@ namespace IctBaden.Stonehenge2.Sample
 
             var cache = new MemoryCache();
 
-            var framework = "angular";
-            if(Environment.CommandLine.Contains("/Aurelia")) { framework = "aurelia"; }
-
             var hosting = "owin";
             if (Environment.CommandLine.Contains("/Simple")) { hosting = "simple"; }
 
             // Select client framework
-            switch (framework)
-            {
-                case "angular":
-                    Console.WriteLine(@"Using client framework AngularJS");
-                    var angular = new AngularResourceProvider();
-                    angular.Init(appFilesPath, "angular");
-                    resLoader.AddAssembly(typeof(AngularResourceProvider).Assembly);
-                    loader.Loaders.Add(angular);
-                    break;
-                case "aurelia":
-                    Console.WriteLine(@"Using client framework aurelia");
-                    var aurelia = new AureliaResourceProvider();
-                    aurelia.Init(appFilesPath, "aurelia");
-                    resLoader.AddAssembly(typeof(AureliaResourceProvider).Assembly);
-                    loader.Loaders.Add(aurelia);
-                    break;
-            }
+            Console.WriteLine(@"Using client framework aurelia");
+            var aurelia = new AureliaResourceProvider();
+            aurelia.Init(appFilesPath, "start");
+            resLoader.AddAssembly(typeof(AureliaResourceProvider).Assembly);
+            loader.Loaders.Add(aurelia);
 
             // Select hosting technology
             switch (hosting)
@@ -89,7 +71,7 @@ namespace IctBaden.Stonehenge2.Sample
             }
             else
             {
-                Console.WriteLine("Failed to start server on: " + server.BaseUrl);
+                Console.WriteLine(@"Failed to start server on: " + server.BaseUrl);
             }
 
 #pragma warning disable 0162

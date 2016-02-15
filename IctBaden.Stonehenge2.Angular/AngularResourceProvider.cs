@@ -58,7 +58,7 @@
                     var route = resourceId.Replace(".html", string.Empty);
                     var pageText = File.ReadAllText(appFile);
 
-                    var resource = new Resource(route, appFile, ResourceType.Html, pageText) { ExtProperty = GetViewModelName(route, pageText) };
+                    var resource = new Resource(route, appFile, ResourceType.Html, pageText) { ViewModelName = GetViewModelName(route, pageText) };
                     angularContent.Add(resourceId, resource);
                 }
             }
@@ -92,7 +92,7 @@
                     }
                 }
 
-                var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText) { ExtProperty = GetViewModelName(route, pageText) };
+                var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText) { ViewModelName = GetViewModelName(route, pageText) };
                 angularContent.Add(resourceId, resource);
             }
         }

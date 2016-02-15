@@ -4,7 +4,7 @@
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ICT Baden GmbH")]
 [assembly: AssemblyProduct("IctBaden.Stonehenge2")]
-[assembly: AssemblyCopyright("Copyright ©2013-2015 ICT Baden GmbH")]
+[assembly: AssemblyCopyright("Copyright ©2013-2016 ICT Baden GmbH")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

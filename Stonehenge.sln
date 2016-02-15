@@ -32,13 +32,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Katana
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Test", "IctBaden.Stonehenge2.Test\IctBaden.Stonehenge2.Test.csproj", "{9E387A93-EA2F-4989-AE47-9228DF685B5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Sample", "IctBaden.Stonehenge2.Sample\IctBaden.Stonehenge2.Sample.csproj", "{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Angular", "IctBaden.Stonehenge2.Angular\IctBaden.Stonehenge2.Angular.csproj", "{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.SimpleHttp", "IctBaden.Stonehenge2.SimpleHttp\IctBaden.Stonehenge2.SimpleHttp.csproj", "{38174EB5-27F9-403D-A2EB-2D5230091F3B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Aurelia", "IctBaden.Stonehenge2.Aurelia\IctBaden.Stonehenge2.Aurelia.csproj", "{605348DA-62BF-4C8E-AF3E-D7A4790A1899}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.AngularSample", "IctBaden.Stonehenge2.AngularSample\IctBaden.Stonehenge2.AngularSample.csproj", "{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.AureliaSample", "IctBaden.Stonehenge2.AureliaSample\IctBaden.Stonehenge2.AureliaSample.csproj", "{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,10 +80,6 @@ Global
 		{9E387A93-EA2F-4989-AE47-9228DF685B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E387A93-EA2F-4989-AE47-9228DF685B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E387A93-EA2F-4989-AE47-9228DF685B5B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -94,6 +92,14 @@ Global
 		{605348DA-62BF-4C8E-AF3E-D7A4790A1899}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{605348DA-62BF-4C8E-AF3E-D7A4790A1899}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{605348DA-62BF-4C8E-AF3E-D7A4790A1899}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

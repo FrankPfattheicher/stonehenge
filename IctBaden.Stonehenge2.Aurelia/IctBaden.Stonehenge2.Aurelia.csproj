@@ -248,6 +248,7 @@
     <EmbeddedResource Include="app\package.json" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Client\stonehengeController.js" />
     <EmbeddedResource Include="Client\stonehengeApp.js" />
     <EmbeddedResource Include="app\config.js" />
     <EmbeddedResource Include="app\favicon.ico" />
