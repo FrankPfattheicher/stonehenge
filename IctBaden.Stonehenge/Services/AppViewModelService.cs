@@ -139,7 +139,17 @@ namespace IctBaden.Stonehenge.Services
                 }
                 else
                 {
-                    mi.Invoke(vm, parameters);
+                    try
+                    {
+                        mi.Invoke(vm, parameters);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.InnerException != null) ex = ex.InnerException;
+                        Trace.TraceError(ex.Message);
+                        Trace.TraceError(ex.StackTrace);
+                        return new HttpResult(ex.Message, HttpStatusCode.InternalServerError);
+                    }
                 }
             }
 
