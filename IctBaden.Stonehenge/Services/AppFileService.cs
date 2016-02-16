@@ -67,8 +67,8 @@ namespace IctBaden.Stonehenge.Services
 
             var fullPath = request.FullPath(RootPath);
             var ext = Path.GetExtension(fullPath) ?? string.Empty;
-            var context = request.FileName.Replace(ext, string.Empty);
-
+            var context = string.IsNullOrEmpty(ext) ? string.Empty : request.FileName.Replace(ext, string.Empty);
+            
             if((appSession == null) && (string.Compare(request.FileName, "index.html", StringComparison.OrdinalIgnoreCase) == 0))
             {
                 if (((AppSessionCache.ReuseSessions & AppSessionCache.ReuseSessionStrategy.Cookie) != 0))
