@@ -55,6 +55,7 @@
     <Compile Include="Core\AppHost.cs" />
     <Compile Include="Core\AppSession.cs" />
     <Compile Include="Core\PassiveTimer.cs" />
+    <Compile Include="Resources\ViewModelInfo.cs" />
     <Compile Include="VersionInfo.cs" />
     <Compile Include="ViewModel\ActionMethodAttribute.cs" />
     <Compile Include="ViewModel\ActiveModel.cs" />

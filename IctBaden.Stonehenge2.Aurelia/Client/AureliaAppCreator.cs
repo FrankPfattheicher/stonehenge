@@ -55,10 +55,17 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
         {
             const string routesInsertPoint = "//stonehengeAppRoutes";
             const string stonehengeAppTitleInsertPoint = "stonehengeAppTitle";
-            const string pageTemplate = "{{ route: [{0}'{1}'], name: '{1}', moduleId: './{1}', nav: true, title:'{1}' }}";
+            const string pageTemplate = "{{ route: [{0}'{1}'], name: '{1}', moduleId: './{2}', title:'{3}', nav: {4} }}";
             
             var pages = aureliaContent
-                .Select(res => string.Format(pageTemplate, res.Value.Name == rootPage ? "''," : "", res.Value.Name));
+                .Select(res => new { Name = res.Value.Name, Vm = res.Value.ViewModel })
+                .OrderBy(route => route.Vm.SortIndex)
+                .Select(route => string.Format(pageTemplate,
+                                            route.Name == rootPage ? "''," : "",
+                                            route.Name,
+                                            route.Name,
+                                            route.Vm.Title,
+                                            route.Vm.Visible ? "true" : "false" ));
 
             var routes = string.Join("," + Environment.NewLine, pages);
             pageText = pageText
@@ -72,14 +79,14 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
         public void CreateControllers()
         {
             var viewModels = aureliaContent
-                .Where(res => !string.IsNullOrEmpty(res.Value.ViewModelName))
+                .Where(res => res.Value.ViewModel != null)
                 .Select(res => res.Value)
                 .Distinct()
                 .ToList();
 
             foreach (var viewModel in viewModels)
             {
-                var controllerJs = GetController(viewModel.ViewModelName);
+                var controllerJs = GetController(viewModel.ViewModel.Name);
                 if (!string.IsNullOrEmpty(controllerJs))
                 {
                     var resource = new Resource($"src.{viewModel.Name}.js", "AureliaResourceProvider", ResourceType.Js, controllerJs);

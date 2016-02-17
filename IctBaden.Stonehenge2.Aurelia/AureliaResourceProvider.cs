@@ -32,18 +32,32 @@ namespace IctBaden.Stonehenge2.Aurelia
             aureliaContent.Clear();
         }
 
-        private static string GetViewModelName(string route, string pageText)
+        private static ViewModelInfo GetViewModelInfo(string route, string pageText)
         {
-            var name = route.Substring(0, 1).ToUpper() + route.Substring(1) + "Vm";
+            route = route.Substring(0, 1).ToUpper() + route.Substring(1);
+            var info = new ViewModelInfo(route + "Vm");
 
-            var extractName = new Regex("ng-controller=\\\"(\\w+)\\\"");
+            var extractName = new Regex("<!--ViewModel:(\\w+)-->");
             var match = extractName.Match(pageText);
             if (match.Success)
             {
-                name = match.Groups[1].Value;
+                info.Name = match.Groups[1].Value;
             }
-
-            return name;
+            var extractTitle = new Regex("<!--Title:(.+)(:(\\d+))?-->");
+            match = extractTitle.Match(pageText);
+            if (match.Success)
+            {
+                info.Title = match.Groups[1].Value;
+                if (!string.IsNullOrEmpty(match.Groups[3].Value))
+                {
+                    info.SortIndex = int.Parse(match.Groups[1].Value);
+                }
+            }
+            else
+            {
+                info.Title = route;
+            }
+            return info;
         }
 
         private void AddFileSystemContent(string appFilesPath)
@@ -60,7 +74,7 @@ namespace IctBaden.Stonehenge2.Aurelia
                     var route = resourceId.Replace(".html", string.Empty);
                     var pageText = File.ReadAllText(appFile);
 
-                    var resource = new Resource(route, appFile, ResourceType.Html, pageText) { ViewModelName = GetViewModelName(route, pageText) };
+                    var resource = new Resource(route, appFile, ResourceType.Html, pageText) { ViewModel = GetViewModelInfo(route, pageText) };
                     aureliaContent.Add(resourceId, resource);
                 }
             }
@@ -111,7 +125,10 @@ namespace IctBaden.Stonehenge2.Aurelia
                         }
                     }
 
-                    var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText) { ViewModelName = GetViewModelName(route, pageText) };
+                    var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText)
+                    {
+                        ViewModel = GetViewModelInfo(route, pageText)
+                    };
                     aureliaContent.Add("src." + resourceId, resource);
                 }
             }

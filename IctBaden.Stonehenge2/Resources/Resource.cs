@@ -13,7 +13,7 @@
         public byte[] Data { get; }
         public string Text { get; private set; }
 
-        public string ViewModelName { get; set; }
+        public ViewModelInfo ViewModel { get; set; }
 
 
         public Resource(string name, string source, ResourceType type, string text)

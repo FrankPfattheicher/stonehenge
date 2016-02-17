@@ -30,18 +30,17 @@
             angularContent.Clear();
         }
 
-        private static string GetViewModelName(string route, string pageText)
+        private static ViewModelInfo GetViewModelInfo(string route, string pageText)
         {
-            var name = route.Substring(0, 1).ToUpper() + route.Substring(1) + "Vm";
+            var info = new ViewModelInfo(route.Substring(0, 1).ToUpper() + route.Substring(1) + "Vm");
 
             var extractName = new Regex("ng-controller=\\\"(\\w+)\\\"");
             var match = extractName.Match(pageText);
             if (match.Success)
             {
-                name = match.Groups[1].Value;
+                info.Name = match.Groups[1].Value;
             }
-
-            return name;
+            return info;
         }
 
         private void AddFileSystemContent(string appFilesPath)
@@ -58,7 +57,7 @@
                     var route = resourceId.Replace(".html", string.Empty);
                     var pageText = File.ReadAllText(appFile);
 
-                    var resource = new Resource(route, appFile, ResourceType.Html, pageText) { ViewModelName = GetViewModelName(route, pageText) };
+                    var resource = new Resource(route, appFile, ResourceType.Html, pageText) { ViewModel = GetViewModelInfo(route, pageText) };
                     angularContent.Add(resourceId, resource);
                 }
             }
@@ -92,7 +91,7 @@
                     }
                 }
 
-                var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText) { ViewModelName = GetViewModelName(route, pageText) };
+                var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText) { ViewModel = GetViewModelInfo(route, pageText) };
                 angularContent.Add(resourceId, resource);
             }
         }
