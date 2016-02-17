@@ -23,7 +23,7 @@ namespace IctBaden.Stonehenge2.Aurelia
 
             AddFileSystemContent(appFilesPath);
             AddResourceContent();
-            appCreator.CreateApplication(rootPage);
+            appCreator.CreateApplication();
             appCreator.CreateControllers();
         }
 

@@ -51,11 +51,25 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                     break;
                 case "POST":
                     var body = new StreamReader(context.Request.Body).ReadToEndAsync().Result;
-                    var formData = JsonConvert.DeserializeObject<JObject>(body).AsJEnumerable().Cast<JProperty>()
-                        .ToDictionary(data => data.Name, data => Convert.ToString(data.Value, CultureInfo.InvariantCulture));
 
-                    //var formData = context.Request.ReadFormAsync().Result
-                    //    .ToDictionary(data => data.Key, data => data.Value.FirstOrDefault());
+                    var formData = new Dictionary<string, string>();
+                    if (!string.IsNullOrEmpty(body))
+                    {
+                        //formData = context.Request.ReadFormAsync().Result
+                        //    .ToDictionary(data => data.Key, data => data.Value.FirstOrDefault());
+                        try
+                        {
+                            formData = JsonConvert.DeserializeObject<JObject>(body).AsJEnumerable().Cast<JProperty>()
+                            .ToDictionary(data => data.Name, data => Convert.ToString(data.Value, CultureInfo.InvariantCulture));
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ex.InnerException != null) ex = ex.InnerException;
+                            Trace.TraceError(ex.Message);
+                            Trace.TraceError(ex.StackTrace);
+                            Debug.Assert(false);
+                        }
+                    }
 
                     var queryString = HttpUtility.ParseQueryString(context.Get<string>("owin.RequestQueryString"));
                     var paramObjects = queryString.AllKeys.Select(key => queryString[key]).Cast<object>().ToArray();

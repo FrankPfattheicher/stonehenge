@@ -1,4 +1,6 @@
-﻿import {HttpClient} from 'aurelia-fetch-client';
+﻿
+// ReSharper disable Es6Feature
+import {HttpClient} from 'aurelia-fetch-client';
 import {jQuery} from 'aurelia-fetch-client';
 
 export class {0} {
@@ -54,7 +56,7 @@ constructor(http) {
             formData[prop] = scope[prop];
         });
         scope.StonehengePostActive = true;
-        scope.http.fetch(urlWithParams, { method: 'post', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: json(formData)})
+        scope.http.fetch(urlWithParams, { method: 'post', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(formData) })
             .then(response => response.json())
             .then(data => {
                 scope.StonehengeInitialLoading = false;
@@ -71,23 +73,35 @@ constructor(http) {
                 scope.StonehengeIsDisconnected = true;
                 debugger;
             });
-    };
+       };
 
         this.StonehengeGetViewModel = function(scope) {
             scope.http.fetch('ViewModel/{0}', { method: 'get', headers: { 'Accept': 'application/json' } })
-                .then(response => response.json())
-                .then(data => {
-                    scope.StonehengeInitialLoading = false;
-                    scope.StonehengeIsLoading = false;
-                    for (var propertyName in data) {
-                        scope[propertyName] = data[propertyName];
+                .then(response => {
+                    var cookie = response.headers.get("cookie");
+                    var match = (/StonehengeSession=([0-9a-fA-F]+)/).exec(cookie);
+                    if (match == null) {
+                        scope.StonehengeSession = "";
                     }
-                    if (!scope.StonehengePollEventsActive) {
-                        setTimeout(function() { scope.StonehengePollEvents(scope, true); }, 200);
+                    else {
+                        scope.StonehengeSession = match[1];
+                        document.cookie = "StonehengeSession=" + scope.StonehengeSession;
                     }
+
+                    response.json().then(function(data) {
+                        scope.StonehengeInitialLoading = false;
+                        scope.StonehengeIsLoading = false;
+                        for (var propertyName in data) {
+                            scope[propertyName] = data[propertyName];
+                        }
+                        if (!scope.StonehengePollEventsActive) {
+                            setTimeout(function() { scope.StonehengePollEvents(scope, true); }, 200);
+                        }
+                    });
                 })
                 .catch(error => {
                     scope.StonehengeIsDisconnected = true;
+                    if (console && console.log) console.log(error);
                     setTimeout(function() { window.location.reload(); }, 1000);
                     debugger;
                 });
@@ -99,3 +113,4 @@ constructor(http) {
 /*commands*/
 
 }
+// ReSharper restore Es6Feature

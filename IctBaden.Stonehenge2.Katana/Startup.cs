@@ -4,9 +4,9 @@
     using System.Diagnostics;
     using System.Linq;
 
-    using IctBaden.Stonehenge2.Core;
-    using IctBaden.Stonehenge2.Katana.Middleware;
-    using IctBaden.Stonehenge2.Resources;
+    using Core;
+    using Middleware;
+    using Resources;
 
     using Owin;
 

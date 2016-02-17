@@ -4,8 +4,8 @@
     using System.Diagnostics;
     using System.Net;
 
-    using IctBaden.Stonehenge2.Katana;
-    using IctBaden.Stonehenge2.Test.Tools;
+    using Katana;
+    using Tools;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,7 +23,7 @@
             var loader = new TestResourceLoader(content);
             var host = new KatanaHost(loader);
 
-            var startOk = host.Start(false, "127.0.0.1", 42001);
+            var startOk = host.Start(false, "localhost", 32001);
             Assert.IsTrue(startOk, "Start failed");
 
             var response = string.Empty;
@@ -52,13 +52,13 @@
             var loader1 = new TestResourceLoader(content1);
             var host1 = new KatanaHost(loader1);
 
-            var startOk = host1.Start(false, "127.0.0.1", 42002);
+            var startOk = host1.Start(false, "localhost", 32002);
             Assert.IsTrue(startOk, "Start host1 failed");
 
             var loader2 = new TestResourceLoader(content2);
             var host2 = new KatanaHost(loader2);
 
-            startOk = host2.Start(false, "127.0.0.1", 42003);
+            startOk = host2.Start(false, "localhost", 32003);
             Assert.IsTrue(startOk, "Start host2 failed");
 
             Assert.AreNotEqual(host1.BaseUrl, host2.BaseUrl);

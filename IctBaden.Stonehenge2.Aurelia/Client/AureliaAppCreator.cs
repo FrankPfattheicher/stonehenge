@@ -42,7 +42,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             return resourceText;
         }
 
-        public void CreateApplication(string rootPage)
+        public void CreateApplication()
         {
             var applicationJs = LoadResourceText("IctBaden.Stonehenge2.Aurelia.Client.stonehengeApp.js");
             applicationJs = InsertRoutes(applicationJs);
@@ -58,8 +58,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             const string pageTemplate = "{{ route: [{0}'{1}'], name: '{1}', moduleId: './{1}', nav: true, title:'{1}' }}";
             
             var pages = aureliaContent
-                .Select(res => string.Format(pageTemplate, res.Value.Name == rootPage ? "''," : "",
-                res.Value.Name, res.Value.ViewModelName));
+                .Select(res => string.Format(pageTemplate, res.Value.Name == rootPage ? "''," : "", res.Value.Name));
 
             var routes = string.Join("," + Environment.NewLine, pages);
             pageText = pageText
@@ -113,16 +112,9 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             var postbackPropNames = GetPostbackPropNames(vmType).Select(name => "'" + name + "'");
             text = text.Replace("'propNames'", string.Join(",", postbackPropNames));
 
-
-
-
-
-            const string methodTemplate =
-@"{1} = function({paramNames}) {
-    this.StonehengePost($scope, '/ViewModel/{0}/{1}{paramValues}');
-  }
-";
             // supply functions for action methods
+            const string methodTemplate = @"{1} = function({paramNames}) { this.StonehengePost(this, '/ViewModel/{0}/{1}{paramValues}'); }";
+
             var actionMethods = new StringBuilder();
             foreach (var methodInfo in vmType.GetMethods().Where(methodInfo => methodInfo.GetCustomAttributes(false).OfType<ActionMethodAttribute>().Any()))
             {

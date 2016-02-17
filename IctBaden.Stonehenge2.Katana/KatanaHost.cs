@@ -27,7 +27,7 @@ namespace IctBaden.Stonehenge2.Katana
             try
             {
                 BaseUrl = (useSsl ? "https://" : "http://") 
-                    + (hostAddress ?? "127.0.0.1" )
+                    + (hostAddress ?? "localhost" )
                     + ":" 
                     + ((hostPort != 0) ? hostPort : (useSsl ? 443 : 80));
 

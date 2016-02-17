@@ -59,8 +59,12 @@
             }
             catch (Exception ex)
             {
+                if (ex.InnerException != null) ex = ex.InnerException;
                 Trace.TraceError(ex.Message);
-                throw;
+                Trace.TraceError(ex.StackTrace);
+                Debug.Assert(false);
+                // ReSharper disable once HeuristicUnreachableCode
+                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(ex));
             }
             return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel));
         }
