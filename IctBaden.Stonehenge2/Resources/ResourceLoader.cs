@@ -118,7 +118,7 @@ namespace IctBaden.Stonehenge2.Resources
                 .FirstOrDefault(res => string.Compare(res.Key, resourceName, true, CultureInfo.InvariantCulture) == 0);
             if (asmResource.Key == null)
             {
-                Debug.WriteLine("ResourceLoader({0}): null", resourceName);
+                Debug.WriteLine($"ResourceLoader({resourceName}): null");
                 return null;
             }
 
@@ -126,7 +126,7 @@ namespace IctBaden.Stonehenge2.Resources
             var resourceType = ResourceType.GetByExtension(resourceExtension);
             if (resourceType == null)
             {
-                Debug.WriteLine("ResourceLoader({0}): null", resourceName);
+                Debug.WriteLine($"ResourceLoader({resourceName}): null");
                 return null;
             }
 
@@ -139,7 +139,7 @@ namespace IctBaden.Stonehenge2.Resources
                         using (var reader = new BinaryReader(stream))
                         {
                             var data = reader.ReadBytes((int)stream.Length);
-                            Debug.WriteLine("ResourceLoader({0}): {1}", resourceName, asmResource.Value.FullName);
+                            Debug.WriteLine($"ResourceLoader({resourceName}): {asmResource.Value.FullName}");
                             return new Resource(resourceName, "res://" + asmResource.Value.FullName, resourceType, data);
                         }
                     }
@@ -148,14 +148,14 @@ namespace IctBaden.Stonehenge2.Resources
                         using (var reader = new StreamReader(stream))
                         {
                             var text = reader.ReadToEnd();
-                            Debug.WriteLine("ResourceLoader({0}): {1}", resourceName, asmResource.Value.FullName);
+                            Debug.WriteLine($"ResourceLoader({resourceName}): {asmResource.Value.FullName}");
                             return new Resource(resourceName, "res://" + asmResource.Value.FullName, resourceType, text);
                         }
                     }
                 }
             }
 
-            Debug.WriteLine("ResourceLoader({0}): null", resourceName);
+            Debug.WriteLine($"ResourceLoader({resourceName}): null");
             return null;
         }
     }

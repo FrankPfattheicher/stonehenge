@@ -15,11 +15,11 @@ namespace IctBaden.Stonehenge2.Aurelia
     {
         private Dictionary<string, Resource> aureliaContent;
 
-        public void Init(string appFilesPath, string rootPage)
+        public void Init(string appFilesPath, string appTitle, string rootPage)
         {
             aureliaContent = new Dictionary<string, Resource>();
 
-            var appCreator = new AureliaAppCreator(rootPage, aureliaContent);
+            var appCreator = new AureliaAppCreator(appTitle, rootPage, aureliaContent);
 
             AddFileSystemContent(appFilesPath);
             AddResourceContent();
@@ -43,14 +43,14 @@ namespace IctBaden.Stonehenge2.Aurelia
             {
                 info.Name = match.Groups[1].Value;
             }
-            var extractTitle = new Regex("<!--Title:(.+)(:(\\d+))?-->");
+            var extractTitle = new Regex("<!--Title:([^:]+)(:(\\d+))?-->");
             match = extractTitle.Match(pageText);
             if (match.Success)
             {
                 info.Title = match.Groups[1].Value;
                 if (!string.IsNullOrEmpty(match.Groups[3].Value))
                 {
-                    info.SortIndex = int.Parse(match.Groups[1].Value);
+                    info.SortIndex = int.Parse(match.Groups[3].Value);
                 }
             }
             else

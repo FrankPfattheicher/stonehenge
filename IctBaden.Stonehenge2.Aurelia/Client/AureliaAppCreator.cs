@@ -14,11 +14,13 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
 {
     internal class AureliaAppCreator
     {
+        private readonly string appTitle;
         private readonly string rootPage;
         private readonly Dictionary<string, Resource> aureliaContent;
 
-        public AureliaAppCreator(string rootPage, Dictionary<string, Resource> aureliaContent)
+        public AureliaAppCreator(string appTitle, string rootPage, Dictionary<string, Resource> aureliaContent)
         {
+            this.appTitle = appTitle;
             this.rootPage = rootPage;
             this.aureliaContent = aureliaContent;
         }
@@ -70,7 +72,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             var routes = string.Join("," + Environment.NewLine, pages);
             pageText = pageText
                 .Replace(routesInsertPoint, routes)
-                .Replace(stonehengeAppTitleInsertPoint, "stonehenge");
+                .Replace(stonehengeAppTitleInsertPoint, appTitle);
 
             return pageText;
         }

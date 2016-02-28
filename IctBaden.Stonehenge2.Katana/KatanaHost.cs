@@ -36,6 +36,10 @@ namespace IctBaden.Stonehenge2.Katana
             }
             catch (Exception ex)
             {
+                if (ex is MissingMemberException && ex.Message.Contains("Microsoft.Owin.Host.HttpListener"))
+                {
+                    Trace.TraceError("Missing reference to nuget package 'Microsoft.Owin.Host.HttpListener'");
+                }
                 Trace.TraceError("KatanaHost.Start: " + ex.Message);
                 while (ex.InnerException != null)
                 {
