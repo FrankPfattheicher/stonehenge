@@ -74,7 +74,7 @@ namespace IctBaden.Stonehenge2.Aurelia
                     var route = resourceId.Replace(".html", string.Empty);
                     var pageText = File.ReadAllText(appFile);
 
-                    var resource = new Resource(route, appFile, ResourceType.Html, pageText) { ViewModel = GetViewModelInfo(route, pageText) };
+                    var resource = new Resource(route, appFile, ResourceType.Html, pageText, true) { ViewModel = GetViewModelInfo(route, pageText) };
                     aureliaContent.Add(resourceId, resource);
                 }
             }
@@ -125,7 +125,7 @@ namespace IctBaden.Stonehenge2.Aurelia
                         }
                     }
 
-                    var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText)
+                    var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText, true)
                     {
                         ViewModel = GetViewModelInfo(route, pageText)
                     };

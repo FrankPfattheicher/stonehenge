@@ -39,10 +39,10 @@
             Debug.WriteLine($"ResourceLoader({resourceName}): {fullFileName}");
             if (resourceType.IsBinary)
             {
-                return new Resource(resourceName, "file://" + fullFileName, resourceType, File.ReadAllBytes(fullFileName));
+                return new Resource(resourceName, "file://" + fullFileName, resourceType, File.ReadAllBytes(fullFileName), true);
             }
 
-            return new Resource(resourceName, "file://" + fullFileName, resourceType, File.ReadAllText(fullFileName));
+            return new Resource(resourceName, "file://" + fullFileName, resourceType, File.ReadAllText(fullFileName), true);
         }
 
     }

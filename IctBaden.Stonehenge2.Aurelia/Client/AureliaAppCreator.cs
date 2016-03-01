@@ -49,7 +49,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             var applicationJs = LoadResourceText("IctBaden.Stonehenge2.Aurelia.Client.stonehengeApp.js");
             applicationJs = InsertRoutes(applicationJs);
 
-            var resource = new Resource("src.app.js", "AureliaResourceProvider", ResourceType.Html, applicationJs);
+            var resource = new Resource("src.app.js", "AureliaResourceProvider", ResourceType.Html, applicationJs, true);
             aureliaContent.Add("src.app.js", resource);
         }
 
@@ -91,7 +91,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
                 var controllerJs = GetController(viewModel.ViewModel.Name);
                 if (!string.IsNullOrEmpty(controllerJs))
                 {
-                    var resource = new Resource($"src.{viewModel.Name}.js", "AureliaResourceProvider", ResourceType.Js, controllerJs);
+                    var resource = new Resource($"src.{viewModel.Name}.js", "AureliaResourceProvider", ResourceType.Js, controllerJs, true);
                     aureliaContent.Add(resource.Name, resource);
                 }
             }

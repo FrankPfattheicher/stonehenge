@@ -64,9 +64,9 @@
                 Trace.TraceError(ex.StackTrace);
                 Debug.Assert(false);
                 // ReSharper disable once HeuristicUnreachableCode
-                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(ex));
+                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(ex), true);
             }
-            return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel));
+            return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel), true);
         }
 
         public Resource Get(AppSession session, string resourceName)
@@ -84,7 +84,7 @@
                 }
                 session.EventsClear(true);
 
-                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel));
+                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel), false);
             }
             else if (resourceName.StartsWith("Events/"))
             {
@@ -103,7 +103,7 @@
                 }
 
                 var text = JsonConvert.SerializeObject(json);
-                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, text);
+                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, text, false);
             }
 
             return null;

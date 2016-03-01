@@ -83,6 +83,11 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                 return;
             }
             context.Response.ContentType = content.ContentType;
+            if (content.IsCachable)
+            {
+                context.Response.Headers.Add("Cache-Control", new []{ "max-age=86400" } );
+                context.Response.Headers.Add("Expires", new []{ "86400" } );
+            }
             try
             {
                 if (content.IsBinary)
