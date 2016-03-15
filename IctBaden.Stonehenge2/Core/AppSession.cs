@@ -253,8 +253,8 @@
             {
                 Capabilities = new Hashtable {{string.Empty, userAgent}}
             };
-            var factory = new BrowserCapabilitiesFactory();
-            factory.ConfigureBrowserCapabilities(new NameValueCollection(), browser);
+            //var factory = new BrowserCapabilitiesFactory();
+            //factory.ConfigureBrowserCapabilities(new NameValueCollection(), browser);
 
             Browser = browser.Browser + " " + browser.Version;
             Cookies = browser.Cookies;

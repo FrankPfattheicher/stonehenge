@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65F46581-B6AB-4878-8174-BA207D491B06}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		README.md = README.md
+		Stonehenge.vsmdi = Stonehenge.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6B2E7F6F-BC0B-4A4D-B72F-EA91F42C3F29}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2", "IctBaden.Stonehenge2\IctBaden.Stonehenge2.csproj", "{840EC9F2-7967-4120-9F45-6FF56DF9FADB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Katana", "IctBaden.Stonehenge2.Katana\IctBaden.Stonehenge2.Katana.csproj", "{FA4C06C4-E32C-4C41-BE4B-712C963E36FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Angular", "IctBaden.Stonehenge2.Angular\IctBaden.Stonehenge2.Angular.csproj", "{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.SimpleHttp", "IctBaden.Stonehenge2.SimpleHttp\IctBaden.Stonehenge2.SimpleHttp.csproj", "{38174EB5-27F9-403D-A2EB-2D5230091F3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Aurelia", "IctBaden.Stonehenge2.Aurelia\IctBaden.Stonehenge2.Aurelia.csproj", "{605348DA-62BF-4C8E-AF3E-D7A4790A1899}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.AngularSample", "IctBaden.Stonehenge2.AngularSample\IctBaden.Stonehenge2.AngularSample.csproj", "{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.AureliaSample", "IctBaden.Stonehenge2.AureliaSample\IctBaden.Stonehenge2.AureliaSample.csproj", "{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8CA39996-5187-4BC1-BE7D-D26C282674FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CA39996-5187-4BC1-BE7D-D26C282674FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CA39996-5187-4BC1-BE7D-D26C282674FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CA39996-5187-4BC1-BE7D-D26C282674FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{840EC9F2-7967-4120-9F45-6FF56DF9FADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{840EC9F2-7967-4120-9F45-6FF56DF9FADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{840EC9F2-7967-4120-9F45-6FF56DF9FADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{840EC9F2-7967-4120-9F45-6FF56DF9FADB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA4C06C4-E32C-4C41-BE4B-712C963E36FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA4C06C4-E32C-4C41-BE4B-712C963E36FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA4C06C4-E32C-4C41-BE4B-712C963E36FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA4C06C4-E32C-4C41-BE4B-712C963E36FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38174EB5-27F9-403D-A2EB-2D5230091F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38174EB5-27F9-403D-A2EB-2D5230091F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38174EB5-27F9-403D-A2EB-2D5230091F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38174EB5-27F9-403D-A2EB-2D5230091F3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{605348DA-62BF-4C8E-AF3E-D7A4790A1899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{605348DA-62BF-4C8E-AF3E-D7A4790A1899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{605348DA-62BF-4C8E-AF3E-D7A4790A1899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{605348DA-62BF-4C8E-AF3E-D7A4790A1899}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Stonehenge.vsmdi
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = IctBaden.Stonehenge.Sample\IctBaden.Stonehenge.Sample.csproj
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = None
+		$1.ResourceNamePolicy = FileFormatDefault
+	EndGlobalSection
+EndGlobal
