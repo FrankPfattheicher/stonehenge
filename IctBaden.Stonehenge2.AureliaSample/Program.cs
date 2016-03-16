@@ -42,7 +42,7 @@ namespace IctBaden.Stonehenge2.AureliaSample
             // Select client framework
             Console.WriteLine(@"Using client framework aurelia");
             var aurelia = new AureliaResourceProvider();
-            aurelia.Init(appFilesPath, "start");
+            aurelia.Init(appFilesPath, "Sample", "start");
             resLoader.AddAssembly(typeof(AureliaResourceProvider).Assembly);
             loader.Loaders.Add(aurelia);
 

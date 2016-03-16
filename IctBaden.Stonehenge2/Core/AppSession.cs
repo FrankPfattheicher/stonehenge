@@ -1,17 +1,15 @@
-﻿namespace IctBaden.Stonehenge2.Core
+﻿using System.Text.RegularExpressions;
+
+namespace IctBaden.Stonehenge2.Core
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
     using System.Net;
     using System.Reflection;
     using System.Threading;
-    using System.Web;
-    using System.Web.Configuration;
 
     using ViewModel;
 
@@ -249,16 +247,12 @@
 
         private void DetectBrowser(string userAgent)
         {
-            var browser = new HttpBrowserCapabilities
-            {
-                Capabilities = new Hashtable {{string.Empty, userAgent}}
-            };
-            //var factory = new BrowserCapabilitiesFactory();
-            //factory.ConfigureBrowserCapabilities(new NameValueCollection(), browser);
-
-            Browser = browser.Browser + " " + browser.Version;
-            Cookies = browser.Cookies;
-            Platform = browser.Platform;
+            // Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36
+            var decoder = new Regex(@"\w+/[\d.]+ \(");
+            //TODO: Decocder
+            Browser = "";
+            Cookies = true;
+            Platform = "OS";
         }
 
         internal void Accessed(IDictionary<string, Cookie> cookies, bool userAction)

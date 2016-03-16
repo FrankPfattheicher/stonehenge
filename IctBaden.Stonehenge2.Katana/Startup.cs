@@ -35,8 +35,9 @@
                 var session = sessions.FirstOrDefault(s => s.PermanentSessionId == ssPid);
                 if (session == null)
                 {
+                    var userAgent = context.Request.Headers["User-Agent"];
                     session = new AppSession();
-                    session.Initialize(ssPid, context.Request.Host.Value, context.Request.Host.Value, context.Request.RemoteIpAddress.ToString(), "");
+                    session.Initialize(ssPid, context.Request.Host.Value, context.Request.Host.Value, context.Request.RemoteIpAddress.ToString(), userAgent);
                     sessions.Add(session);
                 }
 
