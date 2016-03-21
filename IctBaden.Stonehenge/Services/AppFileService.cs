@@ -292,7 +292,7 @@ namespace IctBaden.Stonehenge.Services
             }
             else
             {
-                httpResult.Headers.Add("Cache-Control", "max-age=86400");
+                httpResult.Headers.Add("Cache-Control", "no-cache, must-revalidate, proxy-revalidate");
                 httpResult.Headers.Add("Expires", "86400");
             }
             if (appSession != null) 
