@@ -119,7 +119,6 @@ namespace IctBaden.Stonehenge.Services
                 }
                 httpResult = new HttpResult(data, type);
                 httpResult.Headers.Add("Cache-Control", "max-age=86400");
-                httpResult.Headers.Add("Expires", "86400");
                 if ((appSession != null) && !appSession.CookieSet)
                 {
                     httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
@@ -288,12 +287,10 @@ namespace IctBaden.Stonehenge.Services
             if (doNotCache)
             {
                 httpResult.Headers.Add("Cache-Control", "no-cache");
-                httpResult.Headers.Add("Expires", "0");
             }
             else
             {
-                httpResult.Headers.Add("Cache-Control", "no-cache, must-revalidate, proxy-revalidate");
-                httpResult.Headers.Add("Expires", "86400");
+                httpResult.Headers.Add("Cache-Control", "max-age=3600, must-revalidate, proxy-revalidate");
             }
             if (appSession != null) 
             {
