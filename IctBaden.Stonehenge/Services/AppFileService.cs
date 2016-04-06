@@ -223,18 +223,21 @@ namespace IctBaden.Stonehenge.Services
                     }
 
                     var globalUserJs = ResourceLoader.LoadText("app", "app", "global_user.js");
-                    if (globalUserJs == null)
+                    if (globalUserJs != null)
                     {
-                        text =
-                            text.Replace(
-                                "<script language=\"javascript\" type=\"text/javascript\" src=\"app/global_user.js\"></script>",
-                                string.Empty);
+                        text = text.Replace("<!--UserGlobalJs-->",
+                                "<script language=\"javascript\" type=\"text/javascript\" src=\"app/global_user.js\"></script>");
+                    }
+                    var host = GetResolver() as AppHost;
+                    if (host != null)
+                    {
+                        text = text.Replace("<!--Title-->", host.Title);
                     }
                     break;
                 case @"app.shell.js":
                     {
                         var startPage = string.Empty;
-                        var host = GetResolver() as AppHost;
+                        host = GetResolver() as AppHost;
                         if (host != null)
                         {
                             startPage = host.StartPage;
@@ -244,7 +247,7 @@ namespace IctBaden.Stonehenge.Services
                     break;
                 case @"app.main.js":
                     {
-                        var host = GetResolver() as AppHost;
+                        host = GetResolver() as AppHost;
                         if (host != null)
                         {
                             text = text.Replace("%TITLE%", host.Title);
