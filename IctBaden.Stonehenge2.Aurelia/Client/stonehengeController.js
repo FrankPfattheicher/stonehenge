@@ -9,6 +9,7 @@ constructor(http) {
 
     this.http = new HttpClient();
 
+    this.StonehengeActive = true;
     this.StonehengeInitialLoading = true;
     this.StonehengeIsLoading = true;
     this.StonehengeIsDirty = false;
@@ -16,6 +17,7 @@ constructor(http) {
     this.StonehengePostActive = false;
     this.StonehengePollEventsActive = null;
     this.StonehengePollEvents = function(scope, continuePolling) {
+        if (!this.StonehengeActive) return;
         var ts = new Date().getTime();
         //this.StonehengePollEventsActive = $q.defer();
         scope.http.fetch('/Events/{0}?ts=' + ts, { method: 'get', headers: { 'Accept': 'application/json' } })
@@ -107,8 +109,16 @@ constructor(http) {
                 });
         };
 
+    }
+
+    activate() {
         this.StonehengeGetViewModel(this);
     }
+
+    deactivate() {
+        this.StonehengeActive = false;
+    }
+
 
 /*commands*/
 
