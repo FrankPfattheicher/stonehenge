@@ -60,7 +60,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             const string pageTemplate = "{{ route: [{0}'{1}'], name: '{1}', moduleId: './{2}', title:'{3}', nav: {4} }}";
             
             var pages = aureliaContent
-                .Select(res => new { Name = res.Value.Name, Vm = res.Value.ViewModel })
+                .Select(res => new {  res.Value.Name, Vm = res.Value.ViewModel })
                 .OrderBy(route => route.Vm.SortIndex)
                 .Select(route => string.Format(pageTemplate,
                                             route.Name == rootPage ? "''," : "",

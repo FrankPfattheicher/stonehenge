@@ -1,5 +1,7 @@
-﻿export class App {
+﻿
+import {Bootstrap} from 'bootstrap';
 
+export class App {
 
     configureRouter(config, router) {
         config.title = 'stonehengeAppTitle';

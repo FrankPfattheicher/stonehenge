@@ -27,9 +27,9 @@ namespace IctBaden.Stonehenge2.Katana
             try
             {
                 BaseUrl = (useSsl ? "https://" : "http://") 
-                    + (hostAddress ?? "localhost" )
+                    + (hostAddress ?? "*" )
                     + ":" 
-                    + ((hostPort != 0) ? hostPort : (useSsl ? 443 : 80));
+                    + (hostPort != 0 ? hostPort : (useSsl ? 443 : 80));
 
                 var startup = new Startup(resourceLoader);
                 webApp = WebApp.Start(BaseUrl, startup.Configuration);

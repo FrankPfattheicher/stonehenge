@@ -1,7 +1,6 @@
 ﻿
 // ReSharper disable Es6Feature
 import {HttpClient} from 'aurelia-fetch-client';
-import {jQuery} from 'aurelia-fetch-client';
 
 export class {0} {
 
@@ -16,11 +15,11 @@ constructor(http) {
     this.StonehengeIsDisconnected = false;
     this.StonehengePostActive = false;
     this.StonehengePollEventsActive = null;
+
     this.StonehengePollEvents = function(scope, continuePolling) {
-        if (!this.StonehengeActive) return;
+        if (!scope.StonehengeActive) return;
         var ts = new Date().getTime();
-        //this.StonehengePollEventsActive = $q.defer();
-        scope.http.fetch('/Events/{0}?ts=' + ts, { method: 'get', headers: { 'Accept': 'application/json' } })
+        scope.StonehengePollEventsActive = scope.http.fetch('/Events/{0}?ts=' + ts, { method: 'get', headers: { 'Accept': 'application/json' } })
             .then(response => response.json())
             .then(data => {
                 scope.StonehengePollEventsActive = null;
@@ -50,7 +49,7 @@ constructor(http) {
         if (scope.StonehengePollEventsActive) {
             var poll = scope.StonehengePollEventsActive;
             scope.StonehengePollEventsActive = null;
-            poll.resolve();
+            poll.terminate();
         }
         var props = ['propNames'];
         var formData = new Object();
@@ -117,6 +116,9 @@ constructor(http) {
 
     deactivate() {
         this.StonehengeActive = false;
+        if (this.StonehengePollEventsActive) {
+            //TODO: abort request
+        }
     }
 
 
