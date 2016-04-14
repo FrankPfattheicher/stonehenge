@@ -160,6 +160,10 @@ System.config({
         }
     },
     bundles: {
+        "aurelia-babel.js": [
+          "npm:babel-core@5.8.35.js",
+          "npm:babel-core@5.8.35/browser.js"
+        ],
         "aurelia.js": [
           "github:components/jquery@2.2.1.js",
           "github:components/jquery@2.2.1/jquery.js",
@@ -250,9 +254,7 @@ System.config({
           "npm:aurelia-templating-router@1.0.0-beta.1.2.0/route-loader.js",
           "npm:aurelia-templating-router@1.0.0-beta.1.2.0/router-view.js",
           "npm:aurelia-templating@1.0.0-beta.1.2.1.js",
-          "npm:aurelia-templating@1.0.0-beta.1.2.1/aurelia-templating.js",
-          "npm:babel-core@5.8.35.js",
-          "npm:babel-core@5.8.35/browser.js"
+          "npm:aurelia-templating@1.0.0-beta.1.2.1/aurelia-templating.js"
         ]
     }
 });
