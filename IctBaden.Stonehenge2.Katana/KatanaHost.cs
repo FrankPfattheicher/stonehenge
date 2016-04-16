@@ -20,10 +20,14 @@ namespace IctBaden.Stonehenge2.Katana
             resourceLoader = loader;
         }
 
+        public string AppTitle { get; private set; }
+
         public string BaseUrl { get; private set; }
 
-        public bool Start(bool useSsl, string hostAddress, int hostPort)
+        public bool Start(string title, bool useSsl, string hostAddress, int hostPort)
         {
+            AppTitle = title;
+
             try
             {
                 BaseUrl = (useSsl ? "https://" : "http://") 
@@ -31,7 +35,7 @@ namespace IctBaden.Stonehenge2.Katana
                     + ":" 
                     + (hostPort != 0 ? hostPort : (useSsl ? 443 : 80));
 
-                var startup = new Startup(resourceLoader);
+                var startup = new Startup(title, resourceLoader);
                 webApp = WebApp.Start(BaseUrl, startup.Configuration);
             }
             catch (Exception ex)

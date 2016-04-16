@@ -15,7 +15,7 @@
         public bool IsCachable { get; private set; }
 
         public byte[] Data { get; }
-        public string Text { get; private set; }
+        public string Text { get; set; }
 
         public ViewModelInfo ViewModel { get; set; }
 

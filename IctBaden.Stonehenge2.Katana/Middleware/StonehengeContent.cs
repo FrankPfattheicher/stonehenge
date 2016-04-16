@@ -42,12 +42,16 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             var resourceName = path.Substring(1);
             var appSession = context.Get<AppSession>("stonehenge.AppSession");
             var requestVerb = context.Get<string>("owin.RequestMethod");
-
+            
             Resource content = null;
             switch (requestVerb)
             {
                 case "GET":
                     content = resourceLoader.Get(appSession, resourceName);
+                    if (string.Compare(resourceName, "index.html", StringComparison.InvariantCultureIgnoreCase) == 0)
+                    {
+                        HandleIndexContent(context, content);
+                    }
                     break;
                 case "POST":
                     var body = new StreamReader(context.Request.Body).ReadToEndAsync().Result;
@@ -115,6 +119,13 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                 }
             }
 
+        }
+
+        private void HandleIndexContent(IOwinContext context, Resource content)
+        {
+            const string placeholderAppTitle = "stonehengeAppTitle";
+            var appTitle = context.Get<string>("stonehenge.AppTitle");
+            content.Text = content.Text.Replace(placeholderAppTitle, $"<title>{appTitle}</title>");
         }
     }
 }

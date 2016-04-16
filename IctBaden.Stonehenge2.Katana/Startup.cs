@@ -12,12 +12,14 @@
 
     internal class Startup
     {
+        private readonly string appTitle;
         private readonly IStonehengeResourceProvider resourceLoader;
 
         private readonly List<AppSession> sessions = new List<AppSession>();
 
-        public Startup(IStonehengeResourceProvider loader)
+        public Startup(string title, IStonehengeResourceProvider loader)
         {
+            appTitle = title;
             resourceLoader = loader;
         }
 
@@ -41,6 +43,7 @@
                     sessions.Add(session);
                 }
 
+                context.Environment.Add("stonehenge.AppTitle", appTitle);
                 context.Environment.Add("stonehenge.ResourceLoader", resourceLoader);
                 context.Environment.Add("stonehenge.AppSession", session);
                 await next.Invoke();
