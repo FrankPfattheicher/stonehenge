@@ -29,7 +29,9 @@ System.config({
         "babel": "npm:babel-core@5.8.35",
         "babel-runtime": "npm:babel-runtime@5.8.35",
         "bootstrap": "github:twbs/bootstrap@3.3.6",
+        "es6-promise": "npm:es6-promise@3.1.2",
         "fetch": "github:github/fetch@0.11.0",
+        "fetch-ie8": "npm:fetch-ie8@1.4.2",
         "font-awesome": "npm:font-awesome@4.5.0",
         "text": "github:systemjs/plugin-text@0.0.4",
         "github:twbs/bootstrap@3.3.6": {
