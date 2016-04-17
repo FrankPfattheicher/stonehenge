@@ -18,6 +18,9 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
         private readonly string rootPage;
         private readonly Dictionary<string, Resource> aureliaContent;
 
+        private static readonly string ControllerTemplate = LoadResourceText("IctBaden.Stonehenge2.Aurelia.Client.stonehengeController.js");
+        private static readonly string ElementTemplate = LoadResourceText("IctBaden.Stonehenge2.Aurelia.Client.stonehengeElement.js");
+
         public AureliaAppCreator(string appTitle, string rootPage, Dictionary<string, Resource> aureliaContent)
         {
             this.appTitle = appTitle;
@@ -81,14 +84,14 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
         public void CreateControllers()
         {
             var viewModels = aureliaContent
-                .Where(res => res.Value.ViewModel != null)
+                .Where(res => res.Value.ViewModel?.VmName != null)
                 .Select(res => res.Value)
                 .Distinct()
                 .ToList();
 
             foreach (var viewModel in viewModels)
             {
-                var controllerJs = GetController(viewModel.ViewModel.Name);
+                var controllerJs = GetController(viewModel.ViewModel.VmName);
                 if (!string.IsNullOrEmpty(controllerJs))
                 {
                     var resource = new Resource($"src.{viewModel.Name}.js", "AureliaResourceProvider", ResourceType.Js, controllerJs, true);
@@ -114,9 +117,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
                 return null;
             }
 
-            var controllerTemplate = LoadResourceText("IctBaden.Stonehenge2.Aurelia.Client.stonehengeController.js");
-
-            var text = controllerTemplate.Replace("{0}", vmName);
+            var text = ControllerTemplate.Replace("{0}", vmName);
 
             var postbackPropNames = GetPostbackPropNames(vmType).Select(name => "'" + name + "'");
             text = text.Replace("'propNames'", string.Join(",", postbackPropNames));
@@ -199,5 +200,25 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             return postbackPropNames;
         }
 
+        public void CreateElements()
+        {
+            var customElements = aureliaContent
+               .Where(res => res.Value.ViewModel?.ElementName != null)
+               .Select(res => res.Value)
+               .Distinct()
+               .ToList();
+
+            foreach (var element in customElements)
+            {
+                var elementJs = ElementTemplate.Replace("{0}", element.ViewModel.ElementName);
+                elementJs = elementJs.Replace("{1}", element.Name);
+
+                var bindings = element.ViewModel?.Bindings?.Select(b => $"@bindable('{b}')") ?? new List<string>() { string.Empty };
+                elementJs = elementJs.Replace("//@bindable", string.Join(Environment.NewLine, bindings));
+
+                var resource = new Resource($"src.{element.Name}.js", "AureliaResourceProvider", ResourceType.Js, elementJs, true);
+                aureliaContent.Add(resource.Name, resource);
+            }
+        }
     }
 }

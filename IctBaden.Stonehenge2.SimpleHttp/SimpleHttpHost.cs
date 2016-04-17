@@ -23,6 +23,7 @@ namespace IctBaden.Stonehenge2.SimpleHttp
     {
         private SimpleHttpServer server;
 
+        public string AppTitle { get; private set; }
         public string BaseUrl { get; private set; }
 
         private readonly IStonehengeResourceProvider resourceLoader;
@@ -34,8 +35,10 @@ namespace IctBaden.Stonehenge2.SimpleHttp
             sessionCache = cache;
         }
 
-        public bool Start(bool useSsl = false, string hostAddress = null, int hostPort = 0)
+        public bool Start(string title, bool useSsl = false, string hostAddress = null, int hostPort = 0)
         {
+            AppTitle = title;
+
             if(useSsl)
                 throw new NotSupportedException("SSL not supported.");
             if (hostPort == 0) hostPort = 80;

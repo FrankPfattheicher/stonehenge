@@ -1,4 +1,6 @@
-﻿namespace IctBaden.Stonehenge2.Katana
+﻿using System.Net;
+
+namespace IctBaden.Stonehenge2.Katana
 {
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -30,6 +32,9 @@
 #endif
             app.Use(async (context, next) =>
             {
+                var timer = new Stopwatch();
+                timer.Start();
+
                 var path = context.Request.Path;
                 Trace.TraceInformation("Stonehenge2.Katana Begin request {0} {1}", context.Request.Method, path);
 
@@ -43,12 +48,23 @@
                     sessions.Add(session);
                 }
 
-                context.Environment.Add("stonehenge.AppTitle", appTitle);
-                context.Environment.Add("stonehenge.ResourceLoader", resourceLoader);
-                context.Environment.Add("stonehenge.AppSession", session);
-                await next.Invoke();
+                var etag = context.Request.Headers["If-None-Match"];
+                if (context.Request.Method == "GET" && etag == session.AppVersionId)
+                {
+                    Debug.WriteLine("ETag match.");
+                    context.Response.StatusCode = (int)HttpStatusCode.NotModified;
+                }
+                else
+                {
+                    context.Environment.Add("stonehenge.AppTitle", appTitle);
+                    context.Environment.Add("stonehenge.ResourceLoader", resourceLoader);
+                    context.Environment.Add("stonehenge.AppSession", session);
+                    await next.Invoke();
+                }
 
-                Trace.TraceInformation("Stonehenge2.Katana End request {0} {1}", context.Request.Method, path);
+                timer.Stop();
+                Trace.TraceInformation("Stonehenge2.Katana End request {0} {1}, {2}ms", 
+                    context.Request.Method, path, timer.ElapsedMilliseconds);
             });
 
             app.Use<StonehengeContent>();

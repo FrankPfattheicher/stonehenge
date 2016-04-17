@@ -253,6 +253,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Client\stonehengeElement.js" />
     <EmbeddedResource Include="app\src\aurelia-babel.js" />
     <EmbeddedResource Include="app\src\aurelia.js" />
     <EmbeddedResource Include="Client\stonehengeController.js" />

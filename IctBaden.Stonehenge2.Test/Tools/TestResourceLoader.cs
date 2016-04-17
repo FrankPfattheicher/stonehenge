@@ -26,7 +26,7 @@
         public Resource Get(AppSession session, string resourceName)
         {
             var resourceExtension = Path.GetExtension(resourceName);
-            return new Resource(resourceName, "test://TestResourceLoader.content", ResourceType.GetByExtension(resourceExtension), content);
+            return new Resource(resourceName, "test://TestResourceLoader.content", ResourceType.GetByExtension(resourceExtension), content, false);
         }
     }
 }

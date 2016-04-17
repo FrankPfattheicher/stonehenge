@@ -15,6 +15,8 @@ namespace IctBaden.Stonehenge2.Core
 
     public class AppSession : INotifyPropertyChanged
     {
+        public string AppVersionId { get; private set; }
+
         public string HostDomain { get; private set; }
         public string ClientAddress { get; private set; }
         public string UserAgent { get; private set; }
@@ -218,6 +220,8 @@ namespace IctBaden.Stonehenge2.Core
         {
             userData = new Dictionary<string, object>();
             id = Guid.NewGuid();
+
+            AppVersionId = Assembly.GetEntryAssembly()?.ManifestModule.ModuleVersionId.ToString("N") ?? Guid.NewGuid().ToString("N");
         }
 
         public bool IsInitialized => UserAgent != null;

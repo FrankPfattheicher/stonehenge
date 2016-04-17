@@ -53,6 +53,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                         HandleIndexContent(context, content);
                     }
                     break;
+
                 case "POST":
                     var body = new StreamReader(context.Request.Body).ReadToEndAsync().Result;
 
@@ -89,9 +90,10 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             context.Response.ContentType = content.ContentType;
             if (content.IsCachable)
             {
-                context.Response.Headers.Add("Cache-Control", new []{ "max-age=86400" } );
-                context.Response.Headers.Add("Expires", new []{ "86400" } );
+                context.Response.Headers.Add("Cache-Control", new[] { "max-age=3600", "must-revalidate", "proxy-revalidate" });
             }
+            context.Response.ETag = appSession.AppVersionId;
+
             try
             {
                 if (content.IsBinary)

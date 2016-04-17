@@ -63,7 +63,7 @@ namespace IctBaden.Stonehenge2.AureliaSample
             var terminate = new AutoResetEvent(false);
             Console.CancelKeyPress += (sender, eventArgs) => { terminate.Set(); };
 
-            if (server.Start(false, "localhost", 32000))
+            if (server.Start("Sample", false, "localhost", 32000))
             {
                 Console.WriteLine(@"Started server on: " + server.BaseUrl);
                 terminate.WaitOne();

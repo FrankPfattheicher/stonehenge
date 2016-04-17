@@ -25,6 +25,7 @@ namespace IctBaden.Stonehenge2.Aurelia
             AddResourceContent();
             appCreator.CreateApplication();
             appCreator.CreateControllers();
+            appCreator.CreateElements();
         }
 
         public void Dispose()
@@ -32,30 +33,49 @@ namespace IctBaden.Stonehenge2.Aurelia
             aureliaContent.Clear();
         }
 
+        private static readonly Regex ExtractName = new Regex("<!--ViewModel:(\\w+)-->");
+        private static readonly Regex ExtractElement = new Regex("<!--CustomElement(:([\\w, ]+))?-->");
+        private static readonly Regex ExtractTitle = new Regex("<!--Title:([^:]+)(:(\\d+))?-->");
+
         private static ViewModelInfo GetViewModelInfo(string route, string pageText)
         {
             route = route.Substring(0, 1).ToUpper() + route.Substring(1);
             var info = new ViewModelInfo(route + "Vm");
 
-            var extractName = new Regex("<!--ViewModel:(\\w+)-->");
-            var match = extractName.Match(pageText);
+            var match = ExtractElement.Match(pageText);
             if (match.Success)
             {
-                info.Name = match.Groups[1].Value;
-            }
-            var extractTitle = new Regex("<!--Title:([^:]+)(:(\\d+))?-->");
-            match = extractTitle.Match(pageText);
-            if (match.Success)
-            {
-                info.Title = match.Groups[1].Value;
-                if (!string.IsNullOrEmpty(match.Groups[3].Value))
+                info.ElementName = route;
+                if (!string.IsNullOrEmpty(match.Groups[2].Value))
                 {
-                    info.SortIndex = int.Parse(match.Groups[3].Value);
+                    info.Bindings = match.Groups[2].Value
+                        .Split(new[] {','})
+                        .Select(b => b.Trim())
+                        .ToList();
                 }
+                info.VmName = null;
+                info.SortIndex = 0;
             }
             else
             {
-                info.Title = route;
+                match = ExtractName.Match(pageText);
+                if (match.Success)
+                {
+                    info.VmName = match.Groups[1].Value;
+                }
+                match = ExtractTitle.Match(pageText);
+                if (match.Success)
+                {
+                    info.Title = match.Groups[1].Value;
+                    if (!string.IsNullOrEmpty(match.Groups[3].Value))
+                    {
+                        info.SortIndex = int.Parse(match.Groups[3].Value);
+                    }
+                }
+                else
+                {
+                    info.Title = route;
+                }
             }
             return info;
         }

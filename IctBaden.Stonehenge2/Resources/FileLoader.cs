@@ -32,11 +32,11 @@
             var resourceType = ResourceType.GetByExtension(resourceExtension);
             if (resourceType == null)
             {
-                Debug.WriteLine($"ResourceLoader({resourceName}): null");
+                Debug.WriteLine($"FileLoader({resourceName}): not found");
                 return null;
             }
 
-            Debug.WriteLine($"ResourceLoader({resourceName}): {fullFileName}");
+            Debug.WriteLine($"FileLoader({resourceName}): {fullFileName}");
             if (resourceType.IsBinary)
             {
                 return new Resource(resourceName, "file://" + fullFileName, resourceType, File.ReadAllBytes(fullFileName), true);

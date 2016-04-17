@@ -118,7 +118,7 @@ namespace IctBaden.Stonehenge2.Resources
                 .FirstOrDefault(res => string.Compare(res.Key, resourceName, true, CultureInfo.InvariantCulture) == 0);
             if (asmResource.Key == null)
             {
-                Debug.WriteLine($"ResourceLoader({resourceName}): null");
+                Debug.WriteLine($"ResourceLoader({resourceName}): not found");
                 return null;
             }
 
@@ -126,7 +126,7 @@ namespace IctBaden.Stonehenge2.Resources
             var resourceType = ResourceType.GetByExtension(resourceExtension);
             if (resourceType == null)
             {
-                Debug.WriteLine($"ResourceLoader({resourceName}): null");
+                Debug.WriteLine($"ResourceLoader({resourceName}): not found");
                 return null;
             }
 
@@ -155,7 +155,7 @@ namespace IctBaden.Stonehenge2.Resources
                 }
             }
 
-            Debug.WriteLine($"ResourceLoader({resourceName}): null");
+            Debug.WriteLine($"ResourceLoader({resourceName}): not found");
             return null;
         }
     }
