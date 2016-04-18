@@ -91,8 +91,12 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             if (content.IsCachable)
             {
                 context.Response.Headers.Add("Cache-Control", new[] { "max-age=3600", "must-revalidate", "proxy-revalidate" });
+                context.Response.ETag = appSession.AppVersionId;
             }
-            context.Response.ETag = appSession.AppVersionId;
+            else
+            {
+                context.Response.Headers.Add("Cache-Control", new[] { "no-cache" });
+            }
 
             try
             {

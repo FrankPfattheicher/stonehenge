@@ -64,9 +64,9 @@
                 Trace.TraceError(ex.StackTrace);
                 Debug.Assert(false);
                 // ReSharper disable once HeuristicUnreachableCode
-                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(ex), true);
+                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(ex), false);
             }
-            return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel), true);
+            return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel), false);
         }
 
         public Resource Get(AppSession session, string resourceName)

@@ -50,7 +50,7 @@ constructor(http) {
         if (scope.StonehengePollEventsActive) {
             var poll = scope.StonehengePollEventsActive;
             scope.StonehengePollEventsActive = null;
-            poll.terminate();
+            //poll.terminate();
         }
         var props = ['propNames'];
         var formData = new Object();
@@ -108,7 +108,6 @@ constructor(http) {
                     debugger;
                 });
         };
-
     }
 
     activate() {
@@ -121,7 +120,6 @@ constructor(http) {
             //TODO: abort request
         }
     }
-
 
 /*commands*/
 
