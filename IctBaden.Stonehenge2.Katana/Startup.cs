@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using SqueezeMe;
 
 namespace IctBaden.Stonehenge2.Katana
 {
@@ -27,6 +28,7 @@ namespace IctBaden.Stonehenge2.Katana
 
         public void Configuration(IAppBuilder app)
         {
+            app.UseCompression();
 #if DEBUG
             app.UseErrorPage();
 #endif
@@ -69,6 +71,6 @@ namespace IctBaden.Stonehenge2.Katana
 
             app.Use<StonehengeContent>();
             app.Use<StonehengeRoot>();
-        } 
+        }
     }
 }

@@ -131,7 +131,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
         {
             const string placeholderAppTitle = "stonehengeAppTitle";
             var appTitle = context.Get<string>("stonehenge.AppTitle");
-            content.Text = content.Text.Replace(placeholderAppTitle, $"<title>{appTitle}</title>");
+            content.Text = content.Text.Replace(placeholderAppTitle, appTitle);
         }
     }
 }
