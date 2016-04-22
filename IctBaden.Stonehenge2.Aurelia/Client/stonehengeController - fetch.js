@@ -1,7 +1,7 @@
 ﻿
 // ReSharper disable Es6Feature
 import 'fetch-ie8';
-import {HttpClient} from 'aurelia-http-client';
+import {HttpClient} from 'aurelia-fetch-client';
 
 export class {0} {
 

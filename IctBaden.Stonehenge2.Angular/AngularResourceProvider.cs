@@ -38,7 +38,7 @@
             var match = extractName.Match(pageText);
             if (match.Success)
             {
-                info.Name = match.Groups[1].Value;
+                info.VmName = match.Groups[1].Value;
             }
             return info;
         }
