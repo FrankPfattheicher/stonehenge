@@ -259,11 +259,11 @@ namespace IctBaden.Stonehenge2.Core
             Platform = "OS";
         }
 
-        internal void Accessed(IDictionary<string, Cookie> cookies, bool userAction)
+        public void Accessed(IDictionary<string, string> cookies, bool userAction)
         {
             if ((PermanentSessionId == null) && cookies.ContainsKey("ss-pid"))
             {
-                PermanentSessionId = cookies["ss-pid"].Value;
+                PermanentSessionId = cookies["ss-pid"];
             }
             LastAccess = DateTime.Now;
             NotifyPropertyChanged("LastAccess");
@@ -272,7 +272,7 @@ namespace IctBaden.Stonehenge2.Core
                 LastUserAction = DateTime.Now;
                 NotifyPropertyChanged("LastUserAction");
             }
-            CookieSet = cookies.ContainsKey("stonehenge_id");
+            CookieSet = cookies.ContainsKey("stonehenge-id");
             NotifyPropertyChanged("CookieSet");
         }
 

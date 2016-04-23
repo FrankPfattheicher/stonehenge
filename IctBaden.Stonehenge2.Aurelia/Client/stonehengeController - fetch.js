@@ -81,13 +81,13 @@ constructor(http) {
             scope.http.fetch('ViewModel/{0}', { method: 'get', headers: { 'Accept': 'application/json' } })
                 .then(response => {
                     var cookie = response.headers.get("cookie");
-                    var match = (/StonehengeSession=([0-9a-fA-F]+)/).exec(cookie);
+                    var match = (/stonehenge-id=([0-9a-fA-F]+)/).exec(cookie);
                     if (match == null) {
                         scope.StonehengeSession = "";
                     }
                     else {
                         scope.StonehengeSession = match[1];
-                        document.cookie = "StonehengeSession=" + scope.StonehengeSession;
+                        document.cookie = "stonehenge-id=" + scope.StonehengeSession;
                     }
 
                     response.json().then(function(data) {

@@ -117,13 +117,13 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
                 return null;
             }
 
-            var text = ControllerTemplate.Replace("{0}", vmName);
+            var text = ControllerTemplate.Replace("stonehengeViewModelName", vmName);
 
             var postbackPropNames = GetPostbackPropNames(vmType).Select(name => "'" + name + "'");
             text = text.Replace("'propNames'", string.Join(",", postbackPropNames));
 
             // supply functions for action methods
-            const string methodTemplate = @"{1} = function({paramNames}) { this.StonehengePost(this, '/ViewModel/{0}/{1}{paramValues}'); }";
+            const string methodTemplate = @"this.stonehengeMethodName = function({paramNames}) { this.StonehengePost(this, '/ViewModel/stonehengeViewModelName/stonehengeMethodName{paramValues}'); }";
 
             var actionMethods = new StringBuilder();
             foreach (var methodInfo in vmType.GetMethods().Where(methodInfo => methodInfo.GetCustomAttributes(false).OfType<ActionMethodAttribute>().Any()))
@@ -138,8 +138,8 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
                 : string.Empty;
 
                 var method = methodTemplate
-                    .Replace("{0}", vmName)
-                    .Replace("{1}", methodInfo.Name)
+                    .Replace("stonehengeViewModelName", vmName)
+                    .Replace("stonehengeMethodName", methodInfo.Name)
                     .Replace("{paramNames}", string.Join(",", paramNames))
                     .Replace("{paramValues}", paramValues)
                     .Replace("+''", string.Empty);

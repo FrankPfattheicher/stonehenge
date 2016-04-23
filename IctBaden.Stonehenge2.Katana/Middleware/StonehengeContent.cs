@@ -36,70 +36,82 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                 await next.Invoke(environment);
                 return;
             }
-
-            var response = context.Get<Stream>("owin.ResponseBody");
-            var resourceLoader = context.Get<IStonehengeResourceProvider>("stonehenge.ResourceLoader");
-            var resourceName = path.Substring(1);
-            var appSession = context.Get<AppSession>("stonehenge.AppSession");
-            var requestVerb = context.Get<string>("owin.RequestMethod");
-            
-            Resource content = null;
-            switch (requestVerb)
-            {
-                case "GET":
-                    content = resourceLoader.Get(appSession, resourceName);
-                    if (string.Compare(resourceName, "index.html", StringComparison.InvariantCultureIgnoreCase) == 0)
-                    {
-                        HandleIndexContent(context, content);
-                    }
-                    break;
-
-                case "POST":
-                    var body = new StreamReader(context.Request.Body).ReadToEndAsync().Result;
-
-                    var formData = new Dictionary<string, string>();
-                    if (!string.IsNullOrEmpty(body))
-                    {
-                        //formData = context.Request.ReadFormAsync().Result
-                        //    .ToDictionary(data => data.Key, data => data.Value.FirstOrDefault());
-                        try
-                        {
-                            formData = JsonConvert.DeserializeObject<JObject>(body).AsJEnumerable().Cast<JProperty>()
-                            .ToDictionary(data => data.Name, data => Convert.ToString(data.Value, CultureInfo.InvariantCulture));
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ex.InnerException != null) ex = ex.InnerException;
-                            Trace.TraceError(ex.Message);
-                            Trace.TraceError(ex.StackTrace);
-                            Debug.Assert(false);
-                        }
-                    }
-
-                    var queryString = HttpUtility.ParseQueryString(context.Get<string>("owin.RequestQueryString"));
-                    var paramObjects = queryString.AllKeys.Select(key => queryString[key]).Cast<object>().ToArray();
-                    content = resourceLoader.Post(appSession, resourceName, paramObjects, formData);
-                    break;
-            }
-
-            if (content == null)
-            {
-                await next.Invoke(environment);
-                return;
-            }
-            context.Response.ContentType = content.ContentType;
-            if (content.IsCachable)
-            {
-                context.Response.Headers.Add("Cache-Control", new[] { "max-age=3600", "must-revalidate", "proxy-revalidate" });
-                context.Response.ETag = appSession.AppVersionId;
-            }
-            else
-            {
-                context.Response.Headers.Add("Cache-Control", new[] { "no-cache" });
-            }
-
             try
             {
+                var response = context.Get<Stream>("owin.ResponseBody");
+                var resourceLoader = context.Get<IStonehengeResourceProvider>("stonehenge.ResourceLoader");
+                var resourceName = path.Substring(1);
+                var appSession = context.Get<AppSession>("stonehenge.AppSession");
+                var requestVerb = context.Get<string>("owin.RequestMethod");
+                var cookies = context.Request.Headers
+                    .FirstOrDefault(h => h.Key == "Cookie").Value?
+                    .SelectMany(c => c.Split(';').Select(s => s.Trim()))
+                    .Distinct()
+                    .Select(s => s.Split('='))
+                    .ToDictionary(s => s[0], s => s[1])
+                    ?? new Dictionary<string, string>();
+
+                Resource content = null;
+                switch (requestVerb)
+                {
+                    case "GET":
+                        appSession.Accessed(cookies, false);
+                        content = resourceLoader.Get(appSession, resourceName);
+                        if (string.Compare(resourceName, "index.html", StringComparison.InvariantCultureIgnoreCase) == 0)
+                        {
+                            HandleIndexContent(context, content);
+                        }
+                        break;
+
+                    case "POST":
+                        appSession.Accessed(cookies, true);
+                        var body = new StreamReader(context.Request.Body).ReadToEndAsync().Result;
+
+                        var formData = new Dictionary<string, string>();
+                        if (!string.IsNullOrEmpty(body))
+                        {
+                            //formData = context.Request.ReadFormAsync().Result
+                            //    .ToDictionary(data => data.Key, data => data.Value.FirstOrDefault());
+                            try
+                            {
+                                formData = JsonConvert.DeserializeObject<JObject>(body).AsJEnumerable().Cast<JProperty>()
+                                .ToDictionary(data => data.Name, data => Convert.ToString(data.Value, CultureInfo.InvariantCulture));
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.InnerException != null) ex = ex.InnerException;
+                                Trace.TraceError(ex.Message);
+                                Trace.TraceError(ex.StackTrace);
+                                Debug.Assert(false);
+                            }
+                        }
+
+                        var queryString = HttpUtility.ParseQueryString(context.Get<string>("owin.RequestQueryString"));
+                        var paramObjects = queryString.AllKeys.Select(key => queryString[key]).Cast<object>().ToArray();
+                        content = resourceLoader.Post(appSession, resourceName, paramObjects, formData);
+                        break;
+                }
+
+                if (content == null)
+                {
+                    await next.Invoke(environment);
+                    return;
+                }
+                context.Response.ContentType = content.ContentType;
+                if (content.IsCachable)
+                {
+                    context.Response.Headers.Add("Cache-Control", new[] { "max-age=3600", "must-revalidate", "proxy-revalidate" });
+                    context.Response.ETag = appSession.AppVersionId;
+                }
+                else
+                {
+                    context.Response.Headers.Add("Cache-Control", new[] { "no-cache" });
+                }
+                if (!appSession.CookieSet)
+                {
+                    context.Response.Headers.Add("Set-Cookie", new[] { "stonehenge-id=" + appSession.Id });
+                }
+
                 if (content.IsBinary)
                 {
                     using (var writer = new BinaryWriter(response))
