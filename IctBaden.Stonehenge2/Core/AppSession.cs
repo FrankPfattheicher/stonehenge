@@ -185,6 +185,7 @@ namespace IctBaden.Stonehenge2.Core
         public event Action TimedOut;
         private Timer pollSessionTimeout;
         public TimeSpan SessionTimeout { get; private set; }
+        public bool IsTimedOut => LastAccessDuration > SessionTimeout;
 
         public void SetTimeout(TimeSpan timeout)
         {
@@ -220,25 +221,16 @@ namespace IctBaden.Stonehenge2.Core
         {
             userData = new Dictionary<string, object>();
             id = Guid.NewGuid();
-
             AppVersionId = Assembly.GetEntryAssembly()?.ManifestModule.ModuleVersionId.ToString("N") ?? Guid.NewGuid().ToString("N");
+            SessionTimeout = TimeSpan.FromMinutes(15);
+            LastAccess = DateTime.Now;
         }
 
         public bool IsInitialized => UserAgent != null;
 
-        public void Initialize(string ssPid, string hostDomain, string hostUrl, string clientAddress, string userAgent)
+        public void Initialize(string hostDomain, string clientAddress, string userAgent)
         {
-            if (!string.IsNullOrEmpty(hostUrl))
-            {
-                var uri = new UriBuilder(hostUrl);
-                HostDomain = string.IsNullOrEmpty(hostDomain) ? uri.Host : hostDomain;
-            }
-            else
-            {
-                HostDomain = hostDomain;
-            }
-
-            PermanentSessionId = ssPid;
+            HostDomain = hostDomain;
             ClientAddress = clientAddress;
             UserAgent = userAgent;
             ConnectedSince = DateTime.Now;

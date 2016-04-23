@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using Microsoft.Owin;
 using SqueezeMe;
 
 namespace IctBaden.Stonehenge2.Katana
@@ -28,6 +30,7 @@ namespace IctBaden.Stonehenge2.Katana
 
         public void Configuration(IAppBuilder app)
         {
+            app.Use<StonehengeRoot>();
             app.UseCompression();
 #if DEBUG
             app.UseErrorPage();
@@ -40,14 +43,15 @@ namespace IctBaden.Stonehenge2.Katana
                 var path = context.Request.Path;
                 Trace.TraceInformation("Stonehenge2.Katana Begin request {0} {1}", context.Request.Method, path);
 
-                var ssPid = context.Request.Cookies["ss-pid"];
-                var session = sessions.FirstOrDefault(s => s.PermanentSessionId == ssPid);
-                if (session == null)
+                var stonehengeId = context.Request.Cookies["stonehenge-id"];
+                var session = sessions.FirstOrDefault(s => s.Id == stonehengeId); 
+                if (string.IsNullOrEmpty(stonehengeId) || session == null)
                 {
-                    var userAgent = context.Request.Headers["User-Agent"];
-                    session = new AppSession();
-                    session.Initialize(ssPid, context.Request.Host.Value, context.Request.Host.Value, context.Request.RemoteIpAddress.ToString(), userAgent);
-                    sessions.Add(session);
+                    // session not found - redirect to new session
+                    session = NewSession(context.Request);
+                    context.Response.Headers.Add("Set-Cookie", new string[] { "stonehenge-id=" + session.Id });
+                    context.Response.Redirect("/Index.html?stonehenge-id=" + session.Id);
+                    return;
                 }
 
                 var etag = context.Request.Headers["If-None-Match"];
@@ -70,7 +74,23 @@ namespace IctBaden.Stonehenge2.Katana
             });
 
             app.Use<StonehengeContent>();
-            app.Use<StonehengeRoot>();
+        }
+
+        private AppSession NewSession(IOwinRequest request)
+        {
+            var userAgent = request.Headers["User-Agent"];
+            var session = new AppSession();
+            session.Initialize(request.Host.Value, request.RemoteIpAddress.ToString(), userAgent);
+            sessions.Add(session);
+            Trace.TraceInformation($"Stonehenge2.Katana New session {session.Id}");
+
+            var timedOut = sessions.Where(s => s.IsTimedOut).ToList();
+            foreach (var sess in timedOut)
+            {
+                sessions.Remove(sess);
+                Trace.TraceInformation($"Stonehenge2.Katana Session timed out {sess.Id}");
+            }
+            return session;
         }
     }
 }

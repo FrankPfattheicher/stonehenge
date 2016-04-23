@@ -43,13 +43,21 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                 var resourceName = path.Substring(1);
                 var appSession = context.Get<AppSession>("stonehenge.AppSession");
                 var requestVerb = context.Get<string>("owin.RequestMethod");
-                var cookies = context.Request.Headers
+                var requestCookies = context.Request.Headers
                     .FirstOrDefault(h => h.Key == "Cookie").Value?
                     .SelectMany(c => c.Split(';').Select(s => s.Trim()))
-                    .Distinct()
-                    .Select(s => s.Split('='))
-                    .ToDictionary(s => s[0], s => s[1])
-                    ?? new Dictionary<string, string>();
+                    .Select(s => s.Split('='));
+                var cookies = new Dictionary<string, string>();
+                if(requestCookies != null)
+                {
+                    foreach (var cookie in requestCookies)
+                    {
+                        if (!cookies.ContainsKey(cookie[0]))
+                        {
+                            cookies.Add(cookie[0], cookie[1]);
+                        }
+                    }
+                }
 
                 Resource content = null;
                 switch (requestVerb)
