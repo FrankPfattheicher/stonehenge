@@ -52,7 +52,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             var applicationJs = LoadResourceText("IctBaden.Stonehenge2.Aurelia.Client.stonehengeApp.js");
             applicationJs = InsertRoutes(applicationJs);
 
-            var resource = new Resource("src.app.js", "AureliaResourceProvider", ResourceType.Html, applicationJs, true);
+            var resource = new Resource("src.app.js", "AureliaResourceProvider", ResourceType.Html, applicationJs, Resource.Cache.Revalidate);
             aureliaContent.Add("src.app.js", resource);
         }
 
@@ -94,7 +94,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
                 var controllerJs = GetController(viewModel.ViewModel.VmName);
                 if (!string.IsNullOrEmpty(controllerJs))
                 {
-                    var resource = new Resource($"src.{viewModel.Name}.js", "AureliaResourceProvider", ResourceType.Js, controllerJs, true);
+                    var resource = new Resource($"src.{viewModel.Name}.js", "AureliaResourceProvider", ResourceType.Js, controllerJs, Resource.Cache.Revalidate);
                     aureliaContent.Add(resource.Name, resource);
                 }
             }
@@ -216,7 +216,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
                 var bindings = element.ViewModel?.Bindings?.Select(b => $"@bindable('{b}')") ?? new List<string>() { string.Empty };
                 elementJs = elementJs.Replace("//@bindable", string.Join(Environment.NewLine, bindings));
 
-                var resource = new Resource($"src.{element.Name}.js", "AureliaResourceProvider", ResourceType.Js, elementJs, true);
+                var resource = new Resource($"src.{element.Name}.js", "AureliaResourceProvider", ResourceType.Js, elementJs, Resource.Cache.Revalidate);
                 aureliaContent.Add(resource.Name, resource);
             }
         }

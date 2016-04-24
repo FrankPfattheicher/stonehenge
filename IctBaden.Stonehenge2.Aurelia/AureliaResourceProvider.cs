@@ -49,7 +49,7 @@ namespace IctBaden.Stonehenge2.Aurelia
                 if (!string.IsNullOrEmpty(match.Groups[2].Value))
                 {
                     info.Bindings = match.Groups[2].Value
-                        .Split(new[] {','})
+                        .Split(',')
                         .Select(b => b.Trim())
                         .ToList();
                 }
@@ -94,7 +94,7 @@ namespace IctBaden.Stonehenge2.Aurelia
                     var route = resourceId.Replace(".html", string.Empty);
                     var pageText = File.ReadAllText(appFile);
 
-                    var resource = new Resource(route, appFile, ResourceType.Html, pageText, true) { ViewModel = GetViewModelInfo(route, pageText) };
+                    var resource = new Resource(route, appFile, ResourceType.Html, pageText, Resource.Cache.OneDay) { ViewModel = GetViewModelInfo(route, pageText) };
                     aureliaContent.Add(resourceId, resource);
                 }
             }
@@ -145,7 +145,7 @@ namespace IctBaden.Stonehenge2.Aurelia
                         }
                     }
 
-                    var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText, true)
+                    var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText, Resource.Cache.Revalidate)
                     {
                         ViewModel = GetViewModelInfo(route, pageText)
                     };

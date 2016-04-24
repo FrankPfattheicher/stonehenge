@@ -49,21 +49,29 @@ namespace IctBaden.Stonehenge
             get { return viewModel; }
             set
             {
-                viewModel = value;
-                var npc = value as INotifyPropertyChanged;
+                var npc = viewModel as INotifyPropertyChanged;
                 if (npc != null)
                 {
-                    npc.PropertyChanged += (sender, args) =>
-                    {
-                        var avm = sender as ActiveViewModel;
-                        if (avm == null)
-                            return;
-                        lock (avm.Session.Events)
-                        {
-                            avm.Session.EventAdd(args.PropertyName);
-                        }
-                    };
+                    npc.PropertyChanged -= ViewModelPropertyChanged;
                 }
+
+                viewModel = value;
+                npc = value as INotifyPropertyChanged;
+                if (npc != null)
+                {
+                    npc.PropertyChanged += ViewModelPropertyChanged;
+                }
+            }
+        }
+
+        private void ViewModelPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            var avm = sender as ActiveViewModel;
+            if (avm == null)
+                return;
+            lock (avm.Session.Events)
+            {
+                avm.Session.EventAdd(args.PropertyName);
             }
         }
 

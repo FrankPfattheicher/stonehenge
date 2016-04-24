@@ -140,7 +140,7 @@ namespace IctBaden.Stonehenge2.Resources
                         {
                             var data = reader.ReadBytes((int)stream.Length);
                             Debug.WriteLine($"ResourceLoader({resourceName}): {asmResource.Value.FullName}");
-                            return new Resource(resourceName, "res://" + asmResource.Value.FullName, resourceType, data, true);
+                            return new Resource(resourceName, "res://" + asmResource.Value.FullName, resourceType, data, Resource.Cache.Revalidate);
                         }
                     }
                     else
@@ -149,7 +149,7 @@ namespace IctBaden.Stonehenge2.Resources
                         {
                             var text = reader.ReadToEnd();
                             Debug.WriteLine($"ResourceLoader({resourceName}): {asmResource.Value.FullName}");
-                            return new Resource(resourceName, "res://" + asmResource.Value.FullName, resourceType, text, true);
+                            return new Resource(resourceName, "res://" + asmResource.Value.FullName, resourceType, text, Resource.Cache.Revalidate);
                         }
                     }
                 }

@@ -4,7 +4,7 @@
     using System.Diagnostics;
     using System.IO;
 
-    using IctBaden.Stonehenge2.Core;
+    using Core;
 
     public class FileLoader : IStonehengeResourceProvider
     {
@@ -39,10 +39,10 @@
             Debug.WriteLine($"FileLoader({resourceName}): {fullFileName}");
             if (resourceType.IsBinary)
             {
-                return new Resource(resourceName, "file://" + fullFileName, resourceType, File.ReadAllBytes(fullFileName), true);
+                return new Resource(resourceName, "file://" + fullFileName, resourceType, File.ReadAllBytes(fullFileName), Resource.Cache.OneDay);
             }
 
-            return new Resource(resourceName, "file://" + fullFileName, resourceType, File.ReadAllText(fullFileName), true);
+            return new Resource(resourceName, "file://" + fullFileName, resourceType, File.ReadAllText(fullFileName), Resource.Cache.OneDay);
         }
 
     }

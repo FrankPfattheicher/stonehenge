@@ -215,24 +215,15 @@ namespace IctBaden.Stonehenge
 
         private void OnSessionCreated(AppSession session)
         {
-            var handler = SessionCreated;
-            if (handler == null)
-                return;
-            handler(session);
+            SessionCreated?.Invoke(session);
         }
         private void OnSessionTerminated(AppSession session)
         {
-            var handler = SessionTerminated;
-            if (handler == null)
-                return;
-            handler(session);
+            SessionTerminated?.Invoke(session);
         }
         private void OnClientException(Exception exception)
         {
-            var handler = ClientException;
-            if (handler == null)
-                return;
-            handler(exception);
+            ClientException?.Invoke(exception);
         }
     }
 }

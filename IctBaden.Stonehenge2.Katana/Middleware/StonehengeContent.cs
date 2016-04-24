@@ -106,14 +106,18 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                     return;
                 }
                 context.Response.ContentType = content.ContentType;
-                if (content.IsCachable)
+                switch (content.CacheMode)
                 {
-                    context.Response.Headers.Add("Cache-Control", new[] { "max-age=3600", "must-revalidate", "proxy-revalidate" });
-                    context.Response.ETag = appSession.AppVersionId;
-                }
-                else
-                {
-                    context.Response.Headers.Add("Cache-Control", new[] { "no-cache" });
+                    case Resource.Cache.None:
+                        context.Response.Headers.Add("Cache-Control", new[] { "no-cache" });
+                        break;
+                    case Resource.Cache.Revalidate:
+                        context.Response.Headers.Add("Cache-Control", new[] { "max-age=3600", "must-revalidate", "proxy-revalidate" });
+                        context.Response.ETag = appSession.AppVersionId;
+                        break;
+                    case Resource.Cache.OneDay:
+                        context.Response.Headers.Add("Cache-Control", new[] { "max-age=86400" });
+                        break;
                 }
                 if (!appSession.CookieSet)
                 {
