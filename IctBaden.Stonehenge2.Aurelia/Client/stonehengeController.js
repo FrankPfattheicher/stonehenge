@@ -80,7 +80,7 @@ export class stonehengeViewModelName {
                 .catch(error => {
                     if (error.responseType != "abort") {
                         scope.StonehengeIsDisconnected = true;
-                        debugger;
+                        //debugger;
                     }
                 });
         };
@@ -115,7 +115,7 @@ export class stonehengeViewModelName {
                     scope.StonehengeIsDisconnected = true;
                     if (console && console.log) console.log(error);
                     setTimeout(function() { window.location.reload(); }, 1000);
-                    debugger;
+                    //debugger;
                 });
         };
 
