@@ -174,14 +174,16 @@ namespace IctBaden.Stonehenge
 
         #region properties
 
-        readonly Dictionary<string, List<string>> dependencies = new Dictionary<string, List<string>>();
-        readonly Dictionary<string, object> dictionary = new Dictionary<string, object>();
+        private readonly Dictionary<string, List<string>> dependencies = new Dictionary<string, List<string>>();
+        private readonly Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
         internal List<ActiveModel> ActiveModels = new List<ActiveModel>();
         [Browsable(false)]
-        internal int Count { get { return GetProperties().Count; } }
+        internal int Count => GetProperties().Count;
+
         [Browsable(false)]
-        internal IEnumerable<string> Models { get { return from model in ActiveModels select model.GetType().Name; } }
+        internal IEnumerable<string> Models => ActiveModels.Select(model => model.GetType().Name);
+
         [Browsable(false)]
         public AppSession Session;
         [Browsable(false)]
@@ -327,7 +329,7 @@ namespace IctBaden.Stonehenge
         public PropertyInfo GetPropertyInfo(string name)
         {
             var infoEx = GetPropertyInfoEx(name);
-            return (infoEx == null) ? null : infoEx.Info;
+            return infoEx?.Info;
         }
 
         public bool IsPropertyReadOnly(string name)
