@@ -81,6 +81,7 @@ export class stonehengeViewModelName {
                     if (error.responseType != "abort") {
                         scope.StonehengeIsDisconnected = true;
                         //debugger;
+                        window.location.reload();
                     }
                 });
         };
@@ -116,6 +117,7 @@ export class stonehengeViewModelName {
                     if (console && console.log) console.log(error);
                     setTimeout(function() { window.location.reload(); }, 1000);
                     //debugger;
+                    window.location.reload();
                 });
         };
 
