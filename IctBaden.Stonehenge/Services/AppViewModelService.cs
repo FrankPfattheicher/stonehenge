@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
+using System.Windows.Forms;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
 
@@ -148,6 +149,9 @@ namespace IctBaden.Stonehenge.Services
                         if (ex.InnerException != null) ex = ex.InnerException;
                         Trace.TraceError(ex.Message);
                         Trace.TraceError(ex.StackTrace);
+#if DEBUG
+                        MessageBox.Show(ex.Message, ex.StackTrace);
+#endif               
                         return new HttpResult(HttpStatusCode.InternalServerError, 
                             ex.Message + Environment.NewLine + ex.StackTrace);
                     }
