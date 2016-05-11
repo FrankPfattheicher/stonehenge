@@ -148,7 +148,8 @@ namespace IctBaden.Stonehenge.Services
                         if (ex.InnerException != null) ex = ex.InnerException;
                         Trace.TraceError(ex.Message);
                         Trace.TraceError(ex.StackTrace);
-                        return new HttpResult(ex.Message, HttpStatusCode.InternalServerError);
+                        return new HttpResult(HttpStatusCode.InternalServerError, 
+                            ex.Message + Environment.NewLine + ex.StackTrace);
                     }
                 }
             }

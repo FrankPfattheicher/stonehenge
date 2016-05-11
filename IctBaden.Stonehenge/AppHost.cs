@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net;
 using Funq;
 using IctBaden.Stonehenge.Services;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using ServiceStack.Common;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.WebHost.Endpoints;
 using ServiceStack.WebHost.Endpoints.Support;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace IctBaden.Stonehenge
 {
@@ -21,7 +24,7 @@ namespace IctBaden.Stonehenge
         public string Redirect { get; set; }
         public TimeSpan EventTimeout { get; set; }
         public TimeSpan SessionTimeout { get; set; }
-        public bool HasSessionTimeout { get { return SessionTimeout.TotalMilliseconds > 0.1; } }
+        public bool HasSessionTimeout => SessionTimeout.TotalMilliseconds > 0.1;
 
         public event Action<AppSession> SessionCreated;
         public event Action<AppSession> SessionTerminated;
@@ -34,34 +37,29 @@ namespace IctBaden.Stonehenge
             StartPage = startPage;
             MessageBoxContentHtml = messageBoxContentHtml;
             EventTimeout = TimeSpan.FromSeconds(10);
+
+            var eventlog = new EventLogTraceListener("stonehenge") {Filter = new EventTypeFilter(SourceLevels.Error)};
+            Trace.Listeners.Add(eventlog);
+            Trace.AutoFlush = true;
         }
 
         internal void OnSessionCreated(AppSession session)
         {
-            var handler = SessionCreated;
-            if (handler == null)
-                return;
-            handler(session);
+            SessionCreated?.Invoke(session);
         }
         internal void OnSessionTerminated(AppSession session)
         {
-            var handler = SessionTerminated;
-            if (handler == null)
-                return;
-            handler(session);
+            SessionTerminated?.Invoke(session);
         }
         internal void OnClientException(Exception exception)
         {
-            var handler = ClientException;
-            if (handler == null)
-                return;
-            handler(exception);
+            ClientException?.Invoke(exception);
         }
 
         public override void Configure(Container container)
         {
             Config.AllowRouteContentTypeExtensions = false; // otherwise extensions are stripped out
-
+            
             Routes.Add<AppFile>("/robots.txt")
                   .Add<AppFile>("/favicon.ico")
                   .Add<AppFile>("/app/{FileName}")
@@ -90,14 +88,25 @@ namespace IctBaden.Stonehenge
                   {
                       return new NotFoundHttpHandler();
                   }
-                  return new RootRedirectHandler { RelativeUrl = string.Format("/app/index.html#/{0}", StartPage) };
+                  return new RootRedirectHandler { RelativeUrl = $"/app/index.html#/{StartPage}"};
               });
+
+            ExceptionHandler = (req, res, name, exception) =>
+            {
+                Trace.TraceError("Stonehenge exception: " + exception.Message);
+            };
+
+            ServiceExceptionHandler = (req, request, exception) =>
+            {
+                Trace.TraceError("Stonehenge exception: " + exception.Message);
+                return new HttpResult(HttpStatusCode.InternalServerError, exception.Message + Environment.NewLine + exception.StackTrace);
+            };
 
             SetConfig(new EndpointHostConfig
             {
-                EnableFeatures = Feature.All.Remove(Feature.Metadata)
+                EnableFeatures = Feature.All.Remove(Feature.Metadata),
+                DebugMode = true
             });
         }
-
     }
 }

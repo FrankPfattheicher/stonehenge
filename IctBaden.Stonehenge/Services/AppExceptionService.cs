@@ -23,10 +23,7 @@ namespace IctBaden.Stonehenge.Services
                 Trace.TraceError("Client site exception: " + exception.Cause);
             }
             var host = GetResolver() as AppHost;
-            if (host != null)
-            {
-                host.OnClientException(new Exception(message));
-            }
+            host?.OnClientException(new Exception(message));
 
             return new HttpResult("{}", "application/json");
         }
