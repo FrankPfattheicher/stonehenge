@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -23,6 +24,9 @@ namespace IctBaden.Stonehenge2.AureliaSample
         [STAThread]
         static void Main()
         {
+            var consoleListener = new ConsoleTraceListener { Filter = new EventTypeFilter(SourceLevels.All) };
+            Trace.Listeners.Add(consoleListener);
+
             Console.WriteLine(@"");
             Console.WriteLine(@"Stonehenge 2 sample");
             Console.WriteLine(@"");

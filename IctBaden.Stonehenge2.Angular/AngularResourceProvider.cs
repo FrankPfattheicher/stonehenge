@@ -57,7 +57,7 @@
                     var route = resourceId.Replace(".html", string.Empty);
                     var pageText = File.ReadAllText(appFile);
 
-                    var resource = new Resource(route, appFile, ResourceType.Html, pageText, true) { ViewModel = GetViewModelInfo(route, pageText) };
+                    var resource = new Resource(route, appFile, ResourceType.Html, pageText, Resource.Cache.Revalidate) { ViewModel = GetViewModelInfo(route, pageText) };
                     angularContent.Add(resourceId, resource);
                 }
             }
@@ -91,7 +91,7 @@
                     }
                 }
 
-                var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText, true) { ViewModel = GetViewModelInfo(route, pageText) };
+                var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText, Resource.Cache.Revalidate) { ViewModel = GetViewModelInfo(route, pageText) };
                 angularContent.Add(resourceId, resource);
             }
         }
@@ -100,7 +100,7 @@
         {
             var appCreator = new AngularAppCreator(rootPage, angularContent);
             var resource = new Resource("stonehengeApp.js", "AngularResourceProvider", ResourceType.Html,
-                appCreator.CreateApplicationJs(), true);
+                appCreator.CreateApplicationJs(), Resource.Cache.Revalidate);
             angularContent.Add("stonehengeApp.js", resource);
         }
 

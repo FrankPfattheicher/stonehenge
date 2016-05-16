@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using Microsoft.Owin;
+using Microsoft.Owin.Diagnostics;
 using SqueezeMe;
 
 namespace IctBaden.Stonehenge2.Katana
@@ -30,18 +31,28 @@ namespace IctBaden.Stonehenge2.Katana
 
         public void Configuration(IAppBuilder app)
         {
-            app.Use<StonehengeRoot>();
-            app.UseCompression();
 #if DEBUG
-            app.UseErrorPage();
+            var errorOptions = new ErrorPageOptions
+            {
+                ShowExceptionDetails = true,
+                ShowSourceCode = true
+            };
+            app.UseErrorPage(errorOptions);
 #endif
+            app.Use<StonehengeRoot>();
+            if ((Environment.OSVersion.Platform == PlatformID.Win32NT)
+                || (Environment.OSVersion.Platform == PlatformID.Win32Windows))
+            {
+                // SqueezeMe ist not compatible wit Mono
+                app.UseCompression();
+            }
             app.Use(async (context, next) =>
             {
                 var timer = new Stopwatch();
                 timer.Start();
 
                 var path = context.Request.Path;
-                Trace.TraceInformation("Stonehenge2.Katana Begin request {0} {1}", context.Request.Method, path);
+                Trace.TraceInformation("Stonehenge2.Katana Begin {0} {1}", context.Request.Method, path);
 
                 var stonehengeId = context.Request.Cookies["stonehenge-id"];
                 var session = sessions.FirstOrDefault(s => s.Id == stonehengeId); 
@@ -69,8 +80,8 @@ namespace IctBaden.Stonehenge2.Katana
                 }
 
                 timer.Stop();
-                Trace.TraceInformation("Stonehenge2.Katana End request {0} {1}, {2}ms", 
-                    context.Request.Method, path, timer.ElapsedMilliseconds);
+                Trace.TraceInformation("Stonehenge2.Katana End {0}={1} {2}, {3}ms", 
+                    context.Request.Method, context.Response.StatusCode, path, timer.ElapsedMilliseconds);
             });
 
             app.Use<StonehengeContent>();
