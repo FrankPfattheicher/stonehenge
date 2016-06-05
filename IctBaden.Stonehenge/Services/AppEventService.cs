@@ -24,6 +24,22 @@ namespace IctBaden.Stonehenge.Services
 
         public object Get(AppEvent request)
         {
+#if DEBUG
+            var duration = new Stopwatch();
+            duration.Start();
+            Trace.TraceInformation("GET(ev) " + Request.AbsoluteUri);
+
+            var result = GetInternal(request);
+
+            duration.Stop();
+            Trace.TraceInformation($"GET(ev) {duration.ElapsedMilliseconds}ms");
+
+            return result;
+        }
+
+        private object GetInternal(AppEvent request)
+        {
+#endif
             var sessionId = GetSessionId();
             var appSession = GetSession(sessionId);
             if (appSession == null)

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
+using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
@@ -16,6 +18,22 @@ namespace IctBaden.Stonehenge.Services
 
         public object Get(AppViewModel request)
         {
+#if DEBUG
+            var duration = new Stopwatch();
+            duration.Start();
+            Trace.TraceInformation("GET(vm) " + Request.AbsoluteUri);
+
+            var result = GetInternal(request);
+
+            duration.Stop();
+            Trace.TraceInformation($"GET(vm) {duration.ElapsedMilliseconds}ms");
+
+            return result;
+        }
+
+        private object GetInternal(AppViewModel request)
+        {
+#endif
             var sessionId = GetSessionId();
             var appSession = GetSession(sessionId);
             var context = Request.QueryString.Get("stonehenge_ctx");
@@ -24,12 +42,12 @@ namespace IctBaden.Stonehenge.Services
                 return new HttpResult("No session for viewmodel request", HttpStatusCode.NotFound);
             }
             appSession.Accessed(Request.Cookies, false);
+            appSession.EventsClear(true);
             appSession.SetContext(context);
             Debug.WriteLine("ViewModelService:" + request.ViewModel + " " + context);
 
             var vm = appSession.SetViewModelType(request.ViewModel);
-            appSession.EventsClear(true);
-
+            
             if (Request.RemoteIp != appSession.ClientAddress)
             {
                 appSession.ClientAddressChanged(Request.RemoteIp);
@@ -46,14 +64,21 @@ namespace IctBaden.Stonehenge.Services
                     pi.SetValue(vm, request.Source, null);
             }
 
+            return GetViewModelResult(request, appSession, vm);
+        }
+
+        public object GetViewModelResult(AppViewModel request, AppSession appSession, object viewModel)
+        {
             var data = new List<string>();
-            var activeVm = vm as ActiveViewModel;
+            var activeVm = viewModel as ActiveViewModel;
             if (activeVm != null)
             {
-                foreach (var model in activeVm.ActiveModels)
-                {
-                    data.AddRange(SerializeObject(model.Prefix, model.Model));
-                }
+                //foreach (var model in activeVm.ActiveModels)
+                //{
+                //    data.AddRange(SerializeObject(model.Prefix, model.Model));
+                //}
+                Parallel.ForEach(activeVm.ActiveModels,
+                    model => data.AddRange(SerializeObject(model.Prefix, model.Model)));
 
                 if (!string.IsNullOrEmpty(activeVm.NavigateToRoute))
                 {
@@ -67,11 +92,9 @@ namespace IctBaden.Stonehenge.Services
                 }
             }
 
-            data.AddRange(SerializeObject(null, vm));
+            data.AddRange(SerializeObject(null, viewModel));
 
             var result = "{" + string.Join(",", data) + "}";
-
-            appSession.EventsClear(true);
 
             HttpResult httpResult;
             var contentBytes = Encoding.UTF8.GetBytes(result);
@@ -96,6 +119,22 @@ namespace IctBaden.Stonehenge.Services
 
         public object Post(AppViewModel request)
         {
+#if DEBUG
+            var duration = new Stopwatch();
+            duration.Start();
+            Trace.TraceInformation("POST(vm) " + Request.AbsoluteUri);
+
+            var result = PostInternal(request);
+
+            duration.Stop();
+            Trace.TraceInformation($"POST(vm) {duration.ElapsedMilliseconds}ms");
+
+            return result;
+        }
+
+        private object PostInternal(AppViewModel request)
+        {
+#endif
             var sessionId = GetSessionId();
             var appSession = GetSession(sessionId);
             if (appSession == null)
@@ -161,7 +200,9 @@ namespace IctBaden.Stonehenge.Services
             var host = GetResolver() as AppHost;
             if (host?.Redirect == null)
             {
-                return returnData ? Get(request) : new HttpResult("{}", ViewModelContentType);
+                return returnData 
+                    ? GetViewModelResult(request, appSession, vm) 
+                    : new HttpResult("{}", ViewModelContentType);
             }
 
             var redirect = new HttpResult { StatusCode = HttpStatusCode.Redirect };
@@ -170,28 +211,63 @@ namespace IctBaden.Stonehenge.Services
             return redirect;
         }
 
+        public static Func<object, object> BuildUntypedGetter(Type targetType, PropertyInfo propertyInfo)
+        {
+            var methodInfo = propertyInfo.GetGetMethod();
+
+            var exTarget = System.Linq.Expressions.Expression.Parameter(typeof(object), "t");
+            var typedTarget = System.Linq.Expressions.Expression.Convert(exTarget, targetType);
+
+            var exBody = System.Linq.Expressions.Expression.Call(typedTarget, methodInfo);
+            var exBody2 = System.Linq.Expressions.Expression.Convert(exBody, typeof(object));
+
+            var lambda = System.Linq.Expressions.Expression.Lambda<Func<object, object>>(exBody2, exTarget);
+            // t => Convert(t.get_Foo())
+
+            var action = lambda.Compile();
+            return action;
+        }
+
         private static IEnumerable<string> SerializeObject(string prefix, object obj)
         {
             var data = new List<string>();
             if (prefix == null)
                 prefix = string.Empty;
+var time = new Stopwatch();
+time.Start();
 
-            foreach (var prop in obj.GetType().GetProperties())
+            //foreach (var prop in obj.GetType().GetProperties())
+            Parallel.ForEach(obj.GetType().GetProperties(), prop =>
             {
-                var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
-                if ((bindable.Length > 0) && !((BindableAttribute)bindable[0]).Bindable)
-                    continue;
 
-                var value = prop.GetValue(obj, null);
+                var bindable = prop.GetCustomAttributes(typeof (BindableAttribute), true);
+                if ((bindable.Length > 0) && !((BindableAttribute) bindable[0]).Bindable)
+                    return;
+
+                time.Restart();
+                //var value = prop.GetValue(obj, null);
+
+                var get = BuildUntypedGetter(obj.GetType(), prop);
+                var value = get(obj);
+
+                //var arg = System.Linq.Expressions.Expression.Parameter(typeof(object), "x");
+                //var targ = System.Linq.Expressions.Expression.Convert(arg, obj.GetType());
+                //var expr = System.Linq.Expressions.Expression.Property(targ, prop.Name);
+                //var resu = System.Linq.Expressions.Expression.Convert(expr, typeof(object));
+                //var propertyResolver = (Func<object, object>)System.Linq.Expressions.Expression.Lambda(resu, arg).Compile();
+                //var value = propertyResolver(obj);
+
                 if (value == null)
-                    continue;
+                    return;
+Trace.TraceInformation($"GetValue({prop.Name}) {time.ElapsedMilliseconds}ms");
 
                 string json;
                 if (prop.PropertyType.Name == "GraphOptions")
                 {
                     json = "\"" + prefix + prop.Name + "\":" + value;
                 }
-                else if (prop.PropertyType.IsValueType && !prop.PropertyType.IsPrimitive && (prop.PropertyType.Namespace != "System")) // struct
+                else if (prop.PropertyType.IsValueType && !prop.PropertyType.IsPrimitive &&
+                         (prop.PropertyType.Namespace != "System")) // struct
                 {
                     var structJson = new List<string>();
 
@@ -200,7 +276,8 @@ namespace IctBaden.Stonehenge.Services
                         var memberValue = member.GetValue(value, null);
                         if (memberValue != null)
                         {
-                            json = "\"" + prefix + member.Name + "\":" + JsonSerializer.SerializeToString(memberValue);
+                            json = "\"" + prefix + member.Name + "\":" +
+                                   JsonSerializer.SerializeToString(memberValue);
                             structJson.Add(json);
                         }
                     }
@@ -213,7 +290,7 @@ namespace IctBaden.Stonehenge.Services
                     json = "\"" + prefix + prop.Name + "\":" + JsonSerializer.SerializeToString(value);
                 }
                 data.Add(json);
-            }
+            });
 
             return data;
         }

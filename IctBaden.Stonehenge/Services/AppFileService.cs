@@ -32,6 +32,22 @@ namespace IctBaden.Stonehenge.Services
 
         public object Get(AppFile request)
         {
+#if DEBUG
+            var duration = new Stopwatch();
+            duration.Start();
+            Trace.TraceInformation("GET(file) " + Request.AbsoluteUri);
+
+            var result = GetInternal(request);
+
+            duration.Stop();
+            Trace.TraceInformation($"GET(file) {duration.ElapsedMilliseconds}ms");
+
+            return result;
+        }
+
+        private object GetInternal(AppFile request)
+        {
+#endif
             var sessionId = GetSessionId();
             var appSession = GetSession(sessionId);
             if (appSession != null)

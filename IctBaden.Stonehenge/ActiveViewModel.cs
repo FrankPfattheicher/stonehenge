@@ -71,13 +71,7 @@ namespace IctBaden.Stonehenge
                 this.readOnly = readOnly;
             }
 
-            public override AttributeCollection Attributes
-            {
-                get
-                {
-                    return originalDescriptor == null ? base.Attributes : originalDescriptor.Attributes;
-                }
-            }
+            public override AttributeCollection Attributes => originalDescriptor?.Attributes ?? base.Attributes;
 
             public override object GetValue(object component)
             {
@@ -88,7 +82,7 @@ namespace IctBaden.Stonehenge
                     if (dynComponent.TryGetMember(new GetMemberBinderEx(propertyName), out result))
                         return result;
                 }
-                return originalDescriptor == null ? null : originalDescriptor.GetValue(component);
+                return originalDescriptor?.GetValue(component);
             }
 
             public override void SetValue(object component, object value)
@@ -99,45 +93,23 @@ namespace IctBaden.Stonehenge
                     if (dynComponent.TrySetMember(new SetMemberBinderEx(propertyName), value))
                         return;
                 }
-                if (originalDescriptor == null)
-                    return;
-                originalDescriptor.SetValue(component, value);
+                originalDescriptor?.SetValue(component, value);
             }
 
-            public override bool IsReadOnly
-            {
-                get
-                {
-                    return readOnly || ((originalDescriptor != null) && originalDescriptor.IsReadOnly);
-                }
-            }
+            public override bool IsReadOnly => readOnly || ((originalDescriptor != null) && originalDescriptor.IsReadOnly);
 
-            public override Type PropertyType
-            {
-                get
-                {
-                    return originalDescriptor == null ? typeof(object) : originalDescriptor.PropertyType;
-                }
-            }
+            public override Type PropertyType => originalDescriptor == null ? typeof(object) : originalDescriptor.PropertyType;
 
             public override bool CanResetValue(object component)
             {
                 return originalDescriptor != null && originalDescriptor.CanResetValue(component);
             }
 
-            public override Type ComponentType
-            {
-                get
-                {
-                    return originalDescriptor == null ? typeof(object) : originalDescriptor.ComponentType;
-                }
-            }
+            public override Type ComponentType => originalDescriptor == null ? typeof(object) : originalDescriptor.ComponentType;
 
             public override void ResetValue(object component)
             {
-                if (originalDescriptor == null)
-                    return;
-                originalDescriptor.ResetValue(component);
+                originalDescriptor?.ResetValue(component);
             }
 
             public override bool ShouldSerializeValue(object component)
@@ -153,9 +125,9 @@ namespace IctBaden.Stonehenge
 
         class PropertyInfoEx
         {
-            public PropertyInfo Info { get; private set; }
-            public object Obj { get; private set; }
-            public bool ReadOnly { get; private set; }
+            public PropertyInfo Info { get; }
+            public object Obj { get; }
+            public bool ReadOnly { get; }
 
             public PropertyInfoEx(PropertyInfo pi, object obj, bool readOnly)
             {
@@ -238,14 +210,14 @@ namespace IctBaden.Stonehenge
 
         public void SetModel(object model, bool readOnly = false)
         {
-            if (model == null)
-                return;
             SetModel(null, model, readOnly);
         }
         public void SetModel(string prefix, object model, bool readOnly = false)
         {
             if (model == null)
-                return;
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
             if (ModelTypeExists(prefix, model))
             {
                 UpdateModel(prefix, model);
@@ -257,6 +229,24 @@ namespace IctBaden.Stonehenge
             properties = null;
             propertiesAttrib = null;
             GetProperties();
+        }
+
+        public void RemoveModel(object model)
+        {
+            RemoveModel(null, model);
+        }
+
+        public void RemoveModel(string prefix, object model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            var foundModel = ActiveModels.FirstOrDefault(m => (m.TypeName == model.GetType().Name) && (m.Prefix == prefix));
+            if (foundModel != null)
+            {
+                ActiveModels.Remove(foundModel);
+            }
         }
 
         public void UpdateModel(object model)
@@ -514,7 +504,7 @@ namespace IctBaden.Stonehenge
             if (dispatcherObject != null && dispatcherObject.CheckAccess() == false)
             {
                 // Invoke handler in the target dispatcher's thread
-                dispatcherObject.Dispatcher.BeginInvoke(handler, DispatcherPriority.DataBind, new object[] { this, args });
+                dispatcherObject.Dispatcher.BeginInvoke(handler, DispatcherPriority.DataBind, this, args);
             }
             else // Execute handler as is
             {
@@ -529,20 +519,16 @@ namespace IctBaden.Stonehenge
                 "NotifyPropertyChanged for unknown property " + name);
 #endif
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                ExecuteHandler(handler, name);
-            }
-
+            if (handler == null) return;
+            
+            ExecuteHandler(handler, name);
+            
             if (!dependencies.ContainsKey(name))
                 return;
 
             foreach (var dependendName in dependencies[name])
             {
-                if (handler != null)
-                {
-                    ExecuteHandler(handler, dependendName);
-                }
+                ExecuteHandler(handler, dependendName);
             }
         }
 
