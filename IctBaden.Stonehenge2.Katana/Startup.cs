@@ -54,7 +54,7 @@ namespace IctBaden.Stonehenge2.Katana
                 var path = context.Request.Path;
                 Trace.TraceInformation("Stonehenge2.Katana Begin {0} {1}", context.Request.Method, path);
 
-                var stonehengeId = context.Request.Cookies["stonehenge-id"];
+                var stonehengeId = context.Request.Cookies["stonehenge-id"] ?? context.Request.Query["stonehenge-id"];
                 var session = sessions.FirstOrDefault(s => s.Id == stonehengeId); 
                 if (string.IsNullOrEmpty(stonehengeId) || session == null)
                 {

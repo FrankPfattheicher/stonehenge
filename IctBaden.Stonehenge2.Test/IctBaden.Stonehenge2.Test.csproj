@@ -78,6 +78,9 @@
       <Link>VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Hosting\HostingTests.cs" />
+    <Compile Include="Hosting\RedirectableWebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\FileLoaderTests.cs" />
     <Compile Include="Resources\LoaderTests.cs" />

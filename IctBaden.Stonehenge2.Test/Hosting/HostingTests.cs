@@ -29,7 +29,7 @@
             var response = string.Empty;
             try
             {
-                using (var client = new WebClient())
+                using (var client = new RedirectableWebClient())
                 {
                     response = client.DownloadString(host.BaseUrl);
                 }
@@ -67,11 +67,11 @@
             var response2 = string.Empty;
             try
             {
-                using (var client = new WebClient())
+                using (var client = new RedirectableWebClient())
                 {
                     response1 = client.DownloadString(host1.BaseUrl);
                 }
-                using (var client = new WebClient())
+                using (var client = new RedirectableWebClient())
                 {
                     response2 = client.DownloadString(host2.BaseUrl);
                 }
