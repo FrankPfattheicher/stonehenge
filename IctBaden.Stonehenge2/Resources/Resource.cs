@@ -50,6 +50,10 @@
             CacheMode = cacheMode;
         }
 
+        internal void SetCacheMode(Cache mode)
+        {
+            CacheMode = mode;
+        }
     }
 }
 

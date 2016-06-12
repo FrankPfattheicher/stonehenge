@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\CookieVm.cs" />
     <Compile Include="ViewModels\StartVm.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -125,6 +126,21 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="app\start.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="app\cookie.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="app\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="app\styles\theme.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="app\styles\themedark.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="app\styles\themeblue.css" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

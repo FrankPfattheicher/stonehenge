@@ -78,8 +78,6 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                         var formData = new Dictionary<string, string>();
                         if (!string.IsNullOrEmpty(body))
                         {
-                            //formData = context.Request.ReadFormAsync().Result
-                            //    .ToDictionary(data => data.Key, data => data.Value.FirstOrDefault());
                             try
                             {
                                 formData = JsonConvert.DeserializeObject<JObject>(body).AsJEnumerable().Cast<JProperty>()
@@ -119,7 +117,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                         context.Response.Headers.Add("Cache-Control", new[] { "max-age=86400" });
                         break;
                 }
-                if (!appSession.CookieSet)
+                if (!appSession.StonehengeCookieSet)
                 {
                     context.Response.Headers.Add("Set-Cookie", new[] { "stonehenge-id=" + appSession.Id });
                 }

@@ -52,7 +52,7 @@ namespace IctBaden.Stonehenge2.Katana
                 timer.Start();
 
                 var path = context.Request.Path;
-                Trace.TraceInformation("Stonehenge2.Katana Begin {0} {1}", context.Request.Method, path);
+                Trace.TraceInformation($"Stonehenge2.Katana Begin {context.Request.Method} {path}");
 
                 var stonehengeId = context.Request.Cookies["stonehenge-id"] ?? context.Request.Query["stonehenge-id"];
                 var session = sessions.FirstOrDefault(s => s.Id == stonehengeId); 
@@ -60,7 +60,7 @@ namespace IctBaden.Stonehenge2.Katana
                 {
                     // session not found - redirect to new session
                     session = NewSession(context.Request);
-                    context.Response.Headers.Add("Set-Cookie", new string[] { "stonehenge-id=" + session.Id });
+                    context.Response.Headers.Add("Set-Cookie", new[] { "stonehenge-id=" + session.Id });
                     context.Response.Redirect("/Index.html?stonehenge-id=" + session.Id);
                     return;
                 }
@@ -91,7 +91,7 @@ namespace IctBaden.Stonehenge2.Katana
         {
             var userAgent = request.Headers["User-Agent"];
             var session = new AppSession();
-            session.Initialize(request.Host.Value, request.RemoteIpAddress.ToString(), userAgent);
+            session.Initialize(request.Host.Value, request.RemoteIpAddress, userAgent);
             sessions.Add(session);
             Trace.TraceInformation($"Stonehenge2.Katana New session {session.Id}");
 

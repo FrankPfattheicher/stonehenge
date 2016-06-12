@@ -22,8 +22,10 @@ namespace IctBaden.Stonehenge2.Core
         public string UserAgent { get; private set; }
         public string Platform { get; private set; }
         public string Browser { get; private set; }
-        public bool Cookies { get; private set; }
-        public bool CookieSet { get; private set; }
+
+        public bool CookiesSupported { get; private set; }
+        public bool StonehengeCookieSet { get; private set; }
+        public Dictionary<string, string> Cookies { get; private set; }
 
         public DateTime ConnectedSince { get; private set; }
         public DateTime LastAccess { get; private set; }
@@ -223,6 +225,7 @@ namespace IctBaden.Stonehenge2.Core
             id = Guid.NewGuid();
             AppVersionId = Assembly.GetEntryAssembly()?.ManifestModule.ModuleVersionId.ToString("N") ?? Guid.NewGuid().ToString("N");
             SessionTimeout = TimeSpan.FromMinutes(15);
+            Cookies = new Dictionary<string, string>();
             LastAccess = DateTime.Now;
         }
 
@@ -247,12 +250,25 @@ namespace IctBaden.Stonehenge2.Core
             var decoder = new Regex(@"\w+/[\d.]+ \(");
             //TODO: Decocder
             Browser = "";
-            Cookies = true;
+            CookiesSupported = true;
             Platform = "OS";
         }
 
         public void Accessed(IDictionary<string, string> cookies, bool userAction)
         {
+            foreach (var cookie in cookies)
+            {
+                if (Cookies.ContainsKey(cookie.Key))
+                {
+                    Cookies[cookie.Key] = cookie.Value;
+                }
+                else
+                {
+                    Cookies.Add(cookie.Key, cookie.Value);
+                }
+            }
+
+
             if ((PermanentSessionId == null) && cookies.ContainsKey("ss-pid"))
             {
                 PermanentSessionId = cookies["ss-pid"];
@@ -264,8 +280,8 @@ namespace IctBaden.Stonehenge2.Core
                 LastUserAction = DateTime.Now;
                 NotifyPropertyChanged("LastUserAction");
             }
-            CookieSet = cookies.ContainsKey("stonehenge-id");
-            NotifyPropertyChanged("CookieSet");
+            StonehengeCookieSet = cookies.ContainsKey("stonehenge-id");
+            NotifyPropertyChanged("StonehengeCookieSet");
         }
 
         public void SetContext(string context)

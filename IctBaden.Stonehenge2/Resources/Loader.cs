@@ -1,4 +1,6 @@
-﻿namespace IctBaden.Stonehenge2.Resources
+﻿using System;
+
+namespace IctBaden.Stonehenge2.Resources
 {
     using System.Collections.Generic;
     using System.IO;
@@ -30,8 +32,52 @@
         }
         public Resource Get(AppSession session, string resourceName)
         {
-            return Loaders.Select(loader => loader.Get(session, resourceName))
+            var disableCache = false;
+
+            if (resourceName.Contains("${"))
+            {
+                resourceName = ReplaceFields(session, resourceName);
+                disableCache = true;
+            }
+
+            var loadedResource = Loaders.Select(loader => loader.Get(session, resourceName))
                 .FirstOrDefault(resource => resource != null);
+
+            if (disableCache)
+            {
+                loadedResource?.SetCacheMode(Resource.Cache.None);
+            }
+
+            return loadedResource;
+        }
+        
+        private string ReplaceFields(AppSession session, string resourceName)
+        {
+            // support es6 format "${}"
+            var replaced = string.Empty;
+            while (resourceName.Length > 0)
+            {
+                var start = resourceName.IndexOf("${", StringComparison.InvariantCulture);
+                if (start == -1)
+                {
+                    replaced += resourceName;
+                    break;
+                }
+                replaced += resourceName.Substring(0, start);
+                var field = resourceName.Substring(start + 2);
+                resourceName = resourceName.Substring(start + 2);
+
+                var end = field.IndexOf('}');
+                field = field.Substring(0, end);
+
+                if (session.Cookies.ContainsKey(field))
+                {
+                    replaced += session.Cookies[field];
+                }
+
+                resourceName = resourceName.Substring(end + 1);
+            }
+            return replaced;
         }
 
         public static Loader CreateDefaultLoader()
