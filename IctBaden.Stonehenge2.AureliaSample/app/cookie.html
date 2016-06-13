@@ -4,7 +4,7 @@
 
     <h3>Cookies</h3>
     <p>
-        Theme = ${Theme}<br />
+        Theme: Index = ${ThemeIndex} Used CSS = 'theme${Theme}.css'<br />
     </p>
     <p>
         <select value.bind="ThemeIndex" onchange="document.cookie='theme=' + this.value; location.reload();" >

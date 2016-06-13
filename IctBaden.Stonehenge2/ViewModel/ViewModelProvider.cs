@@ -73,40 +73,77 @@
         {
             if (resourceName.StartsWith("ViewModel/"))
             {
-                var vmTypeName = Path.GetFileNameWithoutExtension(resourceName);
-                if ((session.ViewModel == null) || (session.ViewModel.GetType().Name != vmTypeName))
-                {
-                    if (session.SetViewModelType(vmTypeName) == null)
-                    {
-                        Trace.TraceError("Could not set ViewModel type to " + vmTypeName);
-                        return null;
-                    }
-                }
-                session.EventsClear(true);
-
-                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel), Resource.Cache.None);
+                return GetViewModel(session, resourceName);
             }
-            else if (resourceName.StartsWith("Events/"))
+            if (resourceName.StartsWith("Events/"))
             {
-                var json = new JObject {["StonehengeContinuePolling"] = true };
-                var events = session.CollectEvents();
-                if (events.Count > 0)
-                {
-                    var vm = session.ViewModel as ActiveViewModel;
-                    if (vm != null)
-                    {
-                        foreach (var property in events)
-                        {
-                            json[property] = JToken.FromObject(vm.TryGetMember(property));
-                        }
-                    }
-                }
-
-                var text = JsonConvert.SerializeObject(json);
-                return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, text, Resource.Cache.None);
+                return GetEvents(session, resourceName);
+            }
+            if (resourceName.StartsWith("UserData/"))
+            {
+                return GetUserData(session, resourceName.Substring(9));
             }
 
             return null;
+        }
+
+        private Resource GetViewModel(AppSession session, string resourceName)
+        {
+            var vmTypeName = Path.GetFileNameWithoutExtension(resourceName);
+            if ((session.ViewModel == null) || (session.ViewModel.GetType().Name != vmTypeName))
+            {
+                if (session.SetViewModelType(vmTypeName) == null)
+                {
+                    Trace.TraceError("Could not set ViewModel type to " + vmTypeName);
+                    return null;
+                }
+            }
+            session.EventsClear(true);
+
+            return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel),
+                Resource.Cache.None);
+        }
+
+        private static Resource GetEvents(AppSession session, string resourceName)
+        {
+            var json = new JObject { ["StonehengeContinuePolling"] = true };
+            var events = session.CollectEvents();
+            if (events.Count > 0)
+            {
+                var vm = session.ViewModel as ActiveViewModel;
+                if (vm != null)
+                {
+                    foreach (var property in events)
+                    {
+                        json[property] = JToken.FromObject(vm.TryGetMember(property));
+                    }
+                }
+            }
+
+            var text = JsonConvert.SerializeObject(json);
+            return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, text, Resource.Cache.None);
+        }
+
+        private static Resource GetUserData(AppSession session, string resourceName)
+        {
+            var vm = session.ViewModel as ActiveViewModel;
+            var method = vm?.GetType()
+                .GetMethods()
+                .FirstOrDefault(m => string.Compare(m.Name, "GetUserData", StringComparison.InvariantCultureIgnoreCase) == 0);
+            if (method == null || method.ReturnType != typeof(Resource)) return null;
+
+            Resource data;
+            if (method.GetParameters().Count() == 2)
+            {
+                var parameters = new Dictionary<string, string>();
+                    //Request.QueryString.AllKeys.ToDictionary(n => n, n => Request.QueryString[n]);
+                data = (Resource)method.Invoke(vm, new object[] { resourceName, parameters });
+            }
+            else
+            {
+                data = (Resource)method.Invoke(vm, new object[] { resourceName });
+            }
+            return data;
         }
 
         private static object DeserializePropertyValue(string propValue, Type propType)

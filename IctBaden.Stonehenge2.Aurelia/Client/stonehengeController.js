@@ -98,7 +98,6 @@ export class stonehengeViewModelName {
                     }
                     else {
                         scope.StonehengeSession = match[1];
-                        document.cookie = "stonehenge-id=" + scope.StonehengeSession;
                     }
 
                     let data = JSON.parse(response.response);

@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Threading;
 using IctBaden.Stonehenge2.Core;
+using IctBaden.Stonehenge2.Resources;
 using IctBaden.Stonehenge2.ViewModel;
 
 namespace IctBaden.Stonehenge2.AureliaSample.ViewModels
@@ -43,5 +44,32 @@ namespace IctBaden.Stonehenge2.AureliaSample.ViewModels
             Test = number + Test + text;
         }
 
+        public Resource GetUserData(string userDataName)
+        {
+            if (userDataName.EndsWith(".ics"))
+            {
+                var cal = @"BEGIN:VCALENDAR
+PRODID:-//ICT Baden GmbH//Framework Library 2016//DE
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:902af1f31c454e5983d707c6d7ee3d4a
+DTSTART:20160501T181500Z
+DTEND:20160501T194500Z
+DTSTAMP:20160501T202905Z
+CREATED:20160501T202905Z
+LAST-MODIFIED:20160501T202905Z
+TRANSP:OPAQUE
+STATUS:CONFIRMED
+ORGANIZER:ARD
+SUMMARY:Tatort
+END:VEVENT
+END:VCALENDAR
+";
+                return new Resource(userDataName, "Sample", ResourceType.Calendar, cal, Resource.Cache.None);
+            }
+            return new Resource(userDataName, "Sample", ResourceType.Text, $"This ist the content of {userDataName} file ;-)", Resource.Cache.None);
+        }
     }
 }

@@ -3,13 +3,13 @@
     using System;
     using System.Text;
 
-    using IctBaden.Stonehenge;
-    using IctBaden.Stonehenge.Services;
+    using Stonehenge;
+    using Services;
 
     public class DownloadsVm : ActiveViewModel
     {
-        public string TextFileName { get { return "user/Test.txt?stonehenge_id=" + Session.Id; } }
-        public string CsvFileName { get { return "user/Test.csv?stonehenge_id=" + Session.Id; } }
+        public string TextFileName => "user/Test.txt?stonehenge_id=" + Session.Id;
+        public string CsvFileName => "user/Test.csv?stonehenge_id=" + Session.Id;
 
         public DownloadsVm(AppSession session)
             : base(session)
