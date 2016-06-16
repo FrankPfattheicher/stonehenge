@@ -58,13 +58,16 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                         }
                     }
                 }
+                var queryString = HttpUtility.ParseQueryString(context.Get<string>("owin.RequestQueryString"));
+                var parameters = queryString.AllKeys
+                    .ToDictionary(key => key, key => queryString[key]);
 
                 Resource content = null;
                 switch (requestVerb)
                 {
                     case "GET":
                         appSession.Accessed(cookies, false);
-                        content = resourceLoader.Get(appSession, resourceName);
+                        content = resourceLoader.Get(appSession, resourceName, parameters);
                         if (string.Compare(resourceName, "index.html", StringComparison.InvariantCultureIgnoreCase) == 0)
                         {
                             HandleIndexContent(context, content);
@@ -92,9 +95,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                             }
                         }
 
-                        var queryString = HttpUtility.ParseQueryString(context.Get<string>("owin.RequestQueryString"));
-                        var paramObjects = queryString.AllKeys.Select(key => queryString[key]).Cast<object>().ToArray();
-                        content = resourceLoader.Post(appSession, resourceName, paramObjects, formData);
+                        content = resourceLoader.Post(appSession, resourceName, parameters, formData);
                         break;
                 }
 

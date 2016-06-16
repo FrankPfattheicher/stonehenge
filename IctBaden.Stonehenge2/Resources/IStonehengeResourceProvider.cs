@@ -7,9 +7,9 @@
 
     public interface IStonehengeResourceProvider : IDisposable
     {
-        Resource Get(AppSession session, string resourceName);
+        Resource Get(AppSession session, string resourceName, Dictionary<string, string> parameters);
 
-        Resource Post(AppSession session, string resourceName, object[] postParams, Dictionary<string, string> formData);
+        Resource Post(AppSession session, string resourceName, Dictionary<string, string> parameters, Dictionary<string, string> formData);
 
     }
 }

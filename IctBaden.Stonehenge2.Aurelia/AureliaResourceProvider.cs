@@ -158,11 +158,11 @@ namespace IctBaden.Stonehenge2.Aurelia
 
 
 
-        public Resource Post(AppSession session, string resourceName, object[] postParams, Dictionary<string, string> formData)
+        public Resource Post(AppSession session, string resourceName, Dictionary<string, string> parameters, Dictionary<string, string> formData)
         {
             return null;
         }
-        public Resource Get(AppSession session, string resourceName)
+        public Resource Get(AppSession session, string resourceName, Dictionary<string, string> parameters)
         {
             resourceName = resourceName.Replace("/", ".").Replace("@", "_").Replace("-", "_");
             if (aureliaContent.ContainsKey(resourceName))

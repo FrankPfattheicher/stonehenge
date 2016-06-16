@@ -25,12 +25,12 @@ namespace IctBaden.Stonehenge2.Resources
             Loaders.Clear();
         }
 
-        public Resource Post(AppSession session, string resourceName, object[] postParams, Dictionary<string, string> formData)
+        public Resource Post(AppSession session, string resourceName, Dictionary<string, string> parameters, Dictionary<string, string> formData)
         {
-            return Loaders.Select(loader => loader.Post(session, resourceName, postParams, formData))
+            return Loaders.Select(loader => loader.Post(session, resourceName, parameters, formData))
                 .FirstOrDefault(resource => resource != null);
         }
-        public Resource Get(AppSession session, string resourceName)
+        public Resource Get(AppSession session, string resourceName, Dictionary<string, string> parameters)
         {
             var disableCache = false;
 
@@ -40,7 +40,7 @@ namespace IctBaden.Stonehenge2.Resources
                 disableCache = true;
             }
 
-            var loadedResource = Loaders.Select(loader => loader.Get(session, resourceName))
+            var loadedResource = Loaders.Select(loader => loader.Get(session, resourceName, parameters))
                 .FirstOrDefault(resource => resource != null);
 
             if (disableCache)

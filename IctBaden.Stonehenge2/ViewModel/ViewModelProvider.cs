@@ -19,7 +19,7 @@
             
         }
 
-        public Resource Post(AppSession session, string resourceName, object[] postParams, Dictionary<string, string> formData)
+        public Resource Post(AppSession session, string resourceName, Dictionary<string, string> parameters, Dictionary<string, string> formData)
         {
             if (!resourceName.StartsWith("ViewModel/")) return null;
 
@@ -50,7 +50,7 @@
                 var methodParams =
                     method.GetParameters()
                         .Zip(
-                            postParams,
+                            parameters.Values,
                             (parameterInfo, postParam) =>
                             new KeyValuePair<Type, object>(parameterInfo.ParameterType, postParam))
                         .Select(parameterPair => Convert.ChangeType(parameterPair.Value, parameterPair.Key))
@@ -69,7 +69,7 @@
             return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel), Resource.Cache.None);
         }
 
-        public Resource Get(AppSession session, string resourceName)
+        public Resource Get(AppSession session, string resourceName, Dictionary<string, string> parameters)
         {
             if (resourceName.StartsWith("ViewModel/"))
             {
@@ -81,7 +81,7 @@
             }
             if (resourceName.StartsWith("Data/"))
             {
-                return GetDataResource(session, resourceName.Substring(5));
+                return GetDataResource(session, resourceName.Substring(5), parameters);
             }
 
             return null;
@@ -124,7 +124,7 @@
             return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, text, Resource.Cache.None);
         }
 
-        private static Resource GetDataResource(AppSession session, string resourceName)
+        private static Resource GetDataResource(AppSession session, string resourceName, Dictionary<string, string> parameters)
         {
             var vm = session.ViewModel as ActiveViewModel;
             var method = vm?.GetType()
@@ -135,8 +135,6 @@
             Resource data;
             if (method.GetParameters().Count() == 2)
             {
-                var parameters = new Dictionary<string, string>();
-                    //Request.QueryString.AllKeys.ToDictionary(n => n, n => Request.QueryString[n]);
                 data = (Resource)method.Invoke(vm, new object[] { resourceName, parameters });
             }
             else
