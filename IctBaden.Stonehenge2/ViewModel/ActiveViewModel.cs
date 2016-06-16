@@ -25,6 +25,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using IctBaden.Stonehenge2.Resources;
+
 namespace IctBaden.Stonehenge2.ViewModel
 {
     using System;
@@ -588,6 +590,14 @@ namespace IctBaden.Stonehenge2.ViewModel
 
         #endregion
 
+        public virtual Resource GetDataResource(string resourceName)
+        {
+            return null;
+        }
+        public virtual Resource GetDataResource(string resourceName, Dictionary<string, string> parameters)
+        {
+            return null;
+        }
     }
 
 }

@@ -43,10 +43,10 @@ namespace IctBaden.Stonehenge2.AureliaSample.ViewModels
         {
             Test = number + Test + text;
         }
-
-        public Resource GetUserData(string userDataName)
+        
+        public override Resource GetDataResource(string resourceName)
         {
-            if (userDataName.EndsWith(".ics"))
+            if (resourceName.EndsWith(".ics"))
             {
                 var cal = @"BEGIN:VCALENDAR
 PRODID:-//ICT Baden GmbH//Framework Library 2016//DE
@@ -67,9 +67,9 @@ SUMMARY:Tatort
 END:VEVENT
 END:VCALENDAR
 ";
-                return new Resource(userDataName, "Sample", ResourceType.Calendar, cal, Resource.Cache.None);
+                return new Resource(resourceName, "Sample", ResourceType.Calendar, cal, Resource.Cache.None);
             }
-            return new Resource(userDataName, "Sample", ResourceType.Text, $"This ist the content of {userDataName} file ;-)", Resource.Cache.None);
+            return new Resource(resourceName, "Sample", ResourceType.Text, $"This ist the content of {resourceName} file ;-)", Resource.Cache.None);
         }
     }
 }

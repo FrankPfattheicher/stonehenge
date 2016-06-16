@@ -79,9 +79,9 @@
             {
                 return GetEvents(session, resourceName);
             }
-            if (resourceName.StartsWith("UserData/"))
+            if (resourceName.StartsWith("Data/"))
             {
-                return GetUserData(session, resourceName.Substring(9));
+                return GetDataResource(session, resourceName.Substring(5));
             }
 
             return null;
@@ -124,12 +124,12 @@
             return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, text, Resource.Cache.None);
         }
 
-        private static Resource GetUserData(AppSession session, string resourceName)
+        private static Resource GetDataResource(AppSession session, string resourceName)
         {
             var vm = session.ViewModel as ActiveViewModel;
             var method = vm?.GetType()
                 .GetMethods()
-                .FirstOrDefault(m => string.Compare(m.Name, "GetUserData", StringComparison.InvariantCultureIgnoreCase) == 0);
+                .FirstOrDefault(m => string.Compare(m.Name, "GetDataResource", StringComparison.InvariantCultureIgnoreCase) == 0);
             if (method == null || method.ReturnType != typeof(Resource)) return null;
 
             Resource data;
