@@ -1,4 +1,6 @@
-﻿namespace IctBaden.Stonehenge2.Test.Resources
+﻿using System.Collections.Generic;
+
+namespace IctBaden.Stonehenge2.Test.Resources
 {
     using System;
     using System.Diagnostics;
@@ -68,7 +70,7 @@
         [TestMethod]
         public void Load_file_unknown_txt()
         {
-            var resource = loader.Get(session, "unknown.txt");
+            var resource = loader.Get(session, "unknown.txt", new Dictionary<string, string>());
             Assert.IsNull(resource);
         }
 
@@ -76,7 +78,7 @@
         public void Load_file_icon_png()
         {
             CreateBinaryFile("icon.png");
-            var resource = loader.Get(session, "icon.png");
+            var resource = loader.Get(session, "icon.png", new Dictionary<string, string>());
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "image/png");
             Assert.IsTrue(resource.IsBinary);
@@ -87,7 +89,7 @@
         public void Load_file_index_html()
         {
             CreateTextFile("index.html");
-            var resource = loader.Get(session, "index.html");
+            var resource = loader.Get(session, "index.html", new Dictionary<string, string>());
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "text/html");
             Assert.IsFalse(resource.IsBinary);
@@ -98,7 +100,7 @@
         public void Load_file_image_png()
         {
             CreateBinaryFile("image.jpg");
-            var resource = loader.Get(session, "image.jpg");
+            var resource = loader.Get(session, "image.jpg", new Dictionary<string, string>());
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "image/jpeg");
             Assert.IsTrue(resource.IsBinary);
@@ -109,7 +111,7 @@
         public void Load_file_test_html()
         {
             CreateTextFile("test.htm");
-            var resource = loader.Get(session, "test.htm");
+            var resource = loader.Get(session, "test.htm", new Dictionary<string, string>());
             Assert.IsNotNull(resource);
             Assert.AreEqual(resource.ContentType, "text/html");
             Assert.IsFalse(resource.IsBinary);

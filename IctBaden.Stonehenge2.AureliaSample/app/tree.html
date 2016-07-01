@@ -1,0 +1,11 @@
+<!--ViewModel:TreeVm-->
+<!--Title:TreeView-->
+<template>
+    <require from='./tree-view'></require>
+    
+    <h3>A TreeView</h3>
+
+    <tree-view rootnodes.bind="RootNodes" toggle.delegate="TreeToggle($event.detail.value)" select.delegate="TreeSelect($event.detail.value)"/>
+    
+
+</template>

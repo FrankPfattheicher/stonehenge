@@ -2,3 +2,11 @@
     color: silver !important;
     background: #202020 !important;
 }
+
+.page-host {
+    margin-left: 20px;
+}
+
+.tree-selected {
+    background-color: orange;
+}

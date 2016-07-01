@@ -77,7 +77,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CookieVm.cs" />
+    <Compile Include="ViewModels\TreeVm.cs" />
     <Compile Include="ViewModels\StartVm.cs" />
+    <Compile Include="ViewModels\TreeNode.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -141,6 +143,15 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="app\styles\themeblue.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="app\tree-node.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="app\tree.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="app\tree-view.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

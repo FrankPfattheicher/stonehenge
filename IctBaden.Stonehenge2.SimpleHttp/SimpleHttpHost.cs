@@ -91,7 +91,8 @@ namespace IctBaden.Stonehenge2.SimpleHttp
             }
 
             var resourceName = httpProcessor.Url.Substring(1);
-            var content = resourceLoader.Get(session, resourceName);
+            var parameters = new Dictionary<string, string>();  //TODO: extract parameters from URL
+            var content = resourceLoader.Get(session, resourceName, parameters);
             if (content == null)
             {
                 httpProcessor.WriteNotFound();
@@ -123,7 +124,8 @@ namespace IctBaden.Stonehenge2.SimpleHttp
                 .ToDictionary(data => data.Name, data => Convert.ToString(data.Value, CultureInfo.InvariantCulture));
 
             var queryString = HttpUtility.ParseQueryString(queryPart);
-            var paramObjects = queryString.AllKeys.Select(key => queryString[key]).Cast<object>().ToArray();
+            var paramObjects = queryString.AllKeys
+                .ToDictionary(key => key, key => queryString[key]);
             var content = resourceLoader.Post(new AppSession(), resourceName, paramObjects, formData);
             if (content == null)
             {

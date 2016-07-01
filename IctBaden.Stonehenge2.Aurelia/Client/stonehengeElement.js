@@ -2,10 +2,10 @@
 // ReSharper disable Es6Feature
 import {customElement, inject, bindable} from 'aurelia-framework';
 
-@customElement('{1}')
+@customElement('stonehengeCustomElementName')
 //@bindable
 @inject(Element)
-export class {0} {
+export class stonehengeCustomElementClass {
 
     constructor(element) {
         this.element = element;

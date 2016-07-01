@@ -1,0 +1,15 @@
+<!--CustomElement:node-->
+<template>
+
+    <li if.bind="node.IsVisible" >
+      <div class="${node.Class}" >
+          <span if.bind="node.HasChildren" click.delegate="fireEvent('toggle', node.Id)" class="${node.Icon}" style="cursor: pointer;"></span>
+          <span if.bind="!node.HasChildren" click.delegate="fireEvent('toggle', node.Id)" class="fa fa-circle-thin"></span>
+        <span click.delegate="fireEvent('select', node.Id)" style="cursor: pointer;">&nbsp;${node.Name}</span>
+      </div>
+      <ul style="list-style-type: none;">
+          <tree-node repeat.for="child of node.Children" node.bind="child"/>
+      </ul>
+    </li>
+	
+</template>

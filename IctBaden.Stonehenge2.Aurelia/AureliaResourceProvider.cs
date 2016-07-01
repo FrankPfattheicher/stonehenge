@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using IctBaden.Stonehenge2.Aurelia.Client;
 using IctBaden.Stonehenge2.Core;
 using IctBaden.Stonehenge2.Resources;
+using IctBaden.Stonehenge2.Types;
 
 namespace IctBaden.Stonehenge2.Aurelia
 {
@@ -45,7 +46,7 @@ namespace IctBaden.Stonehenge2.Aurelia
             var match = ExtractElement.Match(pageText);
             if (match.Success)
             {
-                info.ElementName = route;
+                info.ElementName = NamingConverter.SnakeToPascalCase(route);
                 if (!string.IsNullOrEmpty(match.Groups[2].Value))
                 {
                     info.Bindings = match.Groups[2].Value

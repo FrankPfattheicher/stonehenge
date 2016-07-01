@@ -210,8 +210,8 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
 
             foreach (var element in customElements)
             {
-                var elementJs = ElementTemplate.Replace("{0}", element.ViewModel.ElementName);
-                elementJs = elementJs.Replace("{1}", element.Name);
+                var elementJs = ElementTemplate.Replace("stonehengeCustomElementClass", element.ViewModel.ElementName);
+                elementJs = elementJs.Replace("stonehengeCustomElementName", element.Name.Replace("_", "-"));
 
                 var bindings = element.ViewModel?.Bindings?.Select(b => $"@bindable('{b}')") ?? new List<string>() { string.Empty };
                 elementJs = elementJs.Replace("//@bindable", string.Join(Environment.NewLine, bindings));

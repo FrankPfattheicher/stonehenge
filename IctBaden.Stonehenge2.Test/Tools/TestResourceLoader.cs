@@ -19,11 +19,11 @@
         {
         }
 
-        public Resource Post(AppSession session, string resourceName, object[] postParams, Dictionary<string, string> formData)
+        public Resource Post(AppSession session, string resourceName, Dictionary<string, string> parameters, Dictionary<string, string> formData)
         {
             return null;
         }
-        public Resource Get(AppSession session, string resourceName)
+        public Resource Get(AppSession session, string resourceName, Dictionary<string, string> parameters)
         {
             var resourceExtension = Path.GetExtension(resourceName);
             return new Resource(resourceName, "test://TestResourceLoader.content", ResourceType.GetByExtension(resourceExtension), content, Resource.Cache.None);
