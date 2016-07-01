@@ -176,12 +176,22 @@ define(["durandal/app", "durandal/system", "knockout", "flot"], function(app, sy
         },
         bindingComplete: function () {
             system.log("ClientViewModel : bindingComplete");
+            if (typeof (user_bindingComplete) == 'function') {
+                try {
+                    user_bindingComplete(this);
+                } catch (e) { }
+            }
         },
         compositionComplete: function () {
             system.log("ClientViewModel : compositionComplete");
             if (typeof (user_compositionComplete) == 'function') {
                 try {
                     user_compositionComplete();
+                } catch (e) { }
+            }
+            if (typeof (_ViewModelName_Init) == 'function') {
+                try {
+                    _ViewModelName_Init();
                 } catch (e) { }
             }
             $(".initialfocus").focus();

@@ -5,15 +5,17 @@
     'plugins':      '/app/plugins',
     'transitions':  '/app/transitions',
     'knockout':     '/app/lib/knockout/js/knockout-3.3.0',
-    'bootstrap': '/app/lib/bootstrap/js/bootstrap',
-    'datepicker': '/app/lib/bootstrap/js/bootstrap-datepicker',
-    'jquery': '/app/lib/jquery/js/jquery-2.1.3',
+    'bootstrap':    '/app/lib/bootstrap/js/bootstrap',
+    'datepicker':   '/app/lib/bootstrap/js/bootstrap-datepicker',
+    'jquery':       '/app/lib/jquery/js/jquery-2.1.3',
     'throttle':     '/app/lib/jquery.ba-throttle-debounce/jquery.ba-throttle-debounce',
     'flot':         '/app/lib/flot/js/jquery.flot',
     'flot_resize':  '/app/lib/flot/jquery.flot.resize',
     'flot_time':    '/app/lib/flot/jquery.flot.time',
-    'flot_labels':  '/app/lib/flot/jquery.flot.axislabels'
-  },
+    'flot_labels':  '/app/lib/flot/jquery.flot.axislabels',
+    'bing_maps7':   'http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0',
+    'bing_maps8':   'http://www.bing.com/api/maps/mapcontrol?branch=release'
+},
   shim: {
     'bootstrap': {
       deps: ['jquery'],
