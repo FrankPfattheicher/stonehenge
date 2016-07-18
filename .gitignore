@@ -114,3 +114,7 @@ UpgradeLog*.XML
 /*.testsettings
 /.vs/config/applicationhost.config
 /.project
+
+
+*.iml
+
