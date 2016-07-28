@@ -153,6 +153,13 @@ namespace IctBaden.Stonehenge
         [Browsable(false)]
         internal int Count => GetProperties().Count;
 
+        private void ClearProperties()
+        {
+            properties = null;
+            propertiesAttrib = null;
+            dependencies.Clear();
+        }
+
         [Browsable(false)]
         internal IEnumerable<string> Models => ActiveModels.Select(model => model.GetType().Name);
 
@@ -226,8 +233,7 @@ namespace IctBaden.Stonehenge
 
             ActiveModels.Add(new ActiveModel(prefix, model, readOnly));
 
-            properties = null;
-            propertiesAttrib = null;
+            ClearProperties();
             GetProperties();
         }
 
@@ -243,10 +249,12 @@ namespace IctBaden.Stonehenge
                 throw new ArgumentNullException(nameof(model));
             }
             var foundModel = ActiveModels.FirstOrDefault(m => (m.TypeName == model.GetType().Name) && (m.Prefix == prefix));
-            if (foundModel != null)
-            {
-                ActiveModels.Remove(foundModel);
-            }
+            if (foundModel == null) return;
+
+            ActiveModels.Remove(foundModel);
+
+            ClearProperties();
+            GetProperties();
         }
 
         public void UpdateModel(object model)
@@ -446,8 +454,9 @@ namespace IctBaden.Stonehenge
                         continue;
                     var da = (DependsOnAttribute)attrib;
                     if (!dependencies.ContainsKey(da.Name))
+                    {
                         dependencies[da.Name] = new List<string>();
-
+                    }
                     dependencies[da.Name].Add(prop.Name);
                 }
             }
@@ -514,6 +523,7 @@ namespace IctBaden.Stonehenge
 
         protected void NotifyPropertyChanged(string name)
         {
+            GetProperties();
 #if DEBUG
             Debug.Assert(name.StartsWith(AppService.PropertyNameId) || (GetPropertyInfo(name) != null), 
                 "NotifyPropertyChanged for unknown property " + name);

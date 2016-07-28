@@ -310,6 +310,9 @@ namespace IctBaden.Stonehenge
 
         public void EventAdd(string name)
         {
+#if DEBUG
+            Trace.TraceInformation($"EventAdd({name})");
+#endif
             lock (Events)
             {
                 if (Events.Contains(name))
