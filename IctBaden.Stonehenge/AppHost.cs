@@ -83,7 +83,7 @@ namespace IctBaden.Stonehenge
 
             CatchAllHandlers.Add((httpMethod, pathInfo, filePath) =>
               {
-                  Debug.WriteLine("CatchAllHandler({0}, {1}, {2})", httpMethod, pathInfo, filePath);
+                  Debug.WriteLine($"CatchAllHandler({httpMethod}, {pathInfo}, {filePath})");
                   if (pathInfo != "/")
                   {
                       return new NotFoundHttpHandler();
@@ -93,12 +93,26 @@ namespace IctBaden.Stonehenge
 
             ExceptionHandler = (req, res, name, exception) =>
             {
-                Trace.TraceError("Stonehenge exception: " + exception.Message);
+                var message = exception.Message;
+                while (exception.InnerException != null)
+                {
+                    exception = exception.InnerException;
+                    message += Environment.NewLine + exception.Message;
+                }
+                message += Environment.NewLine + exception.StackTrace;
+                Trace.TraceError("Stonehenge exception: " + message);
             };
 
             ServiceExceptionHandler = (req, request, exception) =>
             {
-                Trace.TraceError("Stonehenge exception: " + exception.Message);
+                var message = exception.Message;
+                while (exception.InnerException != null)
+                {
+                    exception = exception.InnerException;
+                    message += Environment.NewLine + exception.Message;
+                }
+                message += Environment.NewLine + exception.StackTrace;
+                Trace.TraceError("Stonehenge exception: " + message);
                 return new HttpResult(HttpStatusCode.InternalServerError, exception.Message + Environment.NewLine + exception.StackTrace);
             };
 

@@ -13,7 +13,7 @@
     'flot_resize':  '/app/lib/flot/jquery.flot.resize',
     'flot_time':    '/app/lib/flot/jquery.flot.time',
     'flot_labels':  '/app/lib/flot/jquery.flot.axislabels',
-    'bing_maps7':   'http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0',
+    'bing_maps7':   'http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0&mkt=de-de',
     'bing_maps8':   'http://www.bing.com/api/maps/mapcontrol?branch=release'
 },
   shim: {
