@@ -233,9 +233,10 @@ namespace IctBaden.Stonehenge.Services
             var data = new List<string>();
             if (prefix == null)
                 prefix = string.Empty;
-var time = new Stopwatch();
-time.Start();
-
+#if DEBUG
+            var time = new Stopwatch();
+            time.Start();
+#endif
             //foreach (var prop in obj.GetType().GetProperties())
             Parallel.ForEach(obj.GetType().GetProperties(), prop =>
             {
@@ -244,12 +245,15 @@ time.Start();
                 if ((bindable.Length > 0) && !((BindableAttribute) bindable[0]).Bindable)
                     return;
 
+#if DEBUG
                 time.Restart();
+#endif
                 //var value = prop.GetValue(obj, null);
 
                 var get = BuildUntypedGetter(obj.GetType(), prop);
                 var value = get(obj);
 
+                //TODO: evaluate fastest method
                 //var arg = System.Linq.Expressions.Expression.Parameter(typeof(object), "x");
                 //var targ = System.Linq.Expressions.Expression.Convert(arg, obj.GetType());
                 //var expr = System.Linq.Expressions.Expression.Property(targ, prop.Name);
@@ -259,7 +263,10 @@ time.Start();
 
                 if (value == null)
                     return;
-Trace.TraceInformation($"GetValue({prop.Name}) {time.ElapsedMilliseconds}ms");
+
+#if DEBUG
+                Trace.TraceInformation($"GetValue({prop.Name}) {time.ElapsedMilliseconds}ms");
+#endif
 
                 string json;
                 if (prop.PropertyType.Name == "GraphOptions")
