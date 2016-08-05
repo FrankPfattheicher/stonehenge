@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IctBaden.Stonehenge2.AureliaSample.Properties {
+namespace IctBaden.Stonehenge2.Aurelia.Sample.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace IctBaden.Stonehenge2.AureliaSample.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("IctBaden.Stonehenge2.AureliaSample.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("IctBaden.Stonehenge2.Aurelia.Sample.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

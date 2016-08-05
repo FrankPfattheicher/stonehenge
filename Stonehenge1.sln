@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65F46581-B6AB-4878-8174-BA207D491B06}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		README.md = README.md
+		Stonehenge.vsmdi = Stonehenge.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6B2E7F6F-BC0B-4A4D-B72F-EA91F42C3F29}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge", "IctBaden.Stonehenge\IctBaden.Stonehenge.csproj", "{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge.Sample", "IctBaden.Stonehenge.Sample\IctBaden.Stonehenge.Sample.csproj", "{572CE674-DB53-42AE-B740-6C20C72703F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge.Test", "IctBaden.Stonehenge.Test\IctBaden.Stonehenge.Test.csproj", "{CF1DF911-3C8C-479B-A691-450F5E8CC0DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StonehengeApp", "StonehengeAppTemplate\StonehengeApp.csproj", "{76DFAB48-3421-4254-AF71-7677F0A180E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudioInstaller", "VisualStudioInstaller\VisualStudioInstaller.csproj", "{8CA39996-5187-4BC1-BE7D-D26C282674FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03F4E3DC-3598-4A76-A7FA-E7A0EBE90EA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{572CE674-DB53-42AE-B740-6C20C72703F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF1DF911-3C8C-479B-A691-450F5E8CC0DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF1DF911-3C8C-479B-A691-450F5E8CC0DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF1DF911-3C8C-479B-A691-450F5E8CC0DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF1DF911-3C8C-479B-A691-450F5E8CC0DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76DFAB48-3421-4254-AF71-7677F0A180E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76DFAB48-3421-4254-AF71-7677F0A180E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76DFAB48-3421-4254-AF71-7677F0A180E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76DFAB48-3421-4254-AF71-7677F0A180E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CA39996-5187-4BC1-BE7D-D26C282674FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CA39996-5187-4BC1-BE7D-D26C282674FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CA39996-5187-4BC1-BE7D-D26C282674FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CA39996-5187-4BC1-BE7D-D26C282674FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Stonehenge.vsmdi
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = IctBaden.Stonehenge.Sample\IctBaden.Stonehenge.Sample.csproj
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = None
+		$1.ResourceNamePolicy = FileFormatDefault
+	EndGlobalSection
+EndGlobal

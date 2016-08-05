@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace IctBaden.Stonehenge2.Test.Resources
 {
@@ -6,26 +7,24 @@ namespace IctBaden.Stonehenge2.Test.Resources
     using System.Diagnostics;
     using System.IO;
 
-    using IctBaden.Stonehenge2.Core;
-    using IctBaden.Stonehenge2.Resources;
+    using Core;
+    using Stonehenge2.Resources;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    [TestFixture]
     public class FileLoaderTests
     {
         private FileLoader loader;
         private readonly AppSession session = new AppSession();
         private string fullFileName;
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             var path = Path.GetTempPath();
             loader = new FileLoader(path);
         }
 
-        [TestCleanup]
+        [TearDown]
         public void Cleanup()
         {
             if ((fullFileName != null) && File.Exists(fullFileName))
@@ -67,14 +66,14 @@ namespace IctBaden.Stonehenge2.Test.Resources
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Load_file_unknown_txt()
         {
             var resource = loader.Get(session, "unknown.txt", new Dictionary<string, string>());
             Assert.IsNull(resource);
         }
 
-        [TestMethod]
+        [Test]
         public void Load_file_icon_png()
         {
             CreateBinaryFile("icon.png");
@@ -85,7 +84,7 @@ namespace IctBaden.Stonehenge2.Test.Resources
             Assert.AreEqual(16, resource.Data.Length);
         }
 
-        [TestMethod]
+        [Test]
         public void Load_file_index_html()
         {
             CreateTextFile("index.html");
@@ -96,7 +95,7 @@ namespace IctBaden.Stonehenge2.Test.Resources
             Assert.IsTrue(resource.Text.StartsWith("<!DOCTYPE html>"));
         }
 
-        [TestMethod]
+        [Test]
         public void Load_file_image_png()
         {
             CreateBinaryFile("image.jpg");
@@ -107,7 +106,7 @@ namespace IctBaden.Stonehenge2.Test.Resources
             Assert.AreEqual(16, resource.Data.Length);
         }
 
-        [TestMethod]
+        [Test]
         public void Load_file_test_html()
         {
             CreateTextFile("test.htm");

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65F46581-B6AB-4878-8174-BA207D491B06}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,15 +20,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2", "Ict
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Katana", "IctBaden.Stonehenge2.Katana\IctBaden.Stonehenge2.Katana.csproj", "{FA4C06C4-E32C-4C41-BE4B-712C963E36FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Angular", "IctBaden.Stonehenge2.Angular\IctBaden.Stonehenge2.Angular.csproj", "{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Angular1", "IctBaden.Stonehenge2.Angular\IctBaden.Stonehenge2.Angular1.csproj", "{5BC7786A-0D85-4493-8D06-4DCB9D2F8F68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.SimpleHttp", "IctBaden.Stonehenge2.SimpleHttp\IctBaden.Stonehenge2.SimpleHttp.csproj", "{38174EB5-27F9-403D-A2EB-2D5230091F3B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Aurelia", "IctBaden.Stonehenge2.Aurelia\IctBaden.Stonehenge2.Aurelia.csproj", "{605348DA-62BF-4C8E-AF3E-D7A4790A1899}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.AngularSample", "IctBaden.Stonehenge2.AngularSample\IctBaden.Stonehenge2.AngularSample.csproj", "{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Angular1.Sample", "IctBaden.Stonehenge2.AngularSample\IctBaden.Stonehenge2.Angular1.Sample.csproj", "{B97FDC9B-3BF5-49D2-90F6-CB64D9E69657}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.AureliaSample", "IctBaden.Stonehenge2.AureliaSample\IctBaden.Stonehenge2.AureliaSample.csproj", "{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Aurelia.Sample", "IctBaden.Stonehenge2.AureliaSample\IctBaden.Stonehenge2.Aurelia.Sample.csproj", "{C86C0CD7-3F80-42F0-BCE7-C78E53B72C77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IctBaden.Stonehenge2.Test", "IctBaden.Stonehenge2.Test\IctBaden.Stonehenge2.Test.csproj", "{9E387A93-EA2F-4989-AE47-9228DF685B5B}"
 EndProject

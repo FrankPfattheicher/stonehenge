@@ -1,21 +1,18 @@
-﻿namespace IctBaden.Stonehenge2.Test.Hosting
+﻿using NUnit.Framework;
+
+namespace IctBaden.Stonehenge2.Test.Hosting
 {
     using System;
     using System.Diagnostics;
-    using System.Net;
-
     using Katana;
     using Tools;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     // ReSharper disable InconsistentNaming
-    [TestClass]
+    [TestFixture]
     public class HostingTests
     {
 
-        [TestMethod]
-        [DeploymentItem("Microsoft.Owin.Host.HttpListener.dll")]
+        [Test]
         public void Host_StartupOk_RespondsOnHttpRequest()
         {
             const string content = "<h1>Test</h1>";
@@ -43,7 +40,7 @@
             host.Terminate();
         }
 
-        [TestMethod]
+        [Test]
         public void Host_MultipleInstances_StartupOk_RespondsOnHttpRequest()
         {
             const string content1 = "<h1>Test 01</h1>";

@@ -4,12 +4,11 @@
     using System.IO;
     using System.Reflection;
 
-    using IctBaden.Stonehenge2.Core;
-    using IctBaden.Stonehenge2.Resources;
+    using Core;
+    using Stonehenge2.Resources;
+    using NUnit.Framework;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    [TestClass]
+    [TestFixture]
     public class LoaderTests
     {
         private Loader loader;
@@ -19,7 +18,7 @@
         private ResourceLoader resLoader;
         private FileLoader fileLoader;
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             var assemblies = new List<Assembly>
@@ -37,18 +36,15 @@
             fileTest.Init();
         }
 
-        [TestCleanup]
+        [TearDown]
         public void Cleanup()
         {
-            if (fileTest != null)
-            {
-                fileTest.Cleanup();
-            }
+            fileTest?.Cleanup();
         }
-        
+
         // ReSharper disable InconsistentNaming
 
-        [TestMethod]
+        [Test]
         public void Load_from_file_icon_png()
         {
             fileTest.CreateBinaryFile("icon.png");
@@ -60,7 +56,7 @@
             Assert.IsTrue(resource.Source.StartsWith("file://"));
         }
 
-        [TestMethod]
+        [Test]
         public void Load_from_resource_icon_png()
         {
             var resource = loader.Get(session, "image.jpg", new Dictionary<string, string>());
@@ -71,7 +67,7 @@
             Assert.IsTrue(resource.Source.StartsWith("res://"));
         }
 
-        [TestMethod]
+        [Test]
         public void Load_from_file_over_resource_icon_png()
         {
             fileTest.CreateTextFile("index.html");

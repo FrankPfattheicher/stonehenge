@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IctBaden.Stonehenge2.AngularSample.Properties {
+namespace IctBaden.Stonehenge2.Angular1.Sample.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
