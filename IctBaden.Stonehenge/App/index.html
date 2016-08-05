@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="format-detection" content="telephone=yes" />
-    <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, maximum-scale=10.0, minimum-scale=0.5, width=device-width, height=device-height" />
+    <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, minimum-scale=0.25, maximum-scale=10.0, width=device-width"/>
     <link type="text/css" media="all" href="lib/bootstrap/bootstrap.css" rel="stylesheet">
     <link type="text/css" media="all" href="lib/bootstrap/datepicker.css" rel="stylesheet">
     <link type="text/css" media="all" href="lib/bootstrap/bootstrap-theme.css" rel="stylesheet">
@@ -20,6 +20,20 @@
     <link type="text/css" media="all" href="lib/jquery.ztree/zTreeStyle.css" rel="stylesheet">
     <!--link-stylesheet-->
     <script type="text/javascript">
+    
+        // BUG orientation portrait/lanscape IOS //
+        var viewportmeta = document.querySelector('meta[name="viewport"]');
+        if (viewportmeta && (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i))) {
+            viewportmeta.content = 'user-scalable=yes, minimum-scale=0.25, maximum-scale=1.0, width=device-width';
+            window.onorientationchange = function () { window.location.reload(); };
+        }
+        setTimeout(function() {
+            var viewportmeta = document.querySelector('meta[name="viewport"]');
+            if (viewportmeta && (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i))) {
+                viewportmeta.content = 'user-scalable=yes, minimum-scale=0.25, maximum-scale=10.0, width=device-width';
+            }
+        }, 5000);
+
 
         if (("standalone" in window.navigator) && window.navigator.standalone) {
 
@@ -82,7 +96,7 @@
                         ende = maxlen;
                     }
                     var cook = document.cookie.substring(i
-                       + suche.length, ende);
+                        + suche.length, ende);
                     return unescape(cook);
                 }
                 i++;
