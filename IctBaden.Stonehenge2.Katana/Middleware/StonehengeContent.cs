@@ -19,11 +19,11 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
 
     public class StonehengeContent
     {
-        readonly Func<IDictionary<string, object>, Task> next;
+      private readonly Func<IDictionary<string, object>, Task> _next;
 
         public StonehengeContent(Func<IDictionary<string, object>, Task> next)
         {
-            this.next = next;
+            this._next = next;
         }
 
         public async Task Invoke(IDictionary<string, object> environment)
@@ -33,7 +33,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             var path = context.Request.Path.Value;
             if (path == "/")
             {
-                await next.Invoke(environment);
+                await _next.Invoke(environment);
                 return;
             }
             try
@@ -101,7 +101,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
 
                 if (content == null)
                 {
-                    await next.Invoke(environment);
+                    await _next.Invoke(environment);
                     return;
                 }
                 context.Response.ContentType = content.ContentType;

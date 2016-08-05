@@ -14,18 +14,18 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
 {
     internal class AureliaAppCreator
     {
-        private readonly string appTitle;
-        private readonly string rootPage;
-        private readonly Dictionary<string, Resource> aureliaContent;
+        private readonly string _appTitle;
+        private readonly string _rootPage;
+        private readonly Dictionary<string, Resource> _aureliaContent;
 
         private static readonly string ControllerTemplate = LoadResourceText("IctBaden.Stonehenge2.Aurelia.Client.stonehengeController.js");
         private static readonly string ElementTemplate = LoadResourceText("IctBaden.Stonehenge2.Aurelia.Client.stonehengeElement.js");
 
         public AureliaAppCreator(string appTitle, string rootPage, Dictionary<string, Resource> aureliaContent)
         {
-            this.appTitle = appTitle;
-            this.rootPage = rootPage;
-            this.aureliaContent = aureliaContent;
+            this._appTitle = appTitle;
+            this._rootPage = rootPage;
+            this._aureliaContent = aureliaContent;
         }
 
         private static string LoadResourceText(string resourceName)
@@ -35,13 +35,11 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
 
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
-                if (stream != null)
-                {
-                    using (var reader = new StreamReader(stream))
-                    {
-                        resourceText = reader.ReadToEnd();
-                    }
-                }
+              if (stream == null) return resourceText;
+              using (var reader = new StreamReader(stream))
+              {
+                resourceText = reader.ReadToEnd();
+              }
             }
 
             return resourceText;
@@ -53,7 +51,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             applicationJs = InsertRoutes(applicationJs);
 
             var resource = new Resource("src.app.js", "AureliaResourceProvider", ResourceType.Html, applicationJs, Resource.Cache.Revalidate);
-            aureliaContent.Add("src.app.js", resource);
+            _aureliaContent.Add("src.app.js", resource);
         }
 
         private string InsertRoutes(string pageText)
@@ -62,11 +60,11 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             const string stonehengeAppTitleInsertPoint = "stonehengeAppTitle";
             const string pageTemplate = "{{ route: [{0}'{1}'], name: '{1}', moduleId: './{2}', title:'{3}', nav: {4} }}";
             
-            var pages = aureliaContent
+            var pages = _aureliaContent
                 .Select(res => new {  res.Value.Name, Vm = res.Value.ViewModel })
                 .OrderBy(route => route.Vm.SortIndex)
                 .Select(route => string.Format(pageTemplate,
-                                            route.Name == rootPage ? "''," : "",
+                                            route.Name == _rootPage ? "''," : "",
                                             route.Name,
                                             route.Name,
                                             route.Vm.Title,
@@ -75,7 +73,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             var routes = string.Join("," + Environment.NewLine, pages);
             pageText = pageText
                 .Replace(routesInsertPoint, routes)
-                .Replace(stonehengeAppTitleInsertPoint, appTitle);
+                .Replace(stonehengeAppTitleInsertPoint, _appTitle);
 
             return pageText;
         }
@@ -83,7 +81,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
 
         public void CreateControllers()
         {
-            var viewModels = aureliaContent
+            var viewModels = _aureliaContent
                 .Where(res => res.Value.ViewModel?.VmName != null)
                 .Select(res => res.Value)
                 .Distinct()
@@ -95,7 +93,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
                 if (!string.IsNullOrEmpty(controllerJs))
                 {
                     var resource = new Resource($"src.{viewModel.Name}.js", "AureliaResourceProvider", ResourceType.Js, controllerJs, Resource.Cache.Revalidate);
-                    aureliaContent.Add(resource.Name, resource);
+                    _aureliaContent.Add(resource.Name, resource);
                 }
             }
         }
@@ -202,7 +200,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
 
         public void CreateElements()
         {
-            var customElements = aureliaContent
+            var customElements = _aureliaContent
                .Where(res => res.Value.ViewModel?.ElementName != null)
                .Select(res => res.Value)
                .Distinct()
@@ -217,7 +215,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
                 elementJs = elementJs.Replace("//@bindable", string.Join(Environment.NewLine, bindings));
 
                 var resource = new Resource($"src.{element.Name}.js", "AureliaResourceProvider", ResourceType.Js, elementJs, Resource.Cache.Revalidate);
-                aureliaContent.Add(resource.Name, resource);
+                _aureliaContent.Add(resource.Name, resource);
             }
         }
     }

@@ -7,7 +7,6 @@ namespace IctBaden.Stonehenge2.Core
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Linq;
-    using System.Net;
     using System.Reflection;
     using System.Threading;
 
@@ -32,39 +31,39 @@ namespace IctBaden.Stonehenge2.Core
         public string Context { get; private set; }
         public DateTime LastUserAction { get; private set; }
 
-        private readonly Guid id;
-        public string Id => id.ToString("N");
+        private readonly Guid _id;
+        public string Id => _id.ToString("N");
 
         public string PermanentSessionId { get; private set; }
 
         private const int EventTimeoutSeconds = 30;
-        private readonly List<string> events = new List<string>();
-        private readonly AutoResetEvent eventRelease = new AutoResetEvent(false);
+        private readonly List<string> _events = new List<string>();
+        private readonly AutoResetEvent _eventRelease = new AutoResetEvent(false);
 
         public bool IsWaitingForEvents { get; private set; }
         public List<string> CollectEvents()
         {
             IsWaitingForEvents = true;
-            eventRelease.WaitOne(TimeSpan.FromSeconds(EventTimeoutSeconds));
+            _eventRelease.WaitOne(TimeSpan.FromSeconds(EventTimeoutSeconds));
             // wait for maximum 500ms for more events - if there is none within 100ms - continue
             var max = 5;
-            while (eventRelease.WaitOne(100) && (max > 0))
+            while (_eventRelease.WaitOne(100) && (max > 0))
             {
                 max--;
             }
             IsWaitingForEvents = false;
-            return events;
+            return _events;
         }
 
-        private object viewModel;
+        private object _viewModel;
         public object ViewModel
         {
-            get { return viewModel; }
+            get { return _viewModel; }
             set
             {
-                (viewModel as IDisposable)?.Dispose();
+                (_viewModel as IDisposable)?.Dispose();
 
-                viewModel = value;
+                _viewModel = value;
                 var npc = value as INotifyPropertyChanged;
                 if (npc != null)
                 {
@@ -73,7 +72,7 @@ namespace IctBaden.Stonehenge2.Core
                         var avm = sender as ActiveViewModel;
                         if (avm == null)
                             return;
-                        lock (avm.Session.events)
+                        lock (avm.Session._events)
                         {
                             avm.Session.EventAdd(args.PropertyName);
                         }
@@ -146,36 +145,36 @@ namespace IctBaden.Stonehenge2.Core
             }
         }
 
-        private readonly Dictionary<string, object> userData;
+        private readonly Dictionary<string, object> _userData;
         public object this[string key]
         {
             get
             {
-                return userData.ContainsKey(key) ? userData[key] : null;
+                return _userData.ContainsKey(key) ? _userData[key] : null;
             }
             set
             {
                 if (this[key] == value)
                     return;
-                userData[key] = value;
+                _userData[key] = value;
                 NotifyPropertyChanged(key);
             }
         }
 
         public void Set<T>(string key, T value)
         {
-            userData[key] = value;
+            _userData[key] = value;
         }
         public T Get<T>(string key)
         {
-            if (!userData.ContainsKey(key))
+            if (!_userData.ContainsKey(key))
                 return default(T);
 
-            return (T)userData[key];
+            return (T)_userData[key];
         }
         public void Remove(string key)
         {
-            userData.Remove(key);
+            _userData.Remove(key);
         }
 
         public TimeSpan ConnectedDuration => DateTime.Now - ConnectedSince;
@@ -185,44 +184,44 @@ namespace IctBaden.Stonehenge2.Core
         public TimeSpan LastUserActionDuration => DateTime.Now - LastUserAction;
 
         public event Action TimedOut;
-        private Timer pollSessionTimeout;
+        private Timer _pollSessionTimeout;
         public TimeSpan SessionTimeout { get; private set; }
         public bool IsTimedOut => LastAccessDuration > SessionTimeout;
 
         public void SetTimeout(TimeSpan timeout)
         {
-            pollSessionTimeout?.Dispose();
+            _pollSessionTimeout?.Dispose();
             SessionTimeout = timeout;
             if (Math.Abs(timeout.TotalMilliseconds) > 0.1)
             {
-                pollSessionTimeout = new Timer(CheckSessionTimeout, null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
+                _pollSessionTimeout = new Timer(CheckSessionTimeout, null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
             }
         }
 
         private void CheckSessionTimeout(object _)
         {
-            if ((LastAccessDuration > SessionTimeout) && (terminator != null))
+            if ((LastAccessDuration > SessionTimeout) && (_terminator != null))
             {
-                pollSessionTimeout.Dispose();
-                terminator.Dispose();
+                _pollSessionTimeout.Dispose();
+                _terminator.Dispose();
                 TimedOut?.Invoke();
             }
             NotifyPropertyChanged("ConnectedDuration");
             NotifyPropertyChanged("LastAccessDuration");
         }
 
-        private IDisposable terminator;
+        private IDisposable _terminator;
 
 
         public void SetTerminator(IDisposable disposable)
         {
-            terminator = disposable;
+            _terminator = disposable;
         }
 
         public AppSession()
         {
-            userData = new Dictionary<string, object>();
-            id = Guid.NewGuid();
+            _userData = new Dictionary<string, object>();
+            _id = Guid.NewGuid();
             AppVersionId = Assembly.GetEntryAssembly()?.ManifestModule.ModuleVersionId.ToString("N") ?? Guid.NewGuid().ToString("N");
             SessionTimeout = TimeSpan.FromMinutes(15);
             Cookies = new Dictionary<string, string>();
@@ -291,26 +290,26 @@ namespace IctBaden.Stonehenge2.Core
 
         public void EventsClear(bool forceEnd)
         {
-            lock (events)
+            lock (_events)
             {
                 //var privateEvents = Events.Where(e => e.StartsWith(AppService.PropertyNameId)).ToList();
-                events.Clear();
+                _events.Clear();
                 //Events.AddRange(privateEvents);
                 if (forceEnd)
                 {
-                    eventRelease.Set();
-                    eventRelease.Set();
+                    _eventRelease.Set();
+                    _eventRelease.Set();
                 }
             }
         }
 
         public void EventAdd(string name)
         {
-            lock (events)
+            lock (_events)
             {
-                if (!events.Contains(name))
-                    events.Add(name);
-                eventRelease.Set();
+                if (!_events.Contains(name))
+                    _events.Add(name);
+                _eventRelease.Set();
             }
         }
 

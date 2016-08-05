@@ -5,7 +5,7 @@ using IctBaden.Stonehenge2.Core;
 using IctBaden.Stonehenge2.Resources;
 using IctBaden.Stonehenge2.ViewModel;
 
-namespace IctBaden.Stonehenge2.AureliaSample.ViewModels
+namespace IctBaden.Stonehenge2.Aurelia.Sample.ViewModels
 {
     public class StartVm : ActiveViewModel, IDisposable
     {
@@ -14,13 +14,13 @@ namespace IctBaden.Stonehenge2.AureliaSample.ViewModels
         public string Test { get; set; }
         public string Version => Assembly.GetEntryAssembly().GetName().Version.ToString(2);
 
-        private readonly Thread updater;
+        private readonly Thread _updater;
 
         public StartVm(AppSession session) : base (session)
         {
             Numeric = 123.456;
             Test = "54321";
-            updater = new Thread(
+            _updater = new Thread(
                 () =>
                     {
                         while (true)
@@ -30,12 +30,12 @@ namespace IctBaden.Stonehenge2.AureliaSample.ViewModels
                         }
                         // ReSharper disable once FunctionNeverReturns
                     });
-            updater.Start();
+            _updater.Start();
         }
 
         public void Dispose()
         {
-            updater.Abort();
+            _updater.Abort();
         }
 
         [ActionMethod]

@@ -1,7 +1,7 @@
 ﻿using IctBaden.Stonehenge2.Core;
 using IctBaden.Stonehenge2.ViewModel;
 
-namespace IctBaden.Stonehenge2.AureliaSample.ViewModels
+namespace IctBaden.Stonehenge2.Aurelia.Sample.ViewModels
 {
     public class CookieVm : ActiveViewModel
     {

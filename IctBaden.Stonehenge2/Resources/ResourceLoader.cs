@@ -28,8 +28,8 @@ namespace IctBaden.Stonehenge2.Resources
                 Assembly = assembly;
             }
         }
-        private readonly List<Assembly> assemblies;
-        private readonly Lazy<Dictionary<string, AssemblyResource>> resources;
+        private readonly List<Assembly> _assemblies;
+        private readonly Lazy<Dictionary<string, AssemblyResource>> _resources;
 
         public ResourceLoader()
             : this(new []
@@ -43,17 +43,17 @@ namespace IctBaden.Stonehenge2.Resources
 
         public void Dispose()
         {
-            assemblies.Clear();
+            _assemblies.Clear();
         }
 
         public ResourceLoader(IEnumerable<Assembly> assembliesToUse)
         {
-            assemblies = assembliesToUse.ToList();
-            resources = new Lazy<Dictionary<string, AssemblyResource>>(
+            _assemblies = assembliesToUse.ToList();
+            _resources = new Lazy<Dictionary<string, AssemblyResource>>(
                 () =>
                 {
                     var dict = new Dictionary<string, AssemblyResource>();
-                    foreach (var assemby in assemblies.Where(a => a != null).Distinct())
+                    foreach (var assemby in _assemblies.Where(a => a != null).Distinct())
                     {
                         AddAssemblyResources(assemby, dict);
                     }
@@ -63,7 +63,7 @@ namespace IctBaden.Stonehenge2.Resources
 
         public void AddAssembly(Assembly assembly)
         {
-            var asmResources = resources.Value;
+            var asmResources = _resources.Value;
             if (asmResources.Values.Any(res => res.Assembly == assembly)) 
                 return;
 
@@ -115,7 +115,7 @@ namespace IctBaden.Stonehenge2.Resources
                         .Replace("@", "_")
                         .Replace("-", "_")
                         .Replace("/", ".");
-            var asmResource = resources.Value
+            var asmResource = _resources.Value
                 .FirstOrDefault(res => string.Compare(res.Key, resourceName, true, CultureInfo.InvariantCulture) == 0);
             if (asmResource.Key == null)
             {

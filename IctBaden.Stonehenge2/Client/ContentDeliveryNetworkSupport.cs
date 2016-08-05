@@ -9,18 +9,18 @@ namespace IctBaden.Stonehenge2.Client
     public static class ContentDeliveryNetworkSupport
     {
         private const string CdnConfigurationFileName = "CDN.cfg";
-        private static Dictionary<string, string> cdnLookup;
+        private static Dictionary<string, string> _cdnLookup;
 
         public static Dictionary<string, string> CdnLookup
         {
             get
             {
-                if (cdnLookup != null)
-                    return cdnLookup;
+                if (_cdnLookup != null)
+                    return _cdnLookup;
 
                 if (File.Exists(CdnConfigurationFileName))
                 {
-                    cdnLookup = (from line in File.ReadAllLines(CdnConfigurationFileName)
+                    _cdnLookup = (from line in File.ReadAllLines(CdnConfigurationFileName)
                                  where !line.StartsWith("#")
                                  let elements = line.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries)
                                  where elements.Length == 2
@@ -28,14 +28,14 @@ namespace IctBaden.Stonehenge2.Client
                 }
                 else
                 {
-                    cdnLookup = new Dictionary<string, string>();
+                    _cdnLookup = new Dictionary<string, string>();
                 }
 
-                return cdnLookup;
+                return _cdnLookup;
             }
             set
             {
-                cdnLookup = value;
+                _cdnLookup = value;
             }
         }
 

@@ -1,18 +1,17 @@
-﻿namespace IctBaden.Stonehenge2.Angular
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using IctBaden.Stonehenge2.Angular.Client;
+using IctBaden.Stonehenge2.Core;
+using IctBaden.Stonehenge2.Resources;
+
+namespace IctBaden.Stonehenge2.Angular1
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Text.RegularExpressions;
-
-    using Client;
-    using Core;
-    using Resources;
-
-    public class AngularResourceProvider : IStonehengeResourceProvider
+  public class AngularResourceProvider : IStonehengeResourceProvider
     {
         private Dictionary<string, Resource> angularContent;
 

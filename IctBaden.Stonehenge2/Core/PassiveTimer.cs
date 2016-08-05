@@ -6,26 +6,20 @@
 
     public class PassiveTimer : IComparable
     {
-        private bool locked;
-        private long lockedTimer;
-        private long timer;
+        private bool _locked;
+        private long _lockedTimer;
+        private long _timer;
 
-        private static long Now
-        {
-            get
-            {
-                return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-            }
-        }
+        private static long Now => DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 
-        public PassiveTimer()
+      public PassiveTimer()
         {
-            locked = false;
+            _locked = false;
             Stop();
         }
         public PassiveTimer(long timeMilliseconds)
         {
-            locked = false;
+            _locked = false;
             Start(timeMilliseconds);
         }
         public PassiveTimer(TimeSpan period)
@@ -35,17 +29,17 @@
 
         public void Lock()
         {
-            locked = true;
-            lockedTimer = DateTime.Now.Ticks;
+            _locked = true;
+            _lockedTimer = DateTime.Now.Ticks;
         }
         public void Unlock()
         {
-            locked = false;
+            _locked = false;
         }
 
-        public static implicit operator Int64(PassiveTimer me)
+        public static implicit operator long(PassiveTimer me)
         {
-            return me.timer;
+            return me._timer;
         }
 
         public void Start(TimeSpan time)
@@ -54,66 +48,55 @@
         }
         public void Start(long timeMilliseconds)
         {
-            timer = Now + timeMilliseconds;
+            _timer = Now + timeMilliseconds;
         }
         public void StartInterval(long timeMilliseconds)
         {
-            timer += timeMilliseconds;
+            _timer += timeMilliseconds;
         }
 
         public void Stop()
         {
-            timer = 0;
+            _timer = 0;
         }
 
-        public bool Running
-        {
-            get
-            {
-                return timer != 0;
-            }
-        }
-        public bool Timeout
+        public bool Running => _timer != 0;
+
+      public bool Timeout
         {
             get
             {
                 if (!Running)
                     return false;
-                var t = locked ? lockedTimer : Now;
-                return t >= timer;
+                var t = _locked ? _lockedTimer : Now;
+                return t >= _timer;
             }
         }
         public TimeSpan Remaining
         {
             get
             {
-                var t = locked ? lockedTimer : Now;
-                var remaining = timer - t;
+                var t = _locked ? _lockedTimer : Now;
+                var remaining = _timer - t;
                 return TimeSpan.FromMilliseconds(remaining);
             }
         }
-        public Int64 RemainingMilliseconds
+        public long RemainingMilliseconds
         {
             get
             {
-                var t = locked ? lockedTimer : Now;
-                var remaining = timer - t;
+                var t = _locked ? _lockedTimer : Now;
+                var remaining = _timer - t;
                 return remaining;
             }
         }
 
-        public DateTime TimeoutTimeStamp
-        {
-            get
-            {
-                return DateTime.Now + Remaining;
-            }
-        }
+        public DateTime TimeoutTimeStamp => DateTime.Now + Remaining;
 
-        public Timer SetCallback(TimerCallback callback, object state)
+      public Timer SetCallback(TimerCallback callback, object state)
         {
             var T = Math.Max(0, RemainingMilliseconds);
-            Debug.Print("Timer SetCallback {0}", T);
+          Debug.Print($"Timer SetCallback {T}");
             return new Timer(callback, state, (uint)T, System.Threading.Timeout.Infinite);
         }
 
@@ -123,8 +106,8 @@
         public int CompareTo(object obj)
         {
             var otherTimer = (PassiveTimer)obj;
-            var t1 = locked ? lockedTimer : timer;
-            var t2 = otherTimer.locked ? otherTimer.lockedTimer : otherTimer.timer;
+            var t1 = _locked ? _lockedTimer : _timer;
+            var t2 = otherTimer._locked ? otherTimer._lockedTimer : otherTimer._timer;
             return ((t1 - t2) < 0) ? -1 : 1;
         }
 

@@ -11,13 +11,13 @@ namespace IctBaden.Stonehenge2.Katana
 
     public class KatanaHost : IStonehengeHost
     {
-        private IDisposable webApp;
+        private IDisposable _webApp;
 
-        private readonly IStonehengeResourceProvider resourceLoader;
+        private readonly IStonehengeResourceProvider _resourceLoader;
 
         public KatanaHost(IStonehengeResourceProvider loader)
         {
-            resourceLoader = loader;
+            _resourceLoader = loader;
         }
 
         public string AppTitle { get; private set; }
@@ -35,8 +35,8 @@ namespace IctBaden.Stonehenge2.Katana
                     + ":" 
                     + (hostPort != 0 ? hostPort : (useSsl ? 443 : 80));
 
-                var startup = new Startup(title, resourceLoader);
-                webApp = WebApp.Start(BaseUrl, startup.Configuration);
+                var startup = new Startup(title, _resourceLoader);
+                _webApp = WebApp.Start(BaseUrl, startup.Configuration);
             }
             catch (Exception ex)
             {
@@ -51,15 +51,15 @@ namespace IctBaden.Stonehenge2.Katana
                     Trace.TraceError(" + " + ex.Message);
                 }
             }
-            return webApp != null;
+            return _webApp != null;
         }
 
         public void Terminate()
         {
-            if (webApp != null)
+            if (_webApp != null)
             {
-                webApp.Dispose();
-                webApp = null;
+                _webApp.Dispose();
+                _webApp = null;
             }
         }
     }

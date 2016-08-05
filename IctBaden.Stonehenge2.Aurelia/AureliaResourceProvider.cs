@@ -14,13 +14,13 @@ namespace IctBaden.Stonehenge2.Aurelia
 {
     public class AureliaResourceProvider : IStonehengeResourceProvider
     {
-        private Dictionary<string, Resource> aureliaContent;
+        private Dictionary<string, Resource> _aureliaContent;
 
         public void Init(string appFilesPath, string appTitle, string rootPage)
         {
-            aureliaContent = new Dictionary<string, Resource>();
+            _aureliaContent = new Dictionary<string, Resource>();
 
-            var appCreator = new AureliaAppCreator(appTitle, rootPage, aureliaContent);
+            var appCreator = new AureliaAppCreator(appTitle, rootPage, _aureliaContent);
 
             AddFileSystemContent(appFilesPath);
             AddResourceContent();
@@ -31,7 +31,7 @@ namespace IctBaden.Stonehenge2.Aurelia
 
         public void Dispose()
         {
-            aureliaContent.Clear();
+            _aureliaContent.Clear();
         }
 
         private static readonly Regex ExtractName = new Regex("<!--ViewModel:(\\w+)-->");
@@ -96,7 +96,7 @@ namespace IctBaden.Stonehenge2.Aurelia
                     var pageText = File.ReadAllText(appFile);
 
                     var resource = new Resource(route, appFile, ResourceType.Html, pageText, Resource.Cache.OneDay) { ViewModel = GetViewModelInfo(route, pageText) };
-                    aureliaContent.Add(resourceId, resource);
+                    _aureliaContent.Add(resourceId, resource);
                 }
             }
         }
@@ -127,7 +127,7 @@ namespace IctBaden.Stonehenge2.Aurelia
                         .Replace("._7", ".7")
                         .Replace("._8", ".8")
                         .Replace("._9", ".9");
-                    if (aureliaContent.ContainsKey(resourceId))
+                    if (_aureliaContent.ContainsKey(resourceId))
                     {
                         Trace.TraceWarning("AureliaResourceProvider.AddResourceContent: Resource with id {0} already exits", resourceId);
                         continue;
@@ -150,7 +150,7 @@ namespace IctBaden.Stonehenge2.Aurelia
                     {
                         ViewModel = GetViewModelInfo(route, pageText)
                     };
-                    aureliaContent.Add("src." + resourceId, resource);
+                    _aureliaContent.Add("src." + resourceId, resource);
                 }
             }
         }
@@ -166,9 +166,9 @@ namespace IctBaden.Stonehenge2.Aurelia
         public Resource Get(AppSession session, string resourceName, Dictionary<string, string> parameters)
         {
             resourceName = resourceName.Replace("/", ".").Replace("@", "_").Replace("-", "_");
-            if (aureliaContent.ContainsKey(resourceName))
+            if (_aureliaContent.ContainsKey(resourceName))
             {
-                return aureliaContent[resourceName];
+                return _aureliaContent[resourceName];
             }
             return null;
         }

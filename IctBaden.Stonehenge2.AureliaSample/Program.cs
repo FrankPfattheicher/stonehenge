@@ -4,19 +4,18 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using IctBaden.Stonehenge2.Aurelia;
 using IctBaden.Stonehenge2.Caching;
 using IctBaden.Stonehenge2.Hosting;
 using IctBaden.Stonehenge2.Katana;
 using IctBaden.Stonehenge2.Resources;
 using IctBaden.Stonehenge2.SimpleHttp;
 
-namespace IctBaden.Stonehenge2.AureliaSample
+namespace IctBaden.Stonehenge2.Aurelia.Sample
 {
     static class Program
     {
         //private static AppHost app;
-        private static IStonehengeHost server;
+        private static IStonehengeHost _server;
 
         /// <summary>
         /// The main entry point for the application.
@@ -55,11 +54,11 @@ namespace IctBaden.Stonehenge2.AureliaSample
             {
                 case "owin":
                     Console.WriteLine(@"Using Katana OWIN hosting");
-                    server = new KatanaHost(loader);
+                    _server = new KatanaHost(loader);
                     break;
                 case "simple":
                     Console.WriteLine(@"Using simple http hosting");
-                    server = new SimpleHttpHost(loader, cache);
+                    _server = new SimpleHttpHost(loader, cache);
                     break;
             }
 
@@ -68,20 +67,20 @@ namespace IctBaden.Stonehenge2.AureliaSample
             Console.CancelKeyPress += (sender, eventArgs) => { terminate.Set(); };
 
             var host = Environment.CommandLine.Contains("/localhost") ? "localhost" : "*";
-            if (server.Start("Sample", false, host, 32000))
+            if (_server.Start("Sample", false, host, 32000))
             {
-                Console.WriteLine(@"Started server on: " + server.BaseUrl);
+                Console.WriteLine(@"Started server on: " + _server.BaseUrl);
                 terminate.WaitOne();
                 Console.WriteLine(@"Server terminated.");
             }
             else
             {
-                Console.WriteLine(@"Failed to start server on: " + server.BaseUrl);
+                Console.WriteLine(@"Failed to start server on: " + _server.BaseUrl);
             }
 
 #pragma warning disable 0162
             // ReSharper disable once HeuristicUnreachableCode
-            server.Terminate();
+            _server.Terminate();
             // ReSharper disable once FunctionNeverReturns
         }
     }

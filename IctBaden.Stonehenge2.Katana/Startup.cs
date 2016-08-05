@@ -18,15 +18,15 @@ namespace IctBaden.Stonehenge2.Katana
 
     internal class Startup
     {
-        private readonly string appTitle;
-        private readonly IStonehengeResourceProvider resourceLoader;
+        private readonly string _appTitle;
+        private readonly IStonehengeResourceProvider _resourceLoader;
 
-        private readonly List<AppSession> sessions = new List<AppSession>();
+        private readonly List<AppSession> _sessions = new List<AppSession>();
 
         public Startup(string title, IStonehengeResourceProvider loader)
         {
-            appTitle = title;
-            resourceLoader = loader;
+            _appTitle = title;
+            _resourceLoader = loader;
         }
 
         public void Configuration(IAppBuilder app)
@@ -40,12 +40,7 @@ namespace IctBaden.Stonehenge2.Katana
             app.UseErrorPage(errorOptions);
 #endif
             app.Use<StonehengeRoot>();
-            if ((Environment.OSVersion.Platform == PlatformID.Win32NT)
-                || (Environment.OSVersion.Platform == PlatformID.Win32Windows))
-            {
-                // SqueezeMe ist not compatible wit Mono
-                app.UseCompression();
-            }
+            app.UseCompression();
             app.Use(async (context, next) =>
             {
                 var timer = new Stopwatch();
@@ -55,7 +50,7 @@ namespace IctBaden.Stonehenge2.Katana
                 Trace.TraceInformation($"Stonehenge2.Katana Begin {context.Request.Method} {path}");
 
                 var stonehengeId = context.Request.Cookies["stonehenge-id"] ?? context.Request.Query["stonehenge-id"];
-                var session = sessions.FirstOrDefault(s => s.Id == stonehengeId); 
+                var session = _sessions.FirstOrDefault(s => s.Id == stonehengeId);
                 if (string.IsNullOrEmpty(stonehengeId) || session == null)
                 {
                     // session not found - redirect to new session
@@ -73,8 +68,8 @@ namespace IctBaden.Stonehenge2.Katana
                 }
                 else
                 {
-                    context.Environment.Add("stonehenge.AppTitle", appTitle);
-                    context.Environment.Add("stonehenge.ResourceLoader", resourceLoader);
+                    context.Environment.Add("stonehenge.AppTitle", _appTitle);
+                    context.Environment.Add("stonehenge.ResourceLoader", _resourceLoader);
                     context.Environment.Add("stonehenge.AppSession", session);
                     await next.Invoke();
                 }
@@ -92,13 +87,13 @@ namespace IctBaden.Stonehenge2.Katana
             var userAgent = request.Headers["User-Agent"];
             var session = new AppSession();
             session.Initialize(request.Host.Value, request.RemoteIpAddress, userAgent);
-            sessions.Add(session);
+            _sessions.Add(session);
             Trace.TraceInformation($"Stonehenge2.Katana New session {session.Id}");
 
-            var timedOut = sessions.Where(s => s.IsTimedOut).ToList();
+            var timedOut = _sessions.Where(s => s.IsTimedOut).ToList();
             foreach (var sess in timedOut)
             {
-                sessions.Remove(sess);
+                _sessions.Remove(sess);
                 Trace.TraceInformation($"Stonehenge2.Katana Session timed out {sess.Id}");
             }
             return session;

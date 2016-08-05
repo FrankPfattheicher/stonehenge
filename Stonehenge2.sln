@@ -74,9 +74,6 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Stonehenge.vsmdi
-	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = IctBaden.Stonehenge.Sample\IctBaden.Stonehenge.Sample.csproj
 		Policies = $0

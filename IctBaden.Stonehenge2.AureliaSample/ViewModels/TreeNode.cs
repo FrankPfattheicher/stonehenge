@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace IctBaden.Stonehenge2.AureliaSample.ViewModels
+namespace IctBaden.Stonehenge2.Aurelia.Sample.ViewModels
 {
     public class TreeNode
     {
@@ -11,7 +11,7 @@ namespace IctBaden.Stonehenge2.AureliaSample.ViewModels
 
         public List<TreeNode> Children { get; set; }
 
-        public bool IsVisible => parent?.IsExpanded ?? true;
+        public bool IsVisible => _parent?.IsExpanded ?? true;
 
         public bool IsExpanded { get; set; }
         public bool IsSelected { get; set; }
@@ -20,12 +20,12 @@ namespace IctBaden.Stonehenge2.AureliaSample.ViewModels
         public string Icon => IsExpanded ? "fa fa-folder-open" : "fa fa-folder";
         public string Class => IsSelected ? "tree-selected" : "";
 
-        private readonly TreeNode parent;
+        private readonly TreeNode _parent;
         public TreeNode(TreeNode parentNode)
         {
             Id = Guid.NewGuid().ToString("N");
             Children = new List<TreeNode>();
-            parent = parentNode;
+            _parent = parentNode;
         }
 
         public IEnumerable<TreeNode> AllNodes()
