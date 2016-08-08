@@ -14,6 +14,7 @@ TestResults
 *.user
 *.sln.docstates
 .idea
+.iml
 
 # Build results
 [Dd]ebug/
