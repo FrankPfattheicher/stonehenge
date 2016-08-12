@@ -1,14 +1,20 @@
-﻿using System;
+﻿
+#define NotUseTaskParallelLibrary
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
+
+#if UseTaskParallelLibrary
+using System.Threading.Tasks;
+#endif
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -42,7 +48,7 @@ namespace IctBaden.Stonehenge.Services
                 return new HttpResult("No session for viewmodel request", HttpStatusCode.NotFound);
             }
             appSession.Accessed(Request.Cookies, false);
-            appSession.EventsClear(true);
+            //appSession.EventsClear(true);
             appSession.SetContext(context);
             Debug.WriteLine("ViewModelService:" + request.ViewModel + " " + context);
 
@@ -73,12 +79,15 @@ namespace IctBaden.Stonehenge.Services
             var activeVm = viewModel as ActiveViewModel;
             if (activeVm != null)
             {
-                //foreach (var model in activeVm.ActiveModels)
-                //{
-                //    data.AddRange(SerializeObject(model.Prefix, model.Model));
-                //}
+#if UseTaskParallelLibrary
                 Parallel.ForEach(activeVm.ActiveModels,
                     model => data.AddRange(SerializeObject(model.Prefix, model.Model)));
+#else
+                foreach (var model in activeVm.ActiveModels)
+                {
+                    data.AddRange(SerializeObject(model.Prefix, model.Model));
+                }
+#endif
 
                 if (!string.IsNullOrEmpty(activeVm.NavigateToRoute))
                 {
@@ -190,7 +199,7 @@ namespace IctBaden.Stonehenge.Services
                         Trace.TraceError(ex.StackTrace);
 #if DEBUG
                         MessageBox.Show(ex.Message, ex.StackTrace);
-#endif               
+#endif
                         return new HttpResult(HttpStatusCode.InternalServerError, 
                             ex.Message + Environment.NewLine + ex.StackTrace);
                     }
@@ -237,13 +246,23 @@ namespace IctBaden.Stonehenge.Services
             var time = new Stopwatch();
             time.Start();
 #endif
-            //foreach (var prop in obj.GetType().GetProperties())
+#if UseTaskParallelLibrary
             Parallel.ForEach(obj.GetType().GetProperties(), prop =>
+#else
+            foreach (var prop in obj.GetType().GetProperties())
+#endif
+
             {
 
                 var bindable = prop.GetCustomAttributes(typeof (BindableAttribute), true);
                 if ((bindable.Length > 0) && !((BindableAttribute) bindable[0]).Bindable)
+                {
+#if UseTaskParallelLibrary
                     return;
+#else
+                    continue;
+#endif
+                }
 
 #if DEBUG
                 time.Restart();
@@ -262,7 +281,13 @@ namespace IctBaden.Stonehenge.Services
                 //var value = propertyResolver(obj);
 
                 if (value == null)
+                {
+#if UseTaskParallelLibrary
                     return;
+#else
+                    continue;
+#endif
+                }
 
 #if DEBUG
                 Trace.TraceInformation($"GetValue({prop.Name}) {time.ElapsedMilliseconds}ms");
@@ -297,7 +322,10 @@ namespace IctBaden.Stonehenge.Services
                     json = "\"" + prefix + prop.Name + "\":" + JsonSerializer.SerializeToString(value);
                 }
                 data.Add(json);
-            });
+            }
+#if UseTaskParallelLibrary
+            );
+#endif
 
             return data;
         }

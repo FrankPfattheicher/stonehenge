@@ -91,8 +91,11 @@ namespace IctBaden.Stonehenge
 
                 var disposable = vm as IDisposable;
                 disposable?.Dispose();
+                ViewModel = null;
             }
 
+            // view model changed
+            EventsClear(true);
 
             var asm = Assembly.GetEntryAssembly();
             var vmtype = asm.GetTypes().FirstOrDefault(type => type.FullName.EndsWith(typeName));

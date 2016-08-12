@@ -53,7 +53,7 @@ namespace IctBaden.Stonehenge.Services
             if (appSession != null)
             {
                 appSession.Accessed(Request.Cookies, true);
-                appSession.EventsClear(false);
+                //appSession.EventsClear(false);
             }
             else
             {
@@ -153,7 +153,7 @@ namespace IctBaden.Stonehenge.Services
                     if (appSession != null)
                     {
                         appSession.SetViewModelType(name);
-                        appSession.EventsClear(true);
+                        //appSession.EventsClear(true);
                     }
                 }
             }
@@ -203,7 +203,6 @@ namespace IctBaden.Stonehenge.Services
                             appSession = AppSessionCache.NewSession();
                         }
                         var vm = appSession.SetViewModelType(vmName);
-                        appSession.EventsClear(true);
                         text = ModuleCreator.CreateFromViewModel(vm, context);
                     }
                     catch (Exception ex)
