@@ -8,9 +8,11 @@ using System.Diagnostics;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
+using JsonSerializer = ServiceStack.Text.JsonSerializer;
 
 #if UseTaskParallelLibrary
 using System.Threading.Tasks;
@@ -75,6 +77,9 @@ namespace IctBaden.Stonehenge.Services
 
         public object GetViewModelResult(AppViewModel request, AppSession appSession, object viewModel)
         {
+            Thread.BeginCriticalRegion();
+            Thread.CurrentThread.Priority = ThreadPriority.Highest;
+
             var data = new List<string>();
             var activeVm = viewModel as ActiveViewModel;
             if (activeVm != null)
@@ -122,6 +127,9 @@ namespace IctBaden.Stonehenge.Services
             {
                 httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
             }
+
+            Thread.CurrentThread.Priority = ThreadPriority.Normal;
+            Thread.EndCriticalRegion();
 
             return httpResult;
         }
@@ -242,16 +250,12 @@ namespace IctBaden.Stonehenge.Services
             var data = new List<string>();
             if (prefix == null)
                 prefix = string.Empty;
-#if DEBUG
-            var time = new Stopwatch();
-            time.Start();
-#endif
+
 #if UseTaskParallelLibrary
             Parallel.ForEach(obj.GetType().GetProperties(), prop =>
 #else
             foreach (var prop in obj.GetType().GetProperties())
 #endif
-
             {
 
                 var bindable = prop.GetCustomAttributes(typeof (BindableAttribute), true);
@@ -265,7 +269,8 @@ namespace IctBaden.Stonehenge.Services
                 }
 
 #if DEBUG
-                time.Restart();
+                var time = new Stopwatch();
+                time.Start();
 #endif
                 //var value = prop.GetValue(obj, null);
 
