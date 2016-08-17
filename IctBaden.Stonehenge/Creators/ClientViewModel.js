@@ -45,7 +45,11 @@ function set_ViewModelName_Data(viewmodel, loading, data) {
     }
     if ((data != null) && (data.stonehenge_navigate != null)) {
         var router = require('plugins/router');
-        router.navigate(data.stonehenge_navigate);
+        if (data.stonehenge_navigate === '_stonehenge_back_') {
+            router.navigateBack();
+        } else {
+            router.navigate(data.stonehenge_navigate);
+        }
     }
     if (activation_data) {
         data = activation_data;
@@ -95,8 +99,8 @@ define(["durandal/app", "durandal/system", "knockout", "flot"], function(app, sy
             var message;
             try {
                 return original.getBindings(node, bindingContext);
-            } catch (e) {
-                message = e.message;
+            } catch (ex1) {
+                message = ex1.message;
                 if (console && console.log) {
                     console.log("Error in binding: " + message);
                 }
@@ -106,9 +110,9 @@ define(["durandal/app", "durandal/system", "knockout", "flot"], function(app, sy
                 params += "&Binding=" + encodeURIComponent(node.dataset.bind);
                 var ts = new Date().getTime();
                 $.post("/Exception/Binding?ts=" + ts + "&stonehenge_id=" + stonehenge_id, params, function(data) {});
-            } catch (e) {
+            } catch (ex2) {
                 if (console && console.log) {
-                    console.log("Error: " + e.message);
+                    console.log("Error: " + ex2.message);
                 }
             }
             return null;

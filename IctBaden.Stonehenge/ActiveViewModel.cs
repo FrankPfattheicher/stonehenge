@@ -577,6 +577,13 @@ namespace IctBaden.Stonehenge
             NotifyPropertyChanged(AppService.PropertyNameNavigate);
         }
 
+        public void NavigateBack()
+        {
+            Debug.WriteLine("NavigateBack");
+            NavigateToRoute = "_stonehenge_back_";
+            NotifyPropertyChanged(AppService.PropertyNameNavigate);
+        }
+
         #endregion
 
         #region Client site scripting
