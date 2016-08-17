@@ -86,6 +86,7 @@
     <Compile Include="Services\RootRedirectHandler.cs" />
     <Compile Include="Services\UserFile.cs" />
     <Compile Include="Services\UserFileService.cs" />
+    <Compile Include="Services\ViewModelResult.cs" />
     <Compile Include="Tree\TreeCheck.cs" />
     <Compile Include="Tree\TreeNode.cs" />
     <Compile Include="Tree\TreeSettings.cs" />

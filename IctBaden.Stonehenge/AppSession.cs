@@ -229,7 +229,7 @@ namespace IctBaden.Stonehenge
             terminator = disposable;
         }
 
-        internal AppSession()
+        public AppSession()
         {
             userData = new Dictionary<string, object>();
             Id = Guid.NewGuid();
@@ -274,7 +274,7 @@ namespace IctBaden.Stonehenge
             Platform = browser.Platform;
         }
 
-        internal void Accessed(IDictionary<string, Cookie> cookies, bool userAction)
+        public void Accessed(IDictionary<string, Cookie> cookies, bool userAction)
         {
             if ((StackId == null) && cookies.ContainsKey("ss-pid"))
             {
