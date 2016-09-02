@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 using ServiceStack.Common.Web;
@@ -38,7 +39,9 @@ namespace IctBaden.Stonehenge.Services
             {
                 return new HttpResult("No session for viewmodel request", HttpStatusCode.NotFound);
             }
-            appSession.Accessed(Request.Cookies, false);
+            var currentParameters = Request.QueryString.AllKeys
+                .ToDictionary(key => key, key => Request.QueryString.Get(key));
+            appSession.Accessed(Request.Cookies, currentParameters, false);
             //appSession.EventsClear(true);
             appSession.SetContext(context);
             Debug.WriteLine("ViewModelService:" + request.ViewModel + " " + context);
@@ -92,7 +95,9 @@ namespace IctBaden.Stonehenge.Services
                 return new HttpResult("No session for viewmodel request", HttpStatusCode.NotFound);
             }
 
-            appSession.Accessed(Request.Cookies, true);
+            var currentParameters = Request.QueryString.AllKeys
+                .ToDictionary(key => key, key => Request.QueryString.Get(key));
+            appSession.Accessed(Request.Cookies, currentParameters, true);
             appSession.EventsClear(true);
 
             var vm = appSession.ViewModel;

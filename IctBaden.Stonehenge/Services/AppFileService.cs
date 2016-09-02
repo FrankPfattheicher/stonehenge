@@ -52,7 +52,9 @@ namespace IctBaden.Stonehenge.Services
             var appSession = GetSession(sessionId);
             if (appSession != null)
             {
-                appSession.Accessed(Request.Cookies, true);
+                var currentParameters = Request.QueryString.AllKeys
+                    .ToDictionary(key => key, key => Request.QueryString.Get(key));
+                appSession.Accessed(Request.Cookies, currentParameters, true);
                 //appSession.EventsClear(false);
             }
             else
@@ -150,11 +152,8 @@ namespace IctBaden.Stonehenge.Services
                     var end = text.IndexOf(@"\n", StringComparison.InvariantCulture);
                     var name = text.Substring(12, end - 12).Trim();
 
-                    if (appSession != null)
-                    {
-                        appSession.SetViewModelType(name);
-                        //appSession.EventsClear(true);
-                    }
+                    appSession?.SetViewModelType(name);
+                    //appSession?.EventsClear(true);
                 }
             }
             else
@@ -302,14 +301,10 @@ namespace IctBaden.Stonehenge.Services
             var compressed = new CompressedResult(Encoding.UTF8.GetBytes(text), RequestContext.CompressionType) { ContentType = type };
             httpResult = new HttpResult(compressed.Contents, type);
             httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
-            if (doNotCache)
-            {
-                httpResult.Headers.Add("Cache-Control", "no-cache");
-            }
-            else
-            {
-                httpResult.Headers.Add("Cache-Control", "max-age=3600, must-revalidate, proxy-revalidate");
-            }
+            httpResult.Headers.Add("Cache-Control", doNotCache 
+                ? "no-cache" 
+                : "max-age=3600, must-revalidate, proxy-revalidate");
+
             if (appSession != null) 
             {
                 httpResult.Headers.Add("ETag", $"\"{appSession.AppVersionId}\"");

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using ServiceStack.Common.Web;
@@ -14,6 +16,8 @@ namespace IctBaden.Stonehenge.Services
         public const string PropertyNameNavigate = PropertyNameId + "Navigate_";
         public const string PropertyNameClientScript = PropertyNameId + "ClientScript_";
 
+        private List<KeyValuePair<string, string>> currentParameters;
+
         public string GetSessionId()
         {
             var sessionId = Request.QueryString.Get("stonehenge_id");
@@ -23,6 +27,12 @@ namespace IctBaden.Stonehenge.Services
             {
                 sessionId = Request.Cookies["stonehenge_id"].Value;
             }
+
+            currentParameters = Request.QueryString.AllKeys
+                .Where(key => key != "stonehenge_id")
+                .Select(key => new KeyValuePair<string, string>(key, Request.QueryString.Get(key)))
+                .ToList();
+
             return sessionId;
         }
         public AppSession GetSession(string id)
@@ -88,7 +98,7 @@ namespace IctBaden.Stonehenge.Services
                 Trace.TraceInformation("Invalid Session {0}", sid);
             }
 
-            var ix = uri.IndexOf("?stonehenge_id=", StringComparison.InvariantCulture);
+            var ix = uri.IndexOf("?", StringComparison.InvariantCulture);
             if (ix != -1)
             {
                 uri = uri.Substring(0, ix);
@@ -98,6 +108,11 @@ namespace IctBaden.Stonehenge.Services
 
             //uri = request.FileName + "?stonehenge_id=" + session.Id;
             uri += "?stonehenge_id=" + session.Id;
+            if (currentParameters != null)
+            {
+                uri = currentParameters
+                    .Aggregate(uri, (current, parameter) => current + $"&{parameter.Key}={parameter.Value}");
+            }
 
             var redirect = new HttpResult { StatusCode = HttpStatusCode.SeeOther };
             redirect.Headers.Add("Location", uri);

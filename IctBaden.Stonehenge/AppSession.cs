@@ -158,6 +158,8 @@ namespace IctBaden.Stonehenge
             }
         }
 
+        public Dictionary<string, string> Parameters = new Dictionary<string, string>();
+
         private readonly Dictionary<string, object> userData;
         public object this[string key]
         {
@@ -274,12 +276,25 @@ namespace IctBaden.Stonehenge
             Platform = browser.Platform;
         }
 
-        public void Accessed(IDictionary<string, Cookie> cookies, bool userAction)
+        public void Accessed(IDictionary<string, Cookie> cookies, Dictionary<string, string> parameters, bool userAction)
         {
             if ((StackId == null) && cookies.ContainsKey("ss-pid"))
             {
                 StackId = cookies["ss-pid"].Value;
             }
+
+            foreach (var parameter in parameters)
+            {
+                if (Parameters.ContainsKey(parameter.Key))
+                {
+                    Parameters[parameter.Key] = parameter.Value;
+                }
+                else
+                {
+                    Parameters.Add(parameter.Key, parameter.Value);
+                }
+            }
+
             LastAccess = DateTime.Now;
             NotifyPropertyChanged(nameof(LastAccess));
             if (userAction)
