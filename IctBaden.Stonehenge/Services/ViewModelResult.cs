@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Routing;
+using ServiceStack.Common;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
 
@@ -57,16 +59,18 @@ namespace IctBaden.Stonehenge.Services
             var result = "{" + string.Join(",", data) + "}";
 
             HttpResult httpResult;
-            var contentBytes = Encoding.UTF8.GetBytes(result);
-
             if (!string.IsNullOrEmpty(_compressionType))
             {
-                var compressed = new CompressedResult(contentBytes, _compressionType, ViewModelContentType);
+                var compressed = new CompressedResult(result.Compress(_compressionType), _compressionType) { ContentType = ViewModelContentType };
                 httpResult = new HttpResult(compressed.Contents, ViewModelContentType);
-                httpResult.Headers.Add("CompressionType", _compressionType);
+                foreach (var header in compressed.Headers)
+                {
+                    httpResult.Headers.Add(header.Key, header.Value);
+                }
             }
             else
             {
+                var contentBytes = Encoding.UTF8.GetBytes(result);
                 httpResult = new HttpResult(contentBytes, ViewModelContentType);
             }
             if (!_appSession.CookieSet)

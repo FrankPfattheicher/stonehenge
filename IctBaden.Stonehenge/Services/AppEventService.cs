@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
+using ServiceStack.Common;
 using ServiceStack.Common.Web;
 using ServiceStack.Text;
 
@@ -131,12 +132,12 @@ namespace IctBaden.Stonehenge.Services
                 }
                 var data = "{" + string.Join(",", properties) + "}";
 
-                var compressed = new CompressedResult(Encoding.UTF8.GetBytes(data), RequestContext.CompressionType)
-                {
-                    ContentType = "application/json"
-                };
+                var compressed = new CompressedResult(data.Compress(RequestContext.CompressionType), RequestContext.CompressionType) { ContentType = "application/json" };
                 httpResult = new HttpResult(compressed.Contents, "application/json");
-                httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
+                foreach (var header in compressed.Headers)
+                {
+                    httpResult.Headers.Add(header.Key, header.Value);
+                }
                 httpResult.Headers.Add("Cache-Control", "no-cache, max-age=0");
             }
             else

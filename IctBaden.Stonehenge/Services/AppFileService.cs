@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using IctBaden.Stonehenge.Creators;
+using ServiceStack.Common;
 using ServiceStack.Common.Web;
+using ServiceStack.ServiceHost;
 
 namespace IctBaden.Stonehenge.Services
 {
@@ -298,9 +300,13 @@ namespace IctBaden.Stonehenge.Services
                 return httpResult;
             }
 
-            var compressed = new CompressedResult(Encoding.UTF8.GetBytes(text), RequestContext.CompressionType) { ContentType = type };
+            var compressed = new CompressedResult(text.Compress(RequestContext.CompressionType), RequestContext.CompressionType) { ContentType = type };
             httpResult = new HttpResult(compressed.Contents, type);
-            httpResult.Headers.Add("CompressionType", RequestContext.CompressionType);
+            foreach (var header in compressed.Headers)
+            {
+                httpResult.Headers.Add(header.Key, header.Value);
+            }
+            
             httpResult.Headers.Add("Cache-Control", doNotCache 
                 ? "no-cache" 
                 : "max-age=3600, must-revalidate, proxy-revalidate");
