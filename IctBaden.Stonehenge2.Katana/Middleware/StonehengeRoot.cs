@@ -8,11 +8,11 @@
 
     public class StonehengeRoot
     {
-      private readonly Func<IDictionary<string, object>, Task> _next;
+        private readonly Func<IDictionary<string, object>, Task> _next;
 
         public StonehengeRoot(Func<IDictionary<string, object>, Task> next)
         {
-            this._next = next;
+            _next = next;
         }
 
         public async Task Invoke(IDictionary<string, object> environment)

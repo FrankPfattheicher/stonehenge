@@ -23,7 +23,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
 
         public StonehengeContent(Func<IDictionary<string, object>, Task> next)
         {
-            this._next = next;
+            _next = next;
         }
 
         public async Task Invoke(IDictionary<string, object> environment)
@@ -31,11 +31,6 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             IOwinContext context = new OwinContext(environment);
 
             var path = context.Request.Path.Value;
-            if (path == "/")
-            {
-                await _next.Invoke(environment);
-                return;
-            }
             try
             {
                 var response = context.Get<Stream>("owin.ResponseBody");

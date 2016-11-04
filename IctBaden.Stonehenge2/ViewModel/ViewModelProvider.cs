@@ -133,7 +133,7 @@
             if (method == null || method.ReturnType != typeof(Resource)) return null;
 
             Resource data;
-            if (method.GetParameters().Count() == 2)
+            if (method.GetParameters().Length == 2)
             {
                 data = (Resource)method.Invoke(vm, new object[] { resourceName, parameters });
             }
