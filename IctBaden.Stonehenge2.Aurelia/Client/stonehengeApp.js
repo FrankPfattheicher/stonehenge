@@ -26,8 +26,7 @@ export class Tools {
                 if (ende < 0) {
                     ende = maxlen;
                 }
-                var cook = document.cookie.substring(i
-                    + suche.length, ende);
+                var cook = document.cookie.substring(i + suche.length, ende);
                 return unescape(cook);
             }
             i++;

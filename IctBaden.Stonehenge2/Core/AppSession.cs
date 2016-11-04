@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace IctBaden.Stonehenge2.Core
 {

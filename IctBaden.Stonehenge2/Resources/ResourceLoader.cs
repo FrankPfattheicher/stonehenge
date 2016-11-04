@@ -119,7 +119,7 @@ namespace IctBaden.Stonehenge2.Resources
                 .FirstOrDefault(res => string.Compare(res.Key, resourceName, true, CultureInfo.InvariantCulture) == 0);
             if (asmResource.Key == null)
             {
-                Debug.WriteLine($"ResourceLoader({resourceName}): not found");
+                //Debug.WriteLine($"ResourceLoader({resourceName}): not found");
                 return null;
             }
 
