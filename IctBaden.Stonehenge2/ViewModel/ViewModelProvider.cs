@@ -1,4 +1,7 @@
-﻿namespace IctBaden.Stonehenge2.ViewModel
+﻿using System.CodeDom;
+using System.Collections;
+
+namespace IctBaden.Stonehenge2.ViewModel
 {
     using System;
     using System.Collections.Generic;
@@ -73,13 +76,15 @@
         {
             if (resourceName.StartsWith("ViewModel/"))
             {
-                return GetViewModel(session, resourceName);
+                if(SetViewModel(session, resourceName))
+                    return GetViewModel(session, resourceName);
             }
-            if (resourceName.StartsWith("Events/"))
+            else if (resourceName.StartsWith("Events/"))
             {
-                return GetEvents(session, resourceName);
+                if (SetViewModel(session, resourceName))
+                    return GetEvents(session, resourceName);
             }
-            if (resourceName.StartsWith("Data/"))
+            else if (resourceName.StartsWith("Data/"))
             {
                 return GetDataResource(session, resourceName.Substring(5), parameters);
             }
@@ -87,17 +92,18 @@
             return null;
         }
 
-        private Resource GetViewModel(AppSession session, string resourceName)
+        private bool SetViewModel(AppSession session, string resourceName)
         {
             var vmTypeName = Path.GetFileNameWithoutExtension(resourceName);
-            if ((session.ViewModel == null) || (session.ViewModel.GetType().Name != vmTypeName))
-            {
-                if (session.SetViewModelType(vmTypeName) == null)
-                {
-                    Trace.TraceError("Could not set ViewModel type to " + vmTypeName);
-                    return null;
-                }
-            }
+            if ((session.ViewModel != null) && (session.ViewModel.GetType().Name == vmTypeName)) return true;
+            if (session.SetViewModelType(vmTypeName) != null) return true;
+
+            Trace.TraceError("Could not set ViewModel type to " + vmTypeName);
+            return false;
+        }
+
+        private Resource GetViewModel(AppSession session, string resourceName)
+        {
             session.EventsClear(true);
 
             return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, GetViewModelJson(session.ViewModel),
@@ -106,7 +112,7 @@
 
         private static Resource GetEvents(AppSession session, string resourceName)
         {
-            var json = new JObject { ["StonehengeContinuePolling"] = true };
+            var data = new List<string> { "\"StonehengeContinuePolling\":true" };
             var events = session.CollectEvents();
             if (events.Count > 0)
             {
@@ -115,13 +121,14 @@
                 {
                     foreach (var property in events)
                     {
-                        json[property] = JToken.FromObject(vm.TryGetMember(property));
+                        var value = vm.TryGetMember(property);
+                        data.Add($"\"{property}\":{SerializeObjectString(null, value)}");
                     }
                 }
             }
 
-            var text = JsonConvert.SerializeObject(json);
-            return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, text, Resource.Cache.None);
+            var json = "{" + string.Join(",", data) + "}";
+            return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, json, Resource.Cache.None);
         }
 
         private static Resource GetDataResource(AppSession session, string resourceName, Dictionary<string, string> parameters)
@@ -245,51 +252,103 @@
 
             data.AddRange(SerializeObject(null, viewModel));
 
-            var result = "{" + string.Join(",", data) + "}";
-            return result;
+            var json = "{" + string.Join(",", data) + "}";
+            return json;
+        }
+
+        private static string SerializeObjectString(string prefix, object obj)
+        {
+            if (obj == null)
+            {
+                return "null";
+            }
+            var serialized = SerializeObject(prefix, obj).ToArray();
+            if (serialized.Length == 1)
+            {
+                return serialized[0];
+            }
+            return "{" + string.Join(",", serialized) + "}";
         }
 
         private static IEnumerable<string> SerializeObject(string prefix, object obj)
         {
-            var data = new List<string>();
             if (prefix == null)
                 prefix = string.Empty;
 
-            foreach (var prop in obj.GetType().GetProperties())
+            var objType = obj.GetType();
+            var data = new List<string>();
+
+            if (objType == typeof(string))
+            {
+                data.Add($"\"{obj}\"");
+                return data;
+            }
+            if (objType == typeof(bool))
+            {
+                data.Add(obj.ToString().ToLower());
+                return data;
+            }
+
+            var converter = objType.GetCustomAttributes(typeof(JsonConverterAttribute), true);
+            if (converter.Length > 0)
+            {
+                data.Add(JsonConvert.SerializeObject(obj));
+                return data;
+            }
+            
+            var enumerable = obj as IEnumerable;
+            if (enumerable != null)
+            {
+                var elements = new List<string>();
+                foreach (var element in enumerable)
+                {
+                    elements.Add(SerializeObjectString(null, element));
+                }
+                data.Add("[" + string.Join(",", elements) + "]");
+                return data;
+            }
+
+            foreach (var prop in objType.GetProperties())
             {
                 var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
                 if ((bindable.Length > 0) && !((BindableAttribute)bindable[0]).Bindable)
                     continue;
+                var ignore = prop.GetCustomAttributes(typeof(JsonIgnoreAttribute), true);
+                if (ignore.Length > 0)
+                    continue;
 
+                string json;
                 var value = prop.GetValue(obj, null);
                 if (value == null)
                     continue;
 
-                string json;
-                if (prop.PropertyType.Name == "GraphOptions")
+                if (prop.PropertyType.IsValueType && !prop.PropertyType.IsPrimitive)
                 {
-                    json = "\"" + prefix + prop.Name + "\":" + value;
-                }
-                else if (prop.PropertyType.IsValueType && !prop.PropertyType.IsPrimitive && (prop.PropertyType.Namespace != "System")) // struct
-                {
-                    var structJson = new List<string>();
-
-                    foreach (var member in prop.PropertyType.GetProperties())
+                    if (!prop.PropertyType.IsEnum && prop.PropertyType.Namespace != "System") // struct
                     {
-                        var memberValue = member.GetValue(value, null);
-                        if (memberValue != null)
+                        var structJson = new List<string>();
+
+                        foreach (var member in prop.PropertyType.GetProperties())
                         {
-                            json = "\"" + prefix + member.Name + "\":" + JsonConvert.SerializeObject(memberValue);
-                            structJson.Add(json);
+                            var memberValue = member.GetValue(value, null);
+                            if (memberValue != null)
+                            {
+                                json = "\"" + prefix + member.Name + "\":" + JsonConvert.SerializeObject(memberValue);
+                                structJson.Add(json);
+                            }
                         }
+
+                        json = "\"" + prefix + prop.Name + "\": { " + string.Join(",", structJson) + " }";
                     }
-
-
-                    json = "\"" + prefix + prop.Name + "\": { " + string.Join(",", structJson) + " }";
+                    else
+                    {
+                        json = "\"" + prefix + prop.Name + "\":" + JsonConvert.SerializeObject(value);
+                    }
                 }
                 else
                 {
-                    json = "\"" + prefix + prop.Name + "\":" + JsonConvert.SerializeObject(value);
+                    //json = "\"" + prefix + prop.Name + "\":" + JsonConvert.SerializeObject(value);
+                    json = "\"" + prefix + prop.Name + "\":" + SerializeObjectString(null, value);
                 }
                 data.Add(json);
             }

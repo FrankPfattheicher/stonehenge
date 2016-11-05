@@ -35,6 +35,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             var stonehengeId = context.Request.Cookies["stonehenge-id"] ?? context.Request.Query["stonehenge-id"];
             Trace.TraceInformation($"Stonehenge2.Katana[{stonehengeId}] Begin {context.Request.Method} {path}");
 
+            CleanupTimedOutSessions();
             var session = Sessions.FirstOrDefault(s => s.Id == stonehengeId);
             if (string.IsNullOrEmpty(stonehengeId) || session == null)
             {
@@ -65,20 +66,23 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                 $"Stonehenge2.Katana[{stonehengeId}] End {context.Request.Method}={context.Response.StatusCode} {path}, {timer.ElapsedMilliseconds}ms");
         }
 
+        private void CleanupTimedOutSessions()
+        {
+            foreach (var timedOut in Sessions.Where(s => s.IsTimedOut))
+            {
+                timedOut.ViewModel = null;
+                Sessions.Remove(timedOut);
+                Trace.TraceInformation($"Stonehenge2.Katana Session timed out {timedOut.Id}. {Sessions.Count} sessions.");
+            }
+        }
+
         private AppSession NewSession(IOwinRequest request)
         {
             var userAgent = request.Headers["User-Agent"];
             var session = new AppSession();
             session.Initialize(request.Host.Value, request.RemoteIpAddress, userAgent);
             Sessions.Add(session);
-            Trace.TraceInformation($"Stonehenge2.Katana New session {session.Id}");
-
-            var timedOut = Sessions.Where(s => s.IsTimedOut).ToList();
-            foreach (var sess in timedOut)
-            {
-                Sessions.Remove(sess);
-                Trace.TraceInformation($"Stonehenge2.Katana Session timed out {sess.Id}");
-            }
+            Trace.TraceInformation($"Stonehenge2.Katana New session {session.Id}. {Sessions.Count} sessions.");
             return session;
         }
     }
