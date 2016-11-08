@@ -18,7 +18,7 @@ namespace IctBaden.Stonehenge2.Test.Hosting
                 response.Close();
 
                 var newAddress = new Uri(request.RequestUri, redirUrl).AbsoluteUri;
-                if ((redirUrl == null) ||(newAddress == address))
+                if (newAddress == address)
                     break;
 
                 address = newAddress;

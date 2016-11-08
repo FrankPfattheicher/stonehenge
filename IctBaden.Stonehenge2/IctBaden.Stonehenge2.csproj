@@ -60,6 +60,7 @@
     <Compile Include="ViewModel\ActionMethodAttribute.cs" />
     <Compile Include="ViewModel\ActiveModel.cs" />
     <Compile Include="ViewModel\ActiveViewModel.cs" />
+    <Compile Include="ViewModel\JsonSerializer.cs" />
     <Compile Include="ViewModel\ViewModelProvider.cs" />
     <Compile Include="Hosting\IStonehengeHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

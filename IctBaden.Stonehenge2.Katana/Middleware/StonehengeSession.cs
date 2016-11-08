@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using IctBaden.Stonehenge2.Core;
-using IctBaden.Stonehenge2.Resources;
 
 namespace IctBaden.Stonehenge2.Katana.Middleware
 {
@@ -15,9 +14,6 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
     public class StonehengeSession
     {
         private readonly Func<IDictionary<string, object>, Task> _next;
-        private static readonly List<AppSession> Sessions = new List<AppSession>();
-        public static string AppTitle;
-        public static IStonehengeResourceProvider ResourceLoader;
 
         public StonehengeSession(Func<IDictionary<string, object>, Task> next)
         {
@@ -35,12 +31,13 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             var stonehengeId = context.Request.Cookies["stonehenge-id"] ?? context.Request.Query["stonehenge-id"];
             Trace.TraceInformation($"Stonehenge2.Katana[{stonehengeId}] Begin {context.Request.Method} {path}");
 
-            CleanupTimedOutSessions();
-            var session = Sessions.FirstOrDefault(s => s.Id == stonehengeId);
+            var appSessions = context.Environment["stonehenge.AppSessions"] as List<AppSession>;
+            CleanupTimedOutSessions(appSessions);
+            var session = appSessions?.FirstOrDefault(s => s.Id == stonehengeId);
             if (string.IsNullOrEmpty(stonehengeId) || session == null)
             {
                 // session not found - redirect to new session
-                session = NewSession(context.Request);
+                session = NewSession(appSessions, context.Request);
                 context.Response.Headers.Add("Set-Cookie", new[] { "stonehenge-id=" + session.Id });
                 context.Response.Redirect("/Index.html?stonehenge-id=" + session.Id);
                 Trace.TraceInformation($"Stonehenge2.Katana[{stonehengeId}] Redirect to {session.Id}");
@@ -55,8 +52,6 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             }
             else
             {
-                context.Environment.Add("stonehenge.AppTitle", AppTitle);
-                context.Environment.Add("stonehenge.ResourceLoader", ResourceLoader);
                 context.Environment.Add("stonehenge.AppSession", session);
                 await _next.Invoke(environment);
             }
@@ -66,23 +61,23 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                 $"Stonehenge2.Katana[{stonehengeId}] End {context.Request.Method}={context.Response.StatusCode} {path}, {timer.ElapsedMilliseconds}ms");
         }
 
-        private void CleanupTimedOutSessions()
+        private void CleanupTimedOutSessions(List<AppSession> appSessions)
         {
-            foreach (var timedOut in Sessions.Where(s => s.IsTimedOut))
+            foreach (var timedOut in appSessions.Where(s => s.IsTimedOut))
             {
                 timedOut.ViewModel = null;
-                Sessions.Remove(timedOut);
-                Trace.TraceInformation($"Stonehenge2.Katana Session timed out {timedOut.Id}. {Sessions.Count} sessions.");
+                appSessions.Remove(timedOut);
+                Trace.TraceInformation($"Stonehenge2.Katana Session timed out {timedOut.Id}. {appSessions.Count} sessions.");
             }
         }
 
-        private AppSession NewSession(IOwinRequest request)
+        private AppSession NewSession(List<AppSession> appSessions, IOwinRequest request)
         {
             var userAgent = request.Headers["User-Agent"];
             var session = new AppSession();
             session.Initialize(request.Host.Value, request.RemoteIpAddress, userAgent);
-            Sessions.Add(session);
-            Trace.TraceInformation($"Stonehenge2.Katana New session {session.Id}. {Sessions.Count} sessions.");
+            appSessions.Add(session);
+            Trace.TraceInformation($"Stonehenge2.Katana New session {session.Id}. {appSessions.Count} sessions.");
             return session;
         }
     }

@@ -56,11 +56,8 @@ namespace IctBaden.Stonehenge2.Katana
 
         public void Terminate()
         {
-            if (_webApp != null)
-            {
-                _webApp.Dispose();
-                _webApp = null;
-            }
+            _webApp?.Dispose();
+            _webApp = null;
         }
     }
 }
