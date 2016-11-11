@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using IctBaden.Stonehenge2.Core;
 
 namespace IctBaden.Stonehenge2.Katana.Middleware
@@ -28,7 +29,19 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             timer.Start();
 
             var path = context.Request.Path;
-            var stonehengeId = context.Request.Cookies["stonehenge-id"] ?? context.Request.Query["stonehenge-id"];
+            //var stonehengeId = context.Request.Cookies["stonehenge-id"] ?? context.Request.Query["stonehenge-id"];
+            var cookie = context.Request.Headers.FirstOrDefault(h => h.Key == "Cookie");
+            var stonehengeId = context.Request.Query["stonehenge-id"];
+            if ((cookie.Value != null) && (cookie.Value.Length > 0))
+            {
+                // workaround for double stonehenge-id values in cookie - take the last one
+                var match = new Regex("stonehenge-id=([a-f0-9A-F]+)", RegexOptions.RightToLeft)
+                    .Match(cookie.Value[cookie.Value.Length - 1]);
+                if (match.Success)
+                {
+                    stonehengeId = match.Groups[1].Value;
+                }
+            }
             Trace.TraceInformation($"Stonehenge2.Katana[{stonehengeId}] Begin {context.Request.Method} {path}");
 
             var appSessions = context.Environment["stonehenge.AppSessions"] as List<AppSession>;

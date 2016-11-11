@@ -80,6 +80,8 @@
     <Compile Include="Resources\FileLoaderTests.cs" />
     <Compile Include="Resources\LoaderTests.cs" />
     <Compile Include="Resources\ResourceLoaderTests.cs" />
+    <Compile Include="Serializer\SimpleClass.cs" />
+    <Compile Include="Serializer\ViewModelSerializerTests.cs" />
     <Compile Include="Tools\TestResourceLoader.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -32,12 +33,17 @@ namespace IctBaden.Stonehenge2.ViewModel
 
             if (objType == typeof(string))
             {
-                data.Add($"\"{obj}\"");
+                data.Add(JsonConvert.SerializeObject(obj));
                 return data;
             }
             if (objType == typeof(bool))
             {
                 data.Add(obj.ToString().ToLower());
+                return data;
+            }
+            if ((objType == typeof(DateTime)) || (objType == typeof(DateTimeOffset)))
+            {
+                data.Add(JsonConvert.SerializeObject(obj));
                 return data;
             }
 
@@ -59,6 +65,32 @@ namespace IctBaden.Stonehenge2.ViewModel
                 data.Add("[" + string.Join(",", elements) + "]");
                 return data;
             }
+            if (objType.IsValueType)
+            {
+                if (!objType.IsPrimitive && !objType.IsEnum && objType.Namespace != "System") // struct
+                {
+                    var structJson = new List<string>();
+                    string json;
+                    foreach (var member in objType.GetProperties())
+                    {
+                        var memberValue = member.GetValue(obj, null);
+                        if (memberValue != null)
+                        {
+                            json = "\"" + prefix + member.Name + "\":" + JsonConvert.SerializeObject(memberValue);
+                            structJson.Add(json);
+                        }
+                    }
+
+                    json = "{ " + string.Join(",", structJson) + " }";
+                    data.Add(json);
+                    return data;
+                }
+                else
+                {
+                    data.Add(JsonConvert.SerializeObject(obj));
+                    return data;
+                }
+            }
 
             foreach (var prop in objType.GetProperties())
             {
@@ -74,34 +106,7 @@ namespace IctBaden.Stonehenge2.ViewModel
                 if (value == null)
                     continue;
 
-                if (prop.PropertyType.IsValueType && !prop.PropertyType.IsPrimitive)
-                {
-                    if (!prop.PropertyType.IsEnum && prop.PropertyType.Namespace != "System") // struct
-                    {
-                        var structJson = new List<string>();
-
-                        foreach (var member in prop.PropertyType.GetProperties())
-                        {
-                            var memberValue = member.GetValue(value, null);
-                            if (memberValue != null)
-                            {
-                                json = "\"" + prefix + member.Name + "\":" + JsonConvert.SerializeObject(memberValue);
-                                structJson.Add(json);
-                            }
-                        }
-
-                        json = "\"" + prefix + prop.Name + "\": { " + string.Join(",", structJson) + " }";
-                    }
-                    else
-                    {
-                        json = "\"" + prefix + prop.Name + "\":" + JsonConvert.SerializeObject(value);
-                    }
-                }
-                else
-                {
-                    //json = "\"" + prefix + prop.Name + "\":" + JsonConvert.SerializeObject(value);
-                    json = "\"" + prefix + prop.Name + "\":" + SerializeObjectString(null, value);
-                }
+                json = "\"" + prefix + prop.Name + "\":" + SerializeObjectString(null, value);
                 data.Add(json);
             }
 

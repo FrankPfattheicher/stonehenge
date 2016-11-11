@@ -99,7 +99,6 @@ export class stonehengeViewModelName {
                     else {
                         scope.StonehengeSession = match[1];
                     }
-
                     let data = JSON.parse(response.response);
                     scope.StonehengeInitialLoading = false;
                     scope.StonehengeIsLoading = false;
@@ -109,7 +108,6 @@ export class stonehengeViewModelName {
                     if (scope.StonehengePollEventsActive == null) {
                         setTimeout(function() { scope.StonehengePollEvents(scope, true); }, 200);
                     }
-                    
                 })
                 .catch(error => {
                     scope.StonehengeIsDisconnected = true;
