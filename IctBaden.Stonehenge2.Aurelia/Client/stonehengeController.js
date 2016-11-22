@@ -40,6 +40,7 @@ export class stonehengeViewModelName {
                     }
                 })
                 .catch(error => {
+                    //debugger;
                     if (scope.StonehengePollEventsActive != null) {
                         scope.StonehengeIsDisconnected = true;
                     }
@@ -111,9 +112,9 @@ export class stonehengeViewModelName {
                 })
                 .catch(error => {
                     scope.StonehengeIsDisconnected = true;
+                    //debugger;
                     if (console && console.log) console.log(error);
                     setTimeout(function() { window.location.reload(); }, 1000);
-                    //debugger;
                     window.location.reload();
                 });
         };

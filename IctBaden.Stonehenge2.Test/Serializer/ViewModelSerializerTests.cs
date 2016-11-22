@@ -1,6 +1,8 @@
 ﻿using System;
-using IctBaden.Stonehenge2.ViewModel;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using NUnit.Framework;
+using JsonSerializer = IctBaden.Stonehenge2.ViewModel.JsonSerializer;
 
 namespace IctBaden.Stonehenge2.Test.Serializer
 {
@@ -20,6 +22,9 @@ namespace IctBaden.Stonehenge2.Test.Serializer
             };
 
             var json = JsonSerializer.SerializeObjectString(null, model);
+
+            var obj = JsonConvert.DeserializeObject(json);
+            Assert.IsNotNull(obj);
 
             // public properties - not NULL
             Assert.IsTrue(json.Contains("Integer"));
@@ -52,6 +57,9 @@ namespace IctBaden.Stonehenge2.Test.Serializer
 
             var json = JsonSerializer.SerializeObjectString(null, model);
 
+            var obj = JsonConvert.DeserializeObject(json);
+            Assert.IsNotNull(obj);
+
             Assert.IsTrue(json.Contains("\\n"));
         }
 
@@ -65,6 +73,40 @@ namespace IctBaden.Stonehenge2.Test.Serializer
         public void SerializerShouldRespectCustomSerializers()
         {
 
+        }
+
+        [Test]
+        public void NestedClassesSerializonShouldWork()
+        {
+            var simple = new SimpleClass
+            {
+                Integer = 5,
+                Floatingpoint = 1.23,
+                Text = "test",
+                PrivateText = "invisible",
+                Timestamp = new DateTime(2016, 11, 11, 12, 13, 14, DateTimeKind.Utc)
+            };
+
+            var model = new NestedClass
+            {
+                //Name = "outer",
+                Nested = new List<NestedClass2>
+                {
+                    new NestedClass2
+                    {
+                        NestedSimple = new[] { simple, simple, simple }
+                    }
+                }
+            };
+                
+                
+            var json = JsonSerializer.SerializeObjectString(null, model);
+
+            var obj = JsonConvert.DeserializeObject(json);
+            Assert.IsNotNull(obj);
+
+            Assert.IsTrue(json.StartsWith("{"));
+            Assert.IsTrue(json.EndsWith("}"));
         }
 
     }

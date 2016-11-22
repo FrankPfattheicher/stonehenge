@@ -15,8 +15,13 @@ namespace IctBaden.Stonehenge2.ViewModel
             {
                 return "null";
             }
+            var objType = obj.GetType();
             var serialized = SerializeObject(prefix, obj).ToArray();
-            if (serialized.Length == 1)
+            if((objType == typeof(string)) || obj is IEnumerable)
+            {
+                return serialized[0];
+            }
+            if ((serialized.Length == 1) && !objType.IsClass)
             {
                 return serialized[0];
             }
@@ -101,12 +106,11 @@ namespace IctBaden.Stonehenge2.ViewModel
                 if (ignore.Length > 0)
                     continue;
 
-                string json;
                 var value = prop.GetValue(obj, null);
                 if (value == null)
                     continue;
 
-                json = "\"" + prefix + prop.Name + "\":" + SerializeObjectString(null, value);
+                var json = "\"" + prefix + prop.Name + "\":" + SerializeObjectString(null, value);
                 data.Add(json);
             }
 
