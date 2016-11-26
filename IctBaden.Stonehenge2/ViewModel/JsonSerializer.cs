@@ -21,7 +21,8 @@ namespace IctBaden.Stonehenge2.ViewModel
             {
                 return serialized[0];
             }
-            if ((serialized.Length == 1) && !objType.IsClass)
+            var converter = objType.GetCustomAttributes(typeof(JsonConverterAttribute), true);
+            if ((serialized.Length == 1) && (!objType.IsClass || (converter.Length > 0)))
             {
                 return serialized[0];
             }

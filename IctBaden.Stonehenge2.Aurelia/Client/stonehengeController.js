@@ -40,16 +40,18 @@ export class stonehengeViewModelName {
                     }
                 })
                 .catch(error => {
-                    //debugger;
                     if (scope.StonehengePollEventsActive != null) {
                         scope.StonehengeIsDisconnected = true;
                     }
-                    if (status === 200) {
-                        setTimeout(function() { window.location.reload(); }, 1000);
-                    }
-                    scope.StonehengePollEventsActive = null;
-                    if (!scope.StonehengePostActive) {
-                        setTimeout(function() { scope.StonehengePollEvents(scope, true); }, 200);
+                    if (error.responseType != "abort") {
+                        //debugger;
+                        if (status === 200) {
+                            setTimeout(function() { window.location.reload(); }, 1000);
+                        }
+                        scope.StonehengePollEventsActive = null;
+                        if (!scope.StonehengePostActive) {
+                            setTimeout(function() { scope.StonehengePollEvents(scope, true); }, 200);
+                        }
                     }
                 });
         };
