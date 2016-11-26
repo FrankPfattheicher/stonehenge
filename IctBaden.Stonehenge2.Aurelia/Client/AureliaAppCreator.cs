@@ -98,10 +98,22 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             }
         }
 
+        private static Type[] GetAssemblyTypes(Assembly assembly)
+        {
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (Exception)
+            {
+                return new Type[0];
+            }
+        }
+
         private static Type GetVmType(string name)
         {
             return AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
+                .SelectMany(GetAssemblyTypes)
                 .FirstOrDefault(type => type.Name == name);
         }
 
