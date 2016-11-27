@@ -424,7 +424,8 @@ namespace IctBaden.Stonehenge2.ViewModel
       {
         foreach (PropertyDescriptor prop in TypeDescriptor.GetProperties(model.Model, true))
         {
-          var pi = model.Model.GetType().GetProperty(prop.Name);
+            var pi = model.Model.GetType().GetProperties().FirstOrDefault(p => p.Name == prop.Name);
+                    //var pi = model.Model.GetType().GetProperty(prop.Name);
           var name = prop.Name;
           if (!string.IsNullOrEmpty(model.Prefix))
             name = model.Prefix + name;
