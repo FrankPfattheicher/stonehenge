@@ -101,7 +101,7 @@ define(["durandal/app", "durandal/system", "knockout", "flot"], function(app, sy
                 return original.getBindings(node, bindingContext);
             } catch (ex1) {
                 message = ex1.message;
-                if (console && console.log) {
+                if ((typeof(console) != "undefined") && console.log) {
                     console.log("Error in binding: " + message);
                 }
             }
@@ -111,7 +111,7 @@ define(["durandal/app", "durandal/system", "knockout", "flot"], function(app, sy
                 var ts = new Date().getTime();
                 $.post("/Exception/Binding?ts=" + ts + "&stonehenge_id=" + stonehenge_id, params, function(data) {});
             } catch (ex2) {
-                if (console && console.log) {
+                if ((typeof (console) != "undefined") && console.log) {
                     console.log("Error: " + ex2.message);
                 }
             }

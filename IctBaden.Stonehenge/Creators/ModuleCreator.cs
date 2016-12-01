@@ -42,128 +42,131 @@ namespace IctBaden.Stonehenge.Creators
 
         public static string CreateFromViewModel(object viewModel, string context)
         {
-            if (viewModel == null)
+            lock (ViewModels)
             {
-                var dummy = new StringBuilder();
-                dummy.AppendLine("define(function (require) {");
-                dummy.AppendLine("return {");
-                dummy.AppendLine("};");
-                dummy.AppendLine("});");
-                return dummy.ToString();
-            }
-
-            var vmType = viewModel.GetType();
-            var vmKey = vmType.Name + "_" + context;
-
-            if (ViewModels.ContainsKey(vmKey))
-            {
-                return ViewModels[vmKey];
-            }
-
-            // properties
-            var vmProps = new List<PropertyDescriptor>();
-            var activeVm = viewModel as ActiveViewModel;
-            if (activeVm != null)
-            {
-                vmProps.AddRange(from PropertyDescriptor prop in activeVm.GetProperties() select prop);
-            }
-            else
-            {
-                vmProps.AddRange(TypeDescriptor.GetProperties(viewModel, true).Cast<PropertyDescriptor>());
-            }
-
-            var assignPropNames = (from prop in vmProps
-                                   let bindable = prop.Attributes.OfType<BindableAttribute>().ToArray()
-                                   where (bindable.Length <= 0) || bindable[0].Bindable
-                                   select prop.Name).ToList();
-
-            var setData = new StringBuilder();
-            foreach (var propName in assignPropNames)
-            {
-                setData.AppendLine(string.Format("if(data.{0} != null) viewmodel.{0}(data.{0});", propName));
-            }
-
-            // trees
-            foreach (var prop in vmProps.Where(p => ((p.PropertyType == typeof(TreeNode[]) || (p.PropertyType == typeof(List<TreeNode>))) && p.Name.EndsWith("Data"))))
-            {
-                // TODO: move this code to JS library
-                var propName = prop.Name.Substring(0, prop.Name.Length - 4);  // remove "Data"
-                setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ $.fn.zTree.init($('#{0}'), viewmodel.{0}Settings(), viewmodel.{0}Data()); }} catch(e) {{ }} }}", propName));
-                setData.AppendLine($"if(loading) {{ try {{ {propName}Initialize(); }} catch(e) {{ }} }}");
-            }
-
-            // plots
-            foreach (var prop in vmProps.Where(p => ((p.PropertyType == typeof(GraphSeries[]) || (p.PropertyType == typeof(List<GraphSeries>))) && p.Name.EndsWith("Data"))))
-            {
-                // TODO: move this code to JS library
-                var propName = prop.Name.Substring(0, prop.Name.Length - 4);  // remove "Data"
-                setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }}", propName));
-                setData.AppendLine(string.Format("$('#{0}').resize(function() {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }});", propName));
-                setData.AppendLine($"if(loading) {{ try {{ {propName}Initialize(); }} catch(e) {{ }} }}");
-            }
-
-            // do not send ReadOnly or OneWay bound properties back
-            var postbackPropNames = new List<string>();
-            foreach (var propName in assignPropNames)
-            {
-                var prop = vmType.GetProperty(propName);
-                if (prop == null)
+                if (viewModel == null)
                 {
-                    if (activeVm == null)
-                        continue;
-                    prop = activeVm.GetPropertyInfo(propName);
-                    if ((prop != null) && activeVm.IsPropertyReadOnly(propName))
-                        continue;
+                    var dummy = new StringBuilder();
+                    dummy.AppendLine("define(function (require) {");
+                    dummy.AppendLine("return {");
+                    dummy.AppendLine("};");
+                    dummy.AppendLine("});");
+                    return dummy.ToString();
                 }
 
-                if (prop?.GetSetMethod(false) == null) // not public writable
-                    continue;
-                var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
-                if ((bindable.Length > 0) && ((BindableAttribute)bindable[0]).Direction == BindingDirection.OneWay)
-                    continue;
-                postbackPropNames.Add(propName);
+                var vmType = viewModel.GetType();
+                var vmKey = vmType.Name + "_" + context;
+
+                if (ViewModels.ContainsKey(vmKey))
+                {
+                    return ViewModels[vmKey];
+                }
+
+                // properties
+                var vmProps = new List<PropertyDescriptor>();
+                var activeVm = viewModel as ActiveViewModel;
+                if (activeVm != null)
+                {
+                    vmProps.AddRange(from PropertyDescriptor prop in activeVm.GetProperties() select prop);
+                }
+                else
+                {
+                    vmProps.AddRange(TypeDescriptor.GetProperties(viewModel, true).Cast<PropertyDescriptor>());
+                }
+
+                var assignPropNames = (from prop in vmProps
+                                       let bindable = prop.Attributes.OfType<BindableAttribute>().ToArray()
+                                       where (bindable.Length <= 0) || bindable[0].Bindable
+                                       select prop.Name).ToList();
+
+                var setData = new StringBuilder();
+                foreach (var propName in assignPropNames)
+                {
+                    setData.AppendLine(string.Format("if(data.{0} != null) viewmodel.{0}(data.{0});", propName));
+                }
+
+                // trees
+                foreach (var prop in vmProps.Where(p => ((p.PropertyType == typeof(TreeNode[]) || (p.PropertyType == typeof(List<TreeNode>))) && p.Name.EndsWith("Data"))))
+                {
+                    // TODO: move this code to JS library
+                    var propName = prop.Name.Substring(0, prop.Name.Length - 4);  // remove "Data"
+                    setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ $.fn.zTree.init($('#{0}'), viewmodel.{0}Settings(), viewmodel.{0}Data()); }} catch(e) {{ }} }}", propName));
+                    setData.AppendLine($"if(loading) {{ try {{ {propName}Initialize(); }} catch(e) {{ }} }}");
+                }
+
+                // plots
+                foreach (var prop in vmProps.Where(p => ((p.PropertyType == typeof(GraphSeries[]) || (p.PropertyType == typeof(List<GraphSeries>))) && p.Name.EndsWith("Data"))))
+                {
+                    // TODO: move this code to JS library
+                    var propName = prop.Name.Substring(0, prop.Name.Length - 4);  // remove "Data"
+                    setData.AppendLine(string.Format("if(data.{0}Data) {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }}", propName));
+                    setData.AppendLine(string.Format("$('#{0}').resize(function() {{ try {{ $.plot($('#{0}'), viewmodel.{0}Data(), viewmodel.{0}Options()); }} catch(e) {{ }} }});", propName));
+                    setData.AppendLine($"if(loading) {{ try {{ {propName}Initialize(); }} catch(e) {{ }} }}");
+                }
+
+                // do not send ReadOnly or OneWay bound properties back
+                var postbackPropNames = new List<string>();
+                foreach (var propName in assignPropNames)
+                {
+                    var prop = vmType.GetProperty(propName);
+                    if (prop == null)
+                    {
+                        if (activeVm == null)
+                            continue;
+                        prop = activeVm.GetPropertyInfo(propName);
+                        if ((prop != null) && activeVm.IsPropertyReadOnly(propName))
+                            continue;
+                    }
+
+                    if (prop?.GetSetMethod(false) == null) // not public writable
+                        continue;
+                    var bindable = prop.GetCustomAttributes(typeof(BindableAttribute), true);
+                    if ((bindable.Length > 0) && ((BindableAttribute)bindable[0]).Direction == BindingDirection.OneWay)
+                        continue;
+                    postbackPropNames.Add(propName);
+                }
+
+                var getData = new StringBuilder();
+                foreach (var propName in postbackPropNames)
+                {
+                    getData.AppendLine(string.Format("if(viewmodel.{0}() != null) params += '{0}=' + encodeURIComponent(JSON.stringify(viewmodel.{0}()))+'&';", propName));
+                }
+
+                var declareData = new StringBuilder();
+                foreach (var propName in assignPropNames)
+                {
+                    declareData.AppendLine($"var {propName} = ko.observable();");
+                    declareData.AppendLine($"{propName}.subscribe(function(newval){{IsDirty(true);}});");
+                }
+                var returnData = new StringBuilder();
+                foreach (var propName in assignPropNames)
+                {
+                    returnData.AppendLine(string.Format("{0}: {0},", propName));
+                }
+
+                // supply functions for action methods
+                var actionMethods = new StringBuilder();
+                foreach (var methodInfo in vmType.GetMethods().Where(methodInfo => methodInfo.GetCustomAttributes(false).OfType<ActionMethodAttribute>().Any()))
+                {
+                    var method = (methodInfo.GetParameters().Length > 0)
+                      ? "%method%: function (data, event, param) { if(!IsLoading()) post_ViewModelName_Data(self, event.currentTarget, '%method%', param); },".Replace("%method%", methodInfo.Name)
+                      : "%method%: function (data, event) { if(!IsLoading()) post_ViewModelName_Data(self, event.currentTarget, '%method%', null); },".Replace("%method%", methodInfo.Name);
+                    actionMethods.AppendLine(method.Replace("_ViewModelName_", vmType.Name));
+                }
+
+                // create
+                var text = ClientViewModelTemplate.Replace("_ViewModelType_", vmType.FullName).Replace("_ViewModelName_", vmType.Name);
+                text = text.Replace("_ViewContext_", context);
+
+                text = text.Replace("_SetData_();", string.Join(Environment.NewLine, setData));
+                text = text.Replace("_GetData_();", string.Join(Environment.NewLine, getData));
+                text = text.Replace("_DeclareData_();", string.Join(Environment.NewLine, declareData));
+                text = text.Replace("_ReturnData_: 0,", string.Join(Environment.NewLine, returnData));
+                text = text.Replace("_ActionMethods_: 0,", string.Join(Environment.NewLine, actionMethods));
+
+                ViewModels.Add(vmKey, text);
+                return text;
             }
-
-            var getData = new StringBuilder();
-            foreach (var propName in postbackPropNames)
-            {
-                getData.AppendLine(string.Format("if(viewmodel.{0}() != null) params += '{0}=' + encodeURIComponent(JSON.stringify(viewmodel.{0}()))+'&';", propName));
-            }
-
-            var declareData = new StringBuilder();
-            foreach (var propName in assignPropNames)
-            {
-                declareData.AppendLine($"var {propName} = ko.observable();");
-                declareData.AppendLine($"{propName}.subscribe(function(newval){{IsDirty(true);}});");
-            }
-            var returnData = new StringBuilder();
-            foreach (var propName in assignPropNames)
-            {
-                returnData.AppendLine(string.Format("{0}: {0},", propName));
-            }
-
-            // supply functions for action methods
-            var actionMethods = new StringBuilder();
-            foreach (var methodInfo in vmType.GetMethods().Where(methodInfo => methodInfo.GetCustomAttributes(false).OfType<ActionMethodAttribute>().Any()))
-            {
-                var method = (methodInfo.GetParameters().Length > 0)
-                  ? "%method%: function (data, event, param) { if(!IsLoading()) post_ViewModelName_Data(self, event.currentTarget, '%method%', param); },".Replace("%method%", methodInfo.Name)
-                  : "%method%: function (data, event) { if(!IsLoading()) post_ViewModelName_Data(self, event.currentTarget, '%method%', null); },".Replace("%method%", methodInfo.Name);
-                actionMethods.AppendLine(method.Replace("_ViewModelName_", vmType.Name));
-            }
-
-            // create
-            var text = ClientViewModelTemplate.Replace("_ViewModelType_", vmType.FullName).Replace("_ViewModelName_", vmType.Name);
-            text = text.Replace("_ViewContext_", context);
-
-            text = text.Replace("_SetData_();", string.Join(Environment.NewLine, setData));
-            text = text.Replace("_GetData_();", string.Join(Environment.NewLine, getData));
-            text = text.Replace("_DeclareData_();", string.Join(Environment.NewLine, declareData));
-            text = text.Replace("_ReturnData_: 0,", string.Join(Environment.NewLine, returnData));
-            text = text.Replace("_ActionMethods_: 0,", string.Join(Environment.NewLine, actionMethods));
-
-            ViewModels.Add(vmKey, text);
-            return text;
         }
     }
 }

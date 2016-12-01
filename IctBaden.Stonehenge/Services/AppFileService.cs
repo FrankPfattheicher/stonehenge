@@ -4,11 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using IctBaden.Stonehenge.Creators;
 using ServiceStack.Common;
 using ServiceStack.Common.Web;
-using ServiceStack.ServiceHost;
 
 namespace IctBaden.Stonehenge.Services
 {
