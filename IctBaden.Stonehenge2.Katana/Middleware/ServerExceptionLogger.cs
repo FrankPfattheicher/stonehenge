@@ -26,11 +26,16 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             {
                 await _next.Invoke(environment);
             }
+            catch (TaskCanceledException)
+            {
+                // ignore
+            }
             catch (Exception ex)
             {
                 var message = ex.Message;
                 if (ex.InnerException != null) message += "; " + ex.InnerException.Message;
-                Trace.TraceError($"ServerExceptionHandler: Exception: {message}");
+                Trace.TraceError($"ServerExceptionHandler: {ex.GetType().Name}(HR=0x{ex.HResult:X8}): {message}" + Environment.NewLine + 
+                                 $"ServerExceptionHandler: StackTrace: {ex.StackTrace}");
                 return;
             }
             if (context.Response.StatusCode == (int) HttpStatusCode.InternalServerError)

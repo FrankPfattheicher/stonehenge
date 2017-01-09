@@ -24,6 +24,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
         public async Task Invoke(IDictionary<string, object> environment)
         {
             IOwinContext context = new OwinContext(environment);
+            var canceled = context.Request.CallCancelled;
 
             var timer = new Stopwatch();
             timer.Start();
@@ -53,7 +54,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                 session = NewSession(appSessions, context.Request);
                 context.Response.Headers.Add("Set-Cookie", new[] { "stonehenge-id=" + session.Id });
                 context.Response.Redirect("/Index.html?stonehenge-id=" + session.Id);
-                Trace.TraceInformation($"Stonehenge2.Katana[{stonehengeId}] Redirect to {session.Id}");
+                Trace.TraceInformation($"Stonehenge2.Katana[{stonehengeId}] From IP {context.Request.RemoteIpAddress}:{context.Request.RemotePort} - redirect to {session.Id}");
                 return;
             }
 
@@ -70,18 +71,30 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             }
 
             timer.Stop();
+
+            if (canceled.IsCancellationRequested)
+            {
+                Trace.TraceWarning(
+                    $"Stonehenge2.Katana[{stonehengeId}] Canceled {context.Request.Method}={context.Response.StatusCode} {path}, {timer.ElapsedMilliseconds}ms");
+                throw new TaskCanceledException();
+            }
+
             Trace.TraceInformation(
                 $"Stonehenge2.Katana[{stonehengeId}] End {context.Request.Method}={context.Response.StatusCode} {path}, {timer.ElapsedMilliseconds}ms");
         }
 
         private void CleanupTimedOutSessions(List<AppSession> appSessions)
         {
-            foreach (var timedOut in appSessions.Where(s => s.IsTimedOut))
+            var timedOutSessions = appSessions.Where(s => s.IsTimedOut).ToArray();
+            foreach (var timedOut in timedOutSessions)
             {
+                var vm = timedOut.ViewModel as IDisposable;
+                vm?.Dispose();
                 timedOut.ViewModel = null;
                 appSessions.Remove(timedOut);
-                Trace.TraceInformation($"Stonehenge2.Katana Session timed out {timedOut.Id}. {appSessions.Count} sessions.");
+                Trace.TraceInformation($"Stonehenge2.Katana Session timed out {timedOut.Id}.");
             }
+            Trace.TraceInformation($"Stonehenge2.Katana {appSessions.Count} sessions.");
         }
 
         private AppSession NewSession(List<AppSession> appSessions, IOwinRequest request)
