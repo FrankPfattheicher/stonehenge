@@ -33,6 +33,7 @@ namespace IctBaden.Stonehenge2.Katana
             app.UseErrorPage(errorOptions);
 #endif
             app.Use<ServerExceptionLogger>();
+            app.Use<StonehengeAcme>();
             app.UseCompression();
             app.Use((context, next) =>
             {

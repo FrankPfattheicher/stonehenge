@@ -72,6 +72,7 @@
     <Compile Include="KatanaHost.cs" />
     <Compile Include="Middleware\StonehengeContent.cs" />
     <Compile Include="Middleware\ServerExceptionLogger.cs" />
+    <Compile Include="Middleware\StonehengeAcme.cs" />
     <Compile Include="Middleware\StonehengeSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

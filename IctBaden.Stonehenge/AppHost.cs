@@ -62,6 +62,7 @@ namespace IctBaden.Stonehenge
             
             Routes.Add<AppFile>("/robots.txt")
                   .Add<AppFile>("/favicon.ico")
+                  .Add<AppFile>("/.well-known/{Path1}/{FileName}")
                   .Add<AppFile>("/app/{FileName}")
                   .Add<UserFile>("/app/user/{FileName}")
                   .Add<AppFile>("/app/{Path1}/{FileName}")

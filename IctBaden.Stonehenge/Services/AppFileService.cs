@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using IctBaden.Stonehenge.Creators;
 using ServiceStack.Common;
 using ServiceStack.Common.Web;
@@ -48,6 +49,21 @@ namespace IctBaden.Stonehenge.Services
         private object GetInternal(AppFile request)
         {
 #endif
+            if (request.Path1 == "acme-challenge")
+            {
+                Trace.TraceInformation("Handling ACME request: " + request.FullPath("/.well-known"));
+                var acmePath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? ".";
+                var acmeFile = acmePath + "/.well-known/acme-challenge/" + request.FileName;
+                if (File.Exists(acmeFile))
+                {
+                    var acmeData = File.ReadAllBytes(acmeFile);
+                    return new HttpResult(acmeData);
+                }
+
+                Trace.TraceError("No ACME data found.");
+                return new HttpResult(Request.RawUrl, HttpStatusCode.NotFound);
+            }
+
             var sessionId = GetSessionId();
             var appSession = GetSession(sessionId);
             if (appSession != null)
@@ -184,7 +200,7 @@ namespace IctBaden.Stonehenge.Services
                     if (vmName != null)
                     {
                         vmName = vmName.Substring(0, 1).ToUpper() + vmName.Substring(1, vmName.Length - 2) + "Vm";
-                        var assembly = System.Reflection.Assembly.GetEntryAssembly();
+                        var assembly = Assembly.GetEntryAssembly();
                         var vmType = assembly.GetTypes().FirstOrDefault(t => t.Name == vmName);
                         if (vmType != null)
                         {

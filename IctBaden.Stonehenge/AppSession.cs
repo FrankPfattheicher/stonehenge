@@ -236,7 +236,8 @@ namespace IctBaden.Stonehenge
             userData = new Dictionary<string, object>();
             Id = Guid.NewGuid();
 
-            AppVersionId = Assembly.GetEntryAssembly()?.ManifestModule.ModuleVersionId.ToString("N") ?? Guid.NewGuid().ToString("N");
+            AppVersionId = Assembly.GetEntryAssembly()?.ManifestModule.ModuleVersionId.ToString("N") 
+                ?? Guid.NewGuid().ToString("N");
         }
 
         internal bool IsInitialized => UserAgent != null;
