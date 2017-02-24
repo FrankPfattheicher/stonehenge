@@ -56,7 +56,9 @@ namespace IctBaden.Stonehenge.Services
 
                     if (!session.IsInitialized)
                     {
-                        session.Initialize(Request.QueryString.Get("hostdomain"), Request.AbsoluteUri, Request.RemoteIp, Request.UserAgent);
+                        var hostdomain = Request.QueryString.Get("hostdomain")
+                            ?? Request.UrlReferrer?.DnsSafeHost;
+                        session.Initialize(hostdomain, Request.AbsoluteUri, Request.RemoteIp, Request.UserAgent);
                         host?.OnSessionCreated(session);
                     }
 
