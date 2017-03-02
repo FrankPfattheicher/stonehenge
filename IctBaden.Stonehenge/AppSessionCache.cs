@@ -8,6 +8,8 @@ namespace IctBaden.Stonehenge
 
     public class AppSessionCache
     {
+        public static string InstanceId = Guid.NewGuid().ToString("N");
+
         public static readonly Dictionary<Guid, AppSession> Cache = new Dictionary<Guid, AppSession>();
 
         [Flags]

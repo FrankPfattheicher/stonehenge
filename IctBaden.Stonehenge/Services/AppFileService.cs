@@ -128,7 +128,8 @@ namespace IctBaden.Stonehenge.Services
             if (appSession != null)
             {
                 var etag = Request.Headers["If-None-Match"];
-                if (etag == $"\"{appSession.AppVersionId}\"")
+                var requestTag = $"{AppSessionCache.InstanceId}{Request.AbsoluteUri.GetHashCode():x}";
+                if (etag == $"\"{requestTag}\"")
                 {
                     Debug.WriteLine("ETag match.");
                     httpResult = new HttpResult("", HttpStatusCode.NotModified);
@@ -327,7 +328,8 @@ namespace IctBaden.Stonehenge.Services
 
             if (appSession != null) 
             {
-                httpResult.Headers.Add("ETag", $"\"{appSession.AppVersionId}\"");
+                var requestTag = $"{AppSessionCache.InstanceId}{Request.AbsoluteUri.GetHashCode():x}";
+                httpResult.Headers.Add("ETag", $"\"{requestTag}\"");
                 if (!appSession.CookieSet)
                     httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
             }
