@@ -198,7 +198,6 @@ define(["durandal/app", "durandal/system", "knockout", "flot"], function(app, sy
                     _ViewModelName_Init();
                 } catch (e) { }
             }
-            $(".initialfocus").focus();
         }
     };
     return viewModel;
