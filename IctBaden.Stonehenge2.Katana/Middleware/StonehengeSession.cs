@@ -59,7 +59,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             }
 
             var etag = context.Request.Headers["If-None-Match"];
-            if (context.Request.Method == "GET" && etag == session.AppVersionId)
+            if (context.Request.Method == "GET" && etag == session.AppInstanceId)
             {
                 Debug.WriteLine("ETag match.");
                 context.Response.StatusCode = (int)HttpStatusCode.NotModified;

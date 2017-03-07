@@ -15,7 +15,7 @@ namespace IctBaden.Stonehenge2.Core
 
     public class AppSession : INotifyPropertyChanged
     {
-        public string AppVersionId { get; private set; }
+        public string AppInstanceId { get; private set; }
 
         public string HostDomain { get; private set; }
         public string ClientAddress { get; private set; }
@@ -223,7 +223,7 @@ namespace IctBaden.Stonehenge2.Core
         {
             _userData = new Dictionary<string, object>();
             _id = Guid.NewGuid();
-            AppVersionId = Assembly.GetEntryAssembly()?.ManifestModule.ModuleVersionId.ToString("N") ?? Guid.NewGuid().ToString("N");
+            AppInstanceId = Guid.NewGuid().ToString("N");
             SessionTimeout = TimeSpan.FromMinutes(15);
             Cookies = new Dictionary<string, string>();
             LastAccess = DateTime.Now;
