@@ -29,7 +29,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             var timer = new Stopwatch();
             timer.Start();
 
-            var path = context.Request.Path;
+            var path = context.Request.Path.ToString();
             //var stonehengeId = context.Request.Cookies["stonehenge-id"] ?? context.Request.Query["stonehenge-id"];
             var cookie = context.Request.Headers.FirstOrDefault(h => h.Key == "Cookie");
             var stonehengeId = context.Request.Query["stonehenge-id"];
@@ -59,7 +59,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             }
 
             var etag = context.Request.Headers["If-None-Match"];
-            if (context.Request.Method == "GET" && etag == session.AppInstanceId)
+            if (context.Request.Method == "GET" && etag == session.GetResourceETag(path))
             {
                 Debug.WriteLine("ETag match.");
                 context.Response.StatusCode = (int)HttpStatusCode.NotModified;

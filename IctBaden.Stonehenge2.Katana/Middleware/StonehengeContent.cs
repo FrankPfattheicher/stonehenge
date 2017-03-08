@@ -107,7 +107,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                         break;
                     case Resource.Cache.Revalidate:
                         context.Response.Headers.Add("Cache-Control", new[] { "max-age=3600", "must-revalidate", "proxy-revalidate" });
-                        context.Response.ETag = appSession.AppInstanceId;
+                        context.Response.ETag = appSession.GetResourceETag(path);
                         break;
                     case Resource.Cache.OneDay:
                         context.Response.Headers.Add("Cache-Control", new[] { "max-age=86400" });
