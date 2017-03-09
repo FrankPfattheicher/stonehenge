@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net;
 using ServiceStack.Common.Web;
 
 namespace IctBaden.Stonehenge.Services
@@ -27,5 +28,13 @@ namespace IctBaden.Stonehenge.Services
 
             return new HttpResult("{}", "application/json");
         }
+
+        public object Any()
+        {
+            var message = "AppExceptionService: No handler for HTTP method: " + Request.HttpMethod;
+            Trace.TraceWarning(message);
+            return new HttpResult(message, HttpStatusCode.NotFound);
+        }
+
     }
 }

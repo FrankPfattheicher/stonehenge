@@ -224,5 +224,13 @@ namespace IctBaden.Stonehenge.Services
             }
             // ReSharper restore EmptyGeneralCatchClause
         }
+
+        public object Any()
+        {
+            var message = "AppViewModelService: No handler for HTTP method: " + Request.HttpMethod;
+            Trace.TraceWarning(message);
+            return new HttpResult(message, HttpStatusCode.NotFound);
+        }
+
     }
 }

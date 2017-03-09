@@ -150,5 +150,13 @@ namespace IctBaden.Stonehenge.Services
             }
             return httpResult;
         }
+
+        public object Any()
+        {
+            var message = "AppEventService: No handler for HTTP method: " + Request.HttpMethod;
+            Trace.TraceWarning(message);
+            return new HttpResult(message, HttpStatusCode.NotFound);
+        }
+
     }
 }
