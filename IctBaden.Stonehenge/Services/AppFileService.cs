@@ -26,11 +26,6 @@ namespace IctBaden.Stonehenge.Services
                     
                 };
 
-        public object Any(AppFile request)
-        {
-            return "Any";
-        }
-
         public object Get(AppFile request)
         {
 #if DEBUG
@@ -341,11 +336,11 @@ namespace IctBaden.Stonehenge.Services
             return Get(request);
         }
 
-        public object Any()
+        public object Any(AppFile request)
         {
             var message = "AppFileService: No handler for HTTP method: " + Request.HttpMethod;
             Trace.TraceWarning(message);
-            return new HttpResult(message, HttpStatusCode.NotFound);
+            return new HttpResult(HttpStatusCode.NotFound, message);
         }
 
     }

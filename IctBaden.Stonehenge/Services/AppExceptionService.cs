@@ -29,11 +29,11 @@ namespace IctBaden.Stonehenge.Services
             return new HttpResult("{}", "application/json");
         }
 
-        public object Any()
+        public object Any(AppException exception)
         {
             var message = "AppExceptionService: No handler for HTTP method: " + Request.HttpMethod;
             Trace.TraceWarning(message);
-            return new HttpResult(message, HttpStatusCode.NotFound);
+            return new HttpResult(HttpStatusCode.NotFound, message);
         }
 
     }

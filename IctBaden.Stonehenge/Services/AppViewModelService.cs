@@ -225,11 +225,11 @@ namespace IctBaden.Stonehenge.Services
             // ReSharper restore EmptyGeneralCatchClause
         }
 
-        public object Any()
+        public object Any(AppViewModel request)
         {
             var message = "AppViewModelService: No handler for HTTP method: " + Request.HttpMethod;
             Trace.TraceWarning(message);
-            return new HttpResult(message, HttpStatusCode.NotFound);
+            return new HttpResult(HttpStatusCode.NotFound, message);
         }
 
     }

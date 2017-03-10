@@ -62,11 +62,12 @@ namespace IctBaden.Stonehenge.Services
             return httpResult;
         }
 
-        public object Any()
+        
+        public object Any(UserFile request)
         {
             var message = "UserFileService: No handler for HTTP method: " + Request.HttpMethod;
             Trace.TraceWarning(message);
-            return new HttpResult(message, HttpStatusCode.NotFound);
+            return new HttpResult(HttpStatusCode.NotFound, message);
         }
     }
 
