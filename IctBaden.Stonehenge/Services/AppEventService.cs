@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -13,14 +12,14 @@ namespace IctBaden.Stonehenge.Services
 {
     public class AppEventService : AppService
     {
-        private TimeSpan EventTimeout
-        {
-            get
-            {
-                var host = GetResolver() as AppHost;
-                return host?.EventTimeout ?? TimeSpan.FromSeconds(10);
-            }
-        }
+        //private TimeSpan EventTimeout
+        //{
+        //    get
+        //    {
+        //        var host = GetResolver() as AppHost;
+        //        return host?.EventTimeout ?? TimeSpan.FromSeconds(10);
+        //    }
+        //}
 
         public object Get(AppEvent request)
         {
@@ -54,17 +53,18 @@ namespace IctBaden.Stonehenge.Services
             var currentParameters = Request.QueryString.AllKeys
                 .ToDictionary(key => key, key => Request.QueryString.Get(key));
             appSession.Accessed(Request.Cookies, currentParameters, false);
-            appSession.EventPollingActive.Start((long)EventTimeout.TotalMilliseconds * 2);
+            //appSession.EventPollingActive.Start((long)EventTimeout.TotalMilliseconds * 2);
 
             Debug.WriteLine("EventService:" + request.ViewModel);
 
-            appSession.EventRelease.WaitOne(EventTimeout);
-            // wait for maximum 500ms for more events - if there is none within 100ms - continue
-            var max = 5;
-            while (appSession.EventRelease.WaitOne(100) && (max > 0))
-            {
-                max--;
-            }
+            //appSession.EventRelease.WaitOne(EventTimeout);
+            //// wait for maximum 500ms for more events - if there is none within 100ms - continue
+            //var max = 5;
+            //while (appSession.EventRelease.WaitOne(100) && (max > 0))
+            //{
+            //    max--;
+            //}
+            appSession.EventRelease.WaitOne(100);
 
             var values = new Dictionary<string, object>();
             var vm = appSession.ViewModel as ActiveViewModel;

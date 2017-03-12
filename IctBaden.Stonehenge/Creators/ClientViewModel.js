@@ -3,6 +3,7 @@ var self;
 var activation_data;
 var loading_ViewModelName_active = false;
 var polling_ViewModelName_active = false;
+var pollDelay = 10000;
 // ReSharper disable InconsistentNaming
 // ReSharper disable UseOfImplicitGlobalInFunctionScope
 // ReSharper disable UnusedLocals
@@ -24,7 +25,7 @@ function poll_ViewModelName_Events(viewmodel, initial) {
             if (data.stonehenge_poll != null) initial = true;
         }
         if (initial) {
-            setTimeout(function () { poll_ViewModelName_Events(viewmodel, false); }, 200);
+            setTimeout(function () { poll_ViewModelName_Events(viewmodel, false); }, pollDelay);
         }
 // ReSharper disable once PossiblyUnassignedProperty
     }).fail(function (jqXHR, status, error) {
@@ -32,7 +33,7 @@ function poll_ViewModelName_Events(viewmodel, initial) {
         if (error !== "abort") { viewmodel.IsDisconnected(true); }
         if (jqXHR.status === 200) { setTimeout(function () { window.location.reload(); }, 1000); }
         polling_ViewModelName_active = null;
-        if (!loading_ViewModelName_active) { setTimeout(function () { poll_ViewModelName_Events(self, true); }, 200); }
+        if (!loading_ViewModelName_active) { setTimeout(function () { poll_ViewModelName_Events(self, true); }, pollDelay); }
     });
 }
 function set_ViewModelName_Data(viewmodel, loading, data) {
@@ -58,7 +59,7 @@ function set_ViewModelName_Data(viewmodel, loading, data) {
     }
     if (loading) {
         if (!polling_ViewModelName_active) {
-            setTimeout(function () { poll_ViewModelName_Events(self, true); }, 200);
+            setTimeout(function () { poll_ViewModelName_Events(self, true); }, pollDelay);
         }
         viewmodel.InitialLoading(false);
         viewmodel.IsLoading(false);
