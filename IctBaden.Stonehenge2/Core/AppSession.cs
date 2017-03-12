@@ -37,7 +37,7 @@ namespace IctBaden.Stonehenge2.Core
 
         public string PermanentSessionId { get; private set; }
 
-        private const int EventTimeoutSeconds = 30;
+        private const int EventTimeoutSeconds = 1;  //TODO: Switch to WebSockets !
         private readonly List<string> _events = new List<string>();
         private readonly AutoResetEvent _eventRelease = new AutoResetEvent(false);
 
@@ -310,6 +310,7 @@ namespace IctBaden.Stonehenge2.Core
             {
                 if (!_events.Contains(name))
                     _events.Add(name);
+
                 _eventRelease.Set();
             }
         }

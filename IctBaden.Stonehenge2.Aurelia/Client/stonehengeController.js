@@ -16,6 +16,7 @@ export class stonehengeViewModelName {
         this.StonehengeIsDisconnected = false;
         this.StonehengePostActive = false;
         this.StonehengePollEventsActive = null;
+        this.StonehengePollDelay = 10000;
 
         this.StonehengeCancelRequests = function(scope) {
             for (var rq = 0; rq < scope.http.pendingRequests.length; rq++) {
@@ -36,7 +37,7 @@ export class stonehengeViewModelName {
                         this[propertyName] = data[propertyName];
                     }
                     if (continuePolling || scope.StonehengeContinuePolling) {
-                        setTimeout(function() { scope.StonehengePollEvents(scope, false); }, 200);
+                        setTimeout(function() { scope.StonehengePollEvents(scope, false); }, scope.StonehengePollDelay);
                     }
                 })
                 .catch(error => {
@@ -50,7 +51,7 @@ export class stonehengeViewModelName {
                         }
                         scope.StonehengePollEventsActive = null;
                         if (!scope.StonehengePostActive) {
-                            setTimeout(function() { scope.StonehengePollEvents(scope, true); }, 200);
+                            setTimeout(function() { scope.StonehengePollEvents(scope, true); }, scope.StonehengePollDelay);
                         }
                     }
                 });
@@ -77,7 +78,7 @@ export class stonehengeViewModelName {
                         scope.StonehengePostActive = false;
                     }
                     if (scope.StonehengePollEventsActive == null) {
-                        setTimeout(function() { scope.StonehengePollEvents(scope, true); }, 200);
+                        setTimeout(function() { scope.StonehengePollEvents(scope, true); }, scope.StonehengePollDelay);
                     }
                 })
                 .catch(error => {
@@ -109,7 +110,7 @@ export class stonehengeViewModelName {
                         scope[propertyName] = data[propertyName];
                     }
                     if (scope.StonehengePollEventsActive == null) {
-                        setTimeout(function() { scope.StonehengePollEvents(scope, true); }, 200);
+                        setTimeout(function() { scope.StonehengePollEvents(scope, true); }, scope.StonehengePollDelay);
                     }
                 })
                 .catch(error => {

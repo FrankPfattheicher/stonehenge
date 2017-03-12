@@ -16,7 +16,7 @@ using ServiceStack.WebHost.Endpoints.Support;
 
 namespace IctBaden.Stonehenge
 {
-    internal class AppHost : AppHostHttpListenerBase
+    internal class AppHost : AppHostHttpListenerLongRunningBase
     {
         public string Title { get; private set; }
         public string StartPage { get; private set; }
