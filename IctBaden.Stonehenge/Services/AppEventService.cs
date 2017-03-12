@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Web;
 using ServiceStack.Common;
 using ServiceStack.Common.Web;
@@ -150,5 +149,13 @@ namespace IctBaden.Stonehenge.Services
             }
             return httpResult;
         }
+
+        public object Any(AppEvent request)
+        {
+            var message = "AppEventService: No handler for HTTP method: " + Request.HttpMethod;
+            Trace.TraceWarning(message);
+            return new HttpResult(HttpStatusCode.NotFound, message);
+        }
+
     }
 }

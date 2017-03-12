@@ -94,27 +94,31 @@ namespace IctBaden.Stonehenge
 
             ExceptionHandler = (req, res, name, exception) =>
             {
-                var message = exception.Message;
+                var message = "Stonehenge AppHost.ExceptionHandler" + Environment.NewLine;
+                message += $"\tRequest: {req.HttpMethod} {req.AbsoluteUri}" + Environment.NewLine;
+                message += $"\tMessage: {exception.Message}";
                 while (exception.InnerException != null)
                 {
                     exception = exception.InnerException;
-                    message += Environment.NewLine + exception.Message;
+                    message += Environment.NewLine + $"\tMessage: {exception.Message}";
                 }
-                message += Environment.NewLine + exception.StackTrace;
-                Trace.TraceError("Stonehenge exception: " + message);
+                message += Environment.NewLine + $"\tStackTrace: {exception.StackTrace}";
+                Trace.TraceError(message);
             };
 
             ServiceExceptionHandler = (req, request, exception) =>
             {
-                var message = exception.Message;
+                var message = "Stonehenge AppHost.ServiceExceptionHandler" + Environment.NewLine;
+                message += $"\tRequest: {req.HttpMethod} {req.AbsoluteUri}" + Environment.NewLine;
+                message += $"\tMessage: {exception.Message}";
                 while (exception.InnerException != null)
                 {
                     exception = exception.InnerException;
-                    message += Environment.NewLine + exception.Message;
+                    message += Environment.NewLine + $"\tMessage: {exception.Message}";
                 }
-                message += Environment.NewLine + exception.StackTrace;
-                Trace.TraceError("Stonehenge exception: " + message);
-                return new HttpResult(HttpStatusCode.InternalServerError, exception.Message + Environment.NewLine + exception.StackTrace);
+                message += Environment.NewLine + $"\tStackTrace: {exception.StackTrace}";
+                Trace.TraceError(message);
+                return new HttpResult(HttpStatusCode.InternalServerError, message);
             };
 
             SetConfig(new EndpointHostConfig

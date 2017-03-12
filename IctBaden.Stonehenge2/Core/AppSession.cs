@@ -315,6 +315,11 @@ namespace IctBaden.Stonehenge2.Core
             }
         }
 
+        public string GetResourceETag(string path)
+        {
+            return AppInstanceId + path.GetHashCode().ToString("x8");
+        }
+
         public override string ToString()
         {
             // ReSharper disable once UseStringInterpolation

@@ -13,17 +13,11 @@ namespace IctBaden.Stonehenge.Services
             Path4 = string.Empty;
         }
 
-        public bool IsEmpty
-        {
-            get
-            {
-                return (Path1 == string.Empty)
-                       && (Path2 == string.Empty)
-                       && (Path3 == string.Empty)
-                       && (Path4 == string.Empty)
-                       && (FileName == null);
-            }
-        }
+        public bool IsEmpty => (Path1 == string.Empty)
+                               && (Path2 == string.Empty)
+                               && (Path3 == string.Empty)
+                               && (Path4 == string.Empty)
+                               && (FileName == null);
 
         public string Path1 { get; set; }
         public string Path2 { get; set; }
@@ -46,6 +40,7 @@ namespace IctBaden.Stonehenge.Services
             }
             catch (Exception)
             {
+                // ignored
             }
             return fullPath;
         }
