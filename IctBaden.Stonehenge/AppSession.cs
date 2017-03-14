@@ -39,7 +39,8 @@ namespace IctBaden.Stonehenge
         internal AutoResetEvent EventRelease = new AutoResetEvent(false);
         internal readonly PassiveTimer EventPollingActive = new PassiveTimer();
 
-        public bool IsWaitingForEvents => EventPollingActive.Running && !EventPollingActive.Timeout;
+        [Obsolete("This returns false always now - event handling will be rewritten")]
+        public bool IsWaitingForEvents => false; //EventPollingActive.Running && !EventPollingActive.Timeout;
 
         private object viewModel;
         public object ViewModel
