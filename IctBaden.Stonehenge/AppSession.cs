@@ -356,5 +356,12 @@ namespace IctBaden.Stonehenge
             ViewModel = null;
             vm?.Dispose();
         }
+
+        public string GetETag(string url)
+        {
+            var etag = $"{AppSessionCache.InstanceId}{SubDomain.GetHashCode():x}{url.GetHashCode():x}";
+            return etag;
+        }
+
     }
 }

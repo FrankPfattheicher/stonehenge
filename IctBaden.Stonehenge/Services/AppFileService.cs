@@ -123,7 +123,7 @@ namespace IctBaden.Stonehenge.Services
             if (appSession != null)
             {
                 var etag = Request.Headers["If-None-Match"];
-                var requestTag = $"{AppSessionCache.InstanceId}{Request.AbsoluteUri.GetHashCode():x}";
+                var requestTag = appSession.GetETag(Request.AbsoluteUri);
                 if (etag == $"\"{requestTag}\"")
                 {
                     Debug.WriteLine("ETag match.");
@@ -156,7 +156,23 @@ namespace IctBaden.Stonehenge.Services
                 return httpResult;
             }
 
-            var text = ResourceLoader.LoadText(request.BasePath(RootPath), request.BasePath(""), request.FileName);
+            string text = null;
+            if (!string.IsNullOrEmpty(appSession?.SubDomain) && (request.Path1 == "app"))
+            {
+                var subrequest = new AppFile
+                {
+                    Path1 = appSession.SubDomain,
+                    Path2 = request.Path2,
+                    Path3 = request.Path3,
+                    Path4 = request.Path4,
+                    FileName = request.FileName
+                };
+                text = ResourceLoader.LoadText(subrequest.BasePath(RootPath), subrequest.BasePath(""), subrequest.FileName);
+            }
+            if (string.IsNullOrEmpty(text))
+            {
+                text = ResourceLoader.LoadText(request.BasePath(RootPath), request.BasePath(""), request.FileName);
+            }
             if (!string.IsNullOrEmpty(text))
             {
                 if (text.StartsWith("//ViewModel:"))
@@ -316,18 +332,23 @@ namespace IctBaden.Stonehenge.Services
             {
                 httpResult.Headers.Add(header.Key, header.Value);
             }
-            
-            httpResult.Headers.Add("Cache-Control", doNotCache 
-                ? "no-cache" 
-                : "max-age=3600, must-revalidate, proxy-revalidate");
 
+            var maxAge = 3600;
             if (appSession != null) 
             {
-                var requestTag = $"{AppSessionCache.InstanceId}{Request.AbsoluteUri.GetHashCode():x}";
+                var requestTag = appSession.GetETag(Request.AbsoluteUri);
                 httpResult.Headers.Add("ETag", $"\"{requestTag}\"");
+                maxAge = 60;
+
                 if (!appSession.CookieSet)
+                {
                     httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
+                }
             }
+
+            httpResult.Headers.Add("Cache-Control", doNotCache
+                ? "no-cache"
+                : $"max-age={maxAge}, must-revalidate, proxy-revalidate");
             return httpResult;
         }
 
