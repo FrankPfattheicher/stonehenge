@@ -1,4 +1,5 @@
-﻿namespace IctBaden.Stonehenge.Sample.ViewModels
+﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+namespace IctBaden.Stonehenge.Sample.ViewModels
 {
     using System;
     using System.Collections.Generic;
@@ -7,26 +8,28 @@
     using System.Linq;
     using System.Threading;
 
-    using IctBaden.Stonehenge;
+    using Stonehenge;
 
     public class FormVm : ActiveViewModel
     {
-        private static int nid = 1;
-        private string name;
+        private static int _nid = 1;
+        private string _name;
         private Timer timer;
 
         public string Id { get; private set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public string Clock { get; private set; }
 
         [Bindable(true, BindingDirection.OneWay)]
-        public string Prompt { get { return "Enter name:"; } }
+        public string Prompt => "Enter name:";
+
         public string Name
         {
-            get { return name; }
+            get { return _name; }
             set
             {
-                name = value;
-                Debug.WriteLine("[{0}] Name={1}", Id, name);
+                _name = value;
+                Debug.WriteLine("[{0}] Name={1}", Id, _name);
             }
         }
 
@@ -43,8 +46,7 @@
             NavigateTo("login");
         }
 
-        public bool CanSayHello
-        { get { return !string.IsNullOrEmpty(Name); } }
+        public bool CanSayHello => !string.IsNullOrEmpty(Name);
 
 
         [Bindable(true, BindingDirection.OneWay)]
@@ -54,6 +56,24 @@
 
         public CheckedItem AutoUpdate { get; set; }
 
+        public CheckedItem ImageOptionA { get; set; }
+        public CheckedItem ImageOptionB { get; set; }
+        public CheckedItem ImageOptionC { get; set; }
+        public CheckedItem ImageOptionD { get; set; }
+
+        public string ImageOptions
+        {
+            get
+            {
+                var options = "";
+                options += ImageOptionA.Checked ? "A " : "_ ";
+                options += ImageOptionB.Checked ? "B " : "_ ";
+                options += ImageOptionC.Checked ? "C " : "_ ";
+                options += ImageOptionD.Checked ? "D " : "_ ";
+                return options;
+            }
+        }
+
         public List<CheckedItem> BitValues { get; set; }
 
         public string ByteValue
@@ -61,7 +81,7 @@
             get
             {
                 var value = BitValues.Where(bitValue => bitValue.Checked).Aggregate(0, (current, bitValue) => current | bitValue.Value);
-                return string.Format("0x{0:X2}", value);
+                return $"0x{value:X2}";
             }
         }
 
@@ -70,14 +90,19 @@
         public FormVm(AppSession session)
             : base(session)
         {
-            nid++;
-            Id = "Form (Instance #" + nid + ")";
+            _nid++;
+            Id = "Form (Instance #" + _nid + ")";
             Name = "Frank";
 
             OptionValues = new List<string> { "One", "Two", "Tree", "Four" };
             SelectedOptions = new List<string> { "Tree" };
             SelectedOption = "Two";
             AutoUpdate = new CheckedItem { Title = "clock display" };
+
+            ImageOptionA = new CheckedItem();
+            ImageOptionB = new CheckedItem();
+            ImageOptionC = new CheckedItem();
+            ImageOptionD = new CheckedItem();
 
             BitValues = new List<CheckedItem>
         {
@@ -107,6 +132,11 @@
         }
 
         [ActionMethod]
+        public void OnImgChanged()
+        {
+        }
+
+        [ActionMethod]
         public void OnBitsChanged()
         {
         }
@@ -114,6 +144,7 @@
         [ActionMethod]
         public void OnNameChanged(object name)
         {
+            Debug.WriteLine(name);
         }
 
         [ActionMethod]

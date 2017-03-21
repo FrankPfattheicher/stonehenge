@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
+    <EmbeddedResource Include="App\icon2.png" />
     <EmbeddedResource Include="App\exception.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
