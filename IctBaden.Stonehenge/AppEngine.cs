@@ -13,16 +13,16 @@ namespace IctBaden.Stonehenge
         public string StartPage { get; set; }
         public bool MessageBoxContentHtml { get; set; }
         public TimeSpan EventTimeout { get; set; }
-        public bool HasEventTimeout { get { return EventTimeout.TotalMilliseconds > 0.1; } }
+        public bool HasEventTimeout => EventTimeout.TotalMilliseconds > 0.1;
         public TimeSpan SessionTimeout { get; set; }
-        public bool HasSessionTimeout { get { return SessionTimeout.TotalMilliseconds > 0.1; } }
-        public string Protocol { get { return useSsl ? "https" : "http"; } }
+        public bool HasSessionTimeout => SessionTimeout.TotalMilliseconds > 0.1;
+        public string Protocol => _useSsl ? "https" : "http";
         public string ListeningOn { get; private set; }
 
-        private readonly int desiredPort;
+        private readonly int _desiredPort;
         public int UsedPort { get; private set; }
-        private readonly bool useSsl;
-        private AppHost host;
+        private readonly bool _useSsl;
+        private AppHost _host;
 
         public event Action<AppSession> SessionCreated;
         public event Action<AppSession> SessionTerminated;
@@ -30,9 +30,9 @@ namespace IctBaden.Stonehenge
 
         public void Redirect(string page)
         {
-            if (host != null)
+            if (_host != null)
             {
-                host.Redirect = page;
+                _host.Redirect = page;
             }
         }
 
@@ -42,8 +42,8 @@ namespace IctBaden.Stonehenge
         }
         public AppEngine(int hostPort, bool secure, string title, string startPage)
         {
-            desiredPort = hostPort;
-            useSsl = secure;
+            _desiredPort = hostPort;
+            _useSsl = secure;
             Title = title;
             StartPage = startPage;
             WindowSize = new Point(800, 600);
@@ -51,24 +51,24 @@ namespace IctBaden.Stonehenge
 
         public void Run(bool newWindow)
         {
-            UsedPort = (desiredPort != 0) ? desiredPort : 42000;
-            ListeningOn = string.Format("{0}://*:{1}/", Protocol, UsedPort);
+            UsedPort = (_desiredPort != 0) ? _desiredPort : 42000;
+            ListeningOn = $"{Protocol}://*:{UsedPort}/";
 
-            host = new AppHost(Title, StartPage, MessageBoxContentHtml);
+            _host = new AppHost(Title, StartPage, MessageBoxContentHtml);
             if (HasEventTimeout)
             {
-                host.EventTimeout = EventTimeout;
+                _host.EventTimeout = EventTimeout;
             }
             if (HasSessionTimeout)
             {
-                host.SessionTimeout = SessionTimeout;
+                _host.SessionTimeout = SessionTimeout;
             }
-            host.Init();
+            _host.Init();
             for (; ; )
             {
                 try
                 {
-                    host.Start(ListeningOn);
+                    _host.Start(ListeningOn);
                     break;
                 }
                 catch (HttpListenerException ex)
@@ -77,24 +77,24 @@ namespace IctBaden.Stonehenge
                     {
                         throw new AccessViolationException("You need administartion privileges or use HttpCfg");
                     }
-                    if (((ex.ErrorCode == 32) || (ex.ErrorCode == 183)) && (desiredPort == 0))
+                    if (((ex.ErrorCode == 32) || (ex.ErrorCode == 183)) && (_desiredPort == 0))
                     {
                         UsedPort = new Random().Next(5000, 65500);
-                        ListeningOn = string.Format("{0}://*:{1}/", Protocol, UsedPort);
+                        ListeningOn = $"{Protocol}://*:{UsedPort}/";
                         continue;
                     }
                     if (ex.ErrorCode == 32)
                     {
                         // Skype ?
-                        throw new AccessViolationException(String.Format("Http port {0} already used by other application", desiredPort));
+                        throw new AccessViolationException($"Http port {_desiredPort} already used by other application");
                     }
                     throw;
                 }
             }
 
-            host.SessionCreated += OnSessionCreated;
-            host.SessionTerminated += OnSessionTerminated;
-            host.ClientException += OnClientException;
+            _host.SessionCreated += OnSessionCreated;
+            _host.SessionTerminated += OnSessionTerminated;
+            _host.ClientException += OnClientException;
 
             if (!newWindow)
                 return;
@@ -111,12 +111,9 @@ namespace IctBaden.Stonehenge
 
         public void Terminate()
         {
-            var h = host;
-            host = null;
-            if (h != null)
-            {
-                h.Dispose();
-            }
+            var h = _host;
+            _host = null;
+            h?.Dispose();
 
             AppSessionCache.Terminate();
         }
@@ -128,9 +125,7 @@ namespace IctBaden.Stonehenge
 
             var dir = Directory.CreateDirectory(path);
             var parameter =
-              string.Format(
-                "--app={0}://localhost:{1}/?title={2} --window-size={3},{4} --disable-translate --user-data-dir=\"{5}\"",
-                Protocol, UsedPort, Title, WindowSize.X, WindowSize.Y, path);
+                $"--app={Protocol}://localhost:{UsedPort}/?title={Title} --window-size={WindowSize.X},{WindowSize.Y} --disable-translate --user-data-dir=\"{path}\"";
             var ui = Process.Start(cmd, parameter);
             if (ui == null)
             {
@@ -150,7 +145,7 @@ namespace IctBaden.Stonehenge
             var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
 
             var dir = Directory.CreateDirectory(path);
-            var parameter = string.Format("-e Navigationbar -c {0} -a {1}://localhost:{2}/?title={3}", path, Protocol, UsedPort, Title);
+            var parameter = $"-e Navigationbar -c {path} -a {Protocol}://localhost:{UsedPort}/?title={Title}";
             var ui = Process.Start("midori", parameter);
             if (ui == null)
             {
@@ -168,7 +163,7 @@ namespace IctBaden.Stonehenge
                 return false;
 
             const string cmd = "iexplore.exe";
-            var parameter = string.Format("-private {0}://localhost:{1}/?title={2}", Protocol, UsedPort, Title);
+            var parameter = $"-private {Protocol}://localhost:{UsedPort}/?title={Title}";
             var ui = Process.Start(cmd, parameter);
             if (ui == null)
             {
@@ -185,7 +180,8 @@ namespace IctBaden.Stonehenge
                 return false;
 
             const string cmd = "firefox.exe";
-            var parameter = string.Format("{0}://localhost:{1}/?title={2} -width {3} -height {4}", Protocol, UsedPort, Title, WindowSize.X, WindowSize.Y);
+            var parameter =
+                $"{Protocol}://localhost:{UsedPort}/?title={Title} -width {WindowSize.X} -height {WindowSize.Y}";
             var ui = Process.Start(cmd, parameter);
             if (ui == null)
             {
@@ -202,7 +198,8 @@ namespace IctBaden.Stonehenge
                 return false;
 
             const string cmd = "safari.exe";
-            var parameter = string.Format("-url {0}://localhost:{1}/?title={2} -width {3} -height {4}", Protocol, UsedPort, Title, WindowSize.X, WindowSize.Y);
+            var parameter =
+                $"-url {Protocol}://localhost:{UsedPort}/?title={Title} -width {WindowSize.X} -height {WindowSize.Y}";
             var ui = Process.Start(cmd, parameter);
             if (ui == null)
             {
