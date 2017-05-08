@@ -40,12 +40,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IctBaden.Stonehenge2\IctBaden.Stonehenge2.csproj">
-      <Project>{840ec9f2-7967-4120-9f45-6ff56df9fadb}</Project>
-      <Name>IctBaden.Stonehenge2</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="app\index.html" />
   </ItemGroup>
   <ItemGroup>

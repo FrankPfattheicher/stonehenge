@@ -88,16 +88,6 @@
   <ItemGroup>
     <EmbeddedResource Include="App\lib\TestScript.js" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IctBaden.Stonehenge2.Katana\IctBaden.Stonehenge2.Katana.csproj">
-      <Project>{fa4c06c4-e32c-4c41-be4b-712c963e36fc}</Project>
-      <Name>IctBaden.Stonehenge2.Katana</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IctBaden.Stonehenge2\IctBaden.Stonehenge2.csproj">
-      <Project>{840ec9f2-7967-4120-9f45-6ff56df9fadb}</Project>
-      <Name>IctBaden.Stonehenge2</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
