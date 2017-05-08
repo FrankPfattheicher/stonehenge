@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace IctBaden.Stonehenge2.Katana
 {
@@ -40,16 +41,24 @@ namespace IctBaden.Stonehenge2.Katana
             }
             catch (Exception ex)
             {
-                if (ex is MissingMemberException && ex.Message.Contains("Microsoft.Owin.Host.HttpListener"))
+                var inner = ex.InnerException as HttpListenerException;
+                if ((inner != null) && (inner.ErrorCode == 5))
+                {
+                    Trace.TraceError($"Access denied: Try netsh http delete urlacl {BaseUrl}");
+                }
+                else if(ex is MissingMemberException && ex.Message.Contains("Microsoft.Owin.Host.HttpListener"))
                 {
                     Trace.TraceError("Missing reference to nuget package 'Microsoft.Owin.Host.HttpListener'");
                 }
-                Trace.TraceError("KatanaHost.Start: " + ex.Message);
+
+                var message = ex.Message;
                 while (ex.InnerException != null)
                 {
                     ex = ex.InnerException;
-                    Trace.TraceError(" + " + ex.Message);
+                    message += Environment.NewLine + "    " + ex.Message;
                 }
+                Trace.TraceError("KatanaHost.Start: " + message);
+                _webApp = null;
             }
             return _webApp != null;
         }
