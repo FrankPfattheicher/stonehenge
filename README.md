@@ -10,6 +10,8 @@ This version has an architecture and is no longer a proof of concept hack.
 * Newtonsoft.JSON replaces ServiceStack JSON serializer
 * Modularization and interfaces allow to replace this function modules using upcomming technologies
 
+For more informatioon see https://github.com/FrankPfattheicher/stonehenge2
+
 
 ## Still supported V1.x
 Due to more than one active project using the older stack
@@ -23,9 +25,9 @@ New in version 1.10: Reuse sessions from cookies
 
 New in version 1.00: Client side aborting event polling fixed sync problems of th UI
                      SSL support (also for CDN)
-					 Fixed some Linux issues according to case sensivity of paths
-					 Server side handling of client side binding exceptions added
-					
+                     Fixed some Linux issues according to case sensivity of paths
+                     Server side handling of client side binding exceptions added
+                    
 ## Motivation
 Due to Microsofts unclear future of WPF and the lack of WPF support
 with Mono on other platforms there was the idea to use HTML5/CSS for
