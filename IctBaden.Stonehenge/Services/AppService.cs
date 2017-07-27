@@ -16,7 +16,7 @@ namespace IctBaden.Stonehenge.Services
         public const string PropertyNameNavigate = PropertyNameId + "Navigate_";
         public const string PropertyNameClientScript = PropertyNameId + "ClientScript_";
 
-        private List<KeyValuePair<string, string>> currentParameters;
+        private List<KeyValuePair<string, string>> _currentParameters;
 
         public string GetSessionId()
         {
@@ -28,7 +28,7 @@ namespace IctBaden.Stonehenge.Services
                 sessionId = Request.Cookies["stonehenge_id"].Value;
             }
 
-            currentParameters = Request.QueryString.AllKeys
+            _currentParameters = Request.QueryString.AllKeys
                 .Where(key => key != "stonehenge_id")
                 .Select(key => new KeyValuePair<string, string>(key, Request.QueryString.Get(key)))
                 .ToList();
@@ -110,9 +110,9 @@ namespace IctBaden.Stonehenge.Services
 
             //uri = request.FileName + "?stonehenge_id=" + session.Id;
             uri += "?stonehenge_id=" + session.Id;
-            if (currentParameters != null)
+            if (_currentParameters != null)
             {
-                uri = currentParameters
+                uri = _currentParameters
                     .Aggregate(uri, (current, parameter) => current + $"&{parameter.Key}={parameter.Value}");
             }
 
