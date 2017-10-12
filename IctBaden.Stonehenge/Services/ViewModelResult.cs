@@ -103,6 +103,18 @@ namespace IctBaden.Stonehenge.Services
                 prefix = string.Empty;
 
             Parallel.ForEach(obj.GetType().GetProperties(), prop => SerializeProperty(data, prefix, obj, prop));
+
+            var vm = obj as ActiveViewModel;
+            if (vm != null)
+            {
+                foreach (var name in vm.GetDictionaryNames())
+                {
+                    var value = vm.GetDictionaryValue(name);
+                    var json = "\"" + prefix + name + "\":" + JsonSerializer.SerializeToString(value);
+                    data.Add(json);
+                }
+            }
+            
             //foreach (var prop in obj.GetType().GetProperties())
             //{
             //    SerializeProperty(data, prefix, obj, prop);

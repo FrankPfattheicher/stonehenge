@@ -211,8 +211,8 @@ namespace IctBaden.Stonehenge
         [Browsable(false)]
         protected object this[string name]
         {
-            get { return TryGetMember(name); }
-            set { TrySetMember(name, value); }
+            get => TryGetMember(name);
+            set => TrySetMember(name, value);
         }
 
         public void SetModel(object model, bool readOnly = false)
@@ -299,6 +299,10 @@ namespace IctBaden.Stonehenge
         {
             return dictionary.Select(e => e.Key);
         }
+        public object GetDictionaryValue(string name)
+        {
+            return dictionary.ContainsKey(name) ? dictionary[name] : null;
+        }
 
         private PropertyInfoEx GetPropertyInfoEx(string name)
         {
@@ -356,6 +360,11 @@ namespace IctBaden.Stonehenge
                 pi.Info.SetValue(pi.Obj, value, null);
                 NotifyPropertyChanged(binder.Name);
                 return true;
+            }
+            if ((properties != null) && !dictionary.ContainsKey(binder.Name))
+            {
+                var desc = new PropertyDescriptorEx(binder.Name, null, false);
+                properties.Add(desc);
             }
             dictionary[binder.Name] = value;
             NotifyPropertyChanged(binder.Name);
@@ -525,7 +534,8 @@ namespace IctBaden.Stonehenge
         {
             GetProperties();
 #if DEBUG
-            Debug.Assert(name.StartsWith(AppService.PropertyNameId) || (GetPropertyInfo(name) != null), 
+            Debug.Assert(name.StartsWith(AppService.PropertyNameId) 
+                || (GetPropertyInfo(name) != null) || GetDictionaryNames().Contains(name), 
                 "NotifyPropertyChanged for unknown property " + name);
 #endif
             var handler = PropertyChanged;

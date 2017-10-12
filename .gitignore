@@ -120,3 +120,4 @@ UpgradeLog*.XML
 *.iml
 
 /*.iml
+/.vs/Stonehenge1/v15/sqlite3/*.ide
