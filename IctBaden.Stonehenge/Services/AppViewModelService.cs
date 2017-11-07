@@ -65,8 +65,7 @@ namespace IctBaden.Stonehenge.Services
             }
 
             var builder = new ViewModelResult(RequestContext.CompressionType, appSession, vm);
-            builder.Build();
-            var result = builder.Result;
+            var result = builder.Build();
             return result;
         }
 
@@ -156,8 +155,7 @@ namespace IctBaden.Stonehenge.Services
             if (host?.Redirect == null)
             {
                 var builder = new ViewModelResult(RequestContext.CompressionType, appSession, vm);
-                builder.Build();
-                var result = builder.Result;
+                var result = builder.Build();
 
                 return returnData ? result : new HttpResult("{}", ViewModelContentType);
             }

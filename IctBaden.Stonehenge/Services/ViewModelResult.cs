@@ -20,8 +20,6 @@ namespace IctBaden.Stonehenge.Services
         private readonly AppSession _appSession;
         private readonly object _viewModel;
 
-        public object Result;
-
         public ViewModelResult(string compressionType, AppSession appSession, object viewModel)
         {
             _compressionType = compressionType;
@@ -29,7 +27,7 @@ namespace IctBaden.Stonehenge.Services
             _viewModel = viewModel;
         }
 
-        public void Build()
+        public HttpResult Build()
         {
             var data = new BlockingCollection<string>();
             var activeVm = _viewModel as ActiveViewModel;
@@ -56,6 +54,8 @@ namespace IctBaden.Stonehenge.Services
             SerializeObject(data, null, _viewModel);
 
             var result = "{" + string.Join(",", data) + "}";
+            data.Dispose();
+            data = null;
 
             HttpResult httpResult;
             if (!string.IsNullOrEmpty(_compressionType))
@@ -77,7 +77,7 @@ namespace IctBaden.Stonehenge.Services
                 httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + _appSession.Id);
             }
 
-            Result = httpResult;
+            return httpResult;
         }
 
         public static Func<object, object> BuildUntypedGetter(Type targetType, PropertyInfo propertyInfo)

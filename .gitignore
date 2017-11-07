@@ -121,3 +121,5 @@ UpgradeLog*.XML
 
 /*.iml
 /.vs/Stonehenge1/v15/sqlite3/*.ide
+/.vs/Stonehenge1/v15/Server/sqlite3/*.lock
+/.vs/Stonehenge1/v15/Server/sqlite3/*.ide
