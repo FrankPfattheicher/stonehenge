@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using Funq;
 using IctBaden.Stonehenge.Services;
@@ -11,6 +12,7 @@ using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.WebHost.Endpoints;
+using ServiceStack.WebHost.Endpoints.Formats;
 using ServiceStack.WebHost.Endpoints.Support;
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
@@ -77,7 +79,13 @@ namespace IctBaden.Stonehenge
 
             Routes.Add<AppException>("/Exception/{Cause}");
 
+            var plugin = Plugins.FirstOrDefault(p => p.GetType() == typeof(MarkdownFormat));
+            if (plugin != null) Plugins.Remove(plugin);
+            plugin = Plugins.FirstOrDefault(p => p.GetType() == typeof(CsvFormat));
+            if (plugin != null) Plugins.Remove(plugin);
+
             Plugins.Add(new SessionFeature());
+            
             container.Register<ICacheClient>(new MemoryCacheClient());
             var authRepository = new InMemoryAuthRepository();
             container.Register<IUserAuthRepository>(authRepository);

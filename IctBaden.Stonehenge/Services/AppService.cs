@@ -43,8 +43,7 @@ namespace IctBaden.Stonehenge.Services
             }
             lock (AppSessionCache.Cache)
             {
-                Guid sessionId;
-                Guid.TryParse(id, out sessionId);
+                Guid.TryParse(id, out Guid sessionId);
                 var session = AppSessionCache.GetSession(sessionId);
                 if (session == null)
                 {

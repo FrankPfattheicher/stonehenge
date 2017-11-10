@@ -53,6 +53,8 @@ namespace IctBaden.Stonehenge.Services
             var currentParameters = Request.QueryString.AllKeys
                 .ToDictionary(key => key, key => Request.QueryString.Get(key));
             appSession.Accessed(Request.Cookies, currentParameters, false);
+            currentParameters.Clear();
+
             //appSession.EventPollingActive.Start((long)EventTimeout.TotalMilliseconds * 2);
 
             Debug.WriteLine("EventService:" + request.ViewModel);
@@ -147,6 +149,8 @@ namespace IctBaden.Stonehenge.Services
             {
                 httpResult.Headers.Add("Set-Cookie", "stonehenge_id=" + appSession.Id);
             }
+
+            values.Clear();
             return httpResult;
         }
 

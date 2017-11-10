@@ -42,19 +42,19 @@ namespace IctBaden.Stonehenge
         [Obsolete("This returns false always now - event handling will be rewritten")]
         public bool IsWaitingForEvents => false; //EventPollingActive.Running && !EventPollingActive.Timeout;
 
-        private object viewModel;
+        private object _viewModel;
         public object ViewModel
         {
-            get { return viewModel; }
+            get => _viewModel;
             set
             {
-                var npc = viewModel as INotifyPropertyChanged;
+                var npc = _viewModel as INotifyPropertyChanged;
                 if (npc != null)
                 {
                     npc.PropertyChanged -= ViewModelPropertyChanged;
                 }
 
-                viewModel = value;
+                _viewModel = value;
                 npc = value as INotifyPropertyChanged;
                 if (npc != null)
                 {
@@ -97,7 +97,7 @@ namespace IctBaden.Stonehenge
             EventsClear(true);
 
             var asm = Assembly.GetEntryAssembly();
-            var vmtype = asm.GetTypes().FirstOrDefault(type => type.FullName.EndsWith(typeName));
+            var vmtype = asm.GetTypes().FirstOrDefault(type => type.FullName?.EndsWith(typeName) ?? false);
             if (vmtype == null)
             {
                 ViewModel = null;
@@ -159,36 +159,33 @@ namespace IctBaden.Stonehenge
 
         public Dictionary<string, string> Parameters = new Dictionary<string, string>();
 
-        private readonly Dictionary<string, object> userData;
+        private readonly Dictionary<string, object> _userData;
         public object this[string key]
         {
-            get
-            {
-                return userData.ContainsKey(key) ? userData[key] : null;
-            }
+            get => _userData.ContainsKey(key) ? _userData[key] : null;
             set
             {
                 if (this[key] == value)
                     return;
-                userData[key] = value;
+                _userData[key] = value;
                 NotifyPropertyChanged(key);
             }
         }
 
         public void Set<T>(string key, T value)
         {
-            userData[key] = value;
+            _userData[key] = value;
         }
         public T Get<T>(string key)
         {
-            if (!userData.ContainsKey(key))
+            if (!_userData.ContainsKey(key))
                 return default(T);
 
-            return (T)userData[key];
+            return (T)_userData[key];
         }
         public void Remove(string key)
         {
-            userData.Remove(key);
+            _userData.Remove(key);
         }
 
         public TimeSpan ConnectedDuration => DateTime.Now - ConnectedSince;
@@ -198,41 +195,41 @@ namespace IctBaden.Stonehenge
         public TimeSpan LastUserActionDuration => DateTime.Now - LastUserAction;
 
         public event Action TimedOut;
-        private Timer pollSessionTimeout;
+        private Timer _pollSessionTimeout;
         public TimeSpan SessionTimeout { get; private set; }
 
         public void SetTimeout(TimeSpan timeout)
         {
-            pollSessionTimeout?.Dispose();
+            _pollSessionTimeout?.Dispose();
             SessionTimeout = timeout;
             if (Math.Abs(timeout.TotalMilliseconds) > 0.1)
             {
-                pollSessionTimeout = new Timer(CheckSessionTimeout, null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
+                _pollSessionTimeout = new Timer(CheckSessionTimeout, null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
             }
         }
 
         private void CheckSessionTimeout(object _)
         {
-            if ((LastAccessDuration > SessionTimeout) && (terminator != null))
+            if ((LastAccessDuration > SessionTimeout) && (_terminator != null))
             {
-                pollSessionTimeout.Dispose();
-                terminator.Dispose();
+                _pollSessionTimeout.Dispose();
+                _terminator.Dispose();
                 TimedOut?.Invoke();
             }
             NotifyPropertyChanged(nameof(ConnectedDuration));
             NotifyPropertyChanged(nameof(LastAccessDuration));
         }
 
-        private IDisposable terminator;
+        private IDisposable _terminator;
 
         public void SetTerminator(IDisposable disposable)
         {
-            terminator = disposable;
+            _terminator = disposable;
         }
 
         public AppSession()
         {
-            userData = new Dictionary<string, object>();
+            _userData = new Dictionary<string, object>();
             Id = Guid.NewGuid();
         }
 
