@@ -19,7 +19,9 @@ namespace IctBaden.Stonehenge
         public string Protocol => _useSsl ? "https" : "http";
         public string ListeningOn { get; private set; }
 
+        private readonly string _desiredHost = "*";
         private readonly int _desiredPort;
+        public string UsedHost { get; private set; }
         public int UsedPort { get; private set; }
         private readonly bool _useSsl;
         private AppHost _host;
@@ -40,6 +42,12 @@ namespace IctBaden.Stonehenge
             : this(42000, false, title, startPage)
         {
         }
+
+        public AppEngine(string hostAddress, int hostPort, bool secure, string title, string startPage)
+            : this(hostPort, secure, title, startPage)
+        {
+            _desiredHost = hostAddress;
+        }
         public AppEngine(int hostPort, bool secure, string title, string startPage)
         {
             _desiredPort = hostPort;
@@ -51,8 +59,9 @@ namespace IctBaden.Stonehenge
 
         public void Run(bool newWindow)
         {
+            UsedHost = _desiredHost;
             UsedPort = (_desiredPort != 0) ? _desiredPort : 42000;
-            ListeningOn = $"{Protocol}://*:{UsedPort}/";
+            ListeningOn = $"{Protocol}://{UsedHost}:{UsedPort}/";
 
             _host = new AppHost(Title, StartPage, MessageBoxContentHtml);
             if (HasEventTimeout)
@@ -80,7 +89,7 @@ namespace IctBaden.Stonehenge
                     if (((ex.ErrorCode == 32) || (ex.ErrorCode == 183)) && (_desiredPort == 0))
                     {
                         UsedPort = new Random().Next(5000, 65500);
-                        ListeningOn = $"{Protocol}://*:{UsedPort}/";
+                        ListeningOn = $"{Protocol}://{UsedHost}:{UsedPort}/";
                         continue;
                     }
                     if (ex.ErrorCode == 32)
