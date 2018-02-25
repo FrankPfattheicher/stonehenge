@@ -48,8 +48,7 @@ namespace IctBaden.Stonehenge
             get => _viewModel;
             set
             {
-                var npc = _viewModel as INotifyPropertyChanged;
-                if (npc != null)
+                if (_viewModel is INotifyPropertyChanged npc)
                 {
                     npc.PropertyChanged -= ViewModelPropertyChanged;
                 }
@@ -65,8 +64,7 @@ namespace IctBaden.Stonehenge
 
         private void ViewModelPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
-            var avm = sender as ActiveViewModel;
-            if (avm == null)
+            if (!(sender is ActiveViewModel avm))
                 return;
             lock (avm.Session.Events)
             {
@@ -151,8 +149,7 @@ namespace IctBaden.Stonehenge
                     return string.Empty;
 
                 var parts = HostDomain.Split('.');
-                int val;
-                var isNumeric = int.TryParse(parts[0], out val);
+                var isNumeric = int.TryParse(parts[0], out _);
                 return isNumeric ? HostDomain : parts[0];
             }
         }
@@ -194,6 +191,7 @@ namespace IctBaden.Stonehenge
 
         public TimeSpan LastUserActionDuration => DateTime.Now - LastUserAction;
 
+        public event Action Terminated;
         public event Action TimedOut;
         private Timer _pollSessionTimeout;
         public TimeSpan SessionTimeout { get; private set; }
@@ -352,6 +350,7 @@ namespace IctBaden.Stonehenge
             var vm = ViewModel as IDisposable;
             ViewModel = null;
             vm?.Dispose();
+            Terminated?.Invoke();
         }
 
         public string GetETag(string url)

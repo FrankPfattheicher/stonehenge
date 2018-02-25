@@ -57,64 +57,61 @@ namespace IctBaden.Stonehenge
             { return null; }
         }
 
-        class PropertyDescriptorEx : PropertyDescriptor
+        private class PropertyDescriptorEx : PropertyDescriptor
         {
-            private readonly string propertyName;
-            private readonly PropertyDescriptor originalDescriptor;
-            private readonly bool readOnly;
+            private readonly string _propertyName;
+            private readonly PropertyDescriptor _originalDescriptor;
+            private readonly bool _readOnly;
 
             internal PropertyDescriptorEx(string name, PropertyInfo info, bool readOnly)
                 : base(name, null)
             {
-                propertyName = name;
-                originalDescriptor = FindOrigPropertyDescriptor(info);
-                this.readOnly = readOnly;
+                _propertyName = name;
+                _originalDescriptor = FindOrigPropertyDescriptor(info);
+                _readOnly = readOnly;
             }
 
-            public override AttributeCollection Attributes => originalDescriptor?.Attributes ?? base.Attributes;
+            public override AttributeCollection Attributes => _originalDescriptor?.Attributes ?? base.Attributes;
 
             public override object GetValue(object component)
             {
-                var dynComponent = component as DynamicObject;
-                if (dynComponent != null)
+                if (component is DynamicObject dynComponent)
                 {
-                    object result;
-                    if (dynComponent.TryGetMember(new GetMemberBinderEx(propertyName), out result))
+                    if (dynComponent.TryGetMember(new GetMemberBinderEx(_propertyName), out var result))
                         return result;
                 }
-                return originalDescriptor?.GetValue(component);
+                return _originalDescriptor?.GetValue(component);
             }
 
             public override void SetValue(object component, object value)
             {
-                var dynComponent = component as DynamicObject;
-                if (dynComponent != null)
+                if (component is DynamicObject dynComponent)
                 {
-                    if (dynComponent.TrySetMember(new SetMemberBinderEx(propertyName), value))
+                    if (dynComponent.TrySetMember(new SetMemberBinderEx(_propertyName), value))
                         return;
                 }
-                originalDescriptor?.SetValue(component, value);
+                _originalDescriptor?.SetValue(component, value);
             }
 
-            public override bool IsReadOnly => readOnly || ((originalDescriptor != null) && originalDescriptor.IsReadOnly);
+            public override bool IsReadOnly => _readOnly || ((_originalDescriptor != null) && _originalDescriptor.IsReadOnly);
 
-            public override Type PropertyType => originalDescriptor == null ? typeof(object) : originalDescriptor.PropertyType;
+            public override Type PropertyType => _originalDescriptor == null ? typeof(object) : _originalDescriptor.PropertyType;
 
             public override bool CanResetValue(object component)
             {
-                return originalDescriptor != null && originalDescriptor.CanResetValue(component);
+                return _originalDescriptor != null && _originalDescriptor.CanResetValue(component);
             }
 
-            public override Type ComponentType => originalDescriptor == null ? typeof(object) : originalDescriptor.ComponentType;
+            public override Type ComponentType => _originalDescriptor == null ? typeof(object) : _originalDescriptor.ComponentType;
 
             public override void ResetValue(object component)
             {
-                originalDescriptor?.ResetValue(component);
+                _originalDescriptor?.ResetValue(component);
             }
 
             public override bool ShouldSerializeValue(object component)
             {
-                return originalDescriptor != null && originalDescriptor.ShouldSerializeValue(component);
+                return _originalDescriptor != null && _originalDescriptor.ShouldSerializeValue(component);
             }
 
             private static PropertyDescriptor FindOrigPropertyDescriptor(PropertyInfo propertyInfo)
@@ -146,8 +143,8 @@ namespace IctBaden.Stonehenge
 
         #region properties
 
-        private readonly Dictionary<string, List<string>> dependencies = new Dictionary<string, List<string>>();
-        private readonly Dictionary<string, object> dictionary = new Dictionary<string, object>();
+        private readonly Dictionary<string, List<string>> _dependencies = new Dictionary<string, List<string>>();
+        private readonly Dictionary<string, object> _dictionary = new Dictionary<string, object>();
 
         internal List<ActiveModel> ActiveModels = new List<ActiveModel>();
         [Browsable(false)]
@@ -157,7 +154,7 @@ namespace IctBaden.Stonehenge
         {
             properties = null;
             propertiesAttrib = null;
-            dependencies.Clear();
+            _dependencies.Clear();
         }
 
         [Browsable(false)]
@@ -198,8 +195,7 @@ namespace IctBaden.Stonehenge
 
         public object TryGetMember(string name)
         {
-            object result;
-            TryGetMember(new GetMemberBinderEx(name), out result);
+            TryGetMember(new GetMemberBinderEx(name), out var result);
             return result;
         }
 
@@ -292,16 +288,16 @@ namespace IctBaden.Stonehenge
             var names = new List<string>();
             foreach (var model in ActiveModels)
                 names.AddRange(from prop in model.GetType().GetProperties() select prop.Name);
-            names.AddRange(from elem in dictionary select elem.Key);
+            names.AddRange(from elem in _dictionary select elem.Key);
             return names;
         }
         public IEnumerable<string> GetDictionaryNames()
         {
-            return dictionary.Select(e => e.Key);
+            return _dictionary.Select(e => e.Key);
         }
         public object GetDictionaryValue(string name)
         {
-            return dictionary.ContainsKey(name) ? dictionary[name] : null;
+            return _dictionary.ContainsKey(name) ? _dictionary[name] : null;
         }
 
         private PropertyInfoEx GetPropertyInfoEx(string name)
@@ -349,7 +345,7 @@ namespace IctBaden.Stonehenge
                 result = val;
                 return true;
             }
-            return dictionary.TryGetValue(binder.Name, out result);
+            return _dictionary.TryGetValue(binder.Name, out result);
         }
 
         public override bool TrySetMember(SetMemberBinder binder, object value)
@@ -361,12 +357,12 @@ namespace IctBaden.Stonehenge
                 NotifyPropertyChanged(binder.Name);
                 return true;
             }
-            if ((properties != null) && !dictionary.ContainsKey(binder.Name))
+            if ((properties != null) && !_dictionary.ContainsKey(binder.Name))
             {
                 var desc = new PropertyDescriptorEx(binder.Name, null, false);
                 properties.Add(desc);
             }
-            dictionary[binder.Name] = value;
+            _dictionary[binder.Name] = value;
             NotifyPropertyChanged(binder.Name);
             return true;
         }
@@ -449,7 +445,7 @@ namespace IctBaden.Stonehenge
                     properties.Add(desc);
                 }
             }
-            foreach (var elem in dictionary)
+            foreach (var elem in _dictionary)
             {
                 var desc = new PropertyDescriptorEx(elem.Key, null, false);
                 properties.Add(desc);
@@ -462,11 +458,11 @@ namespace IctBaden.Stonehenge
                     if (attrib.GetType() != typeof(DependsOnAttribute))
                         continue;
                     var da = (DependsOnAttribute)attrib;
-                    if (!dependencies.ContainsKey(da.Name))
+                    if (!_dependencies.ContainsKey(da.Name))
                     {
-                        dependencies[da.Name] = new List<string>();
+                        _dependencies[da.Name] = new List<string>();
                     }
-                    dependencies[da.Name].Add(prop.Name);
+                    _dependencies[da.Name].Add(prop.Name);
                 }
             }
 
@@ -476,10 +472,10 @@ namespace IctBaden.Stonehenge
                 var dependsOnAttributes = method.GetCustomAttributes(typeof(DependsOnAttribute), true);
                 foreach (DependsOnAttribute attrib in dependsOnAttributes)
                 {
-                    if (!dependencies.ContainsKey(attrib.Name))
-                        dependencies[attrib.Name] = new List<string>();
+                    if (!_dependencies.ContainsKey(attrib.Name))
+                        _dependencies[attrib.Name] = new List<string>();
 
-                    dependencies[attrib.Name].Add(method.Name);
+                    _dependencies[attrib.Name].Add(method.Name);
                 }
             }
 
@@ -543,10 +539,10 @@ namespace IctBaden.Stonehenge
             
             ExecuteHandler(handler, name);
             
-            if (!dependencies.ContainsKey(name))
+            if (!_dependencies.ContainsKey(name))
                 return;
 
-            foreach (var dependendName in dependencies[name])
+            foreach (var dependendName in _dependencies[name])
             {
                 ExecuteHandler(handler, dependendName);
             }
