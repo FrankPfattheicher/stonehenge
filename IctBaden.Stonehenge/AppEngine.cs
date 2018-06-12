@@ -38,6 +38,7 @@ namespace IctBaden.Stonehenge
             }
         }
 
+        // ReSharper disable once UnusedMember.Global
         public AppEngine(string title, string startPage)
             : this(42000, false, title, startPage)
         {
