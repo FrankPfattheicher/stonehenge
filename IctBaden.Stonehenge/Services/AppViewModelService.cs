@@ -10,6 +10,7 @@ using JsonSerializer = ServiceStack.Text.JsonSerializer;
 
 namespace IctBaden.Stonehenge.Services
 {
+    // ReSharper disable once UnusedMember.Global
     public class AppViewModelService : AppService
     {
         private const string ViewModelContentType = "application/json; charset=utf-8";
@@ -69,6 +70,7 @@ namespace IctBaden.Stonehenge.Services
             return result;
         }
 
+        // ReSharper disable once UnusedMember.Global
         public object Post(AppViewModel request)
         {
 #if DEBUG

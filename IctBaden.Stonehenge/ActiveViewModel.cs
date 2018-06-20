@@ -148,6 +148,7 @@ namespace IctBaden.Stonehenge
 
         internal List<ActiveModel> ActiveModels = new List<ActiveModel>();
         [Browsable(false)]
+        // ReSharper disable once UnusedMember.Global
         internal int Count => GetProperties().Count;
 
         private void ClearProperties()
@@ -169,6 +170,7 @@ namespace IctBaden.Stonehenge
         [Bindable(false)]
         public string _stonehenge_CommandSenderName_ { get; set; }
 
+        // ReSharper disable once UnusedMember.Global
         public string GetCommandSenderName()
         {
             return _stonehenge_CommandSenderName_;
@@ -178,6 +180,7 @@ namespace IctBaden.Stonehenge
 
         #endregion
 
+        // ReSharper disable once UnusedMember.Global
         public ActiveViewModel()
             : this(null)
         {
@@ -188,6 +191,7 @@ namespace IctBaden.Stonehenge
             Session = session ?? AppSessionCache.NewSession();
         }
 
+        // ReSharper disable once UnusedMember.Global
         protected void SetParent(ActiveViewModel parent)
         {
             PropertyChanged += (sender, args) => parent.NotifyPropertyChanged(args.PropertyName);
@@ -211,6 +215,7 @@ namespace IctBaden.Stonehenge
             set => TrySetMember(name, value);
         }
 
+        // ReSharper disable once UnusedMember.Global
         public void SetModel(object model, bool readOnly = false)
         {
             SetModel(null, model, readOnly);
@@ -233,6 +238,7 @@ namespace IctBaden.Stonehenge
             GetProperties();
         }
 
+        // ReSharper disable once UnusedMember.Global
         public void RemoveModel(object model)
         {
             RemoveModel(null, model);
@@ -253,6 +259,7 @@ namespace IctBaden.Stonehenge
             GetProperties();
         }
 
+        // ReSharper disable once UnusedMember.Global
         public void UpdateModel(object model)
         {
             UpdateModel(null, model);

@@ -30,8 +30,7 @@ namespace IctBaden.Stonehenge.Services
         public HttpResult Build()
         {
             var data = new BlockingCollection<string>();
-            var activeVm = _viewModel as ActiveViewModel;
-            if (activeVm != null)
+            if (_viewModel is ActiveViewModel activeVm)
             {
                 Parallel.ForEach(activeVm.ActiveModels, model => SerializeObject(data, model.Prefix, model.Model));
                 //foreach (var model in activeVm.ActiveModels)
@@ -104,8 +103,7 @@ namespace IctBaden.Stonehenge.Services
 
             Parallel.ForEach(obj.GetType().GetProperties(), prop => SerializeProperty(data, prefix, obj, prop));
 
-            var vm = obj as ActiveViewModel;
-            if (vm != null)
+            if (obj is ActiveViewModel vm)
             {
                 foreach (var name in vm.GetDictionaryNames())
                 {

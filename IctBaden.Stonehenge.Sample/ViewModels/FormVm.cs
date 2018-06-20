@@ -1,4 +1,6 @@
 ﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Local
 namespace IctBaden.Stonehenge.Sample.ViewModels
 {
     using System;
@@ -10,14 +12,14 @@ namespace IctBaden.Stonehenge.Sample.ViewModels
 
     using Stonehenge;
 
+    // ReSharper disable once UnusedMember.Global
     public class FormVm : ActiveViewModel
     {
         private static int _nid = 1;
         private string _name;
-        private Timer timer;
+        private Timer _timer;
 
         public string Id { get; private set; }
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public string Clock { get; private set; }
 
         [Bindable(true, BindingDirection.OneWay)]
@@ -25,7 +27,7 @@ namespace IctBaden.Stonehenge.Sample.ViewModels
 
         public string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 _name = value;
@@ -150,14 +152,14 @@ namespace IctBaden.Stonehenge.Sample.ViewModels
         [ActionMethod]
         public void OnAutoUpdateChanged()
         {
-            if (AutoUpdate.Checked && (timer == null))
+            if (AutoUpdate.Checked && (_timer == null))
             {
-                timer = new Timer(ClockTick, this, 1000, 1000);
+                _timer = new Timer(ClockTick, this, 1000, 1000);
             }
-            else if (!AutoUpdate.Checked && (timer != null))
+            else if (!AutoUpdate.Checked && (_timer != null))
             {
-                timer.Dispose();
-                timer = null;
+                _timer.Dispose();
+                _timer = null;
             }
         }
 
