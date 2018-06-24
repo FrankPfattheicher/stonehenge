@@ -156,10 +156,13 @@ namespace IctBaden.Stonehenge.Services
             var host = GetResolver() as AppHost;
             if (host?.Redirect == null)
             {
-                var builder = new ViewModelResult(RequestContext.CompressionType, appSession, vm);
-                var result = builder.Build();
+                if (!returnData)
+                {
+                    return new HttpResult("{}", ViewModelContentType);
+                }
 
-                return returnData ? result : new HttpResult("{}", ViewModelContentType);
+                var builder = new ViewModelResult(RequestContext.CompressionType, appSession, vm);
+                return builder.Build();
             }
 
             var redirect = new HttpResult { StatusCode = HttpStatusCode.Redirect };
@@ -172,9 +175,7 @@ namespace IctBaden.Stonehenge.Services
         {
             try
             {
-
-                var activeVm = vm as ActiveViewModel;
-                if (activeVm != null)
+                if (vm is ActiveViewModel activeVm)
                 {
                     var pi = activeVm.GetPropertyInfo(propName);
                     if ((pi == null) || !pi.CanWrite)
