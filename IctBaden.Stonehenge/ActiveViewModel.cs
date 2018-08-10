@@ -570,6 +570,7 @@ namespace IctBaden.Stonehenge
         public string MessageBoxTitle;
         public string MessageBoxText;
 
+        // ReSharper disable once UnusedMember.Global
         public void MessageBox(string title, string text)
         {
             MessageBoxTitle = title;
@@ -590,6 +591,7 @@ namespace IctBaden.Stonehenge
             NotifyPropertyChanged(AppService.PropertyNameNavigate);
         }
 
+        // ReSharper disable once UnusedMember.Global
         public void NavigateBack()
         {
             Debug.WriteLine("NavigateBack");
@@ -602,6 +604,7 @@ namespace IctBaden.Stonehenge
         #region Client site scripting
 
         public string ClientScript;
+        // ReSharper disable once UnusedMember.Global
         public void ExecuteClientScript(string script)
         {
             ClientScript = script;
