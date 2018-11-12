@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Drawing;
+using IctBaden.Stonehenge.Services;
+// ReSharper disable UnusedMember.Global
 
 namespace IctBaden.Stonehenge
 {
@@ -231,6 +233,11 @@ namespace IctBaden.Stonehenge
         private void OnClientException(Exception exception)
         {
             ClientException?.Invoke(exception);
+        }
+
+        public void InvalidateCache()
+        {
+            ResourceLoader.InvalidateCache();
         }
     }
 }

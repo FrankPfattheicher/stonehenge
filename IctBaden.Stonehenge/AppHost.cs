@@ -135,5 +135,11 @@ namespace IctBaden.Stonehenge
                 DebugMode = true
             });
         }
+
+        public void InvalidateCache()
+        {
+            ResourceLoader.InvalidateCache();
+        }
+
     }
 }

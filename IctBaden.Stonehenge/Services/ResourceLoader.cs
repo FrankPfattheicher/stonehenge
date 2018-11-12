@@ -11,6 +11,18 @@ namespace IctBaden.Stonehenge.Services
         private static readonly Dictionary<string, string> Texts = new Dictionary<string, string>();
         private static readonly Dictionary<string, byte[]> Binaries = new Dictionary<string, byte[]>();
 
+        public static void InvalidateCache()
+        {
+            lock (Texts)
+            {
+                Texts.Clear();
+            }
+            lock (Binaries)
+            {
+                Binaries.Clear();
+            }
+        }
+
         private static bool IsName(this string name, string name1, string name2)
         {
             return (string.Compare(name, name1, StringComparison.InvariantCultureIgnoreCase) == 0) ||
