@@ -6,20 +6,31 @@ using ServiceStack.Common.Web;
 
 namespace IctBaden.Stonehenge.Services
 {
+    // ReSharper disable once UnusedMember.Global
     public class UserFileService : AppService
     {
         public object Get(UserFile request)
         {
-            var sessionId = GetSessionId();
-            var appSession = GetSession(sessionId);
-            var vm = appSession?.ViewModel;
+            var appSession = new AppSession();
+            object vm;
+
+            if (request.Path1 == "rest")
+            {
+                vm = appSession.SetViewModelType(request.FileName);
+            }
+            else
+            {
+                var sessionId = GetSessionId();
+                appSession = GetSession(sessionId);
+                vm = appSession?.ViewModel;
+            }
+
             if (vm == null)
             {
                 var message = "UserFileService: ViewModel not found: " + request.FileName;
                 Trace.TraceWarning(message);
                 return new HttpResult(message, HttpStatusCode.NotFound);
             }
-
             var method = vm.GetType()
                 .GetMethods()
                 .FirstOrDefault(m => string.Compare(m.Name, "GetUserData", StringComparison.InvariantCultureIgnoreCase) == 0);

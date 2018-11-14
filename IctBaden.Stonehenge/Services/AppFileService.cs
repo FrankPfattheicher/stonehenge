@@ -181,7 +181,6 @@ namespace IctBaden.Stonehenge.Services
                     var name = text.Substring(12, end - 12).Trim();
 
                     appSession?.SetViewModelType(name);
-                    //appSession?.EventsClear(true);
                 }
             }
             else

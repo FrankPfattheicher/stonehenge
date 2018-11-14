@@ -66,7 +66,11 @@ namespace IctBaden.Stonehenge
                   .Add<AppFile>("/favicon.ico")
                   .Add<AppFile>("/.well-known/{Path1}/{FileName}")
                   .Add<AppFile>("/app/{FileName}")
+
                   .Add<UserFile>("/app/user/{FileName}")
+                  .Add<UserFile>("/app/user/{Path1}/{FileName}")
+                  .Add<UserFile>("/app/user/{Path1}/{Path2}/{FileName}")
+
                   .Add<AppFile>("/app/{Path1}/{FileName}")
                   .Add<AppFile>("/app/{Path1}/{Path2}/{FileName}")
                   .Add<AppFile>("/app/{Path1}/{Path2}/{Path3}/{FileName}")

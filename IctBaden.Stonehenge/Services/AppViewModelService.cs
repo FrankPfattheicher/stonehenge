@@ -55,6 +55,11 @@ namespace IctBaden.Stonehenge.Services
                 Debug.WriteLine("AppViewModelService: Client address changed: " + appSession.ClientAddress);
             }
 
+            if (vm == null)
+            {
+                return new HttpResult("No viewmodel for request", HttpStatusCode.NotFound);
+            }
+
             var ty = vm.GetType();
             Debug.WriteLine("AppViewModelService: ~vm=" + ty.Name);
 
