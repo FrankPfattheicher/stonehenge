@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,6 +49,16 @@ namespace IctBaden.Stonehenge.Services
                 {
                     data.Add($"\"{name}\":{JsonSerializer.SerializeToString(activeVm.TryGetMember(name))}");
                 }
+
+                // execute client script immediately
+                var clientScript = activeVm.Session.Events.FirstOrDefault(ev => ev == AppService.PropertyNameClientScript);
+                if (clientScript != null)
+                {
+                    activeVm.Session.Events.Remove(clientScript);
+                    var script = activeVm.ClientScript;
+                    data.Add($"\"stonehenge_eval\":\"{script}\"");
+                }
+
             }
 
             SerializeObject(data, null, _viewModel);

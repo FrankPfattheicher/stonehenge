@@ -609,7 +609,6 @@ namespace IctBaden.Stonehenge
         {
             ClientScript = script;
             Session.EventAdd(AppService.PropertyNameClientScript);
-            //NotifyPropertyChanged(AppService.PropertyNameClientScript);
         }
 
         #endregion

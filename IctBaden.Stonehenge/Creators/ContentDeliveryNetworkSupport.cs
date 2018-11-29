@@ -9,18 +9,18 @@ namespace IctBaden.Stonehenge.Creators
     public static class ContentDeliveryNetworkSupport
     {
         private const string CdnConfigurationFileName = "CDN.cfg";
-        private static Dictionary<string, string> cdnLookup;
+        private static Dictionary<string, string> _cdnLookup;
 
         public static Dictionary<string, string> CdnLookup
         {
             get
             {
-                if (cdnLookup != null)
-                    return cdnLookup;
+                if (_cdnLookup != null)
+                    return _cdnLookup;
 
                 if (File.Exists(CdnConfigurationFileName))
                 {
-                    cdnLookup = (from line in File.ReadAllLines(CdnConfigurationFileName)
+                    _cdnLookup = (from line in File.ReadAllLines(CdnConfigurationFileName)
                                  where !line.StartsWith("#")
                                  let elements = line.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries)
                                  where elements.Length == 2
@@ -28,15 +28,12 @@ namespace IctBaden.Stonehenge.Creators
                 }
                 else
                 {
-                    cdnLookup = new Dictionary<string, string>();
+                    _cdnLookup = new Dictionary<string, string>();
                 }
 
-                return cdnLookup;
+                return _cdnLookup;
             }
-            set
-            {
-                cdnLookup = value;
-            }
+            set => _cdnLookup = value;
         }
 
         public static string RersolveHostsHtml(string page, bool isSecureConnection)
@@ -49,7 +46,7 @@ namespace IctBaden.Stonehenge.Creators
 
             var resultlines = from line in page.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
                               let isScriptSource = script.Match(line)
-                              let source = isScriptSource.Groups["c"].Value.Split(new[] { '/' }).Last()
+                              let source = isScriptSource.Groups["c"].Value.Split('/').Last()
                               select (isScriptSource.Success && CdnLookup.ContainsKey(source)) ?
                                      isScriptSource.Groups["a"].Value.Replace(isScriptSource.Groups["b"].Value, CdnLookup[source].Replace("http://", protocol)) : line;
 
@@ -66,7 +63,7 @@ namespace IctBaden.Stonehenge.Creators
 
             var resultlines = from line in page.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
                               let isMapPath = script.Match(line)
-                              let source = isMapPath.Groups["path"].Value.Split(new[] { '/' }).Last() + ".js"
+                              let source = isMapPath.Groups["path"].Value.Split('/').Last() + ".js"
                               select (isMapPath.Success && CdnLookup.ContainsKey(source)) ?
                                      isMapPath.Groups["map"].Value.Replace(isMapPath.Groups["path"].Value, CdnLookup[source].Replace("http://", protocol)).Replace(".js'", "'") : line;
 

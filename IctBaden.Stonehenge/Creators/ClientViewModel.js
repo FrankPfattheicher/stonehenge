@@ -186,6 +186,11 @@ define(["durandal/app", "durandal/system", "knockout", "flot"], function(app, sy
                     user_bindingComplete(this);
                 } catch (e) { }
             }
+            if (typeof (_ViewModelName_BindingComplete) == 'function') {
+                try {
+                    _ViewModelName_BindingComplete(this);
+                } catch (e) { }
+            }
         },
         compositionComplete: function () {
             system.log("ClientViewModel : compositionComplete");
