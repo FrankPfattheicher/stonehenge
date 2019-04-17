@@ -87,7 +87,7 @@ namespace IctBaden.Stonehenge
                 {
                     if (ex.ErrorCode == 5)
                     {
-                        throw new AccessViolationException("You need administartion privileges or use HttpCfg");
+                        throw new AccessViolationException("You need administration privileges or use HttpCfg");
                     }
                     if (((ex.ErrorCode == 32) || (ex.ErrorCode == 183)) && (_desiredPort == 0))
                     {
