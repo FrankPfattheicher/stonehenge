@@ -3,7 +3,7 @@
 // Author:
 //  Frank Pfattheicher <fpf@ict-baden.de>
 //
-// Copyright (C)2011-2015 ICT Baden GmbH
+// Copyright (C)2011-2019 ICT Baden GmbH
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
