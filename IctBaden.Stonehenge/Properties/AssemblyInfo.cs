@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ICT Baden GmbH")]
 [assembly: AssemblyProduct("IctBaden.Stonehenge")]
-[assembly: AssemblyCopyright("Copyright ©2013-2019 ICT Baden GmbH")]
+[assembly: AssemblyCopyright("Copyright ©2013-2020 ICT Baden GmbH")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
